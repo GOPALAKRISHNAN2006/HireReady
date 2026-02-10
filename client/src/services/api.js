@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL
     ? `${import.meta.env.VITE_API_URL}/api`
     : '/api',
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,12 +39,45 @@ api.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => {
-    const { response } = error
+  async (error) => {
+    const { response, config } = error
     
+    // Retry logic for network errors (Render cold start)
+    // Only retry once, and only for POST requests that might be affected by cold starts
+    if (!response && error.request && !config._retried) {
+      config._retried = true
+      
+      // Show a friendly message instead of "Network error"
+      toast.loading('Server is waking up... Please wait.', { 
+        id: 'cold-start',
+        duration: 15000 
+      })
+      
+      // Wait 3 seconds then retry
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      
+      try {
+        const retryResponse = await api.request(config)
+        toast.dismiss('cold-start')
+        toast.success('Connected! Request completed.', { duration: 2000 })
+        return retryResponse
+      } catch (retryError) {
+        toast.dismiss('cold-start')
+        // If retry also fails, fall through to normal error handling
+        if (retryError.response) {
+          // Server responded on retry — handle normally
+          error = retryError
+        } else {
+          toast.error('Server is starting up. Please try again in a moment.', { duration: 5000 })
+          return Promise.reject(retryError)
+        }
+      }
+    }
+
     // Handle specific error codes
-    if (response) {
-      switch (response.status) {
+    if (error.response) {
+      const { response: resp } = error
+      switch (resp.status) {
         case 401:
           // Unauthorized - clear auth and redirect
           localStorage.removeItem('auth-storage')
@@ -61,7 +94,7 @@ api.interceptors.response.use(
           break
         case 422:
           // Validation error
-          const errors = response.data?.errors
+          const errors = resp.data?.errors
           if (errors && Array.isArray(errors)) {
             errors.forEach((err) => toast.error(err.msg || err.message))
           }
@@ -71,13 +104,13 @@ api.interceptors.response.use(
           break
         default:
           // Show generic error message
-          if (response.data?.message) {
-            toast.error(response.data.message)
+          if (resp.data?.message) {
+            toast.error(resp.data.message)
           }
       }
     } else if (error.request) {
-      // Network error
-      toast.error('Network error. Please check your connection.')
+      // Network error — already handled by retry logic above
+      toast.error('Server is starting up. Please try again in a moment.')
     }
     
     return Promise.reject(error)
