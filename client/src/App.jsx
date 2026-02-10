@@ -74,9 +74,6 @@ import MockInterviewLab from './pages/MockInterviewLab'
 import Premium from './pages/Premium'
 import PaymentSuccess from './pages/PaymentSuccess'
 
-// Components
-import AIChatbot from './components/AIChatbot'
-
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isAuthenticated, user } = useAuthStore()
@@ -640,8 +637,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
     </Routes>
     
-    {/* AI Chatbot - Available on all pages */}
-    <AIChatbot />
+
     </>
   )
 }

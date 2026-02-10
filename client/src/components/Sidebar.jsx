@@ -32,10 +32,11 @@ import {
   Mic,
   CalendarCheck,
   Monitor,
-  Crown
+  Crown,
+  Bot
 } from 'lucide-react'
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
   const { user } = useAuthStore()
   const { isPremium } = usePremium()
   const isAdmin = user?.role === 'admin'
@@ -76,6 +77,20 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Settings', path: '/settings', icon: Settings },
     { name: 'Help & FAQ', path: '/help', icon: HelpCircle },
   ]
+
+  const ChatButton = () => (
+    <button
+      onClick={() => { onOpenChat?.(); onClose?.(); }}
+      className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden w-full text-gray-600 dark:text-gray-400 hover:bg-gradient-to-r hover:from-primary-50 hover:to-purple-50 dark:hover:from-indigo-500/[0.08] dark:hover:to-purple-500/[0.05]"
+    >
+      <div className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-500/20 dark:to-purple-500/20 group-hover:from-primary-200 group-hover:to-purple-200 dark:group-hover:from-primary-500/30 dark:group-hover:to-purple-500/30">
+        <Bot className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+      </div>
+      <span className="font-medium flex-1 text-left">AI Assistant</span>
+      <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-primary-500 to-purple-500 text-white rounded-full">AI</span>
+      <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+    </button>
+  )
 
   const adminItems = [
     { name: 'Admin Dashboard', path: '/admin', icon: LayoutDashboard },
@@ -179,8 +194,9 @@ const Sidebar = ({ isOpen, onClose }) => {
               
               <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
                 <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                  More
+                  AI & More
                 </p>
+                <ChatButton />
                 {additionalItems.map((item) => (
                   <NavItem key={item.path} item={item} />
                 ))}

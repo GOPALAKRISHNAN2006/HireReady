@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
+import AIChatbot from '../components/AIChatbot'
 import { useState } from 'react'
 
 const MainLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-[#0b1120] dark:via-[#0f172a] dark:to-[#0b1120] transition-colors duration-300">
@@ -20,7 +22,7 @@ const MainLayout = () => {
       
       <div className="flex relative">
         {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenChat={() => setChatOpen(true)} />
         
         {/* Main Content */}
         <main className="flex-1 p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
@@ -29,6 +31,9 @@ const MainLayout = () => {
           </div>
         </main>
       </div>
+
+      {/* AI Chatbot */}
+      <AIChatbot externalOpen={chatOpen} onExternalClose={() => setChatOpen(false)} />
     </div>
   )
 }
