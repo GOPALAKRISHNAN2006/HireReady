@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
@@ -19,6 +19,8 @@ const Signup = () => {
   })
   const [errors, setErrors] = useState({})
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [slowRequest, setSlowRequest] = useState(false)
+  const slowTimerRef = useRef(null)
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -115,6 +117,10 @@ const Signup = () => {
     e.preventDefault()
     
     if (!validateForm()) return
+
+    // Detect slow request (Render cold start)
+    setSlowRequest(false)
+    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
     
     await register({
       firstName: formData.firstName,
@@ -123,6 +129,9 @@ const Signup = () => {
       password: formData.password,
       confirmPassword: formData.confirmPassword,
     })
+
+    clearTimeout(slowTimerRef.current)
+    setSlowRequest(false)
   }
 
   return (
@@ -257,6 +266,7 @@ const Signup = () => {
           fullWidth
           size="lg"
           isLoading={isLoading}
+          loadingText={slowRequest ? 'Starting server... please wait' : 'Creating account...'}
           className="mt-6"
         >
           Create Account

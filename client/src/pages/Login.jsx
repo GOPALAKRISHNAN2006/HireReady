@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
@@ -17,6 +17,8 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false)
   const [errors, setErrors] = useState({})
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [slowRequest, setSlowRequest] = useState(false)
+  const slowTimerRef = useRef(null)
 
   // Load remembered email on mount
   useEffect(() => {
@@ -110,8 +112,15 @@ const Login = () => {
     } else {
       localStorage.removeItem('rememberedEmail')
     }
+
+    // Detect slow request (Render cold start)
+    setSlowRequest(false)
+    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
     
     await login(formData.email, formData.password)
+
+    clearTimeout(slowTimerRef.current)
+    setSlowRequest(false)
   }
 
   return (
@@ -207,6 +216,7 @@ const Login = () => {
           fullWidth
           size="lg"
           isLoading={isLoading}
+          loadingText={slowRequest ? 'Starting server... please wait' : 'Signing in...'}
           icon={ArrowRight}
           iconPosition="right"
           className="mt-2"

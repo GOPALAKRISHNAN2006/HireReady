@@ -6,6 +6,7 @@ const Button = forwardRef(({
   variant = 'primary',
   size = 'md',
   isLoading = false,
+  loadingText = 'Loading...',
   disabled = false,
   icon: Icon,
   iconPosition = 'left',
@@ -79,7 +80,7 @@ const Button = forwardRef(({
       {isLoading ? (
         <>
           <Loader2 className={`${iconSizes[size]} animate-spin`} />
-          <span>Loading...</span>
+          <span>{loadingText}</span>
         </>
       ) : (
         <>
