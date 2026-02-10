@@ -12,6 +12,10 @@ import AdminLayout from './layouts/AdminLayout'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+import VerifyEmail from './pages/VerifyEmail'
+import Pricing from './pages/Pricing'
 import AdminLogin from './pages/admin/AdminLogin'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
@@ -64,6 +68,11 @@ import CommunicationTest from './pages/CommunicationTest'
 import MaterialContent from './pages/MaterialContent'
 import ProctoringDashboard from './pages/admin/ProctoringDashboard'
 import CompanyDetail from './pages/CompanyDetail'
+import InterviewFeedback from './pages/InterviewFeedback'
+import StudyPlan from './pages/StudyPlan'
+import MockInterviewLab from './pages/MockInterviewLab'
+import Premium from './pages/Premium'
+import PaymentSuccess from './pages/PaymentSuccess'
 
 // Components
 import AIChatbot from './components/AIChatbot'
@@ -144,7 +153,30 @@ function App() {
             </PublicRoute>
           } 
         />
+        <Route 
+          path="/forgot-password" 
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/reset-password/:token" 
+          element={
+            <PublicRoute>
+              <ResetPassword />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/verify-email/:token?" 
+          element={<VerifyEmail />} 
+        />
       </Route>
+      
+      {/* Public Pricing Page */}
+      <Route path="/pricing" element={<Pricing />} />
       
       {/* Full Screen Interview Route - No Layout Wrapper */}
       <Route 
@@ -477,6 +509,54 @@ function App() {
           element={
             <ProtectedRoute>
               <CommunicationTest />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Interview Feedback / Debrief */}
+        <Route 
+          path="/interview/:id/feedback" 
+          element={
+            <ProtectedRoute>
+              <InterviewFeedback />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Study Plan */}
+        <Route 
+          path="/study-plan" 
+          element={
+            <ProtectedRoute>
+              <StudyPlan />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Mock Interview Lab */}
+        <Route 
+          path="/mock-lab" 
+          element={
+            <ProtectedRoute>
+              <MockInterviewLab />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Premium & Payment */}
+        <Route 
+          path="/premium" 
+          element={
+            <ProtectedRoute>
+              <Premium />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/payment-success" 
+          element={
+            <ProtectedRoute>
+              <PaymentSuccess />
             </ProtectedRoute>
           } 
         />

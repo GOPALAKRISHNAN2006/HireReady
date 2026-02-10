@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
-import { Mail, Lock, User, Loader2 } from 'lucide-react'
+import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../services/api'
 
@@ -129,23 +129,45 @@ const Signup = () => {
     <div className="animate-in">
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
-        <Link to="/" className="inline-flex items-center space-x-2">
-          <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <Link to="/" className="inline-flex items-center space-x-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </div>
-          <span className="text-xl font-bold text-gray-900">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">HireReady</span>
         </Link>
       </div>
 
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
-        <p className="text-gray-600 mt-2">Start your journey to interview success</p>
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center px-3 py-1 bg-green-50 dark:bg-green-900/30 rounded-full text-xs font-medium text-green-600 dark:text-green-400 mb-4">
+          <Sparkles className="w-3 h-3 mr-1" />
+          Join 10,000+ learners
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Create an account</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">Start your journey to interview success</p>
+      </div>
+
+      {/* Perks strip */}
+      <div className="flex items-center justify-center gap-4 mb-6">
+        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+          <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+          <span>Free forever</span>
+        </div>
+        <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+          <Shield className="w-3.5 h-3.5 text-blue-500" />
+          <span>No credit card</span>
+        </div>
+        <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+          <Zap className="w-3.5 h-3.5 text-amber-500" />
+          <span>Instant access</span>
+        </div>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
           {error}
         </div>
       )}
@@ -221,11 +243,11 @@ const Signup = () => {
               required
               className="w-4 h-4 mt-0.5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
-            <span className="ml-2 text-sm text-gray-600">
+            <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
               I agree to the{' '}
-              <Link to="/terms" className="text-primary-600 hover:underline">Terms of Service</Link>
+              <Link to="/terms" className="text-primary-600 dark:text-primary-400 hover:underline">Terms of Service</Link>
               {' '}and{' '}
-              <Link to="/privacy" className="text-primary-600 hover:underline">Privacy Policy</Link>
+              <Link to="/privacy" className="text-primary-600 dark:text-primary-400 hover:underline">Privacy Policy</Link>
             </span>
           </label>
         </div>
@@ -244,10 +266,10 @@ const Signup = () => {
       <div className="mt-8">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
+            <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500">Or sign up with</span>
+            <span className="px-4 bg-transparent text-gray-500 dark:text-gray-400">Or sign up with</span>
           </div>
         </div>
 
@@ -255,24 +277,44 @@ const Signup = () => {
           <button 
             onClick={handleGoogleSignup}
             disabled={googleLoading || isLoading}
-            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 mr-2 animate-spin text-gray-500" />
             ) : (
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
             )}
-            <span className="text-sm font-medium text-gray-700">Continue with Google</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Continue with Google</span>
           </button>
         </div>
       </div>
 
-      <p className="mt-8 text-center text-sm text-gray-600">
-        Already have an account?{' '}
-        <Link to="/login" className="font-medium text-primary-600 hover:text-primary-700">
-          Sign in
-        </Link>
-      </p>
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Already have an account?{' '}
+          <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
+            Sign in →
+          </Link>
+        </p>
+      </div>
+
+      {/* What you'll get */}
+      <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+        <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider text-center mb-3">What you'll get</p>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { emoji: '🎯', label: 'Mock Interviews' },
+            { emoji: '🤖', label: 'AI Feedback' },
+            { emoji: '📊', label: 'Analytics' },
+            { emoji: '🏆', label: 'Achievements' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+              <span className="text-base">{item.emoji}</span>
+              <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

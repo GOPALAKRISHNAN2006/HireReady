@@ -32,83 +32,100 @@ import {
 } from 'recharts'
 
 const Analytics = () => {
-  // Fetch analytics data
+  // Fetch analytics data from /analytics/summary (real endpoint)
   const { data: analytics, isLoading } = useQuery({
-    queryKey: ['analytics', 'full'],
+    queryKey: ['analytics', 'summary'],
     queryFn: async () => {
-      const response = await api.get('/analytics/stats')
-      return response.data
+      const response = await api.get('/analytics/summary')
+      return response.data?.data || response.data
     },
   })
 
-  // Fetch progress data
-  const { data: progressData, isLoading: progressLoading } = useQuery({
-    queryKey: ['analytics', 'progress'],
+  // Fetch weekly progress data
+  const { data: weeklyData, isLoading: weeklyLoading } = useQuery({
+    queryKey: ['analytics', 'progress', 'weekly'],
     queryFn: async () => {
-      const response = await api.get('/analytics/progress')
-      return response.data
+      const response = await api.get('/analytics/progress?period=weekly')
+      return response.data?.data || response.data
     },
   })
+
+  // Fetch monthly progress data
+  const { data: monthlyData, isLoading: monthlyLoading } = useQuery({
+    queryKey: ['analytics', 'progress', 'monthly'],
+    queryFn: async () => {
+      const response = await api.get('/analytics/progress?period=monthly')
+      return response.data?.data || response.data
+    },
+  })
+
+  // Fetch category performance
+  const { data: categoryData, isLoading: categoryLoading } = useQuery({
+    queryKey: ['analytics', 'category-performance'],
+    queryFn: async () => {
+      const response = await api.get('/analytics/category-performance')
+      return response.data?.data || response.data
+    },
+  })
+
+  const progressLoading = weeklyLoading || monthlyLoading
 
   const COLORS = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']
 
-  // Mock data for charts (replace with real data)
-  const weeklyProgress = progressData?.weekly || [
-    { day: 'Mon', score: 65, interviews: 2 },
-    { day: 'Tue', score: 72, interviews: 3 },
-    { day: 'Wed', score: 68, interviews: 2 },
-    { day: 'Thu', score: 78, interviews: 4 },
-    { day: 'Fri', score: 82, interviews: 3 },
-    { day: 'Sat', score: 75, interviews: 1 },
-    { day: 'Sun', score: 88, interviews: 2 },
-  ]
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  const categoryPerformance = analytics?.categoryScores || [
-    { name: 'DSA', score: 75 },
-    { name: 'Web Dev', score: 82 },
-    { name: 'System Design', score: 68 },
-    { name: 'Behavioral', score: 90 },
-    { name: 'Database', score: 72 },
-  ]
+  // Transform weekly progress from API
+  const weeklyProgress = (weeklyData?.progress || []).map(w => ({
+    day: w.weekLabel || `W${w.week || ''}`,
+    score: Math.round(w.averageScore || 0),
+    interviews: w.interviewsCompleted || 0,
+  }))
 
-  const difficultyDistribution = analytics?.difficultyDistribution || [
-    { name: 'Easy', value: 40, color: '#22c55e' },
-    { name: 'Medium', value: 45, color: '#f59e0b' },
-    { name: 'Hard', value: 15, color: '#ef4444' },
-  ]
+  // Transform category performance from API
+  const categoryPerformance = (categoryData?.categoryPerformance || []).map(c => ({
+    name: c.name || c.category,
+    score: Math.round(c.averageScore || 0),
+  }))
 
-  const monthlyTrend = progressData?.monthly || [
-    { month: 'Jan', score: 60 },
-    { month: 'Feb', score: 65 },
-    { month: 'Mar', score: 70 },
-    { month: 'Apr', score: 75 },
-    { month: 'May', score: 72 },
-    { month: 'Jun', score: 80 },
-  ]
+  // Build difficulty distribution from score distribution
+  const scoreDistribution = analytics?.scoreDistribution || {}
+  const difficultyDistribution = [
+    { name: 'Easy (70-100)', value: (scoreDistribution['90-100'] || 0) + (scoreDistribution['70-89'] || 0), color: '#22c55e' },
+    { name: 'Medium (40-69)', value: (scoreDistribution['50-69'] || 0) + (scoreDistribution['40-49'] || 0), color: '#f59e0b' },
+    { name: 'Hard (0-39)', value: (scoreDistribution['0-49'] || 0), color: '#ef4444' },
+  ].filter(d => d.value > 0)
 
+  // Transform monthly progress from API
+  const monthlyTrend = (monthlyData?.progress || []).map(m => ({
+    month: monthNames[m.month - 1] || `M${m.month}`,
+    score: Math.round(m.averageScore || 0),
+  }))
+
+  const stats = analytics?.stats || {}
   const statCards = [
     {
       title: 'Average Score',
-      value: `${analytics?.averageScore || 0}%`,
-      change: '+5%',
-      isPositive: true,
+      value: `${stats.averageScore || 0}%`,
+      change: stats.improvementPercentage ? `${stats.improvementPercentage > 0 ? '+' : ''}${stats.improvementPercentage}%` : 'N/A',
+      isPositive: (stats.improvementPercentage || 0) >= 0,
       icon: TrendingUp,
       color: 'text-green-600',
       bgColor: 'bg-green-100',
     },
     {
       title: 'Total Interviews',
-      value: analytics?.totalInterviews || 0,
-      change: '+12',
+      value: stats.completedInterviews || stats.totalInterviews || 0,
+      change: `${stats.totalInterviews || 0} total`,
       isPositive: true,
       icon: Target,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
     },
     {
-      title: 'Practice Hours',
-      value: `${analytics?.totalTime || 0}h`,
-      change: '+3h',
+      title: 'Practice Time',
+      value: `${Math.round((stats.totalPracticeTime || 0) / 60)}h`,
+      change: `${stats.totalPracticeTime || 0} mins`,
       isPositive: true,
       icon: Clock,
       color: 'text-purple-600',
@@ -116,8 +133,8 @@ const Analytics = () => {
     },
     {
       title: 'Current Streak',
-      value: `${analytics?.streak || 0} days`,
-      change: analytics?.streak > 5 ? 'Great!' : 'Keep going!',
+      value: `${stats.currentStreak || 0} days`,
+      change: stats.currentStreak > 5 ? 'Great!' : 'Keep going!',
       isPositive: true,
       icon: Award,
       color: 'text-orange-600',
@@ -130,10 +147,10 @@ const Analytics = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600">Track your progress and performance over time</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Analytics Dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-400">Track your progress and performance over time</p>
         </div>
-        <div className="flex items-center space-x-2 text-sm text-gray-500">
+        <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
           <Calendar className="w-4 h-4" />
           <span>Last updated: Today</span>
         </div>
@@ -145,8 +162,8 @@ const Analytics = () => {
           <Card key={index} hover>
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-500">{stat.title}</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
                 <div className={`flex items-center mt-2 text-sm ${
                   stat.isPositive ? 'text-green-600' : 'text-red-600'
                 }`}>
@@ -317,24 +334,17 @@ const Analytics = () => {
         </Card.Header>
         <Card.Content>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {(analytics?.achievements || [
-              { name: 'First Interview', icon: '🎯', unlocked: true },
-              { name: '10 Interviews', icon: '🏆', unlocked: true },
-              { name: 'Perfect Score', icon: '⭐', unlocked: false },
-              { name: '7-Day Streak', icon: '🔥', unlocked: true },
-              { name: 'DSA Master', icon: '💻', unlocked: false },
-              { name: 'Speed Demon', icon: '⚡', unlocked: false },
-            ]).map((achievement, index) => (
+            {(analytics?.achievements || []).map((achievement, index) => (
               <div 
                 key={index}
                 className={`text-center p-4 rounded-xl border-2 ${
                   achievement.unlocked 
-                    ? 'border-yellow-200 bg-yellow-50' 
-                    : 'border-gray-200 bg-gray-50 opacity-50'
+                    ? 'border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20' 
+                    : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 opacity-50'
                 }`}
               >
                 <div className="text-3xl mb-2">{achievement.icon}</div>
-                <p className="text-sm font-medium text-gray-700">{achievement.name}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{achievement.name}</p>
                 {achievement.unlocked && (
                   <Badge variant="success" size="sm" className="mt-2">Unlocked</Badge>
                 )}

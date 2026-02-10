@@ -48,6 +48,9 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 - 🔔 **Notifications**: Stay updated with achievements and reminders
 - 📌 **Saved Questions**: Bookmark and star important questions
 - 🤖 **AI Chatbot**: Get instant help with HireReady AI assistant
+- 📋 **Interview Debrief**: Post-interview feedback with strengths, weaknesses, and personalized tips
+- 📅 **Study Plan Tracker**: Personalized study plan with progress tracking and spaced repetition reminders
+- 🧩 **Rich UI Components**: Code editor, tabs, progress bars, tooltips, accordions, and more
 
 ### For Administrators
 - 👥 **User Management**: View, edit, and manage user accounts
@@ -86,58 +89,47 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 ## 📁 Project Structure
 
 ```
-ai-interview-portal/
-├── backend/
-│   ├── config/
-│   │   ├── database.js
-│   │   ├── jwt.config.js
-│   │   └── ai.config.js
-│   ├── middleware/
-│   │   ├── auth.middleware.js
-│   │   ├── error.middleware.js
-│   │   └── validation.middleware.js
-│   ├── models/
-│   │   ├── User.model.js
-│   │   ├── Question.model.js
-│   │   ├── Interview.model.js
-│   │   ├── Feedback.model.js
-│   │   └── Analytics.model.js
-│   ├── routes/
-│   │   ├── auth.routes.js
-│   │   ├── user.routes.js
-│   │   ├── question.routes.js
-│   │   ├── interview.routes.js
-│   │   ├── analytics.routes.js
-│   │   ├── admin.routes.js
-│   │   └── ai.routes.js
-│   ├── services/
-│   │   └── ai.service.js
-│   ├── seeds/
-│   │   └── seedData.js
-│   ├── server.js
-│   ├── package.json
-│   └── README.md
-│
-├── frontend/
+Interview-Portal-main/
+├── .github/
+│   ├── workflows/
+│   │   ├── ci.yml              # CI pipeline (lint, test, build, E2E, Docker)
+│   │   └── codeql.yml          # Security scanning
+│   └── dependabot.yml          # Auto dependency updates
+├── client/                      # React frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ui/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── Sidebar.jsx
 │   │   ├── layouts/
 │   │   ├── pages/
-│   │   │   ├── admin/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Interview.jsx
-│   │   │   └── ...
 │   │   ├── services/
 │   │   ├── store/
+│   │   ├── monitoring/          # Sentry integration
 │   │   ├── App.jsx
 │   │   └── main.jsx
-│   ├── package.json
-│   └── README.md
-│
+│   ├── e2e/                     # Playwright E2E tests
+│   ├── tests/                   # Accessibility tests
+│   ├── Dockerfile
+│   └── package.json
+├── server/                      # Express backend
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── seeds/
+│   ├── tests/
+│   ├── openapi.yaml             # API documentation
+│   ├── Dockerfile
+│   ├── server.js
+│   └── package.json
+├── docs/
+│   ├── postman_collection.json
+│   └── schema.md
+├── docker-compose.yml
+├── package.json                 # Root (Husky, Prettier, lint-staged)
+├── .prettierrc
+├── CHANGELOG.md
+├── LICENSE
 └── README.md
 ```
 
@@ -155,59 +147,72 @@ ai-interview-portal/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/ai-interview-portal.git
-cd ai-interview-portal
+git clone https://github.com/YOUR_USERNAME/Interview-Portal-main.git
+cd Interview-Portal-main
 ```
 
-2. **Set up the backend**
+2. **Install root dependencies** (Husky, Prettier, lint-staged)
 ```bash
-cd backend
+npm install
+```
+
+3. **Set up the backend**
+```bash
+cd server
 npm install
 cp .env.example .env
 # Edit .env with your configuration
 ```
 
-3. **Set up the frontend**
+4. **Set up the frontend**
 ```bash
-cd ../frontend
+cd ../client
 npm install
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-4. **Configure environment variables**
+5. **Configure environment variables**
 
-Edit `backend/.env`:
+Edit `server/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/ai_interview_portal
+MONGODB_URI=mongodb://localhost:27017/ai-interview-portal
 JWT_SECRET=your-super-secret-jwt-key-change-this
 JWT_EXPIRE=7d
 OPENAI_API_KEY=your-openai-api-key
 GEMINI_API_KEY=your-gemini-api-key
 ```
 
-5. **Seed the database**
+Edit `client/.env`:
+```env
+VITE_API_URL=http://localhost:5000
+VITE_SENTRY_DSN=           # Optional: for error monitoring
+```
+
+6. **Seed the database**
 ```bash
-cd backend
+cd server
 npm run seed
 ```
 
-6. **Start the servers**
+7. **Start the servers**
 
 Backend:
 ```bash
-cd backend
+cd server
 npm run dev
 ```
 
 Frontend (new terminal):
 ```bash
-cd frontend
+cd client
 npm run dev
 ```
 
-7. **Open in browser**
-- Frontend: http://localhost:3000
+8. **Open in browser**
+- Frontend: http://localhost:5173
 - Backend API: http://localhost:5000
 
 ### Default Credentials
@@ -217,6 +222,10 @@ After seeding:
 - **Test User**: Register a new account
 
 ## 📖 API Documentation
+
+Live interactive API documentation (Swagger UI) is available when the backend is running at: [http://localhost:5000/api/docs](http://localhost:5000/api/docs).
+
+Database schema and ERD: see [docs/schema.md](docs/schema.md).
 
 ### Authentication
 
@@ -318,4 +327,202 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🐳 Docker Compose
+
+Ensure Docker Desktop / Docker Engine is running, then from the project root:
+
+```bash
+docker compose up -d --build
+```
+
+This will start MongoDB, the backend server, and the frontend client as configured in `docker-compose.yml`.
+
+
 **HireReady** - Made with ❤️ for better interview preparation
+
+<!-- Replace OWNER/REPO in the badge URL with your GitHub repo -->
+[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+
+## CI / Tests
+
+This repository includes a GitHub Actions workflow at `.github/workflows/ci.yml` that runs server linting, server tests with coverage, client linting, accessibility checks, and the client build on push/PR to `main`.
+
+Run the same checks locally:
+
+```bash
+# Server: install, lint, test with coverage
+cd server
+npm ci
+npm run lint
+npm run test:ci
+
+# Client: install, lint, run accessibility tests, build
+cd ../client
+npm ci
+npm run lint
+npm run test:a11y || true
+npm run build
+```
+
+Add a GitHub secret `NODE_AUTH_TOKEN` or configure package registries if you use private packages.
+
+## Publishing Docker Images
+
+The CI workflow can optionally publish Docker images to Docker Hub or GitHub Container Registry (GHCR).
+
+- Docker Hub: set these repository secrets in GitHub:
+	- `DOCKERHUB_USERNAME` — your Docker Hub username
+	- `DOCKERHUB_TOKEN` — a Docker Hub access token (or password)
+
+	The CI job will log in and push `DOCKERHUB_USERNAME/hireready-backend:latest` when both secrets are present.
+
+- GitHub Container Registry (GHCR): GitHub Actions can push to GHCR using the built-in `GITHUB_TOKEN`.
+	No extra secret is required, but ensure the repository's Actions permissions allow `GITHUB_TOKEN` to publish packages.
+
+Example: create the Docker Hub secrets in your repository settings, then run a push to `main` and the workflow will build and push images when configured.
+
+If you prefer to push manually from your machine, build and tag images locally:
+
+```bash
+docker build -f server/Dockerfile -t yourusername/hireready-backend:latest ./
+docker push yourusername/hireready-backend:latest
+```
+
+## 🚀 Deployment
+
+### Production Checklist
+
+1. **Environment variables** — copy `.env.example` to `.env` in both `server/` and `client/` and fill in production values.
+2. **Secrets management** — store sensitive keys (JWT_SECRET, API keys) in a vault (e.g., Azure Key Vault, AWS Secrets Manager, HashiCorp Vault) and inject them at runtime.
+3. **Database** — use a managed MongoDB Atlas cluster or self-hosted replica set with authentication enabled.
+4. **HTTPS** — terminate TLS at a reverse proxy (nginx, Caddy) or load balancer.
+5. **Build client** — run `npm run build` in `client/` and serve the `dist/` folder via a CDN or static host.
+6. **Run server** — use a process manager (`pm2`, `systemd`) or container orchestrator (Docker Compose, Kubernetes) for the backend.
+
+### Example Docker Compose (production)
+
+```yaml
+services:
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+  backend:
+    build: ./server
+    env_file: ./server/.env
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+  frontend:
+    build: ./client
+    ports:
+      - "80:80"
+volumes:
+  mongo_data:
+```
+
+## 📈 Monitoring & Alerting
+
+- **Logging** — use `morgan` (already included) and ship logs to a centralized service (ELK, Datadog, Loki).
+- **APM** — integrate Application Performance Monitoring (New Relic, Datadog APM, or OpenTelemetry) for request tracing.
+- **Health checks** — the backend exposes `GET /health` (add if missing) for load balancer probes.
+- **Uptime** — configure uptime monitors (UptimeRobot, Pingdom) for public endpoints.
+- **Alerts** — set up alerts on error rate spikes, latency, and resource usage in your monitoring tool.
+- **Frontend monitoring** — optional Sentry integration included. Provide `VITE_SENTRY_DSN` (and sampling rates) in `client/.env` and view errors/performance data in your Sentry project. Wraps the React app in a Sentry error boundary by default.
+
+## 🧪 End-to-End Tests
+
+E2E tests use Playwright and live in `client/e2e/`. Run locally:
+
+```bash
+cd client
+npx playwright install --with-deps   # first time only
+npm run test:e2e
+```
+
+To open interactive UI mode:
+
+```bash
+npm run test:e2e:ui
+```
+
+## 🤖 AI API Configuration
+
+HireReady supports both OpenAI and Google Gemini for AI-powered features.
+
+### OpenAI Setup
+
+1. Create an account at [platform.openai.com](https://platform.openai.com)
+2. Navigate to API Keys and create a new key
+3. Add to `server/.env`:
+   ```env
+   AI_PROVIDER=openai
+   OPENAI_API_KEY=sk-your-api-key-here
+   OPENAI_MODEL=gpt-4
+   ```
+
+### Google Gemini Setup
+
+1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create an API key
+3. Add to `server/.env`:
+   ```env
+   AI_PROVIDER=gemini
+   GEMINI_API_KEY=your-gemini-api-key
+   GEMINI_MODEL=gemini-pro
+   ```
+
+### AI Features
+
+- **Question Generation**: AI generates interview questions based on role and difficulty
+- **Answer Evaluation**: AI evaluates responses for accuracy, completeness, and communication
+- **Feedback Generation**: Detailed, actionable feedback with improvement suggestions
+- **Chatbot Assistant**: 24/7 AI-powered help for interview preparation
+
+## 💳 Payment Integration (Stripe)
+
+### Setup
+
+1. Create a [Stripe account](https://dashboard.stripe.com)
+2. Get your API keys from the Dashboard
+3. Create subscription products and price IDs
+4. Add to `server/.env`:
+   ```env
+   STRIPE_SECRET_KEY=sk_live_...
+   STRIPE_PUBLISHABLE_KEY=pk_live_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   STRIPE_PRICE_BASIC_MONTHLY=price_...
+   ```
+
+### Webhook Setup
+
+1. In Stripe Dashboard → Webhooks → Add endpoint
+2. URL: `https://yourdomain.com/api/payments/webhook`
+3. Events: `checkout.session.completed`, `customer.subscription.*`, `invoice.payment_failed`
+
+## 🖥️ Production Deployment with PM2
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Start the application
+pm2 start ecosystem.config.js --env production
+
+# Save PM2 process list
+pm2 save
+
+# Setup PM2 to start on boot
+pm2 startup
+```
+
+### PM2 Commands
+
+```bash
+pm2 status          # Check status
+pm2 logs            # View logs
+pm2 reload all      # Zero-downtime reload
+pm2 stop all        # Stop all processes
+pm2 monit           # Real-time monitoring
+```

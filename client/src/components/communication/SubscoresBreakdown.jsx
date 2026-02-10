@@ -17,7 +17,7 @@ import {
   Sparkles 
 } from 'lucide-react';
 
-const SubscoresBreakdown = ({ subscores, animated = true }) => {
+const SubscoresBreakdown = ({ subscores = {}, animated = true }) => {
   // Define subscores with metadata
   const subscoreConfig = [
     { 
@@ -63,7 +63,7 @@ const SubscoresBreakdown = ({ subscores, animated = true }) => {
   return (
     <div className="space-y-4">
       {subscoreConfig.map((config, index) => {
-        const score = subscores[config.key] || 0;
+        const score = (subscores && subscores[config.key]) || 0;
         const colors = getScoreColor(score);
         const IconComponent = config.icon;
         const percentage = (score / 10) * 100;

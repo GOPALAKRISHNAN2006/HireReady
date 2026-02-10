@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useAuthStore } from '../store/authStore'
+import api from '../services/api'
 import { 
   MessageCircle, 
   X, 
@@ -65,211 +66,33 @@ const AIChatbot = () => {
     { icon: HelpCircle, label: 'Get Help', query: 'I need help with something' },
   ]
 
-  // AI Response Generation based on user query
-  const generateAIResponse = (userMessage) => {
-    const lowerMessage = userMessage.toLowerCase()
-    
-    // Interview Tips
-    if (lowerMessage.includes('interview tip') || lowerMessage.includes('prepare for interview')) {
-      return `Here are some key interview tips:
-
-🎯 **Before the Interview:**
-• Research the company thoroughly
-• Review the job description
-• Prepare your elevator pitch
-• Practice common questions
-
-💡 **During the Interview:**
-• Use the STAR method for behavioral questions
-• Think out loud for technical problems
-• Ask clarifying questions
-• Show enthusiasm and curiosity
-
-📝 **Technical Interviews:**
-• Practice DSA problems daily on our platform
-• Focus on problem-solving approach
-• Explain your thought process
-• Consider edge cases
-
-Would you like specific tips for a particular type of interview?`
+  // AI Response via real API
+  const generateAIResponse = async (userMessage) => {
+    try {
+      const response = await api.post('/ai/chat', {
+        message: userMessage,
+        conversationHistory: messages.slice(-10).map(m => ({
+          type: m.type === 'bot' ? 'assistant' : 'user',
+          text: m.text
+        }))
+      })
+      return response.data?.data?.response || response.data?.response || 
+        "I'm here to help with interview preparation! Try asking about interview tips, DSA, company prep, or platform features."
+    } catch (error) {
+      console.error('AI Chat Error:', error)
+      // Fallback to basic local response on error
+      return getFallbackResponse(userMessage)
     }
+  }
 
-    // Platform Usage
-    if (lowerMessage.includes('how to use') || lowerMessage.includes('platform') || lowerMessage.includes('how do i')) {
-      return `Here's how to get the most out of our platform:
-
-📚 **Start Interview** - Practice mock interviews with AI
-• Choose your interview type (DSA, System Design, Behavioral)
-• Get real-time feedback and scoring
-
-📊 **Dashboard** - Track your progress
-• View performance analytics
-• See your improvement over time
-
-🏢 **Company Prep** - Company-specific preparation
-• Access company interview patterns
-• Practice company-specific questions
-
-🎯 **Career Roadmap** - Personalized learning path
-• Follow structured learning milestones
-• Access study materials
-
-📝 **Communication** - Improve speaking skills
-• Take communication assessments
-• Get pronunciation feedback
-
-Need help with any specific feature?`
-    }
-
-    // Company Preparation
-    if (lowerMessage.includes('company') || lowerMessage.includes('faang') || lowerMessage.includes('google') || lowerMessage.includes('amazon') || lowerMessage.includes('microsoft') || lowerMessage.includes('meta') || lowerMessage.includes('apple')) {
-      return `Here's how to prepare for top tech companies:
-
-🔵 **Google:**
-• Focus on problem-solving approach
-• Practice medium-hard LeetCode problems
-• Prepare for "Googleyness" behavioral questions
-
-🟠 **Amazon:**
-• Master the 16 Leadership Principles
-• Use STAR method extensively
-• Practice system design at scale
-
-🔷 **Microsoft:**
-• Strong coding fundamentals
-• Growth mindset demonstration
-• Collaborative problem-solving
-
-🔵 **Meta:**
-• Speed is crucial - practice timed coding
-• Focus on optimal solutions
-• Product sense questions
-
-Go to **Company Prep** in the sidebar to access company-specific questions and detailed preparation guides!
-
-Which company are you preparing for?`
-    }
-
-    // Resume Help
-    if (lowerMessage.includes('resume')) {
-      return `Our Resume Builder can help you create a standout resume!
-
-📝 **Features:**
-• Multiple professional templates
-• ATS-friendly formatting
-• AI suggestions for improvements
-• Export to PDF
-
-**Tips for a great resume:**
-• Use action verbs (Developed, Implemented, Led)
-• Quantify achievements with numbers
-• Keep it to 1-2 pages
-• Tailor for each application
-
-Navigate to **Resume Builder** in the sidebar to get started!`
-    }
-
-    // Aptitude Tests
-    if (lowerMessage.includes('aptitude') || lowerMessage.includes('logical') || lowerMessage.includes('quantitative')) {
-      return `Our Aptitude Tests help you prepare for screening rounds!
-
-📊 **Available Categories:**
-• Quantitative Aptitude
-• Logical Reasoning  
-• Verbal Ability
-• Data Interpretation
-
-**Tips:**
-• Time yourself during practice
-• Learn shortcuts and tricks
-• Focus on accuracy first, then speed
-• Review mistakes carefully
-
-Go to **Aptitude Tests** in the sidebar to start practicing!`
-    }
-
-    // Communication Assessment
-    if (lowerMessage.includes('communication') || lowerMessage.includes('speaking') || lowerMessage.includes('pronunciation')) {
-      return `Our Communication Assessment helps you improve speaking skills!
-
-🎤 **What we assess:**
-• Pronunciation clarity
-• Fluency and pace
-• Grammar usage
-• Vocabulary range
-• Confidence level
-
-**Tips to improve:**
-• Practice speaking daily
-• Record and listen to yourself
-• Read aloud regularly
-• Join our Group Discussions
-
-Navigate to **Communication** in the sidebar to take an assessment!`
-    }
-
-    // Group Discussion
-    if (lowerMessage.includes('group discussion') || lowerMessage.includes('gd')) {
-      return `Group Discussions are important for many interviews!
-
-👥 **GD Tips:**
-• Listen before speaking
-• Make quality contributions
-• Don't interrupt others
-• Support your points with examples
-• Maintain positive body language
-
-**Our GD Practice:**
-• AI-simulated group discussions
-• Various topics available
-• Performance feedback
-• Speaking time analysis
-
-Go to **Group Discussion** in the sidebar to practice!`
-    }
-
-    // DSA / Coding
-    if (lowerMessage.includes('dsa') || lowerMessage.includes('data structure') || lowerMessage.includes('algorithm') || lowerMessage.includes('coding')) {
-      return `Master DSA for technical interviews!
-
-📚 **Key Topics:**
-• Arrays & Strings
-• Linked Lists
-• Trees & Graphs
-• Dynamic Programming
-• Sorting & Searching
-
-**Study Plan:**
-1. Start with basic data structures
-2. Learn common algorithms
-3. Practice pattern recognition
-4. Solve problems daily
-
-**On our platform:**
-• Practice coding interviews
-• Get AI feedback on solutions
-• Track your progress
-• Daily coding challenges
-
-Would you like resources for any specific topic?`
-    }
-
-    // Default response
-    return `Thanks for your question! Here's how I can help:
-
-🎯 **Interview Preparation** - Tips and strategies
-📚 **Platform Features** - How to use different tools
-🏢 **Company-Specific** - FAANG and other companies
-💻 **Technical Topics** - DSA, System Design
-📝 **Resume & Skills** - Building your profile
-
-Try asking about:
-• "How do I prepare for Google interviews?"
-• "What interview tips do you have?"
-• "How do I use the platform?"
-• "Help me with DSA preparation"
-
-What would you like to know more about?`
+  // Local fallback if API fails
+  const getFallbackResponse = (msg) => {
+    const lower = msg.toLowerCase()
+    if (lower.includes('interview') || lower.includes('tip')) return 'Practice mock interviews regularly, use the STAR method for behavioral questions, and study DSA patterns. Check out our Interview Tips section!'
+    if (lower.includes('dsa') || lower.includes('coding')) return 'Focus on arrays, trees, graphs, and dynamic programming. Try our Daily Challenges to build consistency!'
+    if (lower.includes('resume')) return 'Use our Resume Builder to create an ATS-friendly resume. Quantify your achievements and use action verbs!'
+    if (lower.includes('company') || lower.includes('faang')) return 'Visit Company Prep in the sidebar for detailed preparation guides for top tech companies!'
+    return "I can help with interview prep, DSA concepts, company preparation, resume building, and more. What would you like to know?"
   }
 
   const handleSend = async () => {
@@ -283,20 +106,30 @@ What would you like to know more about?`
     }
 
     setMessages(prev => [...prev, userMessage])
+    const currentInput = inputValue
     setInputValue('')
     setIsTyping(true)
 
-    // Simulate AI thinking time
-    setTimeout(() => {
+    try {
+      const aiResponse = await generateAIResponse(currentInput)
       const botResponse = {
         id: messages.length + 2,
         type: 'bot',
-        text: generateAIResponse(inputValue),
+        text: aiResponse,
         timestamp: new Date()
       }
       setMessages(prev => [...prev, botResponse])
+    } catch {
+      const errorResponse = {
+        id: messages.length + 2,
+        type: 'bot',
+        text: "Sorry, I'm having trouble responding right now. Please try again.",
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorResponse])
+    } finally {
       setIsTyping(false)
-    }, 1000 + Math.random() * 1000)
+    }
   }
 
   const handleKeyPress = (e) => {

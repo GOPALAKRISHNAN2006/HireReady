@@ -190,7 +190,7 @@ const CommunicationAssessment = () => {
 
       {/* Skills Overview */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <BarChart3 className="w-6 h-6 text-primary-500" />
           Skills Breakdown
         </h2>
@@ -200,9 +200,9 @@ const CommunicationAssessment = () => {
               <div className={`w-12 h-12 mx-auto mb-3 bg-gradient-to-br ${skill.color} rounded-xl flex items-center justify-center shadow-lg`}>
                 <skill.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1">{skill.name}</h3>
-              <p className="text-xs text-gray-500">{skill.description}</p>
-              <div className="mt-3 text-2xl font-bold text-gray-900">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{skill.name}</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{skill.description}</p>
+              <div className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
                 {statsData?.averages?.[skill.name.toLowerCase()]?.toFixed(1) || '-'}
               </div>
             </Card>
@@ -216,7 +216,7 @@ const CommunicationAssessment = () => {
       {/* Assessment History */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <Clock className="w-6 h-6 text-primary-500" />
             Assessment History
           </h2>
@@ -228,7 +228,7 @@ const CommunicationAssessment = () => {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   selectedFilter === filter.id
                     ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
                 }`}
               >
                 {filter.name}
@@ -254,10 +254,10 @@ const CommunicationAssessment = () => {
           <Card>
             <div className="text-center py-12">
               <Mic className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 No Assessments Yet
               </h3>
-              <p className="text-gray-500 mb-6 max-w-md mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
                 Complete an interview to get your communication skills assessed by our AI.
               </p>
               <Button onClick={() => navigate('/interview/setup')} icon={Play}>
@@ -275,8 +275,8 @@ const CommunicationAssessment = () => {
             <Award className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 mb-1">Pro Tips for Better Communication</h3>
-            <ul className="text-gray-600 space-y-1 text-sm">
+            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Pro Tips for Better Communication</h3>
+            <ul className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
               <li>• Speak clearly and at a moderate pace</li>
               <li>• Use varied vocabulary to express your ideas</li>
               <li>• Structure your responses with a clear beginning, middle, and end</li>
@@ -297,8 +297,8 @@ const CommunicationAssessment = () => {
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Interview Tips</h4>
-              <p className="text-sm text-gray-500">Learn from experts</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Interview Tips</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Learn from experts</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>
@@ -313,8 +313,8 @@ const CommunicationAssessment = () => {
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Full Analytics</h4>
-              <p className="text-sm text-gray-500">View detailed progress</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Full Analytics</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">View detailed progress</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>
@@ -329,8 +329,8 @@ const CommunicationAssessment = () => {
               <Play className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Practice More</h4>
-              <p className="text-sm text-gray-500">Start a new interview</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Practice More</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Start a new interview</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>

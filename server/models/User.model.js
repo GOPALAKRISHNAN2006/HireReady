@@ -207,6 +207,16 @@ const userSchema = new mongoose.Schema({
   },
   planExpiresAt: Date,
   
+  // Stripe Integration
+  stripeCustomerId: {
+    type: String,
+    select: false
+  },
+  stripeSubscriptionId: {
+    type: String,
+    select: false
+  },
+  
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -318,6 +328,24 @@ userSchema.methods.generatePasswordResetToken = function() {
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
   
   return resetToken;
+};
+
+/**
+ * Generate email verification token
+ * @returns {string} - Verification token
+ */
+userSchema.methods.generateEmailVerificationToken = function() {
+  const crypto = require('crypto');
+  const verificationToken = crypto.randomBytes(32).toString('hex');
+  
+  this.emailVerificationToken = crypto
+    .createHash('sha256')
+    .update(verificationToken)
+    .digest('hex');
+  
+  this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+  
+  return verificationToken;
 };
 
 /**

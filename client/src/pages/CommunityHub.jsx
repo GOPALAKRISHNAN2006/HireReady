@@ -243,7 +243,7 @@ const CommunityHub = () => {
             className={`flex items-center gap-2 px-5 py-3 rounded-xl whitespace-nowrap transition-all ${
               activeTab === tab.id
                 ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                : 'bg-white border border-gray-200 text-gray-600 hover:border-primary-300'
+                : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-primary-300'
             }`}
           >
             <tab.icon className="w-5 h-5" />
@@ -266,17 +266,17 @@ const CommunityHub = () => {
                   value={newPost}
                   onChange={(e) => setNewPost(e.target.value)}
                   placeholder="Share your interview experience, ask questions, or help others..."
-                  className="w-full p-4 bg-white text-gray-900 rounded-xl border border-gray-200 resize-none focus:ring-2 focus:ring-primary-500 min-h-[100px] placeholder:text-gray-400"
+                  className="w-full p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border border-gray-200 dark:border-gray-700 resize-none focus:ring-2 focus:ring-primary-500 min-h-[100px] placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex gap-2">
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                       <ImageIcon className="w-5 h-5 text-gray-400" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                       <LinkIcon className="w-5 h-5 text-gray-400" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                       <Smile className="w-5 h-5 text-gray-400" />
                     </button>
                   </div>
@@ -299,7 +299,7 @@ const CommunityHub = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-gray-900">{post.author}</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
                         {post.verified && (
                           <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -308,20 +308,20 @@ const CommunityHub = () => {
                         <span className="text-gray-400">·</span>
                         <span className="text-sm text-gray-500">{post.time}</span>
                       </div>
-                      <p className="text-sm text-gray-500 mb-3">{post.role}</p>
-                      <p className="text-gray-700 mb-4">{post.content}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{post.role}</p>
+                      <p className="text-gray-700 dark:text-gray-300 mb-4">{post.content}</p>
                       
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
                           {post.tags.map((tag) => (
-                            <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-lg hover:bg-primary-100 hover:text-primary-700 cursor-pointer transition-colors">
+                            <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 hover:text-primary-700 dark:hover:text-primary-400 cursor-pointer transition-colors">
                               #{tag}
                             </span>
                           ))}
                         </div>
                       )}
 
-                      <div className="flex items-center gap-6 pt-4 border-t border-gray-100">
+                      <div className="flex items-center gap-6 pt-4 border-t border-gray-100 dark:border-gray-700">
                         <button className={`flex items-center gap-2 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
                           <Heart className={`w-5 h-5 ${post.isLiked ? 'fill-current' : ''}`} />
                           {post.likes}
@@ -345,8 +345,8 @@ const CommunityHub = () => {
                 <Card>
                   <div className="text-center py-12">
                     <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Posts Yet</h3>
-                    <p className="text-gray-600">Be the first to share something with the community!</p>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Posts Yet</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Be the first to share something with the community!</p>
                   </div>
                 </Card>
               )}
@@ -366,18 +366,18 @@ const CommunityHub = () => {
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-gray-900">{mentor.name}</h3>
+                        <h3 className="font-bold text-gray-900 dark:text-white">{mentor.name}</h3>
                         {mentor.available ? (
                           <Badge variant="success" size="sm">Available</Badge>
                         ) : (
                           <Badge variant="default" size="sm">Busy</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500 mb-3">{mentor.role}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{mentor.role}</p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
                         {mentor.expertise.map((skill) => (
-                          <span key={skill} className="px-3 py-1 bg-primary-50 text-primary-700 text-sm rounded-lg">
+                          <span key={skill} className="px-3 py-1 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 text-sm rounded-lg">
                             {skill}
                           </span>
                         ))}
@@ -389,7 +389,7 @@ const CommunityHub = () => {
                           <span className="font-medium">{mentor.rating}</span>
                         </div>
                         <span className="text-gray-400">|</span>
-                        <span className="text-gray-500">{mentor.sessions} sessions</span>
+                        <span className="text-gray-500 dark:text-gray-400">{mentor.sessions} sessions</span>
                       </div>
                     </div>
                     <Button variant={mentor.available ? 'primary' : 'outline'} disabled={!mentor.available}>
@@ -401,8 +401,8 @@ const CommunityHub = () => {
                 <Card>
                   <div className="text-center py-8">
                     <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Mentors Available</h3>
-                    <p className="text-gray-600">Check back later for available mentors!</p>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Mentors Available</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Check back later for available mentors!</p>
                   </div>
                 </Card>
               )}
@@ -426,20 +426,20 @@ const CommunityHub = () => {
                   {trendingTopics.map((topic, index) => (
                     <div 
                       key={topic.tag}
-                      className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group"
+                      className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg cursor-pointer transition-colors group"
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold">
                           {index + 1}
                         </span>
-                        <span className="text-gray-700 group-hover:text-primary-600 transition-colors">#{topic.tag}</span>
+                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">#{topic.tag}</span>
                       </div>
                       <span className="text-xs text-gray-400">{topic.count}</span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 py-4">No trending topics yet</p>
+                <p className="text-center text-gray-500 dark:text-gray-400 py-4">No trending topics yet</p>
               )}
             </Card.Content>
           </Card>
@@ -453,7 +453,7 @@ const CommunityHub = () => {
               </div>
             </Card.Header>
             <Card.Content>
-              <p className="text-center text-gray-500 py-4">Start contributing to appear here!</p>
+              <p className="text-center text-gray-500 dark:text-gray-400 py-4">Start contributing to appear here!</p>
             </Card.Content>
           </Card>
 

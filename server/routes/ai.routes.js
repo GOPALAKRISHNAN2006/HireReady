@@ -335,6 +335,43 @@ router.post('/improve-answer', protect, asyncHandler(async (req, res) => {
 }));
 
 /**
+ * @route   POST /api/ai/chat
+ * @desc    AI chatbot - general conversation for interview prep assistance
+ * @access  Private
+ */
+router.post('/chat', protect, asyncHandler(async (req, res) => {
+  const { message, conversationHistory } = req.body;
+
+  if (!message || !message.trim()) {
+    return res.status(400).json({
+      success: false,
+      message: 'Message is required.'
+    });
+  }
+
+  try {
+    const response = await AIService.chat({
+      message: message.trim(),
+      conversationHistory: conversationHistory || []
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        response,
+        provider: AIService.getProvider()
+      }
+    });
+  } catch (error) {
+    console.error('AI Chat Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate response. Please try again.'
+    });
+  }
+}));
+
+/**
  * @route   GET /api/ai/status
  * @desc    Check AI service status
  * @access  Private/Admin

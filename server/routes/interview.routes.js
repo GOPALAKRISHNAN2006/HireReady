@@ -622,6 +622,48 @@ router.put('/:id/complete', protect, validateObjectId('id'), asyncHandler(async 
     });
   }
 
+  // Create notification for user
+  try {
+    const User = require('../models/User.model');
+    const user = await User.findById(req.user._id);
+    if (user) {
+      const scoreEmoji = interview.overallScore >= 80 ? '🌟' : interview.overallScore >= 60 ? '👍' : '💪';
+      user.notifications.push({
+        type: 'result',
+        title: 'Interview Completed!',
+        message: `${scoreEmoji} You scored ${interview.overallScore}% on your ${interview.category} interview. ${interview.overallScore >= 80 ? 'Excellent work!' : 'Keep practicing to improve!'}`,
+        read: false
+      });
+      // Check for achievement milestones
+      const analytics = await Analytics.findOne({ user: req.user._id });
+      if (analytics) {
+        const total = analytics.overallStats?.completedInterviews || 0;
+        if (total === 1) {
+          user.notifications.push({ type: 'achievement', title: 'Achievement Unlocked!', message: '🎯 First Interview - You completed your first interview!', read: false });
+        } else if (total === 5) {
+          user.notifications.push({ type: 'achievement', title: 'Achievement Unlocked!', message: '🚀 Getting Started - You completed 5 interviews!', read: false });
+        } else if (total === 25) {
+          user.notifications.push({ type: 'achievement', title: 'Achievement Unlocked!', message: '📚 Dedicated Learner - You completed 25 interviews!', read: false });
+        } else if (total === 100) {
+          user.notifications.push({ type: 'achievement', title: 'Achievement Unlocked!', message: '👑 Interview Master - You completed 100 interviews!', read: false });
+        }
+        if (interview.overallScore === 100) {
+          user.notifications.push({ type: 'achievement', title: 'Achievement Unlocked!', message: '💯 Perfect Score - You got 100% on an interview!', read: false });
+        }
+        if ((analytics.overallStats?.currentStreak || 0) === 7) {
+          user.notifications.push({ type: 'streak', title: 'Streak Milestone!', message: '🔥 7-Day Streak! You\'re on fire! Keep the momentum going.', read: false });
+        }
+      }
+      // Keep only last 50 notifications
+      if (user.notifications.length > 50) {
+        user.notifications = user.notifications.slice(-50);
+      }
+      await user.save();
+    }
+  } catch (error) {
+    console.error('Error creating notification:', error);
+  }
+
   res.status(200).json({
     success: true,
     message: 'Interview completed successfully.',

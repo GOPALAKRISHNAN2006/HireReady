@@ -17,19 +17,51 @@ import {
   CheckCircle,
   XCircle,
   BarChart3,
-  Eye
+  Eye,
+  Download
 } from 'lucide-react'
 
 const PracticeHistory = () => {
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
   const [dateRange, setDateRange] = useState('all')
+  const [page, setPage] = useState(1)
+  const limit = 20
+
+  // Calculate date filter params
+  const getDateParam = () => {
+    const now = new Date()
+    switch (dateRange) {
+      case 'today': {
+        const start = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        return `&from=${start.toISOString()}`
+      }
+      case 'week': {
+        const start = new Date(now)
+        start.setDate(now.getDate() - 7)
+        return `&from=${start.toISOString()}`
+      }
+      case 'month': {
+        const start = new Date(now)
+        start.setMonth(now.getMonth() - 1)
+        return `&from=${start.toISOString()}`
+      }
+      case 'year': {
+        const start = new Date(now)
+        start.setFullYear(now.getFullYear() - 1)
+        return `&from=${start.toISOString()}`
+      }
+      default:
+        return ''
+    }
+  }
 
   // Fetch practice history
   const { data, isLoading } = useQuery({
-    queryKey: ['practice-history', filter, dateRange],
+    queryKey: ['practice-history', filter, dateRange, page],
     queryFn: async () => {
-      const response = await api.get(`/interviews?status=${filter}&limit=50`)
+      const dateParam = getDateParam()
+      const response = await api.get(`/interviews?status=${filter}&limit=${limit}&page=${page}${dateParam}`)
       return response.data?.data || response.data
     },
   })
@@ -82,6 +114,33 @@ const PracticeHistory = () => {
     return true
   })
 
+  // Export history as CSV
+  const handleExportCSV = () => {
+    if (filteredHistory.length === 0) return
+    
+    const headers = ['Date', 'Category', 'Difficulty', 'Status', 'Score', 'Duration (min)', 'Questions Answered']
+    const rows = filteredHistory.map(session => [
+      new Date(session.createdAt).toLocaleDateString(),
+      session.category?.replace('-', ' ') || 'General',
+      session.difficulty || 'N/A',
+      session.status,
+      session.overallScore || 0,
+      session.duration || 0,
+      `${session.questionsAnswered || 0}/${session.totalQuestions || 0}`
+    ])
+    
+    const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `practice-history-${new Date().toISOString().split('T')[0]}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -127,15 +186,15 @@ const PracticeHistory = () => {
               placeholder="Search by category..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400"
             />
           </div>
 
           {/* Status Filter */}
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white text-gray-900"
+            onChange={(e) => { setFilter(e.target.value); setPage(1) }}
+            className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           >
             <option value="all">All Status</option>
             <option value="completed">Completed</option>
@@ -146,8 +205,8 @@ const PracticeHistory = () => {
           {/* Date Range */}
           <select
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-            className="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white text-gray-900"
+            onChange={(e) => { setDateRange(e.target.value); setPage(1) }}
+            className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           >
             <option value="all">All Time</option>
             <option value="today">Today</option>
@@ -155,6 +214,16 @@ const PracticeHistory = () => {
             <option value="month">This Month</option>
             <option value="year">This Year</option>
           </select>
+
+          {/* Export */}
+          <Button 
+            variant="outline" 
+            icon={Download} 
+            onClick={handleExportCSV}
+            disabled={filteredHistory.length === 0}
+          >
+            Export CSV
+          </Button>
         </div>
       </Card>
 
@@ -164,8 +233,8 @@ const PracticeHistory = () => {
       ) : filteredHistory.length === 0 ? (
         <Card className="text-center py-12">
           <History className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">No Practice Sessions Yet</h2>
-          <p className="text-gray-500 mb-6">Start practicing to build your history!</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No Practice Sessions Yet</h2>
+          <p className="text-gray-500 dark:text-gray-400 mb-6">Start practicing to build your history!</p>
           <Link to="/interview/setup">
             <Button icon={Play}>Start Practice</Button>
           </Link>
@@ -179,10 +248,10 @@ const PracticeHistory = () => {
                   {/* Status Icon */}
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     session.status === 'completed' 
-                      ? 'bg-green-100' 
+                      ? 'bg-green-100 dark:bg-green-900/30' 
                       : session.status === 'in-progress'
-                        ? 'bg-yellow-100'
-                        : 'bg-gray-100'
+                        ? 'bg-yellow-100 dark:bg-yellow-900/30'
+                        : 'bg-gray-100 dark:bg-gray-700'
                   }`}>
                     {session.status === 'completed' ? (
                       <CheckCircle className="w-6 h-6 text-green-600" />
@@ -207,7 +276,7 @@ const PracticeHistory = () => {
                       </Badge>
                     </div>
                     
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mt-2">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-2">
                       <span className="flex items-center">
                         <Calendar className="w-4 h-4 mr-1" />
                         {new Date(session.createdAt).toLocaleDateString()}
@@ -231,7 +300,7 @@ const PracticeHistory = () => {
                       <p className={`text-3xl font-bold ${getScoreColor(session.overallScore)}`}>
                         {session.overallScore}%
                       </p>
-                      <p className="text-xs text-gray-500">Score</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Score</p>
                     </div>
                   )}
                   
@@ -258,9 +327,9 @@ const PracticeHistory = () => {
       )}
 
       {/* Load More */}
-      {filteredHistory.length >= 10 && (
+      {filteredHistory.length >= limit && (
         <div className="text-center">
-          <Button variant="outline">Load More</Button>
+          <Button variant="outline" onClick={() => setPage(prev => prev + 1)}>Load More</Button>
         </div>
       )}
     </div>

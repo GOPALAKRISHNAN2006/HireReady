@@ -16,8 +16,6 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
-  Pause,
-  Play,
   Flag,
   MessageSquare,
   Lightbulb,
@@ -341,10 +339,10 @@ const Interview = () => {
 
   // Wrap with ProctoredSession if enabled
   const InterviewContent = (
-    <div className="fixed inset-0 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-auto z-40">
+    <div className="fixed inset-0 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 overflow-auto z-40">
       <div className="max-w-6xl mx-auto p-6">
         {/* Premium Header Bar */}
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 p-5 mb-8 sticky top-4 z-30">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50 p-5 mb-8 sticky top-4 z-30">
           <div className="flex items-center justify-between">
             {/* Left Section - Progress */}
             <div className="flex items-center space-x-6">
@@ -353,8 +351,8 @@ const Interview = () => {
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Question</p>
-                  <p className="text-xl font-bold text-gray-900">{currentQuestionIndex + 1} <span className="text-gray-400 font-normal">/ {totalQuestions}</span></p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Question</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{currentQuestionIndex + 1} <span className="text-gray-400 font-normal">/ {totalQuestions}</span></p>
                 </div>
               </div>
               
@@ -362,7 +360,7 @@ const Interview = () => {
               
               <div className="hidden md:flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
-                  <div className="w-48 h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-48 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-500 ease-out rounded-full"
                       style={{ width: `${(currentQuestionIndex / totalQuestions) * 100}%` }}
@@ -399,16 +397,6 @@ const Interview = () => {
               )}
               
               <Button
-                variant={isPaused ? "primary" : "ghost"}
-                size="md"
-                onClick={isPaused ? resumeInterview : pauseInterview}
-                icon={isPaused ? Play : Pause}
-                className={isPaused ? "animate-pulse" : ""}
-              >
-                {isPaused ? 'Resume' : 'Pause'}
-              </Button>
-              
-              <Button
                 variant="danger"
                 size="md"
                 onClick={() => setShowEndModal(true)}
@@ -436,7 +424,7 @@ const Interview = () => {
                     ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/40 scale-110'
                     : hasAnswer
                       ? 'bg-gradient-to-br from-green-400 to-green-500 text-white shadow-md shadow-green-500/30'
-                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 shadow-sm'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 shadow-sm'
                 }`}
               >
                 {hasAnswer && !isCurrent ? (
@@ -453,19 +441,7 @@ const Interview = () => {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Question Card - Takes up more space */}
           <div className="lg:col-span-3">
-            {isPaused ? (
-              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 p-12 text-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Pause className="w-12 h-12 text-gray-400" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Interview Paused</h2>
-                <p className="text-gray-500 mb-8 max-w-md mx-auto">Take a break. Your progress is saved. Click resume when you're ready to continue.</p>
-                <Button onClick={resumeInterview} icon={Play} size="lg" className="shadow-lg shadow-primary-500/30">
-                  Resume Interview
-                </Button>
-              </div>
-            ) : (
-              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 overflow-hidden">
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 overflow-hidden">
                 {/* Question Header */}
                 <div className="bg-gradient-to-r from-primary-500 to-indigo-500 px-8 py-6">
                   <div className="flex items-center justify-between">
@@ -492,7 +468,7 @@ const Interview = () => {
                       <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center flex-shrink-0">
                         <MessageSquare className="w-5 h-5 text-primary-600" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 leading-relaxed flex-1">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-relaxed flex-1">
                         {currentQuestion?.text || (currentInterview?.category === 'behavioral' 
                           ? 'Tell me about yourself and your relevant experience.' 
                           : currentInterview?.category === 'dsa'
@@ -506,7 +482,7 @@ const Interview = () => {
                   
                   {/* Answer Section */}
                   <div className="space-y-4">
-                    <label className="flex items-center text-sm font-semibold text-gray-700">
+                    <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300">
                       <Award className="w-4 h-4 mr-2 text-primary-500" />
                       Your Answer
                     </label>
@@ -521,7 +497,7 @@ const Interview = () => {
                         }}
                         placeholder="Type your comprehensive answer here... Be detailed and specific."
                         rows={12}
-                        className="w-full px-6 py-5 bg-white border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-300 resize-none text-gray-900 placeholder-gray-400"
+                        className="w-full px-6 py-5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-300 resize-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                       />
                       <div className="absolute bottom-4 left-6 right-6 flex justify-between text-sm">
                         <span className={`font-medium ${answer.length > 100 ? 'text-green-500' : 'text-gray-400'}`}>
@@ -539,7 +515,7 @@ const Interview = () => {
                 </div>
                 
                 {/* Action Footer */}
-                <div className="bg-gray-50/50 px-8 py-6 border-t border-gray-100">
+                <div className="bg-gray-50/50 dark:bg-gray-900/50 px-8 py-6 border-t border-gray-100 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <Button
                       variant="ghost"
@@ -576,27 +552,26 @@ const Interview = () => {
                   </div>
                 </div>
               </div>
-            )}
           </div>
 
           {/* Side Panel - Tips & Info */}
           <div className="lg:col-span-1 space-y-6">
             {/* Quick Stats */}
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 p-6">
-              <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50 p-6">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center">
                 <Award className="w-5 h-5 mr-2 text-primary-500" />
                 Your Progress
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 text-sm">Answered</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-sm">Answered</span>
                   <span className="font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full text-sm">{answeredCount}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 text-sm">Remaining</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-sm">Remaining</span>
                   <span className="font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded-full text-sm">{totalQuestions - answeredCount}</span>
                 </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden mt-4">
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mt-4">
                   <div 
                     className="h-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-500"
                     style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}

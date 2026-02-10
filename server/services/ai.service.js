@@ -264,6 +264,93 @@ Provide response in JSON format with:
   }
 
   // ===========================================
+  // Chat Method for AI Assistant
+  // ===========================================
+
+  /**
+   * General AI chat for the assistant chatbot
+   * @param {Object} params - Chat parameters
+   * @returns {Promise<string>} - AI response text
+   */
+  async chat({ message, conversationHistory = [] }) {
+    const systemPrompt = `You are HireReady Assistant, an expert AI career coach and interview preparation specialist. You help users with:
+- Interview preparation tips and strategies
+- Technical concepts (DSA, System Design, Web Dev, etc.)
+- Company-specific preparation guidance (FAANG, startups, etc.)
+- Resume and career advice
+- Communication and soft skills improvement
+- Platform feature guidance
+
+Be helpful, encouraging, and concise. Use markdown formatting with bullet points and bold text for readability.
+If asked about something unrelated to interviews/career/education, politely redirect to how you can help with interview prep.`;
+
+    try {
+      if (this.provider === 'openai' && this.openai) {
+        const messages = [
+          { role: 'system', content: systemPrompt },
+          ...conversationHistory.slice(-10).map(msg => ({
+            role: msg.type === 'user' ? 'user' : 'assistant',
+            content: msg.text
+          })),
+          { role: 'user', content: message }
+        ];
+
+        const completion = await this.openai.chat.completions.create({
+          model: aiConfig.openai.model,
+          messages,
+          max_tokens: 800,
+          temperature: 0.7
+        });
+
+        return completion.choices[0].message.content;
+      } else if (this.provider === 'gemini' && this.gemini) {
+        const contextMessages = conversationHistory.slice(-6).map(msg => 
+          `${msg.type === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
+        ).join('\n');
+
+        const fullPrompt = `${systemPrompt}\n\nConversation history:\n${contextMessages}\n\nUser: ${message}\n\nAssistant:`;
+        const result = await this.gemini.generateContent(fullPrompt);
+        const response = await result.response;
+        return response.text();
+      } else {
+        // NLP fallback using keyword matching
+        return this._chatFallback(message);
+      }
+    } catch (error) {
+      console.error('AI Chat Error:', error);
+      return this._chatFallback(message);
+    }
+  }
+
+  /**
+   * Fallback chat using keyword matching
+   */
+  _chatFallback(message) {
+    const lower = message.toLowerCase();
+
+    if (lower.includes('interview tip') || lower.includes('prepare for interview')) {
+      return `Here are key interview tips:\n\n**Before the Interview:**\n- Research the company thoroughly\n- Review the job description\n- Prepare your elevator pitch\n\n**During the Interview:**\n- Use the STAR method for behavioral questions\n- Think out loud for technical problems\n- Ask clarifying questions\n\n**Technical Interviews:**\n- Practice DSA problems daily\n- Focus on problem-solving approach\n- Consider edge cases`;
+    }
+    if (lower.includes('dsa') || lower.includes('data structure') || lower.includes('algorithm')) {
+      return `**Master DSA for technical interviews:**\n\n- **Arrays & Strings** - Two pointers, sliding window\n- **Linked Lists** - Fast/slow pointers, reversal\n- **Trees & Graphs** - BFS, DFS, traversals\n- **Dynamic Programming** - Memoization, tabulation\n- **Sorting & Searching** - Binary search patterns\n\nPractice on our platform's coding challenges!`;
+    }
+    if (lower.includes('resume')) {
+      return `**Resume Tips:**\n\n- Use action verbs (Developed, Implemented, Led)\n- Quantify achievements with numbers\n- Keep it to 1-2 pages\n- Tailor for each application\n\nUse our **Resume Builder** to create an ATS-friendly resume!`;
+    }
+    if (lower.includes('company') || lower.includes('faang') || lower.includes('google') || lower.includes('amazon')) {
+      return `**Company Preparation Guide:**\n\n- **Google**: Focus on problem-solving, medium-hard LeetCode\n- **Amazon**: Master 16 Leadership Principles, use STAR method\n- **Microsoft**: Strong coding fundamentals, growth mindset\n- **Meta**: Speed is crucial, practice timed coding\n\nVisit **Company Prep** in the sidebar for detailed guides!`;
+    }
+    if (lower.includes('communication') || lower.includes('speaking')) {
+      return `**Improve Communication Skills:**\n\n- Practice speaking daily\n- Record and listen to yourself\n- Read aloud regularly\n- Join our Group Discussions\n\nTake a **Communication Assessment** from the sidebar!`;
+    }
+    if (lower.includes('how to use') || lower.includes('platform') || lower.includes('help')) {
+      return `**Here's how to use HireReady:**\n\n- **Start Interview** - Practice AI mock interviews\n- **Daily Challenge** - Solve daily coding problems\n- **Analytics** - Track your progress\n- **Company Prep** - Company-specific preparation\n- **Career Roadmap** - Structured learning path\n- **Communication** - Speaking skills assessment\n\nWhat specific feature would you like help with?`;
+    }
+
+    return `I'm here to help with interview preparation! You can ask me about:\n\n- **Interview tips** and strategies\n- **DSA** and technical concepts\n- **Company preparation** (FAANG, etc.)\n- **Resume** building advice\n- **Communication** skills\n- **Platform features** and how to use them\n\nWhat would you like to know?`;
+  }
+
+  // ===========================================
   // Private Methods - AI Providers
   // ===========================================
 

@@ -7,6 +7,7 @@ const router = express.Router();
 const { GDTopic, GDSession } = require('../models/GroupDiscussion.model');
 const { protect, authorize } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
+const AIService = require('../services/ai.service');
 
 // AI participant personalities
 const AI_PERSONALITIES = [
@@ -154,16 +155,31 @@ router.post('/sessions/:sessionId/contribute', protect, asyncHandler(async (req,
     Math.floor(Math.random() * session.aiParticipants.length)
   ];
 
-  const aiResponses = [
-    `That's an interesting point. Building on that, I think we should also consider...`,
-    `I agree with some aspects, but we should also look at the other side...`,
-    `While that's valid, the data suggests a different perspective...`,
-    `Great observation! Additionally, we could explore...`,
-    `I'd like to add a different viewpoint here...`
-  ];
+  let aiResponseText;
+  try {
+    const gdTopic = session.topic?.title || 'the current topic';
+    const aiPrompt = `You are ${respondingAI.name}, a ${respondingAI.personality || 'thoughtful'} participant in a group discussion about "${gdTopic}". 
+Another participant just said: "${content}"
+Respond naturally in 1-2 sentences as a GD participant. Be ${respondingAI.style || 'balanced and insightful'}. Either build on their point, add a new perspective, or respectfully disagree.`;
+    
+    aiResponseText = await AIService.chat({ message: aiPrompt, conversationHistory: [] });
+    // Keep response concise
+    if (aiResponseText && aiResponseText.length > 300) {
+      aiResponseText = aiResponseText.substring(0, 297) + '...';
+    }
+  } catch {
+    const fallbackResponses = [
+      `That's an interesting point. Building on that, I think we should also consider the broader implications and how this affects different stakeholders.`,
+      `I agree with some aspects, but we should also look at the other side. There are valid counterarguments worth discussing.`,
+      `While that's valid, research suggests a more nuanced perspective. Let me share what I've observed.`,
+      `Great observation! Additionally, we could explore how this connects to real-world applications and current trends.`,
+      `I'd like to add a different viewpoint here. Consider the long-term consequences of this approach.`
+    ];
+    aiResponseText = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+  }
 
   const aiResponse = {
-    content: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+    content: aiResponseText,
     timestamp: new Date()
   };
 

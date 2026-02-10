@@ -78,8 +78,8 @@ const ResumeBuilder = () => {
     <div className="space-y-6 animate-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Resume Builder</h1>
-          <p className="text-gray-600 mt-1">Create professional resumes with ease</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Resume Builder</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Create professional resumes with ease</p>
         </div>
         <Button onClick={createResume} isLoading={creating}>
           <Plus className="w-4 h-4 mr-2" />
@@ -98,7 +98,7 @@ const ResumeBuilder = () => {
                 api.post('/resumes', { title: `${template.name} Resume`, template: template.id })
                   .then(res => setResumes([res.data.data, ...resumes]))
               }}
-              className="p-4 border rounded-lg hover:border-primary-500 hover:shadow-md transition-all group"
+              className="p-4 border dark:border-gray-700 rounded-lg hover:border-primary-500 hover:shadow-md transition-all group"
             >
               <div className={`w-full h-24 ${template.color} rounded mb-2 flex items-center justify-center`}>
                 <FileText className="w-10 h-10 text-white" />
@@ -115,8 +115,8 @@ const ResumeBuilder = () => {
         {resumes.length === 0 ? (
           <Card className="p-12 text-center">
             <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No resumes yet</h3>
-            <p className="text-gray-600 mb-4">Create your first resume to get started</p>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No resumes yet</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Create your first resume to get started</p>
             <Button onClick={createResume} isLoading={creating}>
               <Plus className="w-4 h-4 mr-2" />
               Create Resume
@@ -128,13 +128,13 @@ const ResumeBuilder = () => {
               <Card key={resume._id} className="p-4 hover:shadow-lg transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{resume.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white">{resume.title}</h3>
                     <Badge variant="secondary" className="mt-1">{resume.template}</Badge>
                   </div>
                   <FileText className="w-8 h-8 text-primary-500" />
                 </div>
                 
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                   Updated {new Date(resume.updatedAt).toLocaleDateString()}
                 </p>
 

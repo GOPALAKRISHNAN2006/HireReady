@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
+import PremiumGate from '../components/PremiumGate'
 import { careerApi } from '../services/featureApi'
 import toast from 'react-hot-toast'
 import { 
@@ -42,12 +43,12 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-slide-up">
+      <div className="relative bg-white dark:bg-[#111827] rounded-2xl shadow-2xl dark:shadow-black/50 max-w-4xl w-full max-h-[90vh] overflow-hidden animate-slide-up">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-600 to-purple-600 p-6 text-white">
           <button 
@@ -77,7 +78,7 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
 
         {/* Content */}
         <div className="p-6 overflow-y-auto max-h-[60vh]">
-          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary-500" />
             Study Materials
           </h3>
@@ -89,7 +90,7 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
                 href={material.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group border border-gray-100 hover:border-primary-200"
+                className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-xl transition-colors group border border-gray-100 dark:border-gray-700/30 hover:border-primary-200 dark:hover:border-primary-500/30"
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
                   material.type === 'video' 
@@ -112,12 +113,12 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                       {material.title}
                     </h4>
                     <ExternalLink className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">{material.description}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{material.description}</p>
                   <div className="flex items-center gap-4 mt-2">
                     <span className={`text-xs px-2 py-1 rounded-full ${
                       material.type === 'video' 
@@ -147,7 +148,7 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
 
           {/* Practice Section */}
           <div className="mt-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-green-500" />
               Practice Exercises
             </h3>
@@ -155,10 +156,10 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
               {milestone.exercises?.map((exercise, index) => (
                 <div
                   key={index}
-                  className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200"
+                  className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/15 dark:to-emerald-900/15 rounded-xl border border-green-200 dark:border-green-500/20"
                 >
-                  <h4 className="font-semibold text-gray-900">{exercise.title}</h4>
-                  <p className="text-sm text-gray-600 mt-1">{exercise.description}</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">{exercise.title}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{exercise.description}</p>
                   <div className="flex items-center justify-between mt-3">
                     <span className={`text-xs px-2 py-1 rounded-full ${
                       exercise.difficulty === 'Easy' 
@@ -177,7 +178,7 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 p-4 bg-gray-50 flex justify-end gap-3">
+        <div className="border-t border-gray-200 dark:border-gray-700/30 p-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
           <Button variant="outline" onClick={onClose}>Close</Button>
           <Button icon={ArrowRight}>Start Learning</Button>
         </div>
@@ -623,13 +624,13 @@ const CareerRoadmap = () => {
   const getStatusStyle = (status) => {
     switch (status) {
       case 'completed':
-        return 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
+        return 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 dark:from-green-900/20 dark:to-emerald-900/20 dark:border-green-500/20'
       case 'current':
-        return 'bg-gradient-to-r from-primary-50 to-purple-50 border-primary-200 shadow-lg shadow-primary-500/10'
+        return 'bg-gradient-to-r from-primary-50 to-purple-50 border-primary-200 shadow-lg shadow-primary-500/10 dark:from-primary-900/20 dark:to-purple-900/20 dark:border-primary-500/20 dark:shadow-primary-500/5'
       case 'locked':
-        return 'bg-gray-50 border-gray-200 opacity-60'
+        return 'bg-gray-50 border-gray-200 opacity-60 dark:bg-gray-800/40 dark:border-gray-700/30'
       default:
-        return 'bg-white border-gray-200'
+        return 'bg-white border-gray-200 dark:bg-gray-800/50 dark:border-gray-700/30'
     }
   }
 
@@ -679,7 +680,7 @@ const CareerRoadmap = () => {
 
       {/* Career Path Selector */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Choose Your Path</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Choose Your Path</h2>
         <div className="flex flex-wrap gap-3">
           {careerPaths.map((path) => (
             <button
@@ -688,10 +689,10 @@ const CareerRoadmap = () => {
               className={`flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 ${
                 selectedPath === path.id
                   ? `bg-gradient-to-r ${path.color} text-white shadow-lg`
-                  : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-300 hover:shadow-md'
+                  : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-300 hover:shadow-md dark:bg-gray-800/60 dark:border-gray-700/40 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:bg-gray-700/60'
               }`}
             >
-              <path.icon className={`w-5 h-5 ${selectedPath === path.id ? 'text-white' : 'text-gray-400'}`} />
+              <path.icon className={`w-5 h-5 ${selectedPath === path.id ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`} />
               <span className="font-medium">{path.name}</span>
             </button>
           ))}
@@ -700,7 +701,7 @@ const CareerRoadmap = () => {
 
       {/* Milestone Timeline */}
       <div className="relative">
-        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <Rocket className="w-5 h-5 text-primary-500" />
           Your Learning Milestones
         </h2>
@@ -711,7 +712,7 @@ const CareerRoadmap = () => {
               {/* Connecting Line */}
               {index < currentMilestones.length - 1 && (
                 <div className={`absolute left-7 top-16 w-0.5 h-20 ${
-                  milestone.status === 'completed' ? 'bg-green-300' : 'bg-gray-200'
+                  milestone.status === 'completed' ? 'bg-green-300 dark:bg-green-500/30' : 'bg-gray-200 dark:bg-gray-700/50'
                 }`} />
               )}
 
@@ -720,10 +721,10 @@ const CareerRoadmap = () => {
                   {/* Status Icon */}
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${
                     milestone.status === 'completed' 
-                      ? 'bg-green-100' 
+                      ? 'bg-green-100 dark:bg-green-500/15' 
                       : milestone.status === 'current'
-                        ? 'bg-primary-100'
-                        : 'bg-gray-100'
+                        ? 'bg-primary-100 dark:bg-primary-500/15'
+                        : 'bg-gray-100 dark:bg-gray-700/40'
                   }`}>
                     {getStatusIcon(milestone.status)}
                   </div>
@@ -731,7 +732,7 @@ const CareerRoadmap = () => {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">{milestone.title}</h3>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">{milestone.title}</h3>
                       {milestone.status === 'current' && (
                         <Badge variant="primary" className="animate-pulse">
                           <Sparkles className="w-3 h-3 mr-1" />
@@ -743,7 +744,7 @@ const CareerRoadmap = () => {
                       )}
                     </div>
                     {milestone.description && (
-                      <p className="text-gray-500 mb-3">{milestone.description}</p>
+                      <p className="text-gray-500 dark:text-gray-400 mb-3">{milestone.description}</p>
                     )}
 
                     {/* Skills */}
@@ -753,8 +754,8 @@ const CareerRoadmap = () => {
                           key={skill}
                           className={`px-3 py-1 text-sm rounded-lg ${
                             milestone.status === 'locked'
-                              ? 'bg-gray-100 text-gray-400'
-                              : 'bg-white border border-gray-200 text-gray-700'
+                              ? 'bg-gray-100 text-gray-400 dark:bg-gray-700/40 dark:text-gray-500'
+                              : 'bg-white border border-gray-200 text-gray-700 dark:bg-gray-800/60 dark:border-gray-600/30 dark:text-gray-300'
                           }`}
                         >
                           {skill}
@@ -766,14 +767,14 @@ const CareerRoadmap = () => {
                     {milestone.status !== 'locked' && (
                       <div className="flex items-center gap-6 text-sm">
                         <div className="flex items-center gap-2">
-                          <BookOpen className="w-4 h-4 text-gray-400" />
-                          <span className="text-gray-600">{milestone.interviews} interviews</span>
+                          <BookOpen className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <span className="text-gray-600 dark:text-gray-400">{milestone.interviews} interviews</span>
                         </div>
                         {milestone.score > 0 && (
                           <div className="flex items-center gap-2">
-                            <Award className="w-4 h-4 text-gray-400" />
+                            <Award className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                             <span className={`font-medium ${
-                              milestone.score >= 80 ? 'text-green-600' : milestone.score >= 60 ? 'text-amber-600' : 'text-red-600'
+                              milestone.score >= 80 ? 'text-green-600 dark:text-green-400' : milestone.score >= 60 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'
                             }`}>{milestone.score}% avg score</span>
                           </div>
                         )}
@@ -816,20 +817,20 @@ const CareerRoadmap = () => {
       </div>
 
       {/* Achievement Banner */}
-      <Card className="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border border-amber-200">
+      <Card className="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border border-amber-200 dark:from-amber-900/20 dark:via-yellow-900/15 dark:to-orange-900/20 dark:border-amber-500/20">
         <div className="flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30">
               <Trophy className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900">You're making great progress!</h3>
-              <p className="text-gray-600">Complete {currentMilestones.length - completedCount} more milestones to reach your goal</p>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">You're making great progress!</h3>
+              <p className="text-gray-600 dark:text-gray-400">Complete {currentMilestones.length - completedCount} more milestones to reach your goal</p>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-amber-600">{completedCount}/{currentMilestones.length}</div>
-            <div className="text-sm text-gray-500">Milestones</div>
+            <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{completedCount}/{currentMilestones.length}</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Milestones</div>
           </div>
         </div>
       </Card>
@@ -848,4 +849,11 @@ const CareerRoadmap = () => {
   )
 }
 
-export default CareerRoadmap
+// Wrap the page with PremiumGate — career-roadmap is a premium feature
+const CareerRoadmapWithGate = () => (
+  <PremiumGate feature="career-roadmap">
+    <CareerRoadmap />
+  </PremiumGate>
+)
+
+export default CareerRoadmapWithGate

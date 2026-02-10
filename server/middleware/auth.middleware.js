@@ -171,9 +171,45 @@ const isOwner = (paramName = 'userId') => {
   };
 };
 
+/**
+ * Require premium plan - checks user has active basic/premium/enterprise subscription
+ * Must be used AFTER protect middleware
+ */
+const requirePremium = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authenticated.'
+    });
+  }
+
+  const paidPlans = ['basic', 'premium', 'enterprise'];
+  const userPlan = req.user.plan || 'free';
+
+  if (!paidPlans.includes(userPlan)) {
+    return res.status(403).json({
+      success: false,
+      message: 'This feature requires a premium plan. Please upgrade to continue.',
+      code: 'PREMIUM_REQUIRED'
+    });
+  }
+
+  // Check if plan has expired
+  if (req.user.planExpiresAt && new Date(req.user.planExpiresAt) < new Date()) {
+    return res.status(403).json({
+      success: false,
+      message: 'Your premium plan has expired. Please renew to continue.',
+      code: 'PLAN_EXPIRED'
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   protect,
   authorize,
   optionalAuth,
-  isOwner
+  isOwner,
+  requirePremium
 };

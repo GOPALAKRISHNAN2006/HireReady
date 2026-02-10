@@ -34,7 +34,7 @@ const AptitudeTest = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Test data not found</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Test data not found</p>
           <Button onClick={() => navigate('/aptitude')}>Go Back</Button>
         </div>
       </div>
@@ -111,7 +111,7 @@ const AptitudeTest = () => {
           </Badge>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <Clock className="w-4 h-4" />
             <span className="font-mono">{formatTime(timeElapsed)}</span>
           </div>
@@ -119,7 +119,7 @@ const AptitudeTest = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
         <div 
           className="bg-primary-500 h-2 rounded-full transition-all"
           style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
@@ -128,13 +128,13 @@ const AptitudeTest = () => {
 
       {/* Question Card */}
       <Card className="p-6">
-        <h2 className="text-xl font-medium text-gray-900 mb-6">
+        <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">
           {currentQuestion.question}
         </h2>
 
         <div className="space-y-3">
           {currentQuestion.options.map((option, index) => {
-            let optionClass = 'border-gray-200 hover:border-primary-300'
+            let optionClass = 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
             
             if (showResult) {
               if (index === lastResult.correctAnswer) {
@@ -155,7 +155,7 @@ const AptitudeTest = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-medium">
+                    <span className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center font-medium">
                       {String.fromCharCode(65 + index)}
                     </span>
                     <span>{option}</span>
@@ -218,7 +218,7 @@ const AptitudeTest = () => {
 
       {/* Question Navigator */}
       <Card className="p-4">
-        <p className="text-sm text-gray-600 mb-3">Question Navigator</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Question Navigator</p>
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: totalQuestions }).map((_, idx) => (
             <button
@@ -228,9 +228,9 @@ const AptitudeTest = () => {
                   ? 'bg-primary-500 text-white'
                   : answers[idx]
                   ? answers[idx].isCorrect
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-red-100 text-red-700'
-                  : 'bg-gray-100 text-gray-600'
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700'
+                    : 'bg-red-100 dark:bg-red-900/30 text-red-700'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
               }`}
             >
               {idx + 1}

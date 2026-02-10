@@ -63,8 +63,8 @@ const AuthLayout = () => {
       </div>
       
       {/* Right Side - Auth Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white relative">
-        <div className="absolute inset-0 gradient-mesh opacity-30" />
+      <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white dark:from-[#0b1120] dark:to-[#0f172a] relative transition-colors duration-300">
+        <div className="absolute inset-0 gradient-mesh opacity-30 dark:opacity-20" />
         <div className="relative w-full max-w-md">
           <Outlet />
         </div>

@@ -25,26 +25,26 @@ const Input = forwardRef(({
 
   const variants = {
     default: `
-      border-gray-200
-      bg-white
-      text-gray-900
-      placeholder:text-gray-400
+      border-gray-200 dark:border-gray-600
+      bg-white dark:bg-gray-800
+      text-gray-900 dark:text-white
+      placeholder:text-gray-400 dark:placeholder:text-gray-500
       focus:border-primary-500 focus:ring-primary-500/20
     `,
     filled: `
       border-transparent
-      bg-gray-100
-      text-gray-900
-      placeholder:text-gray-500
-      focus:bg-gray-50
+      bg-gray-100 dark:bg-gray-700
+      text-gray-900 dark:text-white
+      placeholder:text-gray-500 dark:placeholder:text-gray-400
+      focus:bg-gray-50 dark:focus:bg-gray-600
       focus:border-primary-500 focus:ring-primary-500/20
     `,
     underline: `
       border-0 border-b-2 rounded-none px-0
-      border-gray-300
+      border-gray-300 dark:border-gray-600
       bg-transparent
-      text-gray-900
-      placeholder:text-gray-400
+      text-gray-900 dark:text-white
+      placeholder:text-gray-400 dark:placeholder:text-gray-500
       focus:border-primary-500 focus:ring-0
     `,
     glass: `

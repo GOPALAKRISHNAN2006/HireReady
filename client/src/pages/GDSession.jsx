@@ -57,7 +57,7 @@ const GDSession = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Session data not found</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Session data not found</p>
           <Button onClick={() => navigate('/gd')}>Go Back</Button>
         </div>
       </div>
@@ -134,7 +134,7 @@ const GDSession = () => {
       'Vikram': 'bg-orange-100 text-orange-700',
       'Sneha': 'bg-teal-100 text-teal-700',
     }
-    return colors[name] || 'bg-gray-100 text-gray-700'
+    return colors[name] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
   }
 
   const SessionContent = (
@@ -142,12 +142,12 @@ const GDSession = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">{sessionData.topic.title}</h1>
-          <p className="text-sm text-gray-600">Group Discussion in Progress</p>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{sessionData.topic.title}</h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Group Discussion in Progress</p>
         </div>
         <div className="flex items-center gap-4">
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${
-            timeLeft < 60 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
+            timeLeft < 60 ? 'bg-red-100 dark:bg-red-900/30 text-red-700' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
           }`}>
             <Clock className="w-4 h-4" />
             <span className="font-mono font-medium">{formatTime(timeLeft)}</span>
@@ -161,14 +161,14 @@ const GDSession = () => {
 
       <div className="flex-1 grid lg:grid-cols-4 gap-4 min-h-0">
         {/* Chat Area */}
-        <div className="lg:col-span-3 flex flex-col bg-white rounded-lg border">
+        <div className="lg:col-span-3 flex flex-col bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((msg, index) => (
               <div key={index}>
                 {msg.type === 'system' && (
                   <div className="text-center">
-                    <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                    <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
                       {msg.content}
                     </span>
                   </div>
@@ -189,7 +189,7 @@ const GDSession = () => {
                       <div className={`inline-block px-2 py-0.5 rounded text-xs font-medium mb-1 ${getParticipantColor(msg.participant)}`}>
                         {msg.participant}
                       </div>
-                      <div className="bg-gray-100 rounded-lg px-4 py-2">
+                      <div className="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2">
                         <p>{msg.content}</p>
                       </div>
                     </div>
@@ -199,9 +199,9 @@ const GDSession = () => {
                 {msg.type === 'feedback' && (
                   <div className="flex justify-center">
                     <span className={`text-xs px-2 py-1 rounded-full ${
-                      msg.score >= 70 ? 'bg-green-100 text-green-700' :
-                      msg.score >= 50 ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
+                      msg.score >= 70 ? 'bg-green-100 dark:bg-green-900/30 text-green-700' :
+                      msg.score >= 50 ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700' :
+                      'bg-red-100 dark:bg-red-900/30 text-red-700'
                     }`}>
                       Relevance Score: {msg.score}%
                     </span>
@@ -213,7 +213,7 @@ const GDSession = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t dark:border-gray-700">
             <div className="flex gap-2">
               <input
                 type="text"
@@ -222,7 +222,7 @@ const GDSession = () => {
                 onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
                 placeholder="Share your thoughts..."
                 disabled={!sessionActive}
-                className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="flex-1 px-4 py-2 border dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
               />
               <Button onClick={sendMessage} disabled={!input.trim() || sending || !sessionActive}>
                 <Send className="w-4 h-4" />
@@ -235,7 +235,7 @@ const GDSession = () => {
         <div className="hidden lg:flex flex-col gap-4">
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Users className="w-4 h-4 text-gray-500" />
+              <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               <h3 className="font-semibold text-sm">Participants</h3>
             </div>
             <div className="space-y-2">
@@ -255,7 +255,7 @@ const GDSession = () => {
 
           <Card className="p-4 flex-1">
             <h3 className="font-semibold text-sm mb-3">Key Points</h3>
-            <ul className="text-sm text-gray-600 space-y-2">
+            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
               {sessionData.topic.keyPoints?.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <MessageCircle className="w-3 h-3 text-primary-500 mt-1 flex-shrink-0" />

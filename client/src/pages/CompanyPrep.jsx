@@ -173,9 +173,9 @@ const CompanyPrep = () => {
 
   const getDifficultyColor = (difficulty) => {
     const colors = {
-      easy: 'bg-green-100 text-green-700',
-      medium: 'bg-yellow-100 text-yellow-700',
-      hard: 'bg-red-100 text-red-700',
+      easy: 'bg-green-100 dark:bg-green-900/30 text-green-700',
+      medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700',
+      hard: 'bg-red-100 dark:bg-red-900/30 text-red-700',
     }
     return colors[difficulty] || colors.medium
   }
@@ -216,14 +216,14 @@ const CompanyPrep = () => {
             placeholder="Search companies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400"
           />
         </div>
         <div className="flex gap-2">
           <select
             value={selectedIndustry}
             onChange={(e) => setSelectedIndustry(e.target.value)}
-            className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white text-gray-900 cursor-pointer"
+            className="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer"
           >
             {industries.map(ind => (
               <option key={ind.id} value={ind.id}>{ind.label}</option>
@@ -232,7 +232,7 @@ const CompanyPrep = () => {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white text-gray-900 cursor-pointer"
+            className="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer"
           >
             <option value="all">All Difficulties</option>
             <option value="easy">Easy</option>
@@ -300,7 +300,7 @@ const CompanyPrep = () => {
           >
             <div className="flex items-start gap-4">
               {/* Logo */}
-              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <img 
                   src={company.logo} 
                   alt={company.name}
@@ -316,10 +316,10 @@ const CompanyPrep = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
                       {company.name}
                     </h3>
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
                       <MapPin className="w-4 h-4" />
                       <span>{company.location}</span>
                       <span className="text-gray-300">•</span>
@@ -332,7 +332,7 @@ const CompanyPrep = () => {
                   </span>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">{company.description}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">{company.description}</p>
 
                 {/* Interview Types */}
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -345,7 +345,7 @@ const CompanyPrep = () => {
 
                 {/* Meta Info */}
                 <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-4 text-gray-500">
+                  <div className="flex items-center space-x-4 text-gray-500 dark:text-gray-400">
                     <span className="flex items-center space-x-1">
                       <Star className="w-4 h-4 text-yellow-500 fill-current" />
                       <span>{company.rating}</span>
@@ -372,8 +372,8 @@ const CompanyPrep = () => {
         <Card>
           <div className="text-center py-12">
             <Building2 className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-            <h3 className="text-lg font-medium text-gray-900 mb-1">No companies found</h3>
-            <p className="text-gray-500">Try adjusting your search or filters</p>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No companies found</h3>
+            <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
           </div>
         </Card>
       )}

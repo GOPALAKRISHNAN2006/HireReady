@@ -198,13 +198,13 @@ const InterviewTips = () => {
       {/* Search and Filter */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Search tips..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all bg-white text-gray-900 placeholder:text-gray-400"
+            className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2">
@@ -215,7 +215,7 @@ const InterviewTips = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
                   ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:border-primary-300'
+                  : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary-300 dark:hover:border-primary-700'
               }`}
             >
               <cat.icon className="w-4 h-4" />
@@ -227,7 +227,7 @@ const InterviewTips = () => {
 
       {/* Featured Tip */}
       {featuredTip && selectedCategory === 'all' && (
-        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 border-2">
+        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-800 border-2">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 flex-shrink-0">
               <Star className="w-7 h-7 text-white" />
@@ -237,16 +237,16 @@ const InterviewTips = () => {
                 <Badge variant="warning">Featured</Badge>
                 <Badge variant={getDifficultyColor(featuredTip.difficulty)}>{featuredTip.difficulty}</Badge>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{featuredTip.title}</h3>
-              <p className="text-gray-600 mb-4">{featuredTip.content}</p>
-              <div className="flex items-center gap-6 text-sm text-gray-500">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{featuredTip.title}</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">{featuredTip.content}</p>
+              <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <ThumbsUp className="w-4 h-4" /> {featuredTip.likes.toLocaleString()}
                 </span>
                 <span className="flex items-center gap-1">
                   <BookmarkPlus className="w-4 h-4" /> {featuredTip.saves.toLocaleString()}
                 </span>
-                <span className="text-amber-600 font-medium">By {featuredTip.author}</span>
+                <span className="text-amber-600 dark:text-amber-400 font-medium">By {featuredTip.author}</span>
               </div>
             </div>
           </div>
@@ -267,11 +267,11 @@ const InterviewTips = () => {
             >
               <div className="flex items-start gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  tip.category === 'technical' ? 'bg-blue-100 text-blue-600' :
-                  tip.category === 'behavioral' ? 'bg-green-100 text-green-600' :
-                  tip.category === 'communication' ? 'bg-purple-100 text-purple-600' :
-                  tip.category === 'preparation' ? 'bg-amber-100 text-amber-600' :
-                  'bg-pink-100 text-pink-600'
+                  tip.category === 'technical' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
+                  tip.category === 'behavioral' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' :
+                  tip.category === 'communication' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' :
+                  tip.category === 'preparation' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' :
+                  'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400'
                 }`}>
                   {tip.category === 'technical' && <Code2 className="w-6 h-6" />}
                   {tip.category === 'behavioral' && <Users className="w-6 h-6" />}
@@ -286,17 +286,17 @@ const InterviewTips = () => {
                       {tip.difficulty}
                     </Badge>
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1">{tip.title}</h3>
-                  <p className="text-sm text-gray-500 mb-3">{tip.summary}</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">{tip.title}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{tip.summary}</p>
 
                   {/* Expanded Content */}
                   {expandedTip === tip.id && (
-                    <div className="mt-4 pt-4 border-t border-gray-100 animate-slide-up">
-                      <p className="text-gray-600 mb-4">{tip.content}</p>
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 animate-slide-up">
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">{tip.content}</p>
                       {tip.tags && tip.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
                           {tip.tags.map((tag) => (
-                            <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-lg">
+                            <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-lg">
                               #{tag}
                             </span>
                           ))}
@@ -326,9 +326,9 @@ const InterviewTips = () => {
       ) : (
         <Card>
           <div className="text-center py-12">
-            <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Tips Available</h3>
-            <p className="text-gray-600">
+            <Lightbulb className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Tips Available</h3>
+            <p className="text-gray-600 dark:text-gray-400">
               {searchQuery ? 'Try adjusting your search query' : 'Check back later for new interview tips!'}
             </p>
           </div>
@@ -337,40 +337,40 @@ const InterviewTips = () => {
 
       {/* Quick Actions */}
       <div className="grid md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100 group hover:shadow-lg transition-all">
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-100 dark:border-blue-800 group hover:shadow-lg transition-all">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
               <Video className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Video Tutorials</h4>
-              <p className="text-sm text-gray-500">Watch expert demonstrations</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Video Tutorials</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Watch expert demonstrations</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-100 group hover:shadow-lg transition-all">
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-100 dark:border-green-800 group hover:shadow-lg transition-all">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
               <CheckCircle className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Checklists</h4>
-              <p className="text-sm text-gray-500">Pre-interview checklists</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Checklists</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Pre-interview checklists</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-100 group hover:shadow-lg transition-all">
+        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-100 dark:border-purple-800 group hover:shadow-lg transition-all">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
               <MessageCircle className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900">Community</h4>
-              <p className="text-sm text-gray-500">Ask the community</p>
+              <h4 className="font-bold text-gray-900 dark:text-white">Community</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Ask the community</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>

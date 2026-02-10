@@ -380,8 +380,8 @@ const CompanyDetail = () => {
     return (
       <div className="text-center py-20">
         <Building2 className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Company Not Found</h2>
-        <p className="text-gray-500 mb-6">The company you're looking for doesn't exist.</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Company Not Found</h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-6">The company you're looking for doesn't exist.</p>
         <Button onClick={() => navigate('/company-prep')}>Back to Companies</Button>
       </div>
     )
@@ -397,9 +397,9 @@ const CompanyDetail = () => {
 
   const getDifficultyColor = (difficulty) => {
     const colors = {
-      Easy: 'bg-green-100 text-green-700',
-      Medium: 'bg-yellow-100 text-yellow-700',
-      Hard: 'bg-red-100 text-red-700',
+      Easy: 'bg-green-100 dark:bg-green-900/30 text-green-700',
+      Medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700',
+      Hard: 'bg-red-100 dark:bg-red-900/30 text-red-700',
     }
     return colors[difficulty] || colors.Medium
   }
@@ -409,7 +409,7 @@ const CompanyDetail = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate('/company-prep')}
-        className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors"
+        className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
         <span>Back to Companies</span>
@@ -471,33 +471,33 @@ const CompanyDetail = () => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card className="text-center">
           <DollarSign className="w-8 h-8 mx-auto text-green-500 mb-2" />
-          <p className="text-sm text-gray-500">Avg Salary</p>
-          <p className="font-bold text-gray-900">{company.avgSalary}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Avg Salary</p>
+          <p className="font-bold text-gray-900 dark:text-white">{company.avgSalary}</p>
         </Card>
         <Card className="text-center">
           <Layers className="w-8 h-8 mx-auto text-blue-500 mb-2" />
-          <p className="text-sm text-gray-500">Interview Rounds</p>
-          <p className="font-bold text-gray-900">{company.interviewRounds} Rounds</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Interview Rounds</p>
+          <p className="font-bold text-gray-900 dark:text-white">{company.interviewRounds} Rounds</p>
         </Card>
         <Card className="text-center">
           <Clock className="w-8 h-8 mx-auto text-purple-500 mb-2" />
-          <p className="text-sm text-gray-500">Time to Hire</p>
-          <p className="font-bold text-gray-900">{company.timeToHire}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Time to Hire</p>
+          <p className="font-bold text-gray-900 dark:text-white">{company.timeToHire}</p>
         </Card>
         <Card className="text-center">
           <Trophy className="w-8 h-8 mx-auto text-amber-500 mb-2" />
-          <p className="text-sm text-gray-500">Success Rate</p>
-          <p className="font-bold text-gray-900">{company.successRate}%</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Success Rate</p>
+          <p className="font-bold text-gray-900 dark:text-white">{company.successRate}%</p>
         </Card>
         <Card className="text-center">
           <Target className="w-8 h-8 mx-auto text-red-500 mb-2" />
-          <p className="text-sm text-gray-500">Interview Types</p>
-          <p className="font-bold text-gray-900">{company.interviewTypes.length} Types</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Interview Types</p>
+          <p className="font-bold text-gray-900 dark:text-white">{company.interviewTypes.length} Types</p>
         </Card>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 pb-4">
+      <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -505,7 +505,7 @@ const CompanyDetail = () => {
             className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
               activeTab === tab.id
                 ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200'
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -524,7 +524,7 @@ const CompanyDetail = () => {
                 <Card.Title>Company Culture</Card.Title>
               </Card.Header>
               <Card.Content>
-                <p className="text-gray-600">{company.culture}</p>
+                <p className="text-gray-600 dark:text-gray-400">{company.culture}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {company.interviewTypes.map((type, index) => (
                     <Badge key={index} variant="primary">{type}</Badge>
@@ -541,19 +541,19 @@ const CompanyDetail = () => {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Company-specific interview questions</span>
+                    <span className="text-gray-600 dark:text-gray-400">Company-specific interview questions</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Real interview experiences from candidates</span>
+                    <span className="text-gray-600 dark:text-gray-400">Real interview experiences from candidates</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">AI-powered mock interviews</span>
+                    <span className="text-gray-600 dark:text-gray-400">AI-powered mock interviews</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Detailed performance analytics</span>
+                    <span className="text-gray-600 dark:text-gray-400">Detailed performance analytics</span>
                   </li>
                 </ul>
               </Card.Content>
@@ -570,13 +570,13 @@ const CompanyDetail = () => {
                     <button
                       key={index}
                       onClick={() => navigate('/interview/setup')}
-                      className="p-4 border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-lg transition-all group text-left"
+                      className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-500 hover:shadow-lg transition-all group text-left"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-semibold text-gray-900 group-hover:text-primary-600">{type}</span>
+                        <span className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600">{type}</span>
                         <Play className="w-5 h-5 text-gray-400 group-hover:text-primary-600" />
                       </div>
-                      <p className="text-sm text-gray-500">Practice {type} interviews</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Practice {type} interviews</p>
                     </button>
                   ))}
                 </div>
@@ -605,8 +605,8 @@ const CompanyDetail = () => {
                       )}
                     </div>
                     <div className="flex-1 pb-6">
-                      <h3 className="font-semibold text-gray-900">{step.name}</h3>
-                      <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{step.name}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
                         <Clock className="w-4 h-4" />
                         {step.duration}
                       </p>
@@ -626,15 +626,15 @@ const CompanyDetail = () => {
               <Card.Description>Most common questions asked at {company.name}</Card.Description>
             </Card.Header>
             <Card.Content padding="none">
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-gray-100 dark:divide-gray-700">
                 {company.topQuestions.map((question) => (
                   <div 
                     key={question.id}
-                    className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
                     onClick={() => navigate('/interview/setup')}
                   >
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{question.title}</h3>
+                      <h3 className="font-medium text-gray-900 dark:text-white">{question.title}</h3>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="secondary">{question.type}</Badge>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${getDifficultyColor(question.difficulty)}`}>
@@ -665,10 +665,10 @@ const CompanyDetail = () => {
                     <material.icon className="w-6 h-6 text-primary-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
                       {material.title}
                     </h3>
-                    <p className="text-sm text-gray-500">{material.type}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{material.type}</p>
                   </div>
                   <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-primary-600" />
                 </div>
@@ -689,7 +689,7 @@ const CompanyDetail = () => {
                 {company.tips.map((tip, index) => (
                   <div key={index} className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl border border-amber-200">
                     <Lightbulb className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-700">{tip}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{tip}</p>
                   </div>
                 ))}
               </div>

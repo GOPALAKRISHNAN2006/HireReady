@@ -104,7 +104,7 @@ const useProctoring = (options = {}) => {
 
   // Refs
   const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+  const canvasRef = useRef(document.createElement('canvas'));
   const streamRef = useRef(null);
   const screenStreamRef = useRef(null);
   const audioContextRef = useRef(null);

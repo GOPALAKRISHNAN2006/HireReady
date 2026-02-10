@@ -33,12 +33,12 @@ const CommunicationAssessmentCard = ({
   if (!assessment) return null;
 
   const {
-    overall_score,
-    subscores,
-    strengths,
-    improvements,
-    summary_comment,
-    score_level
+    overall_score = 0,
+    subscores = {},
+    strengths = [],
+    improvements = [],
+    summary_comment = '',
+    score_level = 'average'
   } = assessment;
 
   return (
@@ -85,7 +85,7 @@ const CommunicationAssessmentCard = ({
         </div>
 
         {/* Quick stats when collapsed */}
-        {!isExpanded && (
+        {!isExpanded && subscores && Object.keys(subscores).length > 0 && (
           <div className="mt-4 flex items-center gap-4 flex-wrap">
             {Object.entries(subscores).slice(0, 3).map(([key, value]) => (
               <div key={key} className="flex items-center gap-1.5">

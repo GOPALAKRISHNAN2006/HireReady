@@ -41,6 +41,7 @@ export const useSettingsStore = create(
       autoSaveAnswers: true,
       showHints: true,
       soundEnabled: true,
+      preferredCategories: ['dsa', 'web', 'behavioral'],
       
       // Language & Region
       language: 'en',
@@ -86,6 +87,34 @@ export const useSettingsStore = create(
         applyTheme(state.theme)
         applyFontSize(state.fontSize)
         applyReducedMotion(state.reducedMotion)
+      },
+
+      // Reset all settings to defaults
+      resetToDefaults: () => {
+        const defaults = {
+          theme: 'light',
+          fontSize: 'medium',
+          reducedMotion: false,
+          emailNotifications: true,
+          pushNotifications: true,
+          interviewReminders: true,
+          weeklyReport: true,
+          marketingEmails: false,
+          profileVisibility: 'public',
+          showOnLeaderboard: true,
+          shareProgress: true,
+          defaultDifficulty: 'medium',
+          defaultDuration: 30,
+          autoSaveAnswers: true,
+          showHints: true,
+          soundEnabled: true,
+          language: 'en',
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }
+        set(defaults)
+        applyTheme(defaults.theme)
+        applyFontSize(defaults.fontSize)
+        applyReducedMotion(defaults.reducedMotion)
       }
     }),
     {
@@ -107,6 +136,7 @@ export const useSettingsStore = create(
         autoSaveAnswers: state.autoSaveAnswers,
         showHints: state.showHints,
         soundEnabled: state.soundEnabled,
+        preferredCategories: state.preferredCategories,
         language: state.language,
         timezone: state.timezone,
       })
@@ -114,9 +144,20 @@ export const useSettingsStore = create(
   )
 )
 
+// Track the system theme listener so we can clean it up
+let systemThemeHandler = null
+let systemThemeMediaQuery = null
+
 // Helper functions to apply settings to the DOM
 function applyTheme(theme) {
   const root = document.documentElement
+  
+  // Clean up previous system theme listener to prevent memory leaks
+  if (systemThemeHandler && systemThemeMediaQuery) {
+    systemThemeMediaQuery.removeEventListener('change', systemThemeHandler)
+    systemThemeHandler = null
+    systemThemeMediaQuery = null
+  }
   
   // Remove existing theme classes
   root.classList.remove('light', 'dark')
@@ -127,12 +168,12 @@ function applyTheme(theme) {
     root.classList.add(prefersDark ? 'dark' : 'light')
     
     // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = (e) => {
+    systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    systemThemeHandler = (e) => {
       root.classList.remove('light', 'dark')
       root.classList.add(e.matches ? 'dark' : 'light')
     }
-    mediaQuery.addEventListener('change', handler)
+    systemThemeMediaQuery.addEventListener('change', systemThemeHandler)
   } else {
     root.classList.add(theme)
   }

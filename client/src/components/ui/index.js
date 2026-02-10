@@ -5,3 +5,13 @@ export { default as Modal, ConfirmModal } from './Modal'
 export { default as Badge, BadgeGroup, CountBadge } from './Badge'
 export { Spinner, DotsSpinner, PulseSpinner, RingSpinner, BarsSpinner, LoadingOverlay, LoadingCard, Skeleton } from './Spinner'
 export { ToastProvider, useToast } from './Toast'
+
+// New UI components
+export { default as CodeEditor } from './CodeEditor'
+export { default as Tabs } from './Tabs'
+export { default as ProgressBar } from './ProgressBar'
+export { default as Tooltip } from './Tooltip'
+export { default as Avatar } from './Avatar'
+export { default as Accordion } from './Accordion'
+export { default as SkeletonLoader, SkeletonCard, SkeletonTable } from './Skeleton'
+export { default as Select } from './Select'

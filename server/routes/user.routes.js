@@ -17,16 +17,23 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const User = require('../models/User.model');
 const Analytics = require('../models/Analytics.model');
 const { protect, authorize } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
 const { validateProfileUpdate, validateObjectId } = require('../middleware/validation.middleware');
 
+// Ensure uploads/avatars directory exists
+const avatarUploadDir = path.join(__dirname, '..', 'uploads', 'avatars');
+if (!fs.existsSync(avatarUploadDir)) {
+  fs.mkdirSync(avatarUploadDir, { recursive: true });
+}
+
 // Configure multer for avatar upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/avatars');
+    cb(null, avatarUploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueName = `avatar-${req.user._id}-${Date.now()}${path.extname(file.originalname)}`;
@@ -138,7 +145,20 @@ router.put('/profile', protect, validateProfileUpdate, asyncHandler(async (req, 
  * @desc    Upload/update user avatar
  * @access  Private
  */
-router.put('/avatar', protect, upload.single('avatar'), asyncHandler(async (req, res) => {
+router.put('/avatar', protect, (req, res, next) => {
+  upload.single('avatar')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ success: false, message: 'Image size should be less than 5MB.' });
+      }
+      return res.status(400).json({ success: false, message: err.message });
+    }
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message || 'Only image files are allowed!' });
+    }
+    next();
+  });
+}, asyncHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({
       success: false,
@@ -373,6 +393,45 @@ router.get('/skills/popular', protect, asyncHandler(async (req, res) => {
     success: true,
     data: { skills: popularSkills }
   });
+}));
+
+/**
+ * @route   GET /api/users/export-data
+ * @desc    Export all user data as JSON
+ * @access  Private
+ */
+router.get('/export-data', protect, asyncHandler(async (req, res) => {
+  const Interview = require('../models/Interview.model');
+  
+  // Gather all user data
+  const user = await User.findById(req.user._id)
+    .select('-refreshToken -password -passwordResetToken -passwordResetExpires');
+  
+  const analytics = await Analytics.findOne({ user: req.user._id });
+  
+  // Try to get interviews if model exists
+  let interviews = [];
+  try {
+    interviews = await Interview.find({ user: req.user._id })
+      .select('-__v')
+      .sort({ createdAt: -1 })
+      .limit(500);
+  } catch (e) {
+    // Model might not exist, skip
+  }
+
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    user: user?.toObject() || {},
+    analytics: analytics?.toObject() || null,
+    interviews: interviews.map(i => i.toObject()),
+  };
+
+  // Set headers for file download
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Disposition', `attachment; filename=hireready-data-${Date.now()}.json`);
+  
+  res.status(200).json(exportData);
 }));
 
 /**

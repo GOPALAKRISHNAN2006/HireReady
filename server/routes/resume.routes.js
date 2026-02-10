@@ -5,6 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const Resume = require('../models/Resume.model');
+const AIService = require('../services/ai.service');
 const { protect } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
 
@@ -133,6 +134,68 @@ router.post('/:id/duplicate', protect, asyncHandler(async (req, res) => {
     message: 'Resume duplicated successfully',
     data: duplicate
   });
+}));
+
+// Analyze resume with AI
+router.post('/:id/analyze', protect, asyncHandler(async (req, res) => {
+  const resume = await Resume.findOne({ 
+    _id: req.params.id,
+    user: req.user._id 
+  });
+
+  if (!resume) {
+    return res.status(404).json({
+      success: false,
+      message: 'Resume not found'
+    });
+  }
+
+  // Build resume text from structured data
+  const sections = [];
+  if (resume.personalInfo) {
+    sections.push(`Name: ${resume.personalInfo.fullName || ''}`);
+    if (resume.personalInfo.summary) sections.push(`Summary: ${resume.personalInfo.summary}`);
+  }
+  if (resume.experience?.length) {
+    sections.push('Experience: ' + resume.experience.map(e => 
+      `${e.title || ''} at ${e.company || ''} - ${e.description || ''}`
+    ).join('; '));
+  }
+  if (resume.education?.length) {
+    sections.push('Education: ' + resume.education.map(e => 
+      `${e.degree || ''} at ${e.institution || ''}`
+    ).join('; '));
+  }
+  if (resume.skills?.length) {
+    sections.push('Skills: ' + resume.skills.join(', '));
+  }
+
+  const resumeText = sections.join('\n');
+  const targetRole = req.body.targetRole || 'software engineering';
+
+  try {
+    const analysis = await AIService.analyzeResume({
+      resumeText,
+      targetRole
+    });
+
+    // Save analysis to resume
+    resume.aiAnalysis = analysis;
+    resume.lastAnalyzedAt = new Date();
+    await resume.save();
+
+    res.json({
+      success: true,
+      message: 'Resume analyzed successfully',
+      data: analysis
+    });
+  } catch (error) {
+    console.error('Resume analysis error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to analyze resume. Please try again.'
+    });
+  }
 }));
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import { usePremium } from '../hooks/usePremium'
 import { 
   LayoutDashboard, 
   PlayCircle, 
@@ -28,11 +29,15 @@ import {
   Lightbulb,
   UsersRound,
   Shield,
-  Mic
+  Mic,
+  CalendarCheck,
+  Monitor,
+  Crown
 } from 'lucide-react'
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user } = useAuthStore()
+  const { isPremium } = usePremium()
   const isAdmin = user?.role === 'admin'
 
   const navItems = [
@@ -45,11 +50,13 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Resume Builder', path: '/resume', icon: FileText },
     { name: 'Aptitude Tests', path: '/aptitude', icon: Brain },
     { name: 'Group Discussion', path: '/gd', icon: MessageSquare },
+    { name: 'Mock Interview Lab', path: '/mock-lab', icon: Monitor, badge: 'New' },
   ]
 
   const learnItems = [
     { name: 'Interview Tips', path: '/tips', icon: Lightbulb },
     { name: 'Study Materials', path: '/study-materials', icon: BookOpen },
+    { name: 'Study Plan', path: '/study-plan', icon: CalendarCheck },
     { name: 'Company Prep', path: '/company-prep', icon: Building2 },
     { name: 'Questions', path: '/questions', icon: HelpCircle },
   ]
@@ -65,6 +72,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Practice History', path: '/history', icon: History },
     { name: 'Saved Questions', path: '/saved', icon: Bookmark },
     { name: 'Notifications', path: '/notifications', icon: Bell },
+    ...(!isPremium ? [{ name: 'Go Premium', path: '/premium', icon: Crown, badge: '✨' }] : []),
     { name: 'Settings', path: '/settings', icon: Settings },
     { name: 'Help & FAQ', path: '/help', icon: HelpCircle },
   ]
@@ -87,15 +95,15 @@ const Sidebar = ({ isOpen, onClose }) => {
       className={({ isActive }) =>
         `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
         ${isActive 
-          ? 'bg-gradient-to-r from-primary-600 to-purple-600 text-white shadow-lg shadow-primary-500/30' 
-          : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100'
+          ? 'bg-gradient-to-r from-primary-600 to-purple-600 text-white shadow-lg shadow-primary-500/30 dark:shadow-primary-500/20' 
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-indigo-500/[0.08] dark:hover:to-purple-500/[0.05]'
         }`
       }
     >
       {({ isActive }) => (
         <>
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-primary-100'}`}>
-            <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-primary-600'}`} />
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-gray-100 dark:bg-indigo-500/10 group-hover:bg-primary-100 dark:group-hover:bg-indigo-500/20'}`}>
+            <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400'}`} />
           </div>
           <span className="font-medium flex-1">{item.name}</span>
           {item.badge && (
@@ -103,7 +111,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               {item.badge}
             </span>
           )}
-          <ChevronRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'text-white opacity-100 translate-x-0' : 'text-gray-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} />
+          <ChevronRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'text-white opacity-100 translate-x-0' : 'text-gray-400 dark:text-gray-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} />
         </>
       )}
     </NavLink>
@@ -114,7 +122,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 dark:bg-black/70 z-40 lg:hidden backdrop-blur-sm"
           onClick={onClose}
         />
       )}
@@ -122,19 +130,19 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-50 h-screen w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:top-16 lg:h-[calc(100vh-4rem)] lg:shadow-none lg:border-r lg:border-gray-200
+          fixed top-0 left-0 z-50 h-screen w-72 bg-white dark:bg-[#0d1526] shadow-xl dark:shadow-black/40 transform transition-transform duration-300 ease-in-out
+          lg:translate-x-0 lg:top-16 lg:h-[calc(100vh-4rem)] lg:shadow-none lg:border-r lg:border-gray-200 dark:lg:border-indigo-500/[0.08]
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
         {/* Mobile Close Button */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200">
-          <span className="text-lg font-bold text-gray-900">Menu</span>
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-indigo-500/10">
+          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">Menu</span>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-indigo-500/10 transition-colors"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
 
@@ -151,8 +159,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
               
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100">
-                <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
                   Learn
                 </p>
                 {learnItems.map((item) => (
@@ -160,8 +168,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
 
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100">
-                <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
                   Community
                 </p>
                 {socialItems.map((item) => (
@@ -169,8 +177,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
               
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100">
-                <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
                   More
                 </p>
                 {additionalItems.map((item) => (
@@ -196,17 +204,34 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* Bottom CTA - Only show for non-admin users */}
         {!isAdmin && (
           <div className="absolute bottom-4 left-4 right-4">
-            <div className="bg-gradient-to-r from-primary-600 to-primary-400 rounded-xl p-4 text-white">
-              <h4 className="font-semibold mb-1">Ready for Practice?</h4>
-              <p className="text-sm text-primary-100 mb-3">Start a mock interview now!</p>
-              <NavLink
-                to="/interview/setup"
-                onClick={onClose}
-                className="block w-full py-2 bg-white text-primary-600 rounded-lg text-center font-medium hover:bg-primary-50 transition-colors"
-              >
-                Start Interview
-              </NavLink>
-            </div>
+            {isPremium ? (
+              <div className="bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-700 dark:to-purple-600 rounded-xl p-4 text-white shadow-lg dark:shadow-primary-900/30">
+                <h4 className="font-semibold mb-1">Ready for Practice?</h4>
+                <p className="text-sm text-primary-100 mb-3">Start a mock interview now!</p>
+                <NavLink
+                  to="/interview/setup"
+                  onClick={onClose}
+                  className="block w-full py-2 bg-white dark:bg-white/95 text-primary-600 rounded-lg text-center font-medium hover:bg-primary-50 dark:hover:bg-white transition-colors"
+                >
+                  Start Interview
+                </NavLink>
+              </div>
+            ) : (
+              <div className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-700 dark:to-pink-700 rounded-xl p-4 text-white shadow-lg dark:shadow-purple-900/30">
+                <div className="flex items-center gap-2 mb-1">
+                  <Crown className="w-5 h-5 text-yellow-300" />
+                  <h4 className="font-semibold">Go Premium</h4>
+                </div>
+                <p className="text-sm text-purple-100 mb-3">Unlock unlimited interviews &amp; AI feedback</p>
+                <NavLink
+                  to="/premium"
+                  onClick={onClose}
+                  className="block w-full py-2 bg-white dark:bg-white/95 text-purple-600 rounded-lg text-center font-medium hover:bg-purple-50 dark:hover:bg-white transition-colors"
+                >
+                  Upgrade Now ✨
+                </NavLink>
+              </div>
+            )}
           </div>
         )}
       </aside>

@@ -46,10 +46,10 @@ const AptitudeHistory = () => {
   ]
 
   const getGradeColor = (percentage) => {
-    if (percentage >= 80) return 'bg-green-100 text-green-700'
-    if (percentage >= 60) return 'bg-yellow-100 text-yellow-700'
+    if (percentage >= 80) return 'bg-green-100 dark:bg-green-900/30 text-green-700'
+    if (percentage >= 60) return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700'
     if (percentage >= 40) return 'bg-orange-100 text-orange-700'
-    return 'bg-red-100 text-red-700'
+    return 'bg-red-100 dark:bg-red-900/30 text-red-700'
   }
 
   const getGrade = (percentage) => {
@@ -97,8 +97,8 @@ const AptitudeHistory = () => {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Test History</h1>
-            <p className="text-gray-600">View all your past aptitude tests</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Test History</h1>
+            <p className="text-gray-600 dark:text-gray-400">View all your past aptitude tests</p>
           </div>
         </div>
       </div>
@@ -111,30 +111,30 @@ const AptitudeHistory = () => {
               <Target className="w-6 h-6 text-primary-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Tests</p>
-              <p className="text-2xl font-bold text-gray-900">{totalTests}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Total Tests</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalTests}</p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Average Score</p>
-              <p className="text-2xl font-bold text-gray-900">{avgScore}%</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Average Score</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgScore}%</p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center">
               <Trophy className="w-6 h-6 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Best Score</p>
-              <p className="text-2xl font-bold text-gray-900">{bestScore}%</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Best Score</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{bestScore}%</p>
             </div>
           </div>
         </Card>
@@ -143,8 +143,8 @@ const AptitudeHistory = () => {
       {/* Filter */}
       <Card className="p-4">
         <div className="flex items-center gap-4">
-          <Filter className="w-5 h-5 text-gray-500" />
-          <span className="text-sm font-medium text-gray-700">Filter by category:</span>
+          <Filter className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by category:</span>
           <div className="flex flex-wrap gap-2">
             {categories.map(cat => (
               <button
@@ -156,7 +156,7 @@ const AptitudeHistory = () => {
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   category === cat.id
                     ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200'
                 }`}
               >
                 {cat.name}
@@ -170,8 +170,8 @@ const AptitudeHistory = () => {
       {tests.length === 0 ? (
         <Card className="p-12 text-center">
           <Trophy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No tests found</h3>
-          <p className="text-gray-500 mb-6">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No tests found</h3>
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
             {category !== 'all' 
               ? `You haven't completed any ${category} tests yet.`
               : "You haven't completed any aptitude tests yet."}
@@ -190,10 +190,10 @@ const AptitudeHistory = () => {
                     <span className="text-xl font-bold">{getGrade(test.percentage)}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 capitalize">
+                    <h3 className="font-semibold text-gray-900 dark:text-white capitalize">
                       {test.category?.replace('-', ' ')} Test
                     </h3>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {new Date(test.completedAt).toLocaleDateString()}
@@ -208,8 +208,8 @@ const AptitudeHistory = () => {
                 
                 <div className="flex items-center gap-6">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-gray-900">{test.percentage}%</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{test.percentage}%</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {test.correctAnswers}/{test.totalQuestions} correct
                     </p>
                   </div>
@@ -238,7 +238,7 @@ const AptitudeHistory = () => {
             <ChevronLeft className="w-4 h-4 mr-1" />
             Previous
           </Button>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-gray-600 dark:text-gray-400">
             Page {page} of {pagination.pages}
           </span>
           <Button

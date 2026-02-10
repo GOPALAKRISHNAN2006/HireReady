@@ -157,9 +157,15 @@ const Settings = () => {
       toast.error('Account deletion cancelled')
       return
     }
+
+    const password = prompt('Enter your password to confirm:')
+    if (!password) {
+      toast.error('Password is required to delete account')
+      return
+    }
     
     try {
-      await api.delete('/users/account')
+      await api.delete('/users/account', { data: { password, confirmation: 'DELETE' } })
       toast.success('Account deleted successfully')
       logout()
     } catch (error) {
@@ -171,11 +177,11 @@ const Settings = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
           <SettingsIcon className="w-7 h-7 mr-3 text-primary-600" />
           Settings
         </h1>
-        <p className="text-gray-500 mt-1">Manage your account preferences and settings</p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your account preferences and settings</p>
       </div>
 
       {/* Appearance */}
@@ -192,8 +198,8 @@ const Settings = () => {
             {/* Theme */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Theme</p>
-                <p className="text-sm text-gray-500">Choose your preferred color scheme</p>
+                <p className="font-medium text-gray-900 dark:text-gray-100">Theme</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Choose your preferred color scheme</p>
               </div>
               <div className="flex space-x-2">
                 {[
@@ -206,8 +212,8 @@ const Settings = () => {
                     onClick={() => handleSettingChange('theme', theme.value)}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-xl border transition-all ${
                       settings.theme === theme.value
-                        ? 'bg-primary-50 border-primary-500 text-primary-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'bg-primary-50 dark:bg-primary-500/10 border-primary-500 text-primary-700 dark:text-primary-400'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     <theme.icon className="w-4 h-4" />
@@ -237,8 +243,8 @@ const Settings = () => {
             {/* Reduced Motion */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Reduced Motion</p>
-                <p className="text-sm text-gray-500">Minimize animations</p>
+                <p className="font-medium text-gray-900 dark:text-gray-100">Reduced Motion</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Minimize animations</p>
               </div>
               <button
                 onClick={() => handleSettingChange('reducedMotion', !settings.reducedMotion)}
@@ -327,7 +333,7 @@ const Settings = () => {
               <select
                 value={settings.profileVisibility}
                 onChange={(e) => handleSettingChange('profileVisibility', e.target.value)}
-                className="px-4 py-2 border border-gray-700 bg-gray-800 text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
               >
                 <option value="public">Public</option>
                 <option value="friends">Friends Only</option>
@@ -379,7 +385,7 @@ const Settings = () => {
               <select
                 value={settings.defaultDifficulty}
                 onChange={(e) => handleSettingChange('defaultDifficulty', e.target.value)}
-                className="px-4 py-2 border border-gray-700 bg-gray-800 text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -395,7 +401,7 @@ const Settings = () => {
               <select
                 value={settings.defaultDuration}
                 onChange={(e) => handleSettingChange('defaultDuration', parseInt(e.target.value))}
-                className="px-4 py-2 border border-gray-700 bg-gray-800 text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
               >
                 <option value={15}>15 minutes</option>
                 <option value={30}>30 minutes</option>
@@ -451,7 +457,7 @@ const Settings = () => {
               <select
                 value={settings.language}
                 onChange={(e) => handleSettingChange('language', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-700 bg-gray-800 text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
               >
                 <option value="en">English</option>
                 <option value="es">Español</option>
@@ -466,7 +472,7 @@ const Settings = () => {
               <select
                 value={settings.timezone}
                 onChange={(e) => handleSettingChange('timezone', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-700 bg-gray-800 text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
               >
                 <option value="America/New_York">Eastern Time (ET)</option>
                 <option value="America/Chicago">Central Time (CT)</option>

@@ -27,6 +27,7 @@ import {
   Rocket,
   Target,
   Award,
+  Trophy,
   TrendingUp,
   Star,
   Settings
@@ -183,8 +184,6 @@ const MockInterviewLab = () => {
     { icon: Trophy, label: 'Champion', unlocked: statsData?.highestScore >= 95 },
   ]
 
-  const Trophy = Award
-
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Header */}
@@ -237,7 +236,7 @@ const MockInterviewLab = () => {
 
       {/* Interview Mode Selection */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
           <Rocket className="w-6 h-6 text-primary-500" />
           Choose Your Challenge
         </h2>
@@ -259,8 +258,8 @@ const MockInterviewLab = () => {
                   <mode.icon className="w-7 h-7 text-white" />
                 </div>
                 
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{mode.title}</h3>
-                <p className="text-sm text-gray-500 mb-4">{mode.description}</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{mode.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{mode.description}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
                   <Badge variant={mode.difficulty === 'Easy' ? 'success' : mode.difficulty === 'Medium' ? 'warning' : mode.difficulty === 'Hard' ? 'danger' : 'purple'}>
@@ -291,8 +290,8 @@ const MockInterviewLab = () => {
                 <Play className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Ready to Start?</h3>
-                <p className="text-gray-500">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Ready to Start?</h3>
+                <p className="text-gray-500 dark:text-gray-400">
                   {interviewModes.find(m => m.id === selectedMode)?.title} - {interviewModes.find(m => m.id === selectedMode)?.duration}
                 </p>
               </div>
@@ -301,11 +300,11 @@ const MockInterviewLab = () => {
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setSoundEnabled(!soundEnabled)}
-                className="p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 transition-colors"
               >
                 {soundEnabled ? <Volume2 className="w-5 h-5 text-gray-600" /> : <VolumeX className="w-5 h-5 text-gray-400" />}
               </button>
-              <button className="p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
+              <button className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 transition-colors">
                 <Settings className="w-5 h-5 text-gray-600" />
               </button>
               <Button 
@@ -334,15 +333,15 @@ const MockInterviewLab = () => {
                   {recentSessions.map((session) => (
                     <div 
                       key={session.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group"
+                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors group"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-purple-100 rounded-xl flex items-center justify-center">
                           <Code2 className="w-6 h-6 text-primary-600" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-gray-900">{session.mode}</h4>
-                          <p className="text-sm text-gray-500">{session.date}</p>
+                          <h4 className="font-semibold text-gray-900 dark:text-white">{session.mode}</h4>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{session.date}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
@@ -365,7 +364,7 @@ const MockInterviewLab = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 py-8">
+                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
                   No interview sessions yet. Start your first interview above!
                 </p>
               )}
@@ -386,7 +385,7 @@ const MockInterviewLab = () => {
                   className={`p-4 rounded-xl text-center transition-all duration-300 ${
                     achievement.unlocked 
                       ? 'bg-gradient-to-br from-primary-50 to-purple-50 border border-primary-100' 
-                      : 'bg-gray-50 opacity-50'
+                      : 'bg-gray-50 dark:bg-gray-800 opacity-50'
                   }`}
                 >
                   <div className={`w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center ${
@@ -396,7 +395,7 @@ const MockInterviewLab = () => {
                   }`}>
                     <achievement.icon className={`w-5 h-5 ${achievement.unlocked ? 'text-white' : 'text-gray-400'}`} />
                   </div>
-                  <p className={`text-sm font-medium ${achievement.unlocked ? 'text-gray-900' : 'text-gray-400'}`}>
+                  <p className={`text-sm font-medium ${achievement.unlocked ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
                     {achievement.label}
                   </p>
                 </div>
@@ -406,7 +405,7 @@ const MockInterviewLab = () => {
             <div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100">
               <div className="flex items-center gap-3 mb-2">
                 <Coffee className="w-5 h-5 text-amber-500" />
-                <span className="font-semibold text-gray-900">Daily Goal</span>
+                <span className="font-semibold text-gray-900 dark:text-white">Daily Goal</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-2 bg-amber-200 rounded-full overflow-hidden">
@@ -426,8 +425,8 @@ const MockInterviewLab = () => {
             <Lightbulb className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 mb-1">Pro Tip</h3>
-            <p className="text-gray-600">
+            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Pro Tip</h3>
+            <p className="text-gray-600 dark:text-gray-400">
               Start with Speed Round to warm up, then move to Deep Dive sessions for more thorough practice. 
               Consistency is key - try to complete at least one session daily!
             </p>

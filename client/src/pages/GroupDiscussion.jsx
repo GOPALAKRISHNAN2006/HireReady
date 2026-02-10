@@ -83,8 +83,8 @@ const GroupDiscussion = () => {
   return (
     <div className="space-y-6 animate-in">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Group Discussion Practice</h1>
-        <p className="text-gray-600 mt-1">Practice GD with AI participants and get detailed feedback</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Group Discussion Practice</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Practice GD with AI participants and get detailed feedback</p>
       </div>
 
       {/* Category Filter */}
@@ -94,7 +94,7 @@ const GroupDiscussion = () => {
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             selectedCategory === 'all'
               ? 'bg-primary-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
           }`}
         >
           All Topics
@@ -106,7 +106,7 @@ const GroupDiscussion = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedCategory === cat.id
                 ? 'bg-primary-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
             {cat.name}
@@ -117,12 +117,12 @@ const GroupDiscussion = () => {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Topics List */}
         <div className="lg:col-span-2">
-          <h2 className="text-lg font-semibold mb-4">Select a Topic</h2>
+          <h2 className="text-lg font-semibold mb-4 dark:text-white">Select a Topic</h2>
           <div className="space-y-3">
             {topics.length === 0 ? (
               <Card className="p-8 text-center">
                 <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">No topics available</p>
+                <p className="text-gray-500 dark:text-gray-400">No topics available</p>
               </Card>
             ) : (
               topics.map((topic) => (
@@ -131,14 +131,14 @@ const GroupDiscussion = () => {
                   onClick={() => setSelectedTopic(topic)}
                   className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                     selectedTopic?._id === topic._id
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-primary-300'
+                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{topic.title}</h3>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{topic.description}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{topic.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{topic.description}</p>
                       <div className="flex gap-2 mt-2">
                         <Badge className={getDifficultyColor(topic.difficulty)}>
                           {topic.difficulty}
@@ -159,14 +159,14 @@ const GroupDiscussion = () => {
           {/* Selected Topic Details */}
           {selectedTopic && (
             <Card className="p-6">
-              <h3 className="font-semibold mb-4">Topic Details</h3>
-              <h4 className="text-lg font-medium text-gray-900 mb-2">{selectedTopic.title}</h4>
-              <p className="text-gray-600 text-sm mb-4">{selectedTopic.description}</p>
+              <h3 className="font-semibold mb-4 dark:text-white">Topic Details</h3>
+              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{selectedTopic.title}</h4>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{selectedTopic.description}</p>
               
               {selectedTopic.keyPoints?.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Key Points:</p>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Key Points:</p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                     {selectedTopic.keyPoints.slice(0, 4).map((point, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-primary-500">•</span>
@@ -177,7 +177,7 @@ const GroupDiscussion = () => {
                 </div>
               )}
 
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
                 <Clock className="w-4 h-4" />
                 <span>15 minutes session</span>
               </div>
@@ -192,21 +192,21 @@ const GroupDiscussion = () => {
           {/* Recent History */}
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Recent Sessions</h3>
+              <h3 className="font-semibold dark:text-white">Recent Sessions</h3>
               <Button variant="ghost" size="sm">View All</Button>
             </div>
             {history.length === 0 ? (
               <div className="text-center py-4">
                 <History className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No sessions yet</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">No sessions yet</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {history.map((session) => (
-                  <div key={session._id} className="p-3 bg-gray-50 rounded-lg">
-                    <p className="font-medium text-sm truncate">{session.topicTitle}</p>
+                  <div key={session._id} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <p className="font-medium text-sm truncate dark:text-white">{session.topicTitle}</p>
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(session.completedAt).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-1">

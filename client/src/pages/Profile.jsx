@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '../store/authStore'
+import { useSettingsStore } from '../store/settingsStore'
 import { Card, Button, Input, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import api from '../services/api'
@@ -17,15 +18,20 @@ import {
   Shield,
   Bell,
   Palette,
-  Upload
+  Upload,
+  X,
+  Plus
 } from 'lucide-react'
 
 const Profile = () => {
   const queryClient = useQueryClient()
   const { user, updateUser } = useAuthStore()
+  const settingsStore = useSettingsStore()
   const [activeTab, setActiveTab] = useState('profile')
   const fileInputRef = useRef(null)
   const [uploading, setUploading] = useState(false)
+  const [skillInput, setSkillInput] = useState('')
+  const [skills, setSkills] = useState(user?.skills || [])
   
   const [formData, setFormData] = useState({
     firstName: user?.firstName || '',
@@ -124,6 +130,7 @@ const Profile = () => {
     // Prepare data, converting experience to number if present
     const dataToSend = {
       ...formData,
+      skills,
       experience: formData.experience ? parseInt(formData.experience, 10) : undefined,
     }
     
@@ -168,10 +175,10 @@ const Profile = () => {
       {/* Header */}
       <div className="flex items-center space-x-4">
         <div className="relative">
-          <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center overflow-hidden">
+          <div className="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center overflow-hidden">
             {user?.avatar && user.avatar !== 'default-avatar.png' ? (
               <img 
-                src={user.avatar.startsWith('http') ? user.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.avatar}`} 
+                src={user.avatar.startsWith('http') ? user.avatar : user.avatar} 
                 alt={`${user?.firstName} ${user?.lastName}`} 
                 className="w-20 h-20 rounded-full object-cover"
                 onError={(e) => {
@@ -205,8 +212,8 @@ const Profile = () => {
           </button>
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{user?.firstName} {user?.lastName}</h1>
-          <p className="text-gray-500">{user?.email}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.firstName} {user?.lastName}</h1>
+          <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
           <Badge variant={user?.role === 'admin' ? 'primary' : 'success'} className="mt-1">
             {user?.role === 'admin' ? 'Administrator' : 'Member'}
           </Badge>
@@ -214,7 +221,7 @@ const Profile = () => {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex space-x-8">
           {tabs.map((tab) => (
             <button
@@ -223,7 +230,7 @@ const Profile = () => {
               className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
                   ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -306,14 +313,69 @@ const Profile = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
                 <textarea
                   value={formData.bio}
                   onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
                   rows={4}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="Tell us about yourself..."
                 />
+              </div>
+
+              {/* Skills Tag Editor */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Skills</label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm"
+                    >
+                      {skill}
+                      <button
+                        type="button"
+                        onClick={() => setSkills(skills.filter((_, i) => i !== index))}
+                        className="text-primary-500 hover:text-primary-700 dark:hover:text-primary-200"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={skillInput}
+                    onChange={(e) => setSkillInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && skillInput.trim()) {
+                        e.preventDefault()
+                        if (!skills.includes(skillInput.trim())) {
+                          setSkills([...skills, skillInput.trim()])
+                        }
+                        setSkillInput('')
+                      }
+                    }}
+                    placeholder="Type a skill and press Enter..."
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    icon={Plus}
+                    onClick={() => {
+                      if (skillInput.trim() && !skills.includes(skillInput.trim())) {
+                        setSkills([...skills, skillInput.trim()])
+                        setSkillInput('')
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">e.g. JavaScript, React, Node.js, Python</p>
               </div>
               
               <div className="flex justify-end">
@@ -379,20 +441,26 @@ const Profile = () => {
           <Card.Content>
             <div className="space-y-4">
               {[
-                { label: 'Email notifications', description: 'Receive email updates about your progress', enabled: true },
-                { label: 'Interview reminders', description: 'Get reminded about scheduled practice sessions', enabled: true },
-                { label: 'Weekly reports', description: 'Receive weekly performance summaries', enabled: false },
-                { label: 'Tips and recommendations', description: 'Get personalized improvement tips', enabled: true },
-              ].map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                { key: 'emailNotifications', label: 'Email notifications', description: 'Receive email updates about your progress' },
+                { key: 'interviewReminders', label: 'Interview reminders', description: 'Get reminded about scheduled practice sessions' },
+                { key: 'weeklyReport', label: 'Weekly reports', description: 'Receive weekly performance summaries' },
+                { key: 'marketingEmails', label: 'Tips and recommendations', description: 'Get personalized improvement tips' },
+              ].map((item) => (
+                <div key={item.key} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div>
-                    <h4 className="font-medium text-gray-900">{item.label}</h4>
-                    <p className="text-sm text-gray-500">{item.description}</p>
+                    <h4 className="font-medium text-gray-900 dark:text-gray-100">{item.label}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{item.description}</p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" defaultChecked={item.enabled} className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                  </label>
+                  <button
+                    onClick={() => settingsStore.updateSetting(item.key, !settingsStore[item.key])}
+                    className={`relative w-11 h-6 rounded-full transition-colors ${
+                      settingsStore[item.key] ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'
+                    }`}
+                  >
+                    <div className={`absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                      settingsStore[item.key] ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
                 </div>
               ))}
             </div>
@@ -409,15 +477,16 @@ const Profile = () => {
           <Card.Content>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Default Difficulty</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Default Difficulty</label>
                 <div className="flex gap-3">
                   {['easy', 'medium', 'hard'].map((level) => (
                     <button
                       key={level}
+                      onClick={() => settingsStore.updateSetting('defaultDifficulty', level)}
                       className={`px-4 py-2 rounded-lg font-medium capitalize ${
-                        level === 'medium'
+                        settingsStore.defaultDifficulty === level
                           ? 'bg-primary-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       {level}
@@ -427,30 +496,59 @@ const Profile = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Categories</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preferred Categories</label>
                 <div className="flex flex-wrap gap-2">
-                  {['DSA', 'Web Dev', 'System Design', 'Behavioral', 'Database', 'ML/AI'].map((cat) => (
-                    <Badge 
-                      key={cat} 
-                      variant={['DSA', 'Web Dev', 'Behavioral'].includes(cat) ? 'primary' : 'default'}
-                      className="cursor-pointer"
-                    >
-                      {cat}
-                    </Badge>
-                  ))}
+                  {[
+                    { key: 'dsa', label: 'DSA' },
+                    { key: 'web', label: 'Web Dev' },
+                    { key: 'system-design', label: 'System Design' },
+                    { key: 'behavioral', label: 'Behavioral' },
+                    { key: 'database', label: 'Database' },
+                    { key: 'ml', label: 'ML/AI' },
+                  ].map((cat) => {
+                    const preferredCats = settingsStore.preferredCategories || ['dsa', 'web', 'behavioral']
+                    const isSelected = preferredCats.includes(cat.key)
+                    return (
+                      <button
+                        key={cat.key}
+                        onClick={() => {
+                          const updated = isSelected
+                            ? preferredCats.filter(c => c !== cat.key)
+                            : [...preferredCats, cat.key]
+                          settingsStore.updateSetting('preferredCategories', updated)
+                        }}
+                      >
+                        <Badge 
+                          variant={isSelected ? 'primary' : 'default'}
+                          className="cursor-pointer"
+                        >
+                          {cat.label}
+                        </Badge>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Theme</label>
                 <div className="flex gap-3">
-                  <button className="w-12 h-12 bg-white border-2 border-primary-500 rounded-lg flex items-center justify-center">
+                  <button 
+                    onClick={() => settingsStore.setTheme('light')}
+                    className={`w-12 h-12 bg-white border-2 ${settingsStore.theme === 'light' ? 'border-primary-500' : 'border-gray-200'} rounded-lg flex items-center justify-center`}
+                  >
                     ☀️
                   </button>
-                  <button className="w-12 h-12 bg-gray-800 border-2 border-transparent rounded-lg flex items-center justify-center">
+                  <button 
+                    onClick={() => settingsStore.setTheme('dark')}
+                    className={`w-12 h-12 bg-gray-800 border-2 ${settingsStore.theme === 'dark' ? 'border-primary-500' : 'border-transparent'} rounded-lg flex items-center justify-center`}
+                  >
                     🌙
                   </button>
-                  <button className="w-12 h-12 bg-gradient-to-r from-white to-gray-800 border-2 border-transparent rounded-lg flex items-center justify-center">
+                  <button 
+                    onClick={() => settingsStore.setTheme('system')}
+                    className={`w-12 h-12 bg-gradient-to-r from-white to-gray-800 border-2 ${settingsStore.theme === 'system' ? 'border-primary-500' : 'border-transparent'} rounded-lg flex items-center justify-center`}
+                  >
                     🔄
                   </button>
                 </div>

@@ -29,6 +29,7 @@ const {
   validatePasswordChange 
 } = require('../middleware/validation.middleware');
 const jwtConfig = require('../config/jwt.config');
+const { sendPasswordResetEmail, sendVerificationEmail, sendWelcomeEmail, sendPasswordChangedEmail } = require('../services/email.service');
 
 /**
  * @route   POST /api/auth/register
@@ -57,6 +58,20 @@ router.post('/register', validateRegistration, asyncHandler(async (req, res) => 
     skills: skills || []
   });
 
+  // Generate email verification token
+  const verificationToken = user.generateEmailVerificationToken();
+  await user.save();
+
+  // Build verification URL
+  const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
+
+  // Send verification email
+  const emailResult = await sendVerificationEmail(email, verificationUrl, firstName);
+  
+  if (!emailResult.success) {
+    console.warn('Verification email sending failed:', emailResult.message);
+  }
+
   // Create analytics record for the user
   await Analytics.create({ user: user._id });
 
@@ -71,7 +86,7 @@ router.post('/register', validateRegistration, asyncHandler(async (req, res) => 
   // Send response
   res.status(201).json({
     success: true,
-    message: 'Registration successful! Welcome to HireReady.',
+    message: 'Registration successful! Please check your email to verify your account.',
     data: {
       user: {
         id: user._id,
@@ -79,14 +94,17 @@ router.post('/register', validateRegistration, asyncHandler(async (req, res) => 
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-        avatar: user.avatar
+        avatar: user.avatar,
+        isEmailVerified: user.isEmailVerified
       },
       tokens: {
         accessToken,
         refreshToken,
         expiresIn: jwtConfig.expiresIn
       }
-    }
+    },
+    // Include token in response for development (remove in production)
+    ...(process.env.NODE_ENV === 'development' && { verificationToken, verificationUrl })
   });
 }));
 
@@ -347,18 +365,21 @@ router.post('/forgot-password', asyncHandler(async (req, res) => {
   const resetToken = user.generatePasswordResetToken();
   await user.save();
 
-  // In production, send email with reset link
-  // For now, just return success message
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  // Build reset URL
+  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
 
-  // TODO: Implement email sending
-  console.log('Password reset URL:', resetUrl);
+  // Send password reset email
+  const emailResult = await sendPasswordResetEmail(email, resetUrl, user.firstName);
+  
+  if (!emailResult.success) {
+    console.warn('Email sending failed:', emailResult.message);
+  }
 
   res.status(200).json({
     success: true,
     message: 'If an account with that email exists, a password reset link has been sent.',
-    // Include token in response for development
-    ...(process.env.NODE_ENV === 'development' && { resetToken })
+    // Include token in response for development (remove in production)
+    ...(process.env.NODE_ENV === 'development' && { resetToken, resetUrl })
   });
 }));
 
@@ -432,6 +453,11 @@ router.put('/change-password', protect, validatePasswordChange, asyncHandler(asy
   // Update password
   user.password = newPassword;
   await user.save();
+
+  // Send password changed confirmation email
+  sendPasswordChangedEmail(user.email, user.firstName).catch(err => {
+    console.error('Failed to send password changed email:', err.message);
+  });
 
   // Generate new tokens
   const accessToken = user.generateAccessToken();
@@ -581,9 +607,66 @@ router.post('/verify-email/:token', asyncHandler(async (req, res) => {
   user.emailVerificationExpires = undefined;
   await user.save();
 
+  // Send welcome email
+  await sendWelcomeEmail(user.email, user.firstName);
+
   res.status(200).json({
     success: true,
-    message: 'Email verified successfully.'
+    message: 'Email verified successfully! Welcome to HireReady.'
+  });
+}));
+
+/**
+ * @route   POST /api/auth/resend-verification
+ * @desc    Resend email verification
+ * @access  Public
+ */
+router.post('/resend-verification', asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: 'Email is required.'
+    });
+  }
+
+  const user = await User.findByEmail(email);
+
+  if (!user) {
+    // Don't reveal if email exists or not for security
+    return res.status(200).json({
+      success: true,
+      message: 'If an account with that email exists and is not verified, a verification email has been sent.'
+    });
+  }
+
+  if (user.isEmailVerified) {
+    return res.status(400).json({
+      success: false,
+      message: 'This email is already verified.'
+    });
+  }
+
+  // Generate new verification token
+  const verificationToken = user.generateEmailVerificationToken();
+  await user.save();
+
+  // Build verification URL
+  const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
+
+  // Send verification email
+  const emailResult = await sendVerificationEmail(email, verificationUrl, user.firstName);
+  
+  if (!emailResult.success) {
+    console.warn('Verification email sending failed:', emailResult.message);
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'If an account with that email exists and is not verified, a verification email has been sent.',
+    // Include token in response for development (remove in production)
+    ...(process.env.NODE_ENV === 'development' && { verificationToken, verificationUrl })
   });
 }));
 

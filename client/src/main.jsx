@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import App from './App.jsx'
+import { SentryErrorBoundary } from './monitoring/sentry.js'
 import './index.css'
 
 // Create a client for React Query
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <SentryErrorBoundary fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Something went wrong. Please refresh.</div>}>
+          <App />
+        </SentryErrorBoundary>
         <Toaster 
           position="top-right"
           toastOptions={{

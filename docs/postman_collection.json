@@ -1,0 +1,23 @@
+{
+  "info": {
+    "name": "HireReady API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health"
+      }
+    },
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/auth/register",
+        "body": { "mode": "raw", "raw": "{ \"firstName\": \"Test\", \"lastName\": \"User\", \"email\": \"test@example.com\", \"password\": \"Password123\" }" }
+      }
+    }
+  ]
+}
