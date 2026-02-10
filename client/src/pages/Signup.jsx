@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
 import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
-import api from '../services/api'
+import api, { preWarmServer, waitForServer } from '../services/api'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
@@ -21,6 +21,11 @@ const Signup = () => {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [slowRequest, setSlowRequest] = useState(false)
   const slowTimerRef = useRef(null)
+
+  // Pre-warm the server as soon as the signup page loads
+  useEffect(() => {
+    preWarmServer()
+  }, [])
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -118,10 +123,18 @@ const Signup = () => {
     
     if (!validateForm()) return
 
-    // Detect slow request (Render cold start)
+    // Show progressive loading states
     setSlowRequest(false)
-    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
-    
+    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 3000)
+
+    // Ensure server is awake before sending the register request
+    const serverReady = await waitForServer({ silent: false })
+    if (!serverReady) {
+      clearTimeout(slowTimerRef.current)
+      setSlowRequest(false)
+      return
+    }
+
     await register({
       firstName: formData.firstName,
       lastName: formData.lastName,

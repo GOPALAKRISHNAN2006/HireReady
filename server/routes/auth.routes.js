@@ -60,28 +60,27 @@ router.post('/register', validateRegistration, asyncHandler(async (req, res) => 
 
   // Generate email verification token
   const verificationToken = user.generateEmailVerificationToken();
-  await user.save();
-
-  // Build verification URL
-  const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
-
-  // Send verification email
-  const emailResult = await sendVerificationEmail(email, verificationUrl, firstName);
-  
-  if (!emailResult.success) {
-    console.warn('Verification email sending failed:', emailResult.message);
-  }
-
-  // Create analytics record for the user
-  await Analytics.create({ user: user._id });
 
   // Generate tokens
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
 
-  // Save refresh token to user
+  // Save refresh token + verification token in a single DB write
   user.refreshToken = refreshToken;
   await user.save();
+
+  // Build verification URL
+  const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
+
+  // Send verification email in background (don't block the response)
+  sendVerificationEmail(email, verificationUrl, firstName).catch(err => {
+    console.warn('Verification email sending failed:', err.message || err);
+  });
+
+  // Create analytics record in background (don't block the response)
+  Analytics.create({ user: user._id }).catch(err => {
+    console.warn('Analytics creation failed:', err.message || err);
+  });
 
   // Send response
   res.status(201).json({

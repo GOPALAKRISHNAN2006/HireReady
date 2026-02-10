@@ -121,10 +121,10 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Stronger rate limits for auth and admin routes
+// Rate limits for auth routes (allow enough for signup + verification + retries)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10,
+  max: 30,
   message: { success: false, message: 'Too many authentication attempts, please try later.' }
 });
 app.use('/api/auth', authLimiter);

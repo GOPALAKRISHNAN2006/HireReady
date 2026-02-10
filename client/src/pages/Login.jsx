@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
 import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react'
 import toast from 'react-hot-toast'
-import api from '../services/api'
+import api, { preWarmServer } from '../services/api'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
@@ -19,6 +19,11 @@ const Login = () => {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [slowRequest, setSlowRequest] = useState(false)
   const slowTimerRef = useRef(null)
+
+  // Pre-warm the server as soon as the login page loads
+  useEffect(() => {
+    preWarmServer()
+  }, [])
 
   // Load remembered email on mount
   useEffect(() => {
