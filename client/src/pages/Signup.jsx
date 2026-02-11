@@ -19,25 +19,54 @@ const Signup = () => {
   })
   const [errors, setErrors] = useState({})
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [googleReady, setGoogleReady] = useState(false)
   const [slowRequest, setSlowRequest] = useState(false)
   const slowTimerRef = useRef(null)
+  const googleBtnRef = useRef(null)
 
   // Pre-warm the server as soon as the signup page loads
   useEffect(() => {
     preWarmServer()
   }, [])
 
-  // Initialize Google Sign-In
+  // Initialize Google Sign-In (wait for script to load)
   useEffect(() => {
-    if (GOOGLE_CLIENT_ID && window.google) {
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleCallback,
-      })
+    if (!GOOGLE_CLIENT_ID) return
+
+    const initGoogle = () => {
+      if (!window.google?.accounts?.id) return false
+      try {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        })
+        if (googleBtnRef.current) {
+          window.google.accounts.id.renderButton(googleBtnRef.current, {
+            type: 'standard',
+            size: 'large',
+            width: 400,
+          })
+        }
+        setGoogleReady(true)
+        return true
+      } catch (err) {
+        console.error('Google init error:', err)
+        return false
+      }
+    }
+
+    if (!initGoogle()) {
+      const interval = setInterval(() => {
+        if (initGoogle()) clearInterval(interval)
+      }, 300)
+      const timeout = setTimeout(() => clearInterval(interval), 10000)
+      return () => { clearInterval(interval); clearTimeout(timeout) }
     }
   }, [])
 
-  const handleGoogleCallback = async (response) => {
+  const handleGoogleResponse = async (response) => {
     setGoogleLoading(true)
     try {
       const result = await api.post('/auth/google', {
@@ -60,16 +89,35 @@ const Signup = () => {
     }
   }
 
-  const handleGoogleSignup = async () => {
+  const handleGoogleSignup = () => {
     if (!GOOGLE_CLIENT_ID) {
-      toast.error('Google Sign-In not configured. Please use email/password registration.')
+      toast.error('Google Sign-In not configured. Please contact support.')
       return
     }
-    
-    if (window.google) {
-      window.google.accounts.id.prompt()
-    } else {
-      toast.error('Google Sign-In not available. Please try again.')
+    if (!window.google?.accounts?.id) {
+      toast.error('Google Sign-In is loading. Please wait a moment and try again.')
+      return
+    }
+    try {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+      })
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          const btn = googleBtnRef.current?.querySelector('div[role="button"]')
+          if (btn) {
+            btn.click()
+          } else {
+            toast.error('Google popup was blocked. Please allow popups and try again.')
+          }
+        }
+      })
+    } catch (err) {
+      console.error('Google signup error:', err)
+      toast.error('Google Sign-In failed. Please try again.')
     }
   }
   const validateForm = () => {
@@ -309,6 +357,8 @@ const Signup = () => {
             )}
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Continue with Google</span>
           </button>
+          {/* Hidden Google button for fallback */}
+          <div ref={googleBtnRef} className="hidden" />
         </div>
       </div>
 
