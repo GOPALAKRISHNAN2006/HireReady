@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
-import { usePremium } from '../hooks/usePremium'
 import { useSettingsStore } from '../store/settingsStore'
-import { Menu, Bell, Search, User, LogOut, Settings, Brain, ChevronDown, Sun, Moon, Monitor, Crown } from 'lucide-react'
+import { Menu, Bell, Search, User, LogOut, Settings, Brain, ChevronDown, Sun, Moon, Monitor } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
 const Navbar = ({ onMenuClick }) => {
   const { user, logout } = useAuthStore()
-  const { isPremium, planName } = usePremium()
   const { theme, setTheme } = useSettingsStore()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
@@ -139,21 +137,6 @@ const Navbar = ({ onMenuClick }) => {
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                         Admin
                       </span>
-                    )}
-                    {isPremium ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                        <Crown className="w-3 h-3" />
-                        {planName}
-                      </span>
-                    ) : (
-                      <Link
-                        to="/premium"
-                        onClick={() => setDropdownOpen(false)}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
-                      >
-                        <Crown className="w-3 h-3" />
-                        Upgrade
-                      </Link>
                     )}
                   </div>
                 </div>

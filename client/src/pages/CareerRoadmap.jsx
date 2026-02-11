@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
-import PremiumGate from '../components/PremiumGate'
 import { careerApi } from '../services/featureApi'
 import toast from 'react-hot-toast'
 import { 
@@ -849,11 +848,4 @@ const CareerRoadmap = () => {
   )
 }
 
-// Wrap the page with PremiumGate — career-roadmap is a premium feature
-const CareerRoadmapWithGate = () => (
-  <PremiumGate feature="career-roadmap">
-    <CareerRoadmap />
-  </PremiumGate>
-)
-
-export default CareerRoadmapWithGate
+export default CareerRoadmap

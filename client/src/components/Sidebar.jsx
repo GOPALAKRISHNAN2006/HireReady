@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
-import { usePremium } from '../hooks/usePremium'
 import { 
   LayoutDashboard, 
   PlayCircle, 
@@ -32,13 +31,11 @@ import {
   Mic,
   CalendarCheck,
   Monitor,
-  Crown,
   Bot
 } from 'lucide-react'
 
 const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
   const { user } = useAuthStore()
-  const { isPremium } = usePremium()
   const isAdmin = user?.role === 'admin'
 
   const navItems = [
@@ -73,7 +70,6 @@ const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
     { name: 'Practice History', path: '/history', icon: History },
     { name: 'Saved Questions', path: '/saved', icon: Bookmark },
     { name: 'Notifications', path: '/notifications', icon: Bell },
-    ...(!isPremium ? [{ name: 'Go Premium', path: '/premium', icon: Crown, badge: '✨' }] : []),
     { name: 'Settings', path: '/settings', icon: Settings },
     { name: 'Help & FAQ', path: '/help', icon: HelpCircle },
   ]
@@ -220,8 +216,7 @@ const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
         {/* Bottom CTA - Only show for non-admin users */}
         {!isAdmin && (
           <div className="absolute bottom-4 left-4 right-4">
-            {isPremium ? (
-              <div className="bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-700 dark:to-purple-600 rounded-xl p-4 text-white shadow-lg dark:shadow-primary-900/30">
+            <div className="bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-700 dark:to-purple-600 rounded-xl p-4 text-white shadow-lg dark:shadow-primary-900/30">
                 <h4 className="font-semibold mb-1">Ready for Practice?</h4>
                 <p className="text-sm text-primary-100 mb-3">Start a mock interview now!</p>
                 <NavLink
@@ -232,22 +227,8 @@ const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
                   Start Interview
                 </NavLink>
               </div>
-            ) : (
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-700 dark:to-pink-700 rounded-xl p-4 text-white shadow-lg dark:shadow-purple-900/30">
-                <div className="flex items-center gap-2 mb-1">
-                  <Crown className="w-5 h-5 text-yellow-300" />
-                  <h4 className="font-semibold">Go Premium</h4>
-                </div>
-                <p className="text-sm text-purple-100 mb-3">Unlock unlimited interviews &amp; AI feedback</p>
-                <NavLink
-                  to="/premium"
-                  onClick={onClose}
-                  className="block w-full py-2 bg-white dark:bg-white/95 text-purple-600 rounded-lg text-center font-medium hover:bg-purple-50 dark:hover:bg-white transition-colors"
-                >
-                  Upgrade Now ✨
-                </NavLink>
-              </div>
-            )}
+          </div>
+        )}
           </div>
         )}
       </aside>

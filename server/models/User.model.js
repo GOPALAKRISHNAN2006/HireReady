@@ -199,24 +199,6 @@ const userSchema = new mongoose.Schema({
     }
   }],
   
-  // Subscription/Plan (for future monetization)
-  plan: {
-    type: String,
-    enum: ['free', 'basic', 'premium', 'enterprise'],
-    default: 'free'
-  },
-  planExpiresAt: Date,
-  
-  // Stripe Integration
-  stripeCustomerId: {
-    type: String,
-    select: false
-  },
-  stripeSubscriptionId: {
-    type: String,
-    select: false
-  },
-  
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

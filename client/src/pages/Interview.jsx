@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
@@ -169,27 +169,78 @@ const Interview = () => {
     }
   }, [isActive, id])
 
-  // Timer effect
+  // Ref to track whether auto-submit has fired (prevent double-fire)
+  const autoSubmittedRef = useRef(false)
+
+  // Reset auto-submit flag when interview starts
   useEffect(() => {
-    if (!isActive || isPaused || !timeRemaining) return
+    if (isActive) autoSubmittedRef.current = false
+  }, [isActive])
+
+  // Timer effect — use ref-based approach to avoid stale closures
+  const timeRemainingRef = useRef(timeRemaining)
+  useEffect(() => {
+    timeRemainingRef.current = timeRemaining
+  }, [timeRemaining])
+
+  useEffect(() => {
+    if (!isActive || isPaused || timeRemaining === null || timeRemaining <= 0) return
 
     const timer = setInterval(() => {
-      updateTime(timeRemaining - 1)
+      const currentTime = timeRemainingRef.current
+      if (currentTime === null || currentTime <= 0) {
+        clearInterval(timer)
+        return
+      }
+
+      const newTime = currentTime - 1
+      updateTime(newTime)
       
       // Show warning at 5 minutes
-      if (timeRemaining === 300 && !showTimeWarning) {
+      if (newTime === 300) {
         setShowTimeWarning(true)
-        toast.error('Only 5 minutes remaining!', { icon: '⏰' })
+        toast.error('Only 5 minutes remaining!', { icon: '⏰', id: 'time-warning-5' })
+      }
+      
+      // Show warning at 1 minute
+      if (newTime === 60) {
+        toast.error('Only 1 minute remaining! Your interview will auto-submit.', { icon: '⏰', id: 'time-warning-1', duration: 10000 })
       }
       
       // Auto-submit when time is up
-      if (timeRemaining <= 1) {
-        handleCompleteInterview()
+      if (newTime <= 0 && !autoSubmittedRef.current) {
+        autoSubmittedRef.current = true
+        clearInterval(timer)
+        toast.error('Time is up! Submitting your interview...', { icon: '⏰', duration: 5000 })
+        // Use setTimeout to ensure state updates have propagated
+        setTimeout(() => {
+          completeInterviewMutation.mutate(undefined, {
+            onSuccess: (data) => {
+              endInterview()
+              const result = data.data?.interview || data.interview || data.data || data
+              setResultData({
+                overallScore: result.overallScore || Math.round(responses.filter(r => r?.answer).length / (currentInterview?.questions?.length || 1) * 100),
+                questionsAnswered: result.questionsAnswered || responses.filter(r => r?.answer).length,
+                totalQuestions: result.totalQuestions || currentInterview?.questions?.length || 0,
+                totalDurationSeconds: result.totalDurationSeconds,
+                feedback: result.feedback || { summary: 'Great job completing your interview!' },
+                category: result.category || currentInterview?.category,
+                difficulty: result.difficulty || currentInterview?.difficulty
+              })
+              setShowResultModal(true)
+            },
+            onError: () => {
+              // Force end even if server call fails
+              endInterview()
+              navigate(`/interview/${id}/result`)
+            }
+          })
+        }, 100)
       }
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isActive, isPaused, timeRemaining])
+  }, [isActive, isPaused])  // Only depend on isActive and isPaused, not timeRemaining
 
   // Load saved answer when navigating questions
   useEffect(() => {

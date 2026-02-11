@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
 import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react'
 import toast from 'react-hot-toast'
-import api, { preWarmServer } from '../services/api'
+import api, { preWarmServer, waitForServer } from '../services/api'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
@@ -121,6 +121,14 @@ const Login = () => {
     // Detect slow request (Render cold start)
     setSlowRequest(false)
     slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
+
+    // Ensure server is awake before sending the login request
+    const serverReady = await waitForServer({ silent: false })
+    if (!serverReady) {
+      clearTimeout(slowTimerRef.current)
+      setSlowRequest(false)
+      return
+    }
     
     await login(formData.email, formData.password)
 

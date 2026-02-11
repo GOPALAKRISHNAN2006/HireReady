@@ -86,15 +86,15 @@ const Help = () => {
     },
     {
       id: 9,
-      category: 'billing',
-      question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards (Visa, MasterCard, American Express), debit cards, and PayPal. All payments are securely processed through Stripe.'
+      category: 'general',
+      question: 'Is HireReady completely free?',
+      answer: 'Yes! HireReady is completely free to use. All features including AI interviews, analytics, career roadmaps, and community access are available at no cost.'
     },
     {
       id: 10,
-      category: 'billing',
-      question: 'How do I upgrade to a premium plan?',
-      answer: 'You can upgrade from your Dashboard or Settings page. Click on "Upgrade" and select your preferred plan. Premium features include unlimited interviews, detailed analytics, priority support, and exclusive content.'
+      category: 'general',
+      question: 'How do I get the most out of HireReady?',
+      answer: 'Practice regularly with mock interviews, complete daily challenges, use the career roadmap to track your progress, and engage with the community. Consistency is key!'
     },
     {
       id: 11,
@@ -149,7 +149,7 @@ const Help = () => {
     { emoji: '🎯', label: 'Start first interview', faqId: 1 },
     { emoji: '📊', label: 'AI scoring explained', faqId: 3 },
     { emoji: '🔒', label: 'Privacy settings', faqId: 12 },
-    { emoji: '⭐', label: 'Upgrade to premium', faqId: 10 },
+    { emoji: '⭐', label: 'Getting started tips', faqId: 10 },
   ]
 
   const filteredFaqs = faqs.filter(faq => {

@@ -214,10 +214,6 @@ app.use('/api/tips', tipRoutes);
 app.use('/api/proctoring', proctoringRoutes);
 app.use('/api/communication', communicationRoutes);
 
-// Payment routes (Stripe integration)
-const paymentRoutes = require('./routes/payment.routes');
-app.use('/api/payments', paymentRoutes);
-
 // ===========================================
 // Socket.io Event Handlers
 // ===========================================

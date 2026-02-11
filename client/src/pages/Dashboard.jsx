@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '../store/authStore'
-import { usePremium } from '../hooks/usePremium'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import api from '../services/api'
@@ -27,8 +26,6 @@ import {
   Star,
   Sparkles,
   Calendar,
-  Crown,
-  ArrowRight,
   CheckCircle2,
   Circle,
   Quote,
@@ -40,7 +37,6 @@ import {
 
 const Dashboard = () => {
   const { user } = useAuthStore()
-  const { isPremium, planName } = usePremium()
   const [checklist, setChecklist] = useState(() => {
     const saved = localStorage.getItem('interview-checklist')
     return saved ? JSON.parse(saved) : [
@@ -208,31 +204,6 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-
-      {/* Premium Upgrade Banner — only show for free users */}
-      {!isPremium && (
-        <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 text-white shadow-xl">
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-          </div>
-          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                <Crown className="w-6 h-6 text-yellow-300" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">Unlock Premium Features</h3>
-                <p className="text-white/80 text-sm">AI feedback, unlimited interviews, career roadmap &amp; more</p>
-              </div>
-            </div>
-            <Link to="/premium">
-              <Button variant="secondary" className="shadow-lg hover:shadow-xl whitespace-nowrap">
-                Upgrade Now <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

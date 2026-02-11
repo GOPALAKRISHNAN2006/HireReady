@@ -112,19 +112,28 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       setScreenPermission('loading');
       setError(null);
 
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+      // Use minimal constraints for maximum browser compatibility
+      const displayMediaOptions = {
         video: {
-          displaySurface: 'monitor',
-          logicalSurface: true,
           cursor: 'always'
         },
-        audio: false,
-        preferCurrentTab: false,
-        selfBrowserSurface: 'exclude',
-        systemAudio: 'exclude',
-        surfaceSwitching: 'include',
-        monitorTypeSurfaces: 'include'
-      });
+        audio: false
+      };
+
+      // Add preferred constraints only if supported (Chrome 107+)
+      try {
+        if (navigator.mediaDevices.getDisplayMedia.length !== undefined) {
+          displayMediaOptions.video.displaySurface = 'monitor';
+          displayMediaOptions.preferCurrentTab = false;
+          displayMediaOptions.selfBrowserSurface = 'exclude';
+          displayMediaOptions.surfaceSwitching = 'include';
+          displayMediaOptions.monitorTypeSurfaces = 'include';
+        }
+      } catch {
+        // Optional constraints not supported, use basic only
+      }
+
+      const screenStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
 
       screenStreamRef.current = screenStream;
       setScreenPermission('granted');

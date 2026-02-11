@@ -157,8 +157,8 @@ const Notifications = () => {
     {
       id: 7,
       type: 'promo',
-      title: 'Limited Time Offer',
-      message: 'Upgrade to Premium and get 50% off for the first 3 months!',
+      title: 'New Feature Available',
+      message: 'Try our new Communication Assessment tool to improve your speaking skills!',
       time: '5 days ago',
       read: true,
     },

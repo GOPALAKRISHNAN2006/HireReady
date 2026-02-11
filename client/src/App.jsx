@@ -15,7 +15,6 @@ import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
-import Pricing from './pages/Pricing'
 import AdminLogin from './pages/admin/AdminLogin'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
@@ -71,8 +70,7 @@ import CompanyDetail from './pages/CompanyDetail'
 import InterviewFeedback from './pages/InterviewFeedback'
 import StudyPlan from './pages/StudyPlan'
 import MockInterviewLab from './pages/MockInterviewLab'
-import Premium from './pages/Premium'
-import PaymentSuccess from './pages/PaymentSuccess'
+
 
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -172,8 +170,6 @@ function App() {
         />
       </Route>
       
-      {/* Public Pricing Page */}
-      <Route path="/pricing" element={<Pricing />} />
       
       {/* Full Screen Interview Route - No Layout Wrapper */}
       <Route 
@@ -540,23 +536,7 @@ function App() {
           } 
         />
 
-        {/* Premium & Payment */}
-        <Route 
-          path="/premium" 
-          element={
-            <ProtectedRoute>
-              <Premium />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/payment-success" 
-          element={
-            <ProtectedRoute>
-              <PaymentSuccess />
-            </ProtectedRoute>
-          } 
-        />
+
         
         {/* Admin Routes */}
         <Route 

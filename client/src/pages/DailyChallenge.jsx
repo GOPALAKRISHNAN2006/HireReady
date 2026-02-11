@@ -137,7 +137,7 @@ const DailyChallenge = () => {
   const rewards = [
     { streak: 3, reward: '50 Bonus XP', unlocked: currentStreak >= 3 },
     { streak: 7, reward: 'Exclusive Badge', unlocked: currentStreak >= 7 },
-    { streak: 14, reward: 'Premium Question Pack', unlocked: currentStreak >= 14 },
+    { streak: 14, reward: 'Advanced Question Pack', unlocked: currentStreak >= 14 },
     { streak: 30, reward: 'Interview Coaching Session', unlocked: currentStreak >= 30 },
   ]
 
@@ -491,7 +491,7 @@ const DailyChallenge = () => {
                 {currentStreak < 7 
                   ? `${7 - currentStreak} more days to unlock the Exclusive Badge!`
                   : currentStreak < 14
-                    ? `${14 - currentStreak} more days to unlock the Premium Question Pack!`
+                    ? `${14 - currentStreak} more days to unlock the Advanced Question Pack!`
                     : 'You are doing amazing!'}
               </p>
               <div className="flex items-center justify-center gap-2">

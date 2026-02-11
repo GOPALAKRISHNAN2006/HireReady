@@ -119,18 +119,21 @@ const useProctoring = (options = {}) => {
     screenStreamRef.current = stream;
     setScreenStatus('active');
     
-    // Monitor screen share stop
+    // Monitor screen share stop — log violation when screen share ends
     if (stream) {
       const videoTrack = stream.getVideoTracks()[0];
       if (videoTrack) {
         videoTrack.onended = () => {
           setScreenStatus('stopped');
-          logViolation('screen_share_detected');
-          toast.error('Screen sharing was stopped!');
+          // Log the violation to server (logViolation requires session to be active)
+          if (proctoringSessionId && isActive) {
+            logViolation('screen_share_detected');
+          }
+          toast.error('Screen sharing was stopped! This is a violation.', { duration: 6000 });
         };
       }
     }
-  }, []);
+  }, [proctoringSessionId, isActive, logViolation]);
 
   // Start proctoring session
   const startSession = useCallback(async () => {
@@ -266,6 +269,63 @@ const useProctoring = (options = {}) => {
     }
   }, [config.audioMonitoringEnabled]);
 
+  // Detect rectangular object (phone/tablet) held near face via edge & color uniformity analysis
+  const detectPhoneInFrame = useCallback((ctx, canvas) => {
+    try {
+      const w = canvas.width;
+      const h = canvas.height;
+      // Scan the peripheral regions (sides) where a phone is typically held
+      const regions = [
+        { startX: 0, endX: Math.floor(w * 0.2), startY: Math.floor(h * 0.2), endY: Math.floor(h * 0.8) },  // left side
+        { startX: Math.floor(w * 0.8), endX: w, startY: Math.floor(h * 0.2), endY: Math.floor(h * 0.8) },  // right side
+        { startX: Math.floor(w * 0.2), endX: Math.floor(w * 0.8), startY: Math.floor(h * 0.7), endY: h },  // bottom
+      ];
+
+      const imageData = ctx.getImageData(0, 0, w, h);
+      const data = imageData.data;
+
+      for (const region of regions) {
+        let edgeCount = 0;
+        let brightPixels = 0;
+        let darkUniformPixels = 0;
+        let totalSampled = 0;
+
+        for (let y = region.startY; y < region.endY; y += 3) {
+          for (let x = region.startX; x < region.endX; x += 3) {
+            const i = (y * w + x) * 4;
+            const r = data[i], g = data[i + 1], b = data[i + 2];
+            totalSampled++;
+
+            // Detect bright screen-like glow (phone screen on)
+            if (r > 200 && g > 200 && b > 200) brightPixels++;
+            // Detect dark uniform rectangular object (phone screen off / back)
+            if (r < 40 && g < 40 && b < 40) darkUniformPixels++;
+
+            // Simple edge detection via neighbor difference
+            if (x + 3 < region.endX && y + 3 < region.endY) {
+              const ni = ((y + 3) * w + (x + 3)) * 4;
+              const diff = Math.abs(r - data[ni]) + Math.abs(g - data[ni + 1]) + Math.abs(b - data[ni + 2]);
+              if (diff > 100) edgeCount++;
+            }
+          }
+        }
+
+        if (totalSampled === 0) continue;
+        const brightRatio = brightPixels / totalSampled;
+        const darkRatio = darkUniformPixels / totalSampled;
+        const edgeRatio = edgeCount / totalSampled;
+
+        // Phone-like detection: strong edges defining a rectangle + bright screen or dark back
+        if ((brightRatio > 0.25 || darkRatio > 0.35) && edgeRatio > 0.05) {
+          return true;
+        }
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, []);
+
   // Face detection using canvas analysis (simplified but functional)
   // In production, use face-api.js or TensorFlow.js for better accuracy
   const detectFace = useCallback(() => {
@@ -277,12 +337,15 @@ const useProctoring = (options = {}) => {
 
     // Ensure video is playing
     if (video.readyState !== video.HAVE_ENOUGH_DATA) {
-      return { detected: false, faceCount: 0, confidence: 0, gazeDirection: 'unknown' };
+      return { detected: false, faceCount: 0, confidence: 0, gazeDirection: 'unknown', phoneDetected: false };
     }
 
     canvas.width = video.videoWidth || 640;
     canvas.height = video.videoHeight || 480;
     ctx.drawImage(video, 0, 0);
+
+    // Check for phone/secondary device in peripheral regions
+    const phoneDetected = detectPhoneInFrame(ctx, canvas);
 
     // Get image data for analysis
     try {
@@ -338,13 +401,17 @@ const useProctoring = (options = {}) => {
         detected,
         faceCount: detected ? 1 : 0,
         confidence,
-        gazeDirection: detected ? 'center' : 'unknown'
+        gazeDirection: detected ? 'center' : 'unknown',
+        phoneDetected
       };
     } catch (error) {
       console.error('Face detection error:', error);
-      return { detected: true, faceCount: 1, confidence: 0.8, gazeDirection: 'center' };
+      return { detected: true, faceCount: 1, confidence: 0.8, gazeDirection: 'center', phoneDetected: false };
     }
-  }, []);
+  }, [detectPhoneInFrame]);
+
+  // Phone detection consecutive counter ref
+  const consecutivePhoneRef = useRef(0);
 
   // Run face detection loop
   const runFaceDetection = useCallback(() => {
@@ -368,6 +435,19 @@ const useProctoring = (options = {}) => {
     // Multiple faces - require 3 consecutive detections to confirm
     if (detection.faceCount > 1) {
       logViolation('multiple_faces');
+    }
+
+    // Phone / secondary device detection via camera
+    if (detection.phoneDetected) {
+      consecutivePhoneRef.current++;
+      // Require 3 consecutive detections to confirm (reduce false positives)
+      if (consecutivePhoneRef.current >= 3) {
+        logViolation('phone_detected');
+        toast.error('Phone or secondary device detected! This is a violation.', { duration: 5000, id: 'phone-detected' });
+        consecutivePhoneRef.current = 0;
+      }
+    } else {
+      consecutivePhoneRef.current = Math.max(0, consecutivePhoneRef.current - 1);
     }
 
     // Gaze detection
