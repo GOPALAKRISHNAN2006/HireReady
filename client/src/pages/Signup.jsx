@@ -73,6 +73,8 @@ const Signup = () => {
         credential: response.credential,
         clientId: GOOGLE_CLIENT_ID
       })
+      alert('Google signup response: ' + JSON.stringify(result.data));
+      console.log('Google signup response:', result.data);
       if (result.data.success) {
         const { user, tokens } = result.data.data
         localStorage.setItem('accessToken', tokens.accessToken)
