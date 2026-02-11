@@ -157,32 +157,26 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Temporary email test endpoint — tries SMTP port 465 (SSL)
+// Temporary email test endpoint — uses Brevo HTTP API
 app.get('/api/test-email', async (req, res) => {
   try {
-    const nodemailer = require('nodemailer');
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      return res.json({ success: false, error: 'SMTP_USER or SMTP_PASS not set' });
+    const SibApiV3Sdk = require('@getbrevo/brevo');
+    if (!process.env.BREVO_API_KEY) {
+      return res.json({ success: false, error: 'BREVO_API_KEY not set' });
     }
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: 465,
-      secure: true, // SSL on port 465
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000,
-    });
-    await transporter.verify();
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
-      subject: 'HireReady SMTP Test (port 465)',
-      text: 'If you see this, SMTP over port 465 works on Render!'
-    });
-    res.json({ success: true, messageId: info.messageId, port: 465 });
+    const defaultClient = SibApiV3Sdk.ApiClient.instance;
+    defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    const toEmail = process.env.SMTP_USER || 'test@test.com';
+    sendSmtpEmail.sender  = { name: 'HireReady', email: toEmail };
+    sendSmtpEmail.to      = [{ email: toEmail }];
+    sendSmtpEmail.subject = 'HireReady Email Test from Render (Brevo)';
+    sendSmtpEmail.htmlContent = '<h1>It works!</h1><p>Brevo email is working on Render.</p>';
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    res.json({ success: true, messageId: data?.messageId });
   } catch (err) {
-    res.json({ success: false, error: err.message, code: err.code, port: 465 });
+    res.json({ success: false, error: err?.response?.body?.message || err.message });
   }
 });
 

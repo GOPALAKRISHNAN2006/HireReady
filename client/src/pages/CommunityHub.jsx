@@ -170,9 +170,9 @@ const CommunityHub = () => {
   const mentors = mentorsData?.map(m => ({
     name: m.user ? `${m.user.firstName} ${m.user.lastName}` : m.name || 'Mentor',
     avatar: m.user?.avatar || m.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'M')}`,
-    role: `${m.experience || 'Experienced'} @ ${m.company || 'Tech Company'}`,
-    expertise: m.specializations || ['Interview Prep'],
-    rating: m.rating || 4.5,
+    role: m.company ? `${m.experience || ''} @ ${m.company}` : (m.experience || 'Mentor'),
+    expertise: m.specializations || [],
+    rating: m.rating || 0,
     sessions: m.sessionsCompleted || 0,
     available: m.availability === 'available',
   })) || []
@@ -193,7 +193,7 @@ const CommunityHub = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-3xl p-8 text-white shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-3xl p-5 md:p-8 text-white shadow-2xl">
         <div className="absolute inset-0">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
@@ -212,23 +212,19 @@ const CommunityHub = () => {
             <Users className="w-4 h-4 mr-2" />
             Join the Community
           </div>
-          <h1 className="text-4xl font-bold mb-3">Community Hub</h1>
-          <p className="text-purple-100 text-lg max-w-2xl">
+          <h1 className="text-2xl md:text-4xl font-bold mb-3">Community Hub</h1>
+          <p className="text-purple-100 text-base md:text-lg max-w-2xl">
             Connect with fellow developers, share experiences, and learn from each other's interview journeys.
           </p>
 
-          <div className="mt-6 flex gap-6">
+          <div className="mt-6 flex flex-wrap gap-4 md:gap-6">
             <div>
-              <div className="text-3xl font-bold">25K+</div>
-              <div className="text-sm text-purple-100">Members</div>
+              <div className="text-2xl md:text-3xl font-bold">{posts.length}</div>
+              <div className="text-xs md:text-sm text-purple-100">Posts</div>
             </div>
             <div>
-              <div className="text-3xl font-bold">5K+</div>
-              <div className="text-sm text-purple-100">Active Today</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold">100+</div>
-              <div className="text-sm text-purple-100">Mentors</div>
+              <div className="text-2xl md:text-3xl font-bold">{mentors.length}</div>
+              <div className="text-xs md:text-sm text-purple-100">Mentors</div>
             </div>
           </div>
         </div>
@@ -358,13 +354,13 @@ const CommunityHub = () => {
             <div className="space-y-4">
               {mentors.length > 0 ? mentors.map((mentor, index) => (
                 <Card key={index} hover>
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
                     <img 
                       src={mentor.avatar} 
                       alt={mentor.name}
                       className="w-16 h-16 rounded-2xl object-cover"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-bold text-gray-900 dark:text-white">{mentor.name}</h3>
                         {mentor.available ? (
@@ -383,18 +379,20 @@ const CommunityHub = () => {
                         ))}
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-amber-500">
-                          <Star className="w-4 h-4 fill-current" />
-                          <span className="font-medium">{mentor.rating}</span>
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4 text-sm">
+                          <div className="flex items-center gap-1 text-amber-500">
+                            <Star className="w-4 h-4 fill-current" />
+                            <span className="font-medium">{mentor.rating}</span>
+                          </div>
+                          <span className="text-gray-400">|</span>
+                          <span className="text-gray-500 dark:text-gray-400">{mentor.sessions} sessions</span>
                         </div>
-                        <span className="text-gray-400">|</span>
-                        <span className="text-gray-500 dark:text-gray-400">{mentor.sessions} sessions</span>
+                        <Button size="sm" variant={mentor.available ? 'primary' : 'outline'} disabled={!mentor.available}>
+                          {mentor.available ? 'Book' : 'Notify Me'}
+                        </Button>
                       </div>
                     </div>
-                    <Button variant={mentor.available ? 'primary' : 'outline'} disabled={!mentor.available}>
-                      {mentor.available ? 'Book Session' : 'Notify Me'}
-                    </Button>
                   </div>
                 </Card>
               )) : (

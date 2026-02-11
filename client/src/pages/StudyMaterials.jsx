@@ -82,85 +82,85 @@ const StudyMaterials = () => {
       id: 1, title: 'Complete Guide to Data Structures',
       description: 'Master arrays, linked lists, trees, graphs, and more with detailed explanations, visual diagrams, and real interview examples.',
       category: 'dsa', type: 'article', duration: '45 min read', difficulty: 'beginner',
-      rating: 4.8, reviews: 234, saved: true, progress: 60,
-      tags: ['Arrays', 'Trees', 'Graphs'], author: 'Tech Interview Pro',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Arrays', 'Trees', 'Graphs'], author: 'HireReady',
     },
     {
       id: 2, title: 'Dynamic Programming Patterns',
       description: 'Learn the most common DP patterns used in coding interviews with step-by-step visual solutions and complexity analysis.',
-      category: 'dsa', type: 'video', duration: '2h 30min', difficulty: 'intermediate',
-      rating: 4.9, reviews: 456, saved: false, progress: 0,
-      tags: ['Memoization', 'Tabulation', 'Patterns'], author: 'Algorithm Academy',
+      category: 'dsa', type: 'article', duration: '60 min read', difficulty: 'intermediate',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Memoization', 'Tabulation', 'Patterns'], author: 'HireReady',
     },
     {
       id: 3, title: 'Big O Notation Cheat Sheet',
-      description: 'Quick reference for time and space complexity of common algorithms and data structures. Print-friendly format.',
+      description: 'Quick reference for time and space complexity of common algorithms and data structures.',
       category: 'dsa', type: 'cheatsheet', duration: '5 min read', difficulty: 'beginner',
-      rating: 4.7, reviews: 189, saved: true, progress: 100,
-      tags: ['Complexity', 'Quick Reference'], author: 'CS Fundamentals',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Complexity', 'Quick Reference'], author: 'HireReady',
     },
     {
       id: 4, title: 'System Design Interview Guide',
       description: 'Complete roadmap for system design interviews including distributed systems, load balancing, caching, and database sharding.',
       category: 'system-design', type: 'course', duration: '8 hours', difficulty: 'advanced',
-      rating: 4.9, reviews: 567, saved: false, progress: 25,
-      tags: ['Distributed Systems', 'Scalability', 'Architecture'], author: 'System Design Hub',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Distributed Systems', 'Scalability', 'Architecture'], author: 'HireReady',
     },
     {
       id: 5, title: 'Designing a URL Shortener',
-      description: 'Step-by-step guide to designing a URL shortening service like bit.ly. Covers API design, database schema, and caching.',
+      description: 'Step-by-step guide to designing a URL shortening service. Covers API design, database schema, and caching.',
       category: 'system-design', type: 'article', duration: '30 min read', difficulty: 'intermediate',
-      rating: 4.6, reviews: 123, saved: false, progress: 0,
-      tags: ['API Design', 'Hashing', 'Caching'], author: 'Design Patterns Blog',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['API Design', 'Hashing', 'Caching'], author: 'HireReady',
     },
     {
       id: 6, title: 'CAP Theorem Explained',
       description: 'Understanding consistency, availability, and partition tolerance in distributed systems with real-world examples.',
-      category: 'system-design', type: 'video', duration: '45 min', difficulty: 'intermediate',
-      rating: 4.8, reviews: 234, saved: true, progress: 100,
-      tags: ['Distributed Systems', 'Theory'], author: 'Distributed Computing 101',
+      category: 'system-design', type: 'article', duration: '25 min read', difficulty: 'intermediate',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Distributed Systems', 'Theory'], author: 'HireReady',
     },
     {
       id: 7, title: 'STAR Method Mastery',
-      description: 'Learn to structure your behavioral interview answers effectively using the STAR framework with 20+ example responses.',
+      description: 'Learn to structure your behavioral interview answers effectively using the STAR framework with example responses.',
       category: 'behavioral', type: 'article', duration: '20 min read', difficulty: 'beginner',
-      rating: 4.5, reviews: 345, saved: false, progress: 80,
-      tags: ['STAR Method', 'Storytelling'], author: 'Career Coach Pro',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['STAR Method', 'Storytelling'], author: 'HireReady',
     },
     {
       id: 8, title: 'Top 50 Behavioral Questions',
-      description: 'Most frequently asked behavioral questions at FAANG with sample answers and evaluation criteria.',
+      description: 'Most frequently asked behavioral questions at top tech companies with sample answers and evaluation criteria.',
       category: 'behavioral', type: 'cheatsheet', duration: '15 min read', difficulty: 'beginner',
-      rating: 4.7, reviews: 456, saved: true, progress: 0,
-      tags: ['FAANG', 'Common Questions'], author: 'Interview Prep Hub',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Common Questions', 'Interview Prep'], author: 'HireReady',
     },
     {
       id: 9, title: 'SQL Query Optimization',
-      description: 'Techniques to write efficient SQL queries and understand query execution plans, indexing strategies, and join optimization.',
+      description: 'Techniques to write efficient SQL queries — query execution plans, indexing strategies, and join optimization.',
       category: 'database', type: 'course', duration: '4 hours', difficulty: 'intermediate',
-      rating: 4.6, reviews: 178, saved: false, progress: 0,
-      tags: ['SQL', 'Performance', 'Indexing'], author: 'DB Masters',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['SQL', 'Performance', 'Indexing'], author: 'HireReady',
     },
     {
       id: 10, title: 'NoSQL vs SQL: When to Use What',
       description: 'Comprehensive comparison of relational and non-relational databases with decision frameworks and use cases.',
       category: 'database', type: 'article', duration: '25 min read', difficulty: 'intermediate',
-      rating: 4.4, reviews: 89, saved: false, progress: 0,
-      tags: ['NoSQL', 'SQL', 'Comparison'], author: 'Data Engineering Weekly',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['NoSQL', 'SQL', 'Comparison'], author: 'HireReady',
     },
     {
       id: 11, title: 'Docker & Kubernetes Fundamentals',
-      description: 'Learn containerization and orchestration from scratch. Includes hands-on labs and deployment exercises.',
+      description: 'Learn containerization and orchestration from scratch. Covers Docker basics, K8s pods, services, and deployments.',
       category: 'devops', type: 'course', duration: '6 hours', difficulty: 'intermediate',
-      rating: 4.8, reviews: 345, saved: true, progress: 40,
-      tags: ['Docker', 'Kubernetes', 'Containers'], author: 'Cloud Native Academy',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Docker', 'Kubernetes', 'Containers'], author: 'HireReady',
     },
     {
       id: 12, title: 'Machine Learning Interview Prep',
-      description: 'Key ML concepts and algorithms you need to know for interviews. Covers supervised, unsupervised, and deep learning.',
+      description: 'Key ML concepts and algorithms for interviews. Covers supervised, unsupervised, and deep learning fundamentals.',
       category: 'ml', type: 'article', duration: '40 min read', difficulty: 'advanced',
-      rating: 4.7, reviews: 167, saved: false, progress: 0,
-      tags: ['Neural Networks', 'Classification', 'NLP'], author: 'ML Interview Guide',
+      rating: 0, reviews: 0, saved: false, progress: 0,
+      tags: ['Neural Networks', 'Classification', 'NLP'], author: 'HireReady',
     },
   ]
 
@@ -229,7 +229,7 @@ const StudyMaterials = () => {
               Articles, videos, cheat sheets, and comprehensive courses — everything to ace your next interview.
             </p>
           </div>
-          <div className="flex gap-3 md:gap-4">
+          <div className="flex flex-wrap gap-3 md:gap-4">
             {[
               { label: 'Total', value: materials.length, icon: BookOpen },
               { label: 'Done', value: completedCount, icon: CheckCircle },
@@ -430,11 +430,13 @@ const StudyMaterials = () => {
                   <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold ${diffConfig.color}`}>
                     <span>{diffConfig.icon}</span> {diffConfig.label}
                   </span>
-                  <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                    <Star className="w-3.5 h-3.5 text-amber-400 fill-current" />
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">{material.rating}</span>
-                    <span>({material.reviews})</span>
-                  </span>
+                  {material.rating > 0 && (
+                    <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                      <Star className="w-3.5 h-3.5 text-amber-400 fill-current" />
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">{material.rating}</span>
+                      <span>({material.reviews})</span>
+                    </span>
+                  )}
                   {material.author && (
                     <span className="text-xs text-gray-400 dark:text-gray-500 truncate">by {material.author}</span>
                   )}

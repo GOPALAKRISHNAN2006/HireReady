@@ -150,7 +150,7 @@ const InterviewTips = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-8 text-white shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-5 md:p-8 text-white shadow-2xl">
         <div className="absolute inset-0">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
@@ -172,24 +172,16 @@ const InterviewTips = () => {
             <Lightbulb className="w-4 h-4 mr-2" />
             Expert Insights
           </div>
-          <h1 className="text-4xl font-bold mb-3">Interview Tips & Tricks</h1>
-          <p className="text-orange-100 text-lg max-w-2xl">
+          <h1 className="text-2xl md:text-4xl font-bold mb-3">Interview Tips & Tricks</h1>
+          <p className="text-orange-100 text-base md:text-lg max-w-2xl">
             Curated advice from top tech professionals to help you ace your interviews.
           </p>
 
           {/* Stats */}
-          <div className="mt-6 flex gap-6">
+          <div className="mt-6 flex flex-wrap gap-4 md:gap-6">
             <div>
-              <div className="text-3xl font-bold">{tips.length}+</div>
-              <div className="text-sm text-orange-100">Expert Tips</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold">50k+</div>
-              <div className="text-sm text-orange-100">Candidates Helped</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold">95%</div>
-              <div className="text-sm text-orange-100">Found Helpful</div>
+              <div className="text-2xl md:text-3xl font-bold">{tips.length}</div>
+              <div className="text-xs md:text-sm text-orange-100">Expert Tips</div>
             </div>
           </div>
         </div>

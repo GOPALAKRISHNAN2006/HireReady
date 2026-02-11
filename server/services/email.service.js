@@ -4,55 +4,67 @@
  * ===========================================
  * 
  * Handles sending emails for password reset, verification, etc.
- * Uses Resend HTTP API (works on Render free tier where SMTP is blocked).
+ * Uses Brevo (formerly Sendinblue) HTTP API — works on Render free tier
+ * where SMTP ports are blocked. Free: 300 emails/day to ANY recipient.
+ * 
+ * Required env var: BREVO_API_KEY
+ * Optional env var: EMAIL_FROM (defaults to your SMTP_USER / Gmail)
  */
 
-const { Resend } = require('resend');
+const SibApiV3Sdk = require('@getbrevo/brevo');
 
-// Sender address - use verified domain or Resend's onboarding address
-const FROM_EMAIL = process.env.EMAIL_FROM || 'HireReady <onboarding@resend.dev>';
+// Sender — use the Gmail that's already verified, or override with EMAIL_FROM
+const FROM_EMAIL = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@hireready.app';
+const FROM_NAME  = 'HireReady';
 
 /**
- * Get Resend client instance
+ * Get configured Brevo API instance
  */
-const getResendClient = () => {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('⚠️ RESEND_API_KEY not configured. Emails will not be sent.');
+const getBrevoClient = () => {
+  if (!process.env.BREVO_API_KEY) {
+    console.warn('⚠️ BREVO_API_KEY not configured. Emails will not be sent.');
     return null;
   }
-  return new Resend(process.env.RESEND_API_KEY);
+  const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+  apiInstance.authentications = undefined;          // SDK quirk
+  const apiKey = apiInstance.authentications        // reset default auth
+    ? apiInstance.authentications['api-key']
+    : null;
+  
+  // Use setApiKey helper provided by the SDK
+  const client = new SibApiV3Sdk.TransactionalEmailsApi();
+  const defaultClient = SibApiV3Sdk.ApiClient.instance;
+  const apiKeyAuth = defaultClient.authentications['api-key'];
+  apiKeyAuth.apiKey = process.env.BREVO_API_KEY;
+  return client;
 };
 
 /**
- * Generic send email helper
+ * Generic send email helper via Brevo
  */
 const sendEmail = async ({ to, subject, html, text }) => {
-  const resend = getResendClient();
+  const client = getBrevoClient();
   
-  if (!resend) {
+  if (!client) {
     console.log('📧 Email would be sent to:', to, '| Subject:', subject);
     return { success: false, message: 'Email service not configured' };
   }
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: [to],
-      subject,
-      html,
-      text,
-    });
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.sender  = { name: FROM_NAME, email: FROM_EMAIL };
+    sendSmtpEmail.to      = [{ email: to }];
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
+    if (text) sendSmtpEmail.textContent = text;
 
-    if (error) {
-      console.error('❌ Resend API error:', error.message);
-      return { success: false, message: error.message };
-    }
-
-    console.log('✅ Email sent to:', to, '| ID:', data.id);
-    return { success: true, message: 'Email sent successfully', id: data.id };
+    const data = await client.sendTransacEmail(sendSmtpEmail);
+    console.log('✅ Email sent to:', to, '| MessageId:', data?.messageId);
+    return { success: true, message: 'Email sent successfully', id: data?.messageId };
   } catch (error) {
-    console.error('❌ Error sending email:', error.message);
-    return { success: false, message: error.message };
+    const errMsg = error?.response?.body?.message || error?.message || 'Unknown error';
+    console.error('❌ Brevo API error:', errMsg);
+    return { success: false, message: errMsg };
   }
 };
 
