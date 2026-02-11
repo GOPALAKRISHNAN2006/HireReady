@@ -73,14 +73,11 @@ const Signup = () => {
         credential: response.credential,
         clientId: GOOGLE_CLIENT_ID
       })
-      alert('Google signup response: ' + JSON.stringify(result.data));
-      console.log('Google signup response:', result.data);
       if (result.data.success) {
         const { user, tokens } = result.data.data
         localStorage.setItem('accessToken', tokens.accessToken)
         localStorage.setItem('refreshToken', tokens.refreshToken)
         setUser(user)
-        toast.success(result.data.message)
         window.location.replace('/dashboard')
       } else {
         toast.error(result.data.message || 'Google sign-up failed. Please try again.')
