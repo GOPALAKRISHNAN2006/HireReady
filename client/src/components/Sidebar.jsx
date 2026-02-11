@@ -229,8 +229,6 @@ const Sidebar = ({ isOpen, onClose, onOpenChat }) => {
               </div>
           </div>
         )}
-          </div>
-        )}
       </aside>
     </>
   )
