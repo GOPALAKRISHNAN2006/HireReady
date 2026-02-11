@@ -81,7 +81,6 @@ const Login = () => {
         credential: response.credential,
         clientId: GOOGLE_CLIENT_ID
       })
-      
       if (result.data.success) {
         const { user, tokens } = result.data.data
         localStorage.setItem('accessToken', tokens.accessToken)
@@ -89,6 +88,8 @@ const Login = () => {
         setUser(user)
         toast.success(result.data.message)
         window.location.href = '/dashboard'
+      } else {
+        toast.error(result.data.message || 'Google sign-in failed. Please try again.')
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Google sign-in failed. Please try again.')
