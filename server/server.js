@@ -157,37 +157,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Temporary email test endpoint — uses Brevo REST API
-app.get('/api/test-email', async (req, res) => {
-  try {
-    if (!process.env.BREVO_API_KEY) {
-      return res.json({ success: false, error: 'BREVO_API_KEY not set' });
-    }
-    const toEmail = process.env.SMTP_USER || 'test@test.com';
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: { name: 'HireReady', email: toEmail },
-        to: [{ email: toEmail }],
-        subject: 'HireReady Email Test from Render (Brevo)',
-        htmlContent: '<h1>It works!</h1><p>Brevo email is working on Render.</p>',
-      }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      return res.json({ success: false, error: data.message || JSON.stringify(data) });
-    }
-    res.json({ success: true, messageId: data.messageId });
-  } catch (err) {
-    res.json({ success: false, error: err.message });
-  }
-});
-
 // Health check endpoint (detailed - for monitoring)
 app.get('/health', async (req, res) => {
   const mongoose = require('mongoose');
