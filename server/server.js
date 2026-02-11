@@ -157,26 +157,34 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Temporary email test endpoint — uses Brevo HTTP API
+// Temporary email test endpoint — uses Brevo REST API
 app.get('/api/test-email', async (req, res) => {
   try {
-    const SibApiV3Sdk = require('@getbrevo/brevo');
     if (!process.env.BREVO_API_KEY) {
       return res.json({ success: false, error: 'BREVO_API_KEY not set' });
     }
-    const defaultClient = SibApiV3Sdk.ApiClient.instance;
-    defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
-    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     const toEmail = process.env.SMTP_USER || 'test@test.com';
-    sendSmtpEmail.sender  = { name: 'HireReady', email: toEmail };
-    sendSmtpEmail.to      = [{ email: toEmail }];
-    sendSmtpEmail.subject = 'HireReady Email Test from Render (Brevo)';
-    sendSmtpEmail.htmlContent = '<h1>It works!</h1><p>Brevo email is working on Render.</p>';
-    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    res.json({ success: true, messageId: data?.messageId });
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        sender: { name: 'HireReady', email: toEmail },
+        to: [{ email: toEmail }],
+        subject: 'HireReady Email Test from Render (Brevo)',
+        htmlContent: '<h1>It works!</h1><p>Brevo email is working on Render.</p>',
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return res.json({ success: false, error: data.message || JSON.stringify(data) });
+    }
+    res.json({ success: true, messageId: data.messageId });
   } catch (err) {
-    res.json({ success: false, error: err?.response?.body?.message || err.message });
+    res.json({ success: false, error: err.message });
   }
 });
 

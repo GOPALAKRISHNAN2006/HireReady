@@ -11,60 +11,50 @@
  * Optional env var: EMAIL_FROM (defaults to your SMTP_USER / Gmail)
  */
 
-const SibApiV3Sdk = require('@getbrevo/brevo');
-
 // Sender — use the Gmail that's already verified, or override with EMAIL_FROM
 const FROM_EMAIL = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@hireready.app';
 const FROM_NAME  = 'HireReady';
 
 /**
- * Get configured Brevo API instance
- */
-const getBrevoClient = () => {
-  if (!process.env.BREVO_API_KEY) {
-    console.warn('⚠️ BREVO_API_KEY not configured. Emails will not be sent.');
-    return null;
-  }
-  const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-  apiInstance.authentications = undefined;          // SDK quirk
-  const apiKey = apiInstance.authentications        // reset default auth
-    ? apiInstance.authentications['api-key']
-    : null;
-  
-  // Use setApiKey helper provided by the SDK
-  const client = new SibApiV3Sdk.TransactionalEmailsApi();
-  const defaultClient = SibApiV3Sdk.ApiClient.instance;
-  const apiKeyAuth = defaultClient.authentications['api-key'];
-  apiKeyAuth.apiKey = process.env.BREVO_API_KEY;
-  return client;
-};
-
-/**
- * Generic send email helper via Brevo
+ * Generic send email helper via Brevo REST API
  */
 const sendEmail = async ({ to, subject, html, text }) => {
-  const client = getBrevoClient();
-  
-  if (!client) {
-    console.log('📧 Email would be sent to:', to, '| Subject:', subject);
+  if (!process.env.BREVO_API_KEY) {
+    console.log('📧 BREVO_API_KEY not set. Email would be sent to:', to, '| Subject:', subject);
     return { success: false, message: 'Email service not configured' };
   }
 
   try {
-    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-    sendSmtpEmail.sender  = { name: FROM_NAME, email: FROM_EMAIL };
-    sendSmtpEmail.to      = [{ email: to }];
-    sendSmtpEmail.subject = subject;
-    sendSmtpEmail.htmlContent = html;
-    if (text) sendSmtpEmail.textContent = text;
+    const body = {
+      sender: { name: FROM_NAME, email: FROM_EMAIL },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+    };
+    if (text) body.textContent = text;
 
-    const data = await client.sendTransacEmail(sendSmtpEmail);
-    console.log('✅ Email sent to:', to, '| MessageId:', data?.messageId);
-    return { success: true, message: 'Email sent successfully', id: data?.messageId };
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error('❌ Brevo API error:', data.message || JSON.stringify(data));
+      return { success: false, message: data.message || 'Brevo API error' };
+    }
+
+    console.log('✅ Email sent to:', to, '| MessageId:', data.messageId);
+    return { success: true, message: 'Email sent successfully', id: data.messageId };
   } catch (error) {
-    const errMsg = error?.response?.body?.message || error?.message || 'Unknown error';
-    console.error('❌ Brevo API error:', errMsg);
-    return { success: false, message: errMsg };
+    console.error('❌ Error sending email:', error.message);
+    return { success: false, message: error.message };
   }
 };
 
