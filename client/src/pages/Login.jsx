@@ -87,7 +87,7 @@ const Login = () => {
         localStorage.setItem('refreshToken', tokens.refreshToken)
         setUser(user)
         toast.success(result.data.message)
-        window.location.href = '/dashboard'
+        window.location.replace('/dashboard')
       } else {
         toast.error(result.data.message || 'Google sign-in failed. Please try again.')
       }
