@@ -157,24 +157,32 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Temporary email test endpoint (remove after confirming email works)
+// Temporary email test endpoint — tries SMTP port 465 (SSL)
 app.get('/api/test-email', async (req, res) => {
   try {
-    const { Resend } = require('resend');
-    if (!process.env.RESEND_API_KEY) {
-      return res.json({ success: false, error: 'RESEND_API_KEY not set' });
+    const nodemailer = require('nodemailer');
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      return res.json({ success: false, error: 'SMTP_USER or SMTP_PASS not set' });
     }
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const { data, error } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || 'HireReady <onboarding@resend.dev>',
-      to: [process.env.SMTP_USER || 'test@test.com'],
-      subject: 'HireReady Email Test from Render',
-      html: '<h1>It works!</h1><p>Email sending is working on Render.</p>'
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: 465,
+      secure: true, // SSL on port 465
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
     });
-    if (error) return res.json({ success: false, error: error.message });
-    res.json({ success: true, messageId: data.id });
+    await transporter.verify();
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_USER,
+      subject: 'HireReady SMTP Test (port 465)',
+      text: 'If you see this, SMTP over port 465 works on Render!'
+    });
+    res.json({ success: true, messageId: info.messageId, port: 465 });
   } catch (err) {
-    res.json({ success: false, error: err.message });
+    res.json({ success: false, error: err.message, code: err.code, port: 465 });
   }
 });
 
