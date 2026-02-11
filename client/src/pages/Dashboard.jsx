@@ -298,67 +298,6 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Weekly Activity Heatmap */}
-      <Card>
-        <Card.Header>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
-                <Calendar className="w-4 h-4 text-white" />
-              </div>
-              <Card.Title>This Week's Activity</Card.Title>
-            </div>
-            <Link to="/analytics" className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 flex items-center">
-              Full Analytics <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-        </Card.Header>
-        <Card.Content>
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
-              const today = new Date().getDay()
-              const adjustedToday = today === 0 ? 6 : today - 1 // Monday = 0
-              const isToday = i === adjustedToday
-              const isPast = i < adjustedToday
-              // Simulate activity from recent interviews
-              const activity = recentInterviews.filter(interview => {
-                const d = new Date(interview.createdAt)
-                const interviewDay = d.getDay() === 0 ? 6 : d.getDay() - 1
-                return interviewDay === i
-              }).length
-              const intensity = activity === 0 ? 0 : activity === 1 ? 1 : activity === 2 ? 2 : 3
-              const colors = [
-                'bg-gray-100 dark:bg-gray-700',
-                'bg-emerald-200 dark:bg-emerald-800',
-                'bg-emerald-400 dark:bg-emerald-600',
-                'bg-emerald-600 dark:bg-emerald-400',
-              ]
-              return (
-                <div key={day} className="text-center">
-                  <p className={`text-xs font-medium mb-2 ${isToday ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`}>{day}</p>
-                  <div className={`w-full aspect-square rounded-xl ${colors[intensity]} ${isToday ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-800' : ''} transition-all duration-200 flex items-center justify-center`}>
-                    {activity > 0 && <span className="text-xs font-bold text-white dark:text-gray-900">{activity}</span>}
-                    {isToday && activity === 0 && <span className="text-xs text-gray-400 dark:text-gray-500">Today</span>}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-          <div className="flex items-center justify-end gap-2 mt-4">
-            <span className="text-xs text-gray-500 dark:text-gray-400">Less</span>
-            {[0, 1, 2, 3].map(level => (
-              <div key={level} className={`w-4 h-4 rounded-sm ${
-                level === 0 ? 'bg-gray-100 dark:bg-gray-700' :
-                level === 1 ? 'bg-emerald-200 dark:bg-emerald-800' :
-                level === 2 ? 'bg-emerald-400 dark:bg-emerald-600' :
-                'bg-emerald-600 dark:bg-emerald-400'
-              }`} />
-            ))}
-            <span className="text-xs text-gray-500 dark:text-gray-400">More</span>
-          </div>
-        </Card.Content>
-      </Card>
-
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Recent Interviews */}
         <div className="lg:col-span-2">
