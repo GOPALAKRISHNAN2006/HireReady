@@ -160,34 +160,21 @@ app.get('/api/health', (req, res) => {
 // Temporary email test endpoint (remove after confirming email works)
 app.get('/api/test-email', async (req, res) => {
   try {
-    const nodemailer = require('nodemailer');
-    const smtpConfig = {
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT) || 587,
-      secure: false,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-    };
-
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      return res.json({ success: false, error: 'SMTP_USER or SMTP_PASS not set' });
+    const { Resend } = require('resend');
+    if (!process.env.RESEND_API_KEY) {
+      return res.json({ success: false, error: 'RESEND_API_KEY not set' });
     }
-
-    const transporter = nodemailer.createTransport(smtpConfig);
-    await transporter.verify();
-    
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER, // send to self
-      subject: 'HireReady Email Test',
-      text: 'If you receive this, email sending works on Render!'
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { data, error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'HireReady <onboarding@resend.dev>',
+      to: [process.env.SMTP_USER || 'test@test.com'],
+      subject: 'HireReady Email Test from Render',
+      html: '<h1>It works!</h1><p>Email sending is working on Render.</p>'
     });
-    
-    res.json({ success: true, messageId: info.messageId, smtpUser: process.env.SMTP_USER });
+    if (error) return res.json({ success: false, error: error.message });
+    res.json({ success: true, messageId: data.id });
   } catch (err) {
-    res.json({ success: false, error: err.message, code: err.code });
+    res.json({ success: false, error: err.message });
   }
 });
 

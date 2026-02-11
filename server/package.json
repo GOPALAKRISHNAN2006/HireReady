@@ -39,6 +39,7 @@
     "natural": "^6.10.4",
     "nodemailer": "^7.0.13",
     "openai": "^4.24.1",
+    "resend": "^6.9.2",
     "socket.io": "^4.6.1",
     "stripe": "^14.25.0",
     "uuid": "^9.0.0"
