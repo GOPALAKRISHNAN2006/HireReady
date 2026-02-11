@@ -73,7 +73,6 @@ const Signup = () => {
         credential: response.credential,
         clientId: GOOGLE_CLIENT_ID
       })
-      
       if (result.data.success) {
         const { user, tokens } = result.data.data
         localStorage.setItem('accessToken', tokens.accessToken)
@@ -81,6 +80,8 @@ const Signup = () => {
         setUser(user)
         toast.success(result.data.message)
         window.location.href = '/dashboard'
+      } else {
+        toast.error(result.data.message || 'Google sign-up failed. Please try again.')
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Google sign-up failed. Please try again.')
