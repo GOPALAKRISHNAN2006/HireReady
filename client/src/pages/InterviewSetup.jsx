@@ -176,7 +176,7 @@ const InterviewSetup = () => {
               <Card.Description>Select the topic area you want to practice</Card.Description>
             </Card.Header>
             <Card.Content>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {categories.map((category) => (
                   <button
                     key={category.id}
@@ -272,7 +272,7 @@ const InterviewSetup = () => {
                 </Card.Title>
               </Card.Header>
               <Card.Content>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {questionCounts.map((count) => (
                     <button
                       key={count}
@@ -301,7 +301,7 @@ const InterviewSetup = () => {
                 </Card.Title>
               </Card.Header>
               <Card.Content>
-                <div className="grid grid-cols-5 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
                   {timeLimits.map((time) => (
                     <button
                       key={time.label}

@@ -783,20 +783,20 @@ const Interview = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl font-bold text-green-600">
                   {resultData?.questionsAnswered || 0}
                 </div>
                 <div className="text-xs text-green-700">Answered</div>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl font-bold text-blue-600">
                   {resultData?.totalQuestions || 0}
                 </div>
                 <div className="text-xs text-blue-700">Total</div>
               </div>
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center">
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-3 sm:p-4 text-center">
                 <div className="text-2xl font-bold text-purple-600">
                   {resultData?.totalDurationSeconds 
                     ? `${Math.floor(resultData.totalDurationSeconds / 60)}m`

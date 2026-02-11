@@ -25,7 +25,7 @@ const MainLayout = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenChat={() => setChatOpen(true)} />
         
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
+        <main className="flex-1 p-4 sm:p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

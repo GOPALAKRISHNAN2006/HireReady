@@ -275,7 +275,7 @@ const Login = () => {
 
       {/* Bottom feature highlights */}
       <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <div className="text-center group">
             <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">🎯</span>

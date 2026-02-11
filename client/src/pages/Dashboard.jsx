@@ -314,7 +314,7 @@ const Dashboard = () => {
           </div>
         </Card.Header>
         <Card.Content>
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-3">
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
               const today = new Date().getDay()
               const adjustedToday = today === 0 ? 6 : today - 1 // Monday = 0

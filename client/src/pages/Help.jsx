@@ -337,7 +337,7 @@ const Help = () => {
       </div>
 
       {/* Quick stats */}
-      <div className="grid grid-cols-3 gap-4 pb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pb-4">
         <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
           <div className="text-2xl font-bold text-gray-900 dark:text-white">&lt; 2h</div>
           <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Avg. Response Time</div>
