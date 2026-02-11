@@ -157,6 +157,40 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Temporary email test endpoint (remove after confirming email works)
+app.get('/api/test-email', async (req, res) => {
+  try {
+    const nodemailer = require('nodemailer');
+    const smtpConfig = {
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    };
+
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      return res.json({ success: false, error: 'SMTP_USER or SMTP_PASS not set' });
+    }
+
+    const transporter = nodemailer.createTransport(smtpConfig);
+    await transporter.verify();
+    
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_USER, // send to self
+      subject: 'HireReady Email Test',
+      text: 'If you receive this, email sending works on Render!'
+    });
+    
+    res.json({ success: true, messageId: info.messageId, smtpUser: process.env.SMTP_USER });
+  } catch (err) {
+    res.json({ success: false, error: err.message, code: err.code });
+  }
+});
+
 // Health check endpoint (detailed - for monitoring)
 app.get('/health', async (req, res) => {
   const mongoose = require('mongoose');
