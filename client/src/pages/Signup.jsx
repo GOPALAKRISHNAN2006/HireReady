@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { Button, Input } from '../components/ui'
 import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, CheckCircle } from 'lucide-react'
@@ -9,7 +9,8 @@ import api, { preWarmServer, waitForServer } from '../services/api'
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
 const Signup = () => {
-  const { register, setUser, isLoading, error, clearError } = useAuthStore()
+  const navigate = useNavigate()
+  const { register, googleLogin, isLoading, error, clearError } = useAuthStore()
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -79,14 +80,14 @@ const Signup = () => {
       })
       if (result.data.success) {
         const { user, tokens } = result.data.data
-        localStorage.setItem('accessToken', tokens.accessToken)
-        localStorage.setItem('refreshToken', tokens.refreshToken)
-        setUser(user)
-        window.location.replace('/dashboard')
+        googleLogin(user, tokens)
+        toast.success('Account created successfully!')
+        navigate('/dashboard')
       } else {
         toast.error(result.data.message || 'Google sign-up failed. Please try again.')
       }
     } catch (error) {
+      console.error('Google signup error:', error)
       toast.error(error.response?.data?.message || 'Google sign-up failed. Please try again.')
     } finally {
       setGoogleLoading(false)

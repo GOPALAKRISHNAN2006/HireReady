@@ -136,6 +136,20 @@ export const useAuthStore = create(
         }
       },
 
+      // Google OAuth login — set full auth state from Google response
+      googleLogin: (user, tokens) => {
+        localStorage.setItem('accessToken', tokens.accessToken)
+        localStorage.setItem('refreshToken', tokens.refreshToken)
+        api.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`
+        set({
+          user,
+          token: tokens.accessToken,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        })
+      },
+
       // Clear error
       clearError: () => set({ error: null }),
     }),
