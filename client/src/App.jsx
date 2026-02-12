@@ -70,6 +70,10 @@ import CompanyDetail from './pages/CompanyDetail'
 import InterviewFeedback from './pages/InterviewFeedback'
 import StudyPlan from './pages/StudyPlan'
 import MockInterviewLab from './pages/MockInterviewLab'
+import AIChatPage from './pages/AIChatPage'
+import InterviewNotes from './pages/InterviewNotes'
+import ProgressReport from './pages/ProgressReport'
+import Flashcards from './pages/Flashcards'
 
 
 // Protected Route Component
@@ -536,8 +540,46 @@ function App() {
           } 
         />
 
+        {/* AI Chat Page */}
+        <Route 
+          path="/ai-chat" 
+          element={
+            <ProtectedRoute>
+              <AIChatPage />
+            </ProtectedRoute>
+          } 
+        />
 
-        
+        {/* Interview Notes */}
+        <Route 
+          path="/notes" 
+          element={
+            <ProtectedRoute>
+              <InterviewNotes />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Progress Report */}
+        <Route 
+          path="/progress" 
+          element={
+            <ProtectedRoute>
+              <ProgressReport />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Flashcards */}
+        <Route 
+          path="/flashcards" 
+          element={
+            <ProtectedRoute>
+              <Flashcards />
+            </ProtectedRoute>
+          } 
+        />
+
         {/* Admin Routes */}
         <Route 
           path="/admin" 

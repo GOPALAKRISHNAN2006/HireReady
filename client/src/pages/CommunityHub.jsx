@@ -34,6 +34,14 @@ import {
   Bell
 } from 'lucide-react'
 
+// Helper to get a valid avatar URL
+const getAvatarUrl = (avatar, name = 'User') => {
+  if (avatar && avatar !== 'default-avatar.png' && avatar.startsWith('http')) {
+    return avatar
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff&bold=true`
+}
+
 const CommunityHub = () => {
   const [activeTab, setActiveTab] = useState('feed')
   const [newPost, setNewPost] = useState('')
@@ -178,7 +186,7 @@ const CommunityHub = () => {
     id: post._id,
     author: post.author ? `${post.author.firstName} ${post.author.lastName}` : 'Anonymous',
     role: post.author?.jobTitle || 'Community Member',
-    avatar: post.author?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author?.firstName || 'User')}`,
+    avatar: getAvatarUrl(post.author?.avatar, post.author?.firstName || 'User'),
     verified: true,
     time: timeAgo(post.createdAt),
     likes: post.likeCount || post.likes?.length || 0,
@@ -210,7 +218,7 @@ const CommunityHub = () => {
 
   const mentors = mentorsData?.map(m => ({
     name: m.user ? `${m.user.firstName} ${m.user.lastName}` : m.name || 'Mentor',
-    avatar: m.user?.avatar || m.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'M')}`,
+    avatar: getAvatarUrl(m.user?.avatar || m.avatar, m.name || 'Mentor'),
     role: m.company ? `${m.experience || ''} @ ${m.company}` : (m.experience || 'Mentor'),
     expertise: m.specializations || [],
     rating: m.rating || 0,
@@ -333,6 +341,7 @@ const CommunityHub = () => {
                       src={post.avatar} 
                       alt={post.author}
                       className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                      onError={(e) => { e.target.onerror = null; e.target.src = getAvatarUrl(null, post.author) }}
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
@@ -472,7 +481,7 @@ const CommunityHub = () => {
               {posts.length > 0 ? posts.map((post) => (
                 <Card key={post.id} hover>
                   <div className="flex gap-4">
-                    <img src={post.avatar} alt={post.author} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+                    <img src={post.avatar} alt={post.author} className="w-12 h-12 rounded-full object-cover flex-shrink-0" onError={(e) => { e.target.onerror = null; e.target.src = getAvatarUrl(null, post.author) }} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
@@ -510,6 +519,7 @@ const CommunityHub = () => {
                       src={mentor.avatar} 
                       alt={mentor.name}
                       className="w-16 h-16 rounded-2xl object-cover"
+                      onError={(e) => { e.target.onerror = null; e.target.src = getAvatarUrl(null, mentor.name) }}
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">

@@ -103,9 +103,9 @@ const Navbar = ({ onMenuClick }) => {
               className="flex items-center space-x-2 p-1.5 pr-3 rounded-xl hover:bg-gray-100 dark:hover:bg-indigo-500/10 transition-all duration-200 group"
             >
               <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-purple-500 rounded-xl flex items-center justify-center shadow-md overflow-hidden">
-                {user?.avatar && user.avatar !== 'default-avatar.png' ? (
+                {user?.avatar && user.avatar !== 'default-avatar.png' && user.avatar.startsWith('http') ? (
                   <img 
-                    src={user.avatar.startsWith('http') ? user.avatar : user.avatar} 
+                    src={user.avatar} 
                     alt={displayName} 
                     className="w-9 h-9 rounded-xl object-cover" 
                     onError={(e) => {

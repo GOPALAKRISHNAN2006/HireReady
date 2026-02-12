@@ -1,13 +1,11 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import AIChatbot from '../components/AIChatbot'
 import { useState } from 'react'
 import { useNotificationTriggers } from '../hooks/useNotifications'
 
 const MainLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
 
   // Fire notification triggers based on real user events
   useNotificationTriggers()
@@ -26,7 +24,7 @@ const MainLayout = () => {
       
       <div className="flex relative">
         {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenChat={() => setChatOpen(true)} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         {/* Main Content */}
         <main className="flex-1 p-4 sm:p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
@@ -35,9 +33,6 @@ const MainLayout = () => {
           </div>
         </main>
       </div>
-
-      {/* AI Chatbot */}
-      <AIChatbot externalOpen={chatOpen} onExternalClose={() => setChatOpen(false)} />
     </div>
   )
 }

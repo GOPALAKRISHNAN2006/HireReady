@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '../store/authStore'
@@ -33,17 +33,58 @@ const Profile = () => {
   const [skillInput, setSkillInput] = useState('')
   const [skills, setSkills] = useState(user?.skills || [])
   
-  const [formData, setFormData] = useState({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    bio: user?.bio || '',
-    jobTitle: user?.jobTitle || '',
-    company: user?.company || '',
-    experience: user?.experience || '',
-    targetRole: user?.targetRole || '',
+  // Fetch fresh profile data from API
+  const { data: profileData, isLoading: profileLoading } = useQuery({
+    queryKey: ['user-profile'],
+    queryFn: async () => {
+      const response = await api.get('/users/profile')
+      return response.data?.data || response.data
+    },
+    staleTime: 30000,
+    retry: 2,
   })
+
+  // The resolved user: prefer fresh API data, fallback to auth store
+  const resolvedUser = profileData?.user || user
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    bio: '',
+    jobTitle: '',
+    company: '',
+    experience: '',
+    targetRole: '',
+  })
+
+  // Sync form data when fresh profile data arrives
+  useEffect(() => {
+    const source = profileData?.user || user
+    if (source) {
+      setFormData({
+        firstName: source.firstName || '',
+        lastName: source.lastName || '',
+        email: source.email || '',
+        phone: source.phone || '',
+        bio: source.bio || '',
+        jobTitle: source.jobTitle || '',
+        company: source.company || '',
+        experience: source.experience != null ? String(source.experience) : '',
+        targetRole: source.targetRole || '',
+      })
+      setSkills(source.skills || [])
+    }
+  }, [profileData]) // Only re-run when API data changes, not on every store update
+
+  // Sync auth store when profileData arrives (separate effect to avoid loop)
+  useEffect(() => {
+    if (profileData?.user) {
+      updateUser(profileData.user)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileData])
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -58,9 +99,11 @@ const Profile = () => {
       return response.data
     },
     onSuccess: (data) => {
-      updateUser(data.data?.user || data.user)
+      const updatedUser = data.data?.user || data.user
+      updateUser(updatedUser)
       toast.success('Profile updated successfully')
-      queryClient.invalidateQueries(['user'])
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] })
+      queryClient.invalidateQueries({ queryKey: ['user'] })
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || 'Failed to update profile')
@@ -100,7 +143,8 @@ const Profile = () => {
       const newAvatarUrl = response.data.data?.avatar || response.data.avatar
       updateUser({ ...user, avatar: newAvatarUrl })
       toast.success('Avatar updated successfully!')
-      queryClient.invalidateQueries(['user'])
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] })
+      queryClient.invalidateQueries({ queryKey: ['user'] })
     } catch (error) {
       console.error('Avatar upload error:', error)
       toast.error(error.response?.data?.message || 'Failed to upload avatar')
@@ -170,25 +214,34 @@ const Profile = () => {
     { id: 'preferences', label: 'Preferences', icon: Palette },
   ]
 
+  if (profileLoading && !user) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-6">
+        <LoadingCard count={3} />
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center space-x-4">
         <div className="relative">
           <div className="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center overflow-hidden">
-            {user?.avatar && user.avatar !== 'default-avatar.png' ? (
+            {resolvedUser?.avatar && resolvedUser.avatar !== 'default-avatar.png' && resolvedUser.avatar.startsWith('http') ? (
               <img 
-                src={user.avatar.startsWith('http') ? user.avatar : user.avatar} 
-                alt={`${user?.firstName} ${user?.lastName}`} 
+                src={resolvedUser.avatar} 
+                alt={`${resolvedUser?.firstName} ${resolvedUser?.lastName}`} 
                 className="w-20 h-20 rounded-full object-cover"
                 onError={(e) => {
                   e.target.onerror = null
                   e.target.style.display = 'none'
+                  e.target.parentElement.innerHTML = `<span class="text-3xl font-bold text-primary-600">${resolvedUser?.firstName?.charAt(0)?.toUpperCase() || 'U'}</span>`
                 }}
               />
             ) : (
               <span className="text-3xl font-bold text-primary-600">
-                {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+                {resolvedUser?.firstName?.charAt(0)?.toUpperCase() || 'U'}
               </span>
             )}
           </div>
@@ -212,10 +265,13 @@ const Profile = () => {
           </button>
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.firstName} {user?.lastName}</h1>
-          <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
-          <Badge variant={user?.role === 'admin' ? 'primary' : 'success'} className="mt-1">
-            {user?.role === 'admin' ? 'Administrator' : 'Member'}
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{resolvedUser?.firstName} {resolvedUser?.lastName}</h1>
+          <p className="text-gray-500 dark:text-gray-400">{resolvedUser?.email}</p>
+          {resolvedUser?.jobTitle && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">{resolvedUser.jobTitle}{resolvedUser.company ? ` at ${resolvedUser.company}` : ''}</p>
+          )}
+          <Badge variant={resolvedUser?.role === 'admin' ? 'primary' : 'success'} className="mt-1">
+            {resolvedUser?.role === 'admin' ? 'Administrator' : 'Member'}
           </Badge>
         </div>
       </div>
