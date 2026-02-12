@@ -47,6 +47,7 @@ const Dashboard = () => {
       { id: 5, text: 'Do a mock interview practice', done: false },
     ]
   })
+  const [newCheckItem, setNewCheckItem] = useState('')
 
   // Save checklist to localStorage
   useEffect(() => {
@@ -55,6 +56,16 @@ const Dashboard = () => {
 
   const toggleCheckItem = (id) => {
     setChecklist(prev => prev.map(item => item.id === id ? { ...item, done: !item.done } : item))
+  }
+
+  const addCheckItem = () => {
+    if (!newCheckItem.trim()) return
+    setChecklist(prev => [...prev, { id: Date.now(), text: newCheckItem.trim(), done: false }])
+    setNewCheckItem('')
+  }
+
+  const removeCheckItem = (id) => {
+    setChecklist(prev => prev.filter(item => item.id !== id))
   }
 
   // Time-of-day greeting
@@ -223,6 +234,41 @@ const Dashboard = () => {
         ))}
       </div>
 
+      {/* Suggested Next Action */}
+      {(() => {
+        const totalInterviews = stats.totalInterviews || 0
+        const avgScore = stats.averageScore || 0
+        const streak = stats.currentStreak || 0
+        let suggestion = { text: 'Start your first mock interview', link: '/interview/setup', icon: PlayCircle, color: 'from-blue-500 to-cyan-500' }
+        if (totalInterviews === 0) {
+          suggestion = { text: 'Take your first mock interview to get started!', link: '/interview/setup', icon: PlayCircle, color: 'from-blue-500 to-cyan-500' }
+        } else if (streak === 0) {
+          suggestion = { text: 'Complete today\'s daily challenge to start a streak', link: '/daily-challenge', icon: Flame, color: 'from-orange-500 to-amber-500' }
+        } else if (avgScore < 60) {
+          suggestion = { text: 'Practice more — review your weak areas in Skill Radar', link: '/skills', icon: Target, color: 'from-red-500 to-rose-500' }
+        } else if (avgScore < 80) {
+          suggestion = { text: 'Good progress! Try a harder interview category', link: '/interview/setup', icon: TrendingUp, color: 'from-purple-500 to-violet-500' }
+        } else {
+          suggestion = { text: 'You\'re doing great! Share tips in the Community Hub', link: '/community', icon: Star, color: 'from-amber-500 to-yellow-500' }
+        }
+        return (
+          <Link to={suggestion.link}>
+            <Card hover className="group relative overflow-hidden border-l-4 border-l-primary-500">
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 bg-gradient-to-br ${suggestion.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                  <suggestion.icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs text-primary-600 dark:text-primary-400 font-semibold uppercase tracking-wider mb-1">Suggested Next Action</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{suggestion.text}</p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+        )
+      })()}
+
       {/* Motivational Quote + Preparation Checklist Row */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Quote of the Day */}
@@ -294,6 +340,24 @@ const Dashboard = () => {
                 </p>
               </div>
             )}
+            {/* Add custom checklist item */}
+            <div className="mt-3 flex gap-2">
+              <input 
+                type="text"
+                value={newCheckItem}
+                onChange={(e) => setNewCheckItem(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addCheckItem()}
+                placeholder="Add a task..."
+                className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              />
+              <button
+                onClick={addCheckItem}
+                disabled={!newCheckItem.trim()}
+                className="px-3 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
+              >
+                +
+              </button>
+            </div>
           </Card.Content>
         </Card>
       </div>

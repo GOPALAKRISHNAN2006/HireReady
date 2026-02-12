@@ -4,6 +4,7 @@ import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import { communityApi } from '../services/featureApi'
 import { useAuthStore } from '../store/authStore'
+import { notifyPostCreated } from '../hooks/useNotifications'
 import toast from 'react-hot-toast'
 import { 
   Users, 
@@ -36,6 +37,8 @@ import {
 const CommunityHub = () => {
   const [activeTab, setActiveTab] = useState('feed')
   const [newPost, setNewPost] = useState('')
+  const [commentInputs, setCommentInputs] = useState({})
+  const [expandedComments, setExpandedComments] = useState({})
   const queryClient = useQueryClient()
   const { user } = useAuthStore()
 
@@ -109,6 +112,7 @@ const CommunityHub = () => {
       queryClient.invalidateQueries(['community', 'feed'])
       setNewPost('')
       toast.success('Post created!')
+      notifyPostCreated()
     },
     onError: () => {
       toast.error('Failed to create post')
@@ -122,6 +126,41 @@ const CommunityHub = () => {
       queryClient.invalidateQueries(['community', 'feed'])
     }
   })
+
+  // Bookmark post mutation
+  const bookmarkPostMutation = useMutation({
+    mutationFn: (id) => communityApi.bookmarkPost ? communityApi.bookmarkPost(id) : Promise.resolve(),
+    onSuccess: () => {
+      toast.success('Bookmark updated!')
+      queryClient.invalidateQueries(['community', 'feed'])
+    },
+    onError: () => {
+      toast.error('Could not bookmark post')
+    }
+  })
+
+  // Comment mutation
+  const addCommentMutation = useMutation({
+    mutationFn: ({ postId, content }) => communityApi.addComment(postId, { content }),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries(['community', 'feed'])
+      setCommentInputs(prev => ({ ...prev, [vars.postId]: '' }))
+      toast.success('Comment added!')
+    },
+    onError: () => {
+      toast.error('Failed to add comment')
+    }
+  })
+
+  // Share post (copy link)
+  const sharePost = (postId) => {
+    const url = `${window.location.origin}/community?post=${postId}`
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success('Link copied to clipboard!')
+    }).catch(() => {
+      toast.error('Could not copy link')
+    })
+  }
 
   // Handle post submit
   const handlePostSubmit = () => {
@@ -324,18 +363,63 @@ const CommunityHub = () => {
                           <Heart className={`w-5 h-5 ${post.isLiked ? 'fill-current' : ''}`} />
                           {post.likes}
                         </button>
-                        <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-500 transition-colors">
+                        <button 
+                          onClick={() => setExpandedComments(prev => ({ ...prev, [post.id]: !prev[post.id] }))}
+                          className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-500 transition-colors"
+                        >
                           <MessageSquare className="w-5 h-5" />
                           {post.comments}
                         </button>
-                        <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-green-500 transition-colors">
+                        <button 
+                          onClick={() => sharePost(post.id)}
+                          className="flex items-center gap-2 text-sm text-gray-500 hover:text-green-500 transition-colors"
+                        >
                           <Share2 className="w-5 h-5" />
-                          {post.shares}
+                          Share
                         </button>
-                        <button className="ml-auto text-gray-400 hover:text-gray-600 transition-colors">
+                        <button 
+                          onClick={() => bookmarkPostMutation.mutate(post.id)}
+                          className="ml-auto text-gray-400 hover:text-amber-500 transition-colors"
+                        >
                           <Bookmark className="w-5 h-5" />
                         </button>
                       </div>
+
+                      {/* Inline comment form */}
+                      {expandedComments[post.id] && (
+                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                          <div className="flex gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                              {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+                            </div>
+                            <div className="flex-1 flex gap-2">
+                              <input
+                                type="text"
+                                value={commentInputs[post.id] || ''}
+                                onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                placeholder="Write a comment..."
+                                className="flex-1 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder:text-gray-400"
+                                onKeyPress={(e) => {
+                                  if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
+                                    addCommentMutation.mutate({ postId: post.id, content: commentInputs[post.id] })
+                                  }
+                                }}
+                              />
+                              <button
+                                onClick={() => {
+                                  if (commentInputs[post.id]?.trim()) {
+                                    addCommentMutation.mutate({ postId: post.id, content: commentInputs[post.id] })
+                                  }
+                                }}
+                                disabled={!commentInputs[post.id]?.trim() || addCommentMutation.isPending}
+                                className="px-4 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                              >
+                                <Send className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -345,6 +429,71 @@ const CommunityHub = () => {
                     <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Posts Yet</h3>
                     <p className="text-gray-600 dark:text-gray-400">Be the first to share something with the community!</p>
+                  </div>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {/* Discussions Tab */}
+          {activeTab === 'discussions' && (
+            <div className="space-y-4">
+              {(discussionsData || []).length > 0 ? discussionsData.map((discussion, index) => (
+                <Card key={index} hover>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                      <MessageCircle className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-1">{discussion.title || discussion.topic}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 line-clamp-2">{discussion.description || discussion.content}</p>
+                      <div className="flex items-center gap-4 text-xs text-gray-400">
+                        <span className="flex items-center gap-1"><Users className="w-3 h-3" />{discussion.participantCount || discussion.participants?.length || 0} participants</span>
+                        <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" />{discussion.replyCount || discussion.replies?.length || 0} replies</span>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )) : (
+                <Card>
+                  <div className="text-center py-12">
+                    <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Discussions Yet</h3>
+                    <p className="text-gray-600 dark;text-gray-400">Start a discussion by creating a post!</p>
+                  </div>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {/* Success Stories Tab (uses same feed with type filter) */}
+          {activeTab === 'success' && (
+            <div className="space-y-6">
+              {posts.length > 0 ? posts.map((post) => (
+                <Card key={post.id} hover>
+                  <div className="flex gap-4">
+                    <img src={post.avatar} alt={post.author} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
+                        <Trophy className="w-4 h-4 text-amber-500" />
+                        <span className="text-sm text-gray-500">{post.time}</span>
+                      </div>
+                      <p className="text-gray-700 dark:text-gray-300 mb-3">{post.content}</p>
+                      <div className="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
+                          <Heart className={`w-4 h-4 ${post.isLiked ? 'fill-current' : ''}`} /> {post.likes}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )) : (
+                <Card>
+                  <div className="text-center py-12">
+                    <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Success Stories Yet</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Share your interview success with the community!</p>
                   </div>
                 </Card>
               )}
@@ -467,7 +616,10 @@ const CommunityHub = () => {
               <p className="text-sm text-purple-100 mb-4">
                 Earn 100 points for each friend who joins!
               </p>
-              <Button variant="secondary" className="w-full">
+              <Button variant="secondary" className="w-full" onClick={() => {
+                navigator.clipboard.writeText(window.location.origin)
+                toast.success('Invite link copied!')
+              }}>
                 Share Invite Link
               </Button>
             </div>

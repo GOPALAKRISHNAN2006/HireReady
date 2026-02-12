@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import { skillsApi } from '../services/featureApi'
+import toast from 'react-hot-toast'
 import { 
   Radar, 
   TrendingUp, 
@@ -321,10 +322,22 @@ const SkillRadar = () => {
 
           {/* Actions */}
           <div className="flex gap-3">
-            <Button variant="outline" icon={Download} className="flex-1">
+            <Button variant="outline" icon={Download} className="flex-1" onClick={() => {
+              const canvas = canvasRef.current
+              if (!canvas) return
+              const link = document.createElement('a')
+              link.download = 'skill-radar.png'
+              link.href = canvas.toDataURL('image/png')
+              link.click()
+              toast.success('Skill radar exported!')
+            }}>
               Export
             </Button>
-            <Button variant="outline" icon={Share2} className="flex-1">
+            <Button variant="outline" icon={Share2} className="flex-1" onClick={() => {
+              const text = `My HireReady Skill Radar: Overall ${overallScore}% | ${skills.map(s => `${s.name}: ${s.score}%`).join(' | ')}`
+              navigator.clipboard.writeText(text)
+              toast.success('Skill summary copied!')
+            }}>
               Share
             </Button>
           </div>
@@ -373,12 +386,18 @@ const SkillRadar = () => {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Strongest Skill', value: 'JavaScript', subtext: '90%', icon: Star, color: 'from-amber-500 to-orange-500' },
-          { label: 'Most Improved', value: 'Problem Solving', subtext: '+15%', icon: TrendingUp, color: 'from-green-500 to-emerald-500' },
-          { label: 'Focus Area', value: 'System Design', subtext: '65%', icon: Target, color: 'from-red-500 to-rose-500' },
-          { label: 'Practice Time', value: '12.5 hrs', subtext: 'This month', icon: Clock, color: 'from-purple-500 to-indigo-500' },
-        ].map((stat, index) => (
+        {(() => {
+          const sorted = [...skills].sort((a, b) => b.score - a.score)
+          const strongest = sorted[0] || { name: 'N/A', score: 0 }
+          const mostImproved = [...skills].sort((a, b) => b.change - a.change)[0] || { name: 'N/A', change: 0 }
+          const weakest = sorted[sorted.length - 1] || { name: 'N/A', score: 0 }
+          return [
+            { label: 'Strongest Skill', value: strongest.name, subtext: `${strongest.score}%`, icon: Star, color: 'from-amber-500 to-orange-500' },
+            { label: 'Most Improved', value: mostImproved.name, subtext: `${mostImproved.change > 0 ? '+' : ''}${mostImproved.change}%`, icon: TrendingUp, color: 'from-green-500 to-emerald-500' },
+            { label: 'Focus Area', value: weakest.name, subtext: `${weakest.score}%`, icon: Target, color: 'from-red-500 to-rose-500' },
+            { label: 'Rank', value: rank.charAt(0).toUpperCase() + rank.slice(1), subtext: `${overallScore}% overall`, icon: Clock, color: 'from-purple-500 to-indigo-500' },
+          ]
+        })().map((stat, index) => (
           <Card key={index} hover className="group">
             <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
             <div className="relative">

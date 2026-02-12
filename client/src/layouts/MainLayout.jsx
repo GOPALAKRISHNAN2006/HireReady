@@ -3,10 +3,14 @@ import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
 import AIChatbot from '../components/AIChatbot'
 import { useState } from 'react'
+import { useNotificationTriggers } from '../hooks/useNotifications'
 
 const MainLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+
+  // Fire notification triggers based on real user events
+  useNotificationTriggers()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-[#0b1120] dark:via-[#0f172a] dark:to-[#0b1120] transition-colors duration-300">

@@ -4,6 +4,7 @@ import { Card, Button, Badge } from '../components/ui'
 import { LoadingOverlay } from '../components/ui/Spinner'
 import api from '../services/api'
 import communicationApi from '../services/communicationApi'
+import { notifyInterviewComplete } from '../hooks/useNotifications'
 import { 
   Trophy, 
   Target, 
@@ -19,7 +20,7 @@ import {
   Lightbulb,
   Mic
 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { CommunicationAssessmentCard } from '../components/communication'
 
 // Inner error boundary to catch render crashes gracefully
@@ -65,6 +66,7 @@ class ResultErrorBoundary extends React.Component {
 const InterviewResult = () => {
   const { id } = useParams()
   const [expandedQuestions, setExpandedQuestions] = useState({})
+  const notifiedRef = useRef(false)
 
   // Fetch interview result
   const { data: interview, isLoading, error } = useQuery({
@@ -83,6 +85,14 @@ const InterviewResult = () => {
     retry: 1,
     enabled: !!id,
   })
+
+  // Fire notification when result loads
+  useEffect(() => {
+    if (interview?.score && !notifiedRef.current) {
+      notifiedRef.current = true
+      notifyInterviewComplete(interview.score, interview.category || interview.type)
+    }
+  }, [interview])
 
   // Fetch communication assessments for this interview
   const { data: communicationData } = useQuery({

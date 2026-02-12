@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useAuthStore } from '../store/authStore'
 import api from '../services/api'
 import { 
@@ -15,8 +15,82 @@ import {
   Target,
   Building2,
   Mic,
-  Loader2
+  MicOff,
+  Loader2,
+  Trash2,
+  Copy,
+  Check
 } from 'lucide-react'
+
+// Simple markdown renderer for bot responses
+const MarkdownText = ({ text }) => {
+  const renderLine = (line, i) => {
+    // Bold
+    let html = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // Inline code
+    html = html.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">$1</code>')
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-primary-500 underline">$1</a>')
+    return html
+  }
+
+  const lines = text.split('\n')
+  const elements = []
+  let inCodeBlock = false
+  let codeLines = []
+  let listItems = []
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      elements.push(<ul key={`ul-${elements.length}`} className="list-disc list-inside space-y-1 my-1">{listItems.map((li, i) => <li key={i} className="text-sm" dangerouslySetInnerHTML={{ __html: renderLine(li) }} />)}</ul>)
+      listItems = []
+    }
+  }
+
+  lines.forEach((line, i) => {
+    if (line.startsWith('```')) {
+      if (inCodeBlock) {
+        elements.push(<pre key={`code-${i}`} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
+        codeLines = []
+        inCodeBlock = false
+      } else {
+        flushList()
+        inCodeBlock = true
+      }
+      return
+    }
+    if (inCodeBlock) { codeLines.push(line); return }
+
+    if (/^[•\-\*]\s/.test(line)) {
+      listItems.push(line.replace(/^[•\-\*]\s/, ''))
+      return
+    }
+    if (/^\d+\.\s/.test(line)) {
+      listItems.push(line.replace(/^\d+\.\s/, ''))
+      return
+    }
+
+    flushList()
+
+    if (line.startsWith('### ')) {
+      elements.push(<h4 key={i} className="font-bold text-sm mt-2 mb-1">{line.slice(4)}</h4>)
+    } else if (line.startsWith('## ')) {
+      elements.push(<h3 key={i} className="font-bold text-base mt-2 mb-1">{line.slice(3)}</h3>)
+    } else if (line.trim() === '') {
+      elements.push(<div key={i} className="h-2" />)
+    } else {
+      elements.push(<p key={i} className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: renderLine(line) }} />)
+    }
+  })
+  flushList()
+  if (inCodeBlock && codeLines.length) {
+    elements.push(<pre key="code-end" className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
+  }
+
+  return <div className="space-y-0.5">{elements}</div>
+}
 
 const AIChatbot = ({ externalOpen, onExternalClose }) => {
   const { isAuthenticated } = useAuthStore()
@@ -46,8 +120,11 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
   ])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [copiedId, setCopiedId] = useState(null)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const recognitionRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -158,6 +235,56 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
     setTimeout(() => handleSend(), 100)
   }
 
+  // Speech-to-text using Web Speech API
+  const toggleListening = useCallback(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      // Fallback: no speech API
+      return
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop()
+      setIsListening(false)
+      return
+    }
+
+    const recognition = new SpeechRecognition()
+    recognition.continuous = false
+    recognition.interimResults = true
+    recognition.lang = 'en-US'
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0].transcript)
+        .join('')
+      setInputValue(transcript)
+    }
+    recognition.onend = () => setIsListening(false)
+    recognition.onerror = () => setIsListening(false)
+
+    recognitionRef.current = recognition
+    recognition.start()
+    setIsListening(true)
+  }, [isListening])
+
+  const hasSpeechAPI = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)
+
+  const copyMessage = (text, id) => {
+    navigator.clipboard.writeText(text)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
+  }
+
+  const clearChat = () => {
+    setMessages([{
+      id: 1,
+      type: 'bot',
+      text: "Chat cleared. How can I help you?",
+      timestamp: new Date()
+    }])
+  }
+
   // Don't render chatbot if not authenticated
   if (!isAuthenticated) {
     return null
@@ -183,6 +310,13 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                onClick={clearChat}
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                title="Clear chat"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
                 className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
@@ -224,12 +358,27 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                         ? 'bg-primary-600 text-white rounded-tr-sm'
                         : 'bg-white dark:bg-[#151d2e] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-tl-sm shadow-sm'
                     }`}>
-                      <p className="text-sm whitespace-pre-wrap">{message.text}</p>
-                      <span className={`text-xs mt-1 block ${
-                        message.type === 'user' ? 'text-primary-200' : 'text-gray-400'
-                      }`}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
+                      {message.type === 'bot' ? (
+                        <MarkdownText text={message.text} />
+                      ) : (
+                        <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                      )}
+                      <div className="flex items-center justify-between mt-1">
+                        <span className={`text-xs ${
+                          message.type === 'user' ? 'text-primary-200' : 'text-gray-400'
+                        }`}>
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        {message.type === 'bot' && message.id !== 1 && (
+                          <button
+                            onClick={() => copyMessage(message.text, message.id)}
+                            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors ml-2"
+                            title="Copy response"
+                          >
+                            {copiedId === message.id ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3 text-gray-400" />}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -277,13 +426,26 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
             {/* Input */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1526] flex-shrink-0">
               <div className="flex items-center gap-2">
+                {hasSpeechAPI && (
+                  <button
+                    onClick={toggleListening}
+                    className={`p-2.5 rounded-xl transition-colors ${
+                      isListening 
+                        ? 'bg-red-100 dark:bg-red-900/30 text-red-600 animate-pulse' 
+                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400'
+                    }`}
+                    title={isListening ? 'Stop listening' : 'Voice input'}
+                  >
+                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                )}
                 <input
                   ref={inputRef}
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your question..."
+                  placeholder={isListening ? 'Listening...' : 'Type your question...'}
                   className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm bg-white dark:bg-[#151d2e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
                 />
                 <button

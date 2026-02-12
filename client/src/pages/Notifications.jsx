@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
+import { useNotificationStore } from '../store/notificationStore'
 import api from '../services/api'
 import toast from 'react-hot-toast'
 import { 
@@ -18,7 +19,9 @@ import {
   Target,
   TrendingUp,
   Calendar,
-  Settings
+  Settings,
+  Sparkles,
+  CheckCircle
 } from 'lucide-react'
 
 // Map notification type to icon and color
@@ -31,6 +34,11 @@ const notificationMeta = {
   improvement: { icon: TrendingUp, color: 'bg-emerald-500' },
   promo:       { icon: Gift, color: 'bg-pink-500' },
   alert:       { icon: AlertCircle, color: 'bg-red-500' },
+  success:     { icon: CheckCircle, color: 'bg-green-500' },
+  info:        { icon: Info, color: 'bg-blue-500' },
+  warning:     { icon: AlertCircle, color: 'bg-amber-500' },
+  error:       { icon: AlertCircle, color: 'bg-red-500' },
+  interview:   { icon: Target, color: 'bg-indigo-500' },
 }
 
 const getNotificationIcon = (type) => notificationMeta[type]?.icon || Bell
@@ -58,6 +66,7 @@ const formatRelativeTime = (time) => {
 const Notifications = () => {
   const [activeFilter, setActiveFilter] = useState('all')
   const queryClient = useQueryClient()
+  const notificationStore = useNotificationStore()
 
   // Fetch notifications from API
   const { data: notificationsData, isLoading } = useQuery({
@@ -104,19 +113,18 @@ const Notifications = () => {
     }
   })
 
-  // No fake defaults — only show real API notifications
-  const defaultNotifications = []
-
-  const [notifications, setNotifications] = useState(defaultNotifications)
-  
-  // Merge API and local notifications — API takes priority when available
+  // Merge API notifications + client-side notification store
   const displayNotifications = useMemo(() => {
-    if (notificationsData?.length > 0) return notificationsData
-    return notifications
-  }, [notificationsData, notifications])
-
-  // Track whether we're showing API or local data
-  const isApiData = notificationsData?.length > 0
+    const apiNotifs = (notificationsData || []).map(n => ({ ...n, source: 'api' }))
+    const storeNotifs = (notificationStore.notifications || []).map(n => ({ ...n, source: 'store' }))
+    // Combine and sort by time, newest first
+    const all = [...apiNotifs, ...storeNotifs].sort((a, b) => {
+      const dateA = new Date(a.createdAt || a.time || 0)
+      const dateB = new Date(b.createdAt || b.time || 0)
+      return dateB - dateA
+    })
+    return all
+  }, [notificationsData, notificationStore.notifications])
 
   const filters = [
     { id: 'all', label: 'All' },
@@ -135,36 +143,28 @@ const Notifications = () => {
   })
 
   const markAsRead = (id) => {
-    if (isApiData) {
-      markReadMutation.mutate(id)
-    }
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, read: true } : n))
-    )
+    // Try API first
+    markReadMutation.mutate(id)
+    // Also mark in store
+    notificationStore.markAsRead(id)
   }
 
   const markAllAsRead = () => {
-    if (isApiData) {
-      markAllReadMutation.mutate()
-    }
-    setNotifications(prev =>
-      prev.map(n => ({ ...n, read: true }))
-    )
+    markAllReadMutation.mutate()
+    notificationStore.markAllAsRead()
   }
 
   const deleteNotification = (id) => {
-    if (isApiData) {
-      deleteMutation.mutate(id)
-    }
-    setNotifications(prev => prev.filter(n => n.id !== id))
+    deleteMutation.mutate(id)
+    notificationStore.removeNotification(id)
   }
 
   const clearAll = () => {
-    if (isApiData && displayNotifications.length > 0) {
-      // Delete each API notification
-      displayNotifications.forEach(n => deleteMutation.mutate(n.id || n._id))
-    }
-    setNotifications([])
+    displayNotifications.forEach(n => {
+      const nid = n.id || n._id
+      if (n.source === 'api') deleteMutation.mutate(nid)
+    })
+    notificationStore.clearAll()
   }
 
   if (isLoading) {

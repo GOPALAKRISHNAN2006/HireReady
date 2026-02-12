@@ -179,7 +179,15 @@ const StudyMaterialsModal = ({ isOpen, onClose, milestone, pathName }) => {
         {/* Footer */}
         <div className="border-t border-gray-200 dark:border-gray-700/30 p-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3">
           <Button variant="outline" onClick={onClose}>Close</Button>
-          <Button icon={ArrowRight}>Start Learning</Button>
+          <Button icon={ArrowRight} onClick={() => {
+            const firstMaterial = milestone.studyMaterials?.[0]
+            if (firstMaterial?.url) {
+              window.open(firstMaterial.url, '_blank', 'noopener,noreferrer')
+            } else {
+              toast.success('Start practicing the exercises listed above!')
+            }
+            onClose()
+          }}>Start Learning</Button>
         </div>
       </div>
     </div>

@@ -133,7 +133,7 @@ const SavedQuestions = () => {
             <p className="text-gray-500 dark:text-gray-400">{savedQuestions.length} questions saved</p>
           </div>
         </div>
-        <Button variant="primary" icon={FolderPlus}>
+        <Button variant="primary" icon={FolderPlus} onClick={() => toast('Collections coming soon! Use categories to organize your questions.', { icon: '📁' })}>
           Create Collection
         </Button>
       </div>
@@ -218,7 +218,9 @@ const SavedQuestions = () => {
                       <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                         {question.question}
                       </h3>
-                      <button className={`p-1 rounded transition-colors ${
+                      <button 
+                        onClick={() => handleStar(question.id, question.starred)}
+                        className={`p-1 rounded transition-colors ${
                         question.starred 
                           ? 'text-yellow-500' 
                           : 'text-gray-300 hover:text-yellow-500'
