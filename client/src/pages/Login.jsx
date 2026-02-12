@@ -189,11 +189,6 @@ const Login = () => {
         </div>
         <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
         <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-          <Zap className="w-3.5 h-3.5 text-amber-500" />
-          <span>10K+ Users</span>
-        </div>
-        <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
           <Sparkles className="w-3.5 h-3.5 text-purple-500" />
           <span>Free Plan</span>
         </div>

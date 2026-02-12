@@ -66,32 +66,13 @@ const Home = () => {
   ]
 
   const stats = [
-    { value: '10,000+', label: 'Practice Questions' },
-    { value: '50,000+', label: 'Users Helped' },
-    { value: '95%', label: 'Success Rate' },
+    { value: 'AI', label: 'Powered Feedback' },
+    { value: '6+', label: 'Practice Modes' },
+    { value: 'Free', label: 'To Get Started' },
     { value: '24/7', label: 'Available' },
   ]
 
-  const testimonials = [
-    {
-      name: 'Sarah Johnson',
-      role: 'Software Engineer at Google',
-      image: 'https://randomuser.me/api/portraits/women/1.jpg',
-      quote: 'This platform transformed my interview preparation. The AI feedback was incredibly accurate and helpful.',
-    },
-    {
-      name: 'Michael Chen',
-      role: 'Product Manager at Microsoft',
-      image: 'https://randomuser.me/api/portraits/men/2.jpg',
-      quote: 'The mock interviews felt so real! I went into my actual interview feeling confident and prepared.',
-    },
-    {
-      name: 'Emily Davis',
-      role: 'Data Scientist at Amazon',
-      image: 'https://randomuser.me/api/portraits/women/3.jpg',
-      quote: 'The analytics dashboard helped me identify and improve my weak areas systematically.',
-    },
-  ]
+  const testimonials = []
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] overflow-hidden transition-colors duration-300">
@@ -317,38 +298,28 @@ const Home = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-pink-100/80 dark:bg-pink-900/40 rounded-full text-pink-700 dark:text-pink-300 text-sm font-semibold mb-4">
               <Users className="w-4 h-4 mr-2" />
-              Success Stories
+              Community
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Loved by <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Job Seekers</span>
+              Built for <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Job Seekers</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Join thousands of successful candidates who landed their dream jobs.
+              Everything you need to ace your next interview.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {[
+              { icon: '🎯', title: 'AI Mock Interviews', desc: 'Practice with AI-powered interview simulations that give real-time feedback on your answers.' },
+              { icon: '📊', title: 'Skill Analytics', desc: 'Track your progress with detailed analytics on every skill area you practice.' },
+              { icon: '🤝', title: 'Community Support', desc: 'Connect with fellow job seekers, share tips, and learn from each other.' },
+            ].map((item, index) => (
               <div key={index} className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-purple-500 rounded-2xl transform rotate-1 opacity-10 group-hover:opacity-20 transition-opacity"></div>
                 <div className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700/50 hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-center space-x-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">"{testimonial.quote}"</p>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-14 h-14 rounded-full object-cover ring-4 ring-gray-50 dark:ring-gray-800"
-                    />
-                    <div>
-                      <h4 className="font-bold text-gray-900 dark:text-white">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</p>
-                    </div>
-                  </div>
+                  <div className="text-4xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}

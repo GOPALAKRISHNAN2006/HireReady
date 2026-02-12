@@ -104,73 +104,8 @@ const Notifications = () => {
     }
   })
 
-  // Default notifications if API returns empty
-  const defaultNotifications = [
-    {
-      id: 1,
-      type: 'achievement',
-      title: 'Achievement Unlocked!',
-      message: 'You earned the "Quick Learner" badge for completing 5 interviews',
-      time: '5 minutes ago',
-      read: false,
-    },
-    {
-      id: 2,
-      type: 'result',
-      title: 'Interview Results Ready',
-      message: 'Your System Design interview results are now available. You scored 85%!',
-      time: '1 hour ago',
-      read: false,
-    },
-    {
-      id: 3,
-      type: 'reminder',
-      title: 'Practice Reminder',
-      message: "You haven't practiced in 3 days. Keep your streak going!",
-      time: '2 hours ago',
-      read: false,
-    },
-    {
-      id: 4,
-      type: 'system',
-      title: 'New Features Available',
-      message: 'Check out our new Group Discussion practice mode and enhanced analytics!',
-      time: '1 day ago',
-      read: true,
-    },
-    {
-      id: 5,
-      type: 'milestone',
-      title: 'Milestone Reached!',
-      message: 'Congratulations! You have completed 10 interviews. Keep up the great work!',
-      time: '2 days ago',
-      read: true,
-    },
-    {
-      id: 6,
-      type: 'improvement',
-      title: 'Score Improvement',
-      message: 'Your DSA interview scores have improved by 15% this week!',
-      time: '3 days ago',
-      read: true,
-    },
-    {
-      id: 7,
-      type: 'promo',
-      title: 'New Feature Available',
-      message: 'Try our new Communication Assessment tool to improve your speaking skills!',
-      time: '5 days ago',
-      read: true,
-    },
-    {
-      id: 8,
-      type: 'alert',
-      title: 'Incomplete Interview',
-      message: 'You have an incomplete interview session. Would you like to continue?',
-      time: '1 week ago',
-      read: true,
-    },
-  ]
+  // No fake defaults — only show real API notifications
+  const defaultNotifications = []
 
   const [notifications, setNotifications] = useState(defaultNotifications)
   

@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, Button, Badge } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import { communityApi } from '../services/featureApi'
+import { useAuthStore } from '../store/authStore'
 import toast from 'react-hot-toast'
 import { 
   Users, 
@@ -36,6 +37,7 @@ const CommunityHub = () => {
   const [activeTab, setActiveTab] = useState('feed')
   const [newPost, setNewPost] = useState('')
   const queryClient = useQueryClient()
+  const { user } = useAuthStore()
 
   const tabs = [
     { id: 'feed', name: 'Feed', icon: Sparkles },
@@ -255,7 +257,7 @@ const CommunityHub = () => {
           <Card>
             <div className="flex gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                Y
+                {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div className="flex-1">
                 <textarea
@@ -276,7 +278,7 @@ const CommunityHub = () => {
                       <Smile className="w-5 h-5 text-gray-400" />
                     </button>
                   </div>
-                  <Button icon={Send} disabled={!newPost.trim()}>Post</Button>
+                  <Button icon={Send} disabled={!newPost.trim() || createPostMutation.isPending} onClick={handlePostSubmit}>Post</Button>
                 </div>
               </div>
             </div>
@@ -318,7 +320,7 @@ const CommunityHub = () => {
                       )}
 
                       <div className="flex items-center gap-6 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <button className={`flex items-center gap-2 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
+                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
                           <Heart className={`w-5 h-5 ${post.isLiked ? 'fill-current' : ''}`} />
                           {post.likes}
                         </button>

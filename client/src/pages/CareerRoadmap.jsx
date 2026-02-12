@@ -603,6 +603,37 @@ const CareerRoadmap = () => {
     ],
   }
 
+  // Reset all milestones to clean state — no fake progress for new users
+  // Real progress should come from API (progressData)
+  Object.values(milestones).forEach(pathMilestones => {
+    pathMilestones.forEach((m, i) => {
+      m.status = i === 0 ? 'current' : 'not-started'
+      m.interviews = 0
+      m.score = 0
+    })
+  })
+
+  // Merge real progress from API if available
+  if (progressData?.length > 0) {
+    progressData.forEach(p => {
+      const pathId = p.selectedPath?._id
+      const pathMs = milestones[pathId]
+      if (pathMs && p.completedMilestones) {
+        p.completedMilestones.forEach(cm => {
+          const milestone = pathMs.find(m => m.id === cm.milestoneId)
+          if (milestone) {
+            milestone.status = 'completed'
+            milestone.interviews = cm.interviews || 0
+            milestone.score = cm.score || 0
+          }
+        })
+        // Set next incomplete milestone as 'current'
+        const nextIncomplete = pathMs.find(m => m.status !== 'completed')
+        if (nextIncomplete) nextIncomplete.status = 'current'
+      }
+    })
+  }
+
   const currentMilestones = milestones[selectedPath] || milestones.fullstack
   const completedCount = currentMilestones.filter(m => m.status === 'completed').length
   const progress = (completedCount / currentMilestones.length) * 100

@@ -180,26 +180,17 @@ const SkillRadar = () => {
     })
   }, [skills])
 
-  const recommendations = [
-    {
-      skill: 'System Design',
-      priority: 'High',
-      action: 'Practice distributed system concepts',
-      resources: 12,
-    },
-    {
-      skill: 'SQL',
-      priority: 'Medium',
-      action: 'Work on complex query optimization',
-      resources: 8,
-    },
-    {
-      skill: 'Algorithms',
-      priority: 'Medium',
-      action: 'Focus on dynamic programming',
-      resources: 15,
-    },
-  ]
+  // Only show recommendations based on real skill data
+  const recommendations = skills
+    .filter(s => s.score < s.target)
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 3)
+    .map(s => ({
+      skill: s.name,
+      priority: s.score < 30 ? 'High' : s.score < 60 ? 'Medium' : 'Low',
+      action: `Practice ${s.name.toLowerCase()} to reach your target of ${s.target}`,
+      resources: 0,
+    }))
 
   return (
     <div className="space-y-8 animate-slide-up">
