@@ -39,13 +39,17 @@ const Signup = () => {
         window.google.accounts.id.initialize({
           client_id: GOOGLE_CLIENT_ID,
           callback: handleGoogleResponse,
+          ux_mode: 'popup',
           auto_select: false,
-          cancel_on_tap_outside: true,
         })
         if (googleBtnRef.current) {
+          googleBtnRef.current.innerHTML = ''
           window.google.accounts.id.renderButton(googleBtnRef.current, {
             type: 'standard',
+            theme: 'outline',
             size: 'large',
+            text: 'continue_with',
+            shape: 'rectangular',
             width: 400,
           })
         }
@@ -89,37 +93,7 @@ const Signup = () => {
     }
   }
 
-  const handleGoogleSignup = () => {
-    if (!GOOGLE_CLIENT_ID) {
-      toast.error('Google Sign-In not configured. Please contact support.')
-      return
-    }
-    if (!window.google?.accounts?.id) {
-      toast.error('Google Sign-In is loading. Please wait a moment and try again.')
-      return
-    }
-    try {
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleResponse,
-        auto_select: false,
-        cancel_on_tap_outside: true,
-      })
-      window.google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          const btn = googleBtnRef.current?.querySelector('div[role="button"]')
-          if (btn) {
-            btn.click()
-          } else {
-            toast.error('Google popup was blocked. Please allow popups and try again.')
-          }
-        }
-      })
-    } catch (err) {
-      console.error('Google signup error:', err)
-      toast.error('Google Sign-In failed. Please try again.')
-    }
-  }
+
   const validateForm = () => {
     const newErrors = {}
     
@@ -345,20 +319,20 @@ const Signup = () => {
         </div>
 
         <div className="mt-6">
-          <button 
-            onClick={handleGoogleSignup}
-            disabled={googleLoading || isLoading}
-            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          >
-            {googleLoading ? (
+          {googleLoading ? (
+            <div className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl">
               <Loader2 className="w-5 h-5 mr-2 animate-spin text-gray-500" />
-            ) : (
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Signing up...</span>
+            </div>
+          ) : (
+            <div ref={googleBtnRef} className="flex justify-center" />
+          )}
+          {!googleReady && !googleLoading && (
+            <div className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl opacity-50">
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-            )}
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Continue with Google</span>
-          </button>
-          {/* Hidden Google button for fallback */}
-          <div ref={googleBtnRef} className="hidden" />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Loading Google Sign-In...</span>
+            </div>
+          )}
         </div>
       </div>
 
