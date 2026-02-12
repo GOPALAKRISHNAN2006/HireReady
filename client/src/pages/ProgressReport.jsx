@@ -122,7 +122,7 @@ const ProgressReport = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <LoadingCard count={4} />
+        <LoadingCard message="Loading your progress report..." />
       </div>
     )
   }

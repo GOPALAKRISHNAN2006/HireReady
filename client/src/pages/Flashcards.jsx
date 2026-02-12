@@ -39,6 +39,7 @@ const DEFAULT_DECKS = [
       { id: 4, front: 'What is Dynamic Programming?', back: 'Solving complex problems by breaking them into overlapping subproblems. Key: optimal substructure + overlapping subproblems. Techniques: memoization (top-down), tabulation (bottom-up).', mastered: false },
       { id: 5, front: 'Two Pointer Technique', back: 'Use two pointers to iterate through a sorted array/string. Common patterns: opposite ends (two sum), slow/fast (linked list cycle), sliding window.', mastered: false },
       { id: 6, front: 'What is a Stack vs Queue?', back: 'Stack: LIFO (Last In First Out) - push/pop from top.\nQueue: FIFO (First In First Out) - enqueue at rear, dequeue from front.', mastered: false },
+      { id: 7, front: 'What is a Binary Search Tree (BST)?', back: 'A tree where left child < parent < right child.\n\nOperations: Search, Insert, Delete — all O(log n) avg, O(n) worst.\nBalanced BSTs (AVL, Red-Black) guarantee O(log n).', mastered: false },
     ]
   },
   {
@@ -397,11 +398,21 @@ const Flashcards = () => {
           <div className="max-w-2xl mx-auto">
             <div
               onClick={() => setIsFlipped(!isFlipped)}
-              className="min-h-[320px] cursor-pointer perspective-1000"
+              className="min-h-[320px] cursor-pointer"
+              style={{ perspective: '1000px' }}
             >
-              <div className={`relative w-full min-h-[320px] transition-all duration-500 preserve-3d ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
+              <div
+                className="relative w-full min-h-[320px] transition-all duration-500"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                }}
+              >
                 {/* Front */}
-                <div className="absolute inset-0 backface-hidden bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-8 flex flex-col items-center justify-center shadow-lg">
+                <div
+                  className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-8 flex flex-col items-center justify-center shadow-lg"
+                  style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                >
                   <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mb-4">
                     <HelpCircle className="w-6 h-6 text-primary-500" />
                   </div>
@@ -414,7 +425,10 @@ const Flashcards = () => {
                   )}
                 </div>
                 {/* Back */}
-                <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-primary-200 dark:border-primary-700/50 p-8 flex flex-col items-center justify-center shadow-lg">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-primary-200 dark:border-primary-700/50 p-8 flex flex-col items-center justify-center shadow-lg"
+                  style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                >
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
                     <Check className="w-6 h-6 text-green-500" />
                   </div>

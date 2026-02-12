@@ -6,9 +6,8 @@ import {
   Send,
   Bot,
   User,
-  Sparkles,
+  X,
   HelpCircle,
-  BookOpen,
   Target,
   Building2,
   Mic,
@@ -24,10 +23,7 @@ import {
   GraduationCap,
   Zap,
   Download,
-  Star,
-  Clock,
   MessageSquare,
-  ChevronDown,
   Plus
 } from 'lucide-react'
 
@@ -144,37 +140,48 @@ const QUICK_PROMPTS = [
 
 const AIChatPage = () => {
   const { user } = useAuthStore()
-  const [conversations, setConversations] = useState([])
+  const [conversations, setConversations] = useState(() => [createInitialConversation()])
   const [activeConvIndex, setActiveConvIndex] = useState(0)
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [copiedId, setCopiedId] = useState(null)
   const [selectedMode, setSelectedMode] = useState('general')
-  const [showModeSelector, setShowModeSelector] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
   const recognitionRef = useRef(null)
 
-  // Initialize first conversation
-  useEffect(() => {
-    if (conversations.length === 0) {
-      setConversations([createNewConversation()])
+  function createInitialConversation() {
+    return {
+      id: Date.now(),
+      mode: 'general',
+      title: 'New Chat',
+      messages: [{
+        id: 1,
+        type: 'bot',
+        text: `👋 Hi there! I'm your **HireReady AI Assistant**.\n\nI can help you with:\n- 🎯 Mock interview practice\n- 💻 DSA problem solving\n- 📝 Resume review & improvement\n- 🧠 Behavioral interview prep\n- 🏗️ System design practice\n- 💡 Career guidance\n\nChoose a mode above or just ask me anything!`,
+        timestamp: new Date()
+      }],
+      createdAt: new Date()
     }
-  }, [])
+  }
 
-  const createNewConversation = (mode = 'general') => ({
-    id: Date.now(),
-    mode,
-    title: 'New Chat',
-    messages: [{
-      id: 1,
-      type: 'bot',
-      text: `👋 Hi ${user?.firstName || 'there'}! I'm your **HireReady AI Assistant**.\n\nI can help you with:\n- 🎯 Mock interview practice\n- 💻 DSA problem solving\n- 📝 Resume review & improvement\n- 🧠 Behavioral interview prep\n- 🏗️ System design practice\n- 💡 Career guidance\n\nChoose a mode above or just ask me anything!`,
-      timestamp: new Date()
-    }],
-    createdAt: new Date()
-  })
+  const createNewConversation = (mode = 'general') => {
+    const modeLabel = CONVERSATION_MODES.find(m => m.id === mode)?.label || 'General'
+    return {
+      id: Date.now(),
+      mode,
+      title: 'New Chat',
+      messages: [{
+        id: 1,
+        type: 'bot',
+        text: `👋 Hi ${user?.firstName || 'there'}! I'm your **HireReady AI Assistant** in **${modeLabel}** mode.\n\nI can help you with:\n- 🎯 Mock interview practice\n- 💻 DSA problem solving\n- 📝 Resume review & improvement\n- 🧠 Behavioral interview prep\n- 🏗️ System design practice\n- 💡 Career guidance\n\nChoose a mode above or just ask me anything!`,
+        timestamp: new Date()
+      }],
+      createdAt: new Date()
+    }
+  }
 
   const activeConv = conversations[activeConvIndex] || conversations[0]
   const messages = activeConv?.messages || []
@@ -279,17 +286,11 @@ const AIChatPage = () => {
     }
   }
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }
-
   const startNewChat = () => {
     const newConv = createNewConversation(selectedMode)
     setConversations(prev => [...prev, newConv])
     setActiveConvIndex(conversations.length)
+    setShowSidebar(false)
   }
 
   const deleteConversation = (index) => {
@@ -351,18 +352,33 @@ const AIChatPage = () => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-6rem)] -mt-2 gap-4">
+    <div className="flex h-[calc(100vh-7rem)] gap-4">
+      {/* Mobile sidebar overlay */}
+      {showSidebar && (
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setShowSidebar(false)} />
+      )}
+
       {/* Sidebar - Conversation History */}
-      <div className="hidden lg:flex flex-col w-72 bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-700/50 overflow-hidden">
+      <div className={`${
+        showSidebar ? 'fixed inset-y-0 left-0 z-50 w-80 pt-16' : 'hidden'
+      } lg:relative lg:flex lg:pt-0 lg:w-72 lg:z-auto flex flex-col bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-700/50 overflow-hidden shadow-xl lg:shadow-none`}>
         {/* New Chat Button */}
         <div className="p-4 border-b border-gray-100 dark:border-gray-700/50">
-          <button
-            onClick={startNewChat}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-primary-500/25"
-          >
-            <Plus className="w-5 h-5" />
-            New Chat
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={startNewChat}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-primary-500/25"
+            >
+              <Plus className="w-5 h-5" />
+              New Chat
+            </button>
+            <button
+              onClick={() => setShowSidebar(false)}
+              className="lg:hidden p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-500"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Conversation List */}
@@ -370,7 +386,7 @@ const AIChatPage = () => {
           {conversations.map((conv, idx) => (
             <button
               key={conv.id}
-              onClick={() => setActiveConvIndex(idx)}
+              onClick={() => { setActiveConvIndex(idx); setShowSidebar(false) }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all group ${
                 idx === activeConvIndex
                   ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
@@ -426,6 +442,13 @@ const AIChatPage = () => {
                 <Download className="w-5 h-5" />
               </button>
               <button
+                onClick={() => setShowSidebar(true)}
+                className="lg:hidden p-2 hover:bg-white/20 rounded-lg transition-colors"
+                title="Chat history"
+              >
+                <MessageSquare className="w-5 h-5" />
+              </button>
+              <button
                 onClick={startNewChat}
                 className="lg:hidden p-2 hover:bg-white/20 rounded-lg transition-colors"
                 title="New chat"
@@ -442,7 +465,17 @@ const AIChatPage = () => {
             {CONVERSATION_MODES.map((mode) => (
               <button
                 key={mode.id}
-                onClick={() => { setSelectedMode(mode.id); setShowModeSelector(false) }}
+                onClick={() => {
+                  setSelectedMode(mode.id)
+                  // Update active conversation mode
+                  setConversations(prev => {
+                    const updated = [...prev]
+                    if (updated[activeConvIndex]) {
+                      updated[activeConvIndex] = { ...updated[activeConvIndex], mode: mode.id }
+                    }
+                    return updated
+                  })
+                }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                   selectedMode === mode.id
                     ? `bg-gradient-to-r ${mode.color} text-white shadow-md`
