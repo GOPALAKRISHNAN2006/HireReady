@@ -147,6 +147,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // API Routes
 // ===========================================
 
+// Minimal ping endpoint (for Render cron keep-alive — no JSON, no logs)
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
+
 // Health check endpoint (basic)
 app.get('/api/health', (req, res) => {
   res.status(200).json({

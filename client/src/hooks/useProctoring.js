@@ -114,6 +114,56 @@ const useProctoring = (options = {}) => {
   const consecutiveNoFaceRef = useRef(0);
   const gazeHistoryRef = useRef([]);
 
+  // Log a violation (must be defined before setScreenStream which depends on it)
+  const logViolation = useCallback(async (type, additionalData = {}) => {
+    if (!proctoringSessionId || !isActive) return;
+
+    const severity = VIOLATION_SEVERITY[type] || 'low';
+    const description = VIOLATION_DESCRIPTIONS[type] || type;
+
+    try {
+      const response = await proctoringApi.logViolation(proctoringSessionId, {
+        type,
+        severity,
+        description,
+        evidence: additionalData.evidence || null
+      });
+
+      if (response.data.success) {
+        const data = response.data.data;
+        
+        // Update local state
+        setRiskScore(data.riskScore);
+        setRiskLevel(data.riskLevel);
+        setStats(data.stats);
+        setViolations(prev => [...prev, data.violation]);
+
+        // Handle warning message
+        if (data.warningMessage) {
+          setWarningMessage(data.warningMessage);
+          onWarning(data.warningMessage, severity);
+          
+          // Show toast for warnings
+          if (severity === 'high') {
+            toast.error(data.warningMessage, { duration: 5000 });
+          } else if (severity === 'medium') {
+            toast(data.warningMessage, { icon: '⚠️', duration: 4000 });
+          }
+          
+          // Clear warning after delay
+          setTimeout(() => setWarningMessage(null), 5000);
+        }
+
+        // Callback
+        onViolation(data.violation, data);
+
+        return data;
+      }
+    } catch (error) {
+      console.error('Failed to log violation:', error);
+    }
+  }, [proctoringSessionId, isActive, onViolation, onWarning]);
+
   // Set screen stream from proctoring setup
   const setScreenStream = useCallback((stream) => {
     screenStreamRef.current = stream;
@@ -179,56 +229,6 @@ const useProctoring = (options = {}) => {
       throw error;
     }
   }, [sessionType, sessionId, config, strictMode]);
-
-  // Log a violation
-  const logViolation = useCallback(async (type, additionalData = {}) => {
-    if (!proctoringSessionId || !isActive) return;
-
-    const severity = VIOLATION_SEVERITY[type] || 'low';
-    const description = VIOLATION_DESCRIPTIONS[type] || type;
-
-    try {
-      const response = await proctoringApi.logViolation(proctoringSessionId, {
-        type,
-        severity,
-        description,
-        evidence: additionalData.evidence || null
-      });
-
-      if (response.data.success) {
-        const data = response.data.data;
-        
-        // Update local state
-        setRiskScore(data.riskScore);
-        setRiskLevel(data.riskLevel);
-        setStats(data.stats);
-        setViolations(prev => [...prev, data.violation]);
-
-        // Handle warning message
-        if (data.warningMessage) {
-          setWarningMessage(data.warningMessage);
-          onWarning(data.warningMessage, severity);
-          
-          // Show toast for warnings
-          if (severity === 'high') {
-            toast.error(data.warningMessage, { duration: 5000 });
-          } else if (severity === 'medium') {
-            toast(data.warningMessage, { icon: '⚠️', duration: 4000 });
-          }
-          
-          // Clear warning after delay
-          setTimeout(() => setWarningMessage(null), 5000);
-        }
-
-        // Callback
-        onViolation(data.violation, data);
-
-        return data;
-      }
-    } catch (error) {
-      console.error('Failed to log violation:', error);
-    }
-  }, [proctoringSessionId, isActive, onViolation, onWarning]);
 
   // Initialize camera
   const initializeCamera = useCallback(async () => {
