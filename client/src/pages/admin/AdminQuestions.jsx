@@ -13,7 +13,11 @@ import {
   Eye,
   Check,
   X,
-  Brain
+  Brain,
+  Filter,
+  Sparkles,
+  Tag,
+  ChevronRight
 } from 'lucide-react'
 
 const AdminQuestions = () => {
@@ -175,123 +179,143 @@ const AdminQuestions = () => {
   ]
 
   const getDifficultyColor = (difficulty) => {
-    const colors = { easy: 'success', medium: 'warning', hard: 'danger' }
-    return colors[difficulty] || 'default'
+    const colors = { 
+      easy: 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30', 
+      medium: 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30', 
+      hard: 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800/30' 
+    }
+    return colors[difficulty] || 'bg-slate-50 text-slate-600 border-slate-200'
   }
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Manage Questions</h1>
-          <p className="text-gray-600">Create, edit, and manage interview questions</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Manage Questions</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Create, edit, and manage interview questions</p>
         </div>
-        <Button icon={Plus} onClick={() => { resetForm(); setShowAddModal(true); }}>
+        <button
+          onClick={() => { resetForm(); setShowAddModal(true); }}
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-violet-700 transition-all"
+        >
+          <Plus className="w-4 h-4" />
           Add Question
-        </Button>
+        </button>
       </div>
 
       {/* Filters */}
-      <Card>
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-4">
+        <div className="flex flex-col md:flex-row gap-3">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
               placeholder="Search questions..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
             />
           </div>
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
-          >
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-slate-400" />
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+            >
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </Card>
+      </div>
 
       {/* Questions List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {isLoading ? (
-          <Card>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-6">
             <LoadingCard message="Loading questions..." />
-          </Card>
+          </div>
         ) : data?.questions?.length > 0 ? (
           data.questions.map((question) => (
-            <Card key={question._id} hover>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Badge variant={getDifficultyColor(question.difficulty)} size="sm">
+            <div key={question._id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-all p-5 group">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                    <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${getDifficultyColor(question.difficulty)}`}>
                       {question.difficulty}
-                    </Badge>
-                    <Badge variant="primary" size="sm">
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800/30">
                       {question.category}
-                    </Badge>
+                    </span>
                     {question.isAIGenerated && (
-                      <Badge variant="purple" size="sm">AI Generated</Badge>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-violet-50 text-violet-700 border border-violet-100 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/30">
+                        <Sparkles className="w-3 h-3" />
+                        AI Generated
+                      </span>
                     )}
                     {question.isApproved ? (
-                      <Badge variant="success" size="sm">
-                        <Check className="w-3 h-3 mr-1" />
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30">
+                        <Check className="w-3 h-3" />
                         Approved
-                      </Badge>
+                      </span>
                     ) : (
-                      <Badge variant="warning" size="sm">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30">
                         Pending
-                      </Badge>
+                      </span>
                     )}
                   </div>
-                  <h3 className="font-medium text-gray-900 mb-2">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2 leading-relaxed">
                     {question.text}
                   </h3>
                   {question.tags && question.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Tag className="w-3 h-3 text-slate-400" />
                       {question.tags.map((tag, index) => (
-                        <span key={index} className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                        <span key={index} className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
                           {tag}
                         </span>
                       ))}
                     </div>
                   )}
                 </div>
-                <div className="flex items-center space-x-2 ml-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                  <button
                     onClick={() => handleEdit(question)}
-                    icon={Edit2}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                    className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+                    title="Edit"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
                     onClick={() => {
                       setSelectedQuestion(question)
                       setShowDeleteModal(true)
                     }}
-                    icon={Trash2}
-                    className="text-red-600 hover:bg-red-50"
-                  />
+                    className="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
-            </Card>
+            </div>
           ))
         ) : (
-          <Card className="text-center py-12">
-            <FileQuestion className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Questions Found</h3>
-            <p className="text-gray-500 mb-4">Start by adding some questions</p>
-            <Button icon={Plus} onClick={() => setShowAddModal(true)}>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm text-center py-16">
+            <FileQuestion className="w-14 h-14 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Questions Found</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">Start by adding some questions</p>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all"
+            >
+              <Plus className="w-4 h-4" />
               Add Question
-            </Button>
-          </Card>
+            </button>
+          </div>
         )}
       </div>
 
@@ -306,43 +330,42 @@ const AdminQuestions = () => {
         title={selectedQuestion ? 'Edit Question' : 'Add New Question'}
         size="lg"
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* AI Generate Button */}
           {!selectedQuestion && (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              icon={Brain}
               onClick={() => generateQuestionMutation.mutate({
                 category: formData.category,
                 difficulty: formData.difficulty,
               })}
-              isLoading={generateQuestionMutation.isPending}
-              className="w-full"
+              disabled={generateQuestionMutation.isPending}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20 border-2 border-dashed border-violet-200 dark:border-violet-800/40 rounded-xl text-violet-700 dark:text-violet-400 font-semibold hover:border-violet-300 dark:hover:border-violet-700 transition-all disabled:opacity-50"
             >
-              Generate with AI
-            </Button>
+              <Brain className={`w-5 h-5 ${generateQuestionMutation.isPending ? 'animate-pulse' : ''}`} />
+              {generateQuestionMutation.isPending ? 'Generating...' : 'Generate with AI'}
+            </button>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Question Text</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Question Text</label>
             <textarea
               value={formData.text}
               onChange={(e) => setFormData(prev => ({ ...prev, text: e.target.value }))}
               rows={3}
               required
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter the question..."
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
               >
                 {categories.slice(1).map((cat) => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -350,11 +373,11 @@ const AdminQuestions = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Difficulty</label>
               <select
                 value={formData.difficulty}
                 onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -364,34 +387,34 @@ const AdminQuestions = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Expected Answer</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Expected Answer</label>
             <textarea
               value={formData.expectedAnswer}
               onChange={(e) => setFormData(prev => ({ ...prev, expectedAnswer: e.target.value }))}
               rows={3}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter the expected answer..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Hints (one per line)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Hints (one per line)</label>
             <textarea
               value={formData.hints}
               onChange={(e) => setFormData(prev => ({ ...prev, hints: e.target.value }))}
               rows={2}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter hints, one per line..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma separated)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tags (comma separated)</label>
             <input
               type="text"
               value={formData.tags}
               onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
               placeholder="e.g., arrays, sorting, recursion"
             />
           </div>
@@ -423,9 +446,12 @@ const AdminQuestions = () => {
         }}
         title="Delete Question"
       >
-        <p className="text-gray-600">
-          Are you sure you want to delete this question? This action cannot be undone.
-        </p>
+        <div className="flex items-center gap-3 p-3 bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-100 dark:border-rose-800/30">
+          <Trash2 className="w-5 h-5 text-rose-500 flex-shrink-0" />
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Are you sure you want to delete this question? This action cannot be undone.
+          </p>
+        </div>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
             Cancel

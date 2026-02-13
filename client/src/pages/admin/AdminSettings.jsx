@@ -140,20 +140,20 @@ const AdminSettings = () => {
 
   // Toggle component
   const Toggle = ({ checked, onChange, label, description }) => (
-    <div className="flex items-center justify-between py-3">
+    <div className="flex items-center justify-between py-3.5">
       <div>
-        <p className="font-medium text-gray-900">{label}</p>
-        {description && <p className="text-sm text-gray-500">{description}</p>}
+        <p className="font-semibold text-slate-900 dark:text-white">{label}</p>
+        {description && <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>}
       </div>
       <button
         type="button"
         onClick={() => onChange(!checked)}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          checked ? 'bg-primary-600' : 'bg-gray-300'
+          checked ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
         }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
             checked ? 'translate-x-6' : 'translate-x-1'
           }`}
         />
@@ -163,11 +163,11 @@ const AdminSettings = () => {
 
   // Input component
   const NumberInput = ({ value, onChange, label, description, min, max }) => (
-    <div className="py-3">
+    <div className="py-3.5">
       <div className="flex items-center justify-between">
         <div>
-          <p className="font-medium text-gray-900">{label}</p>
-          {description && <p className="text-sm text-gray-500">{description}</p>}
+          <p className="font-semibold text-slate-900 dark:text-white">{label}</p>
+          {description && <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>}
         </div>
         <input
           type="number"
@@ -175,7 +175,7 @@ const AdminSettings = () => {
           onChange={(e) => onChange(parseInt(e.target.value) || 0)}
           min={min}
           max={max}
-          className="w-24 px-3 py-1.5 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className="w-24 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-center focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
         />
       </div>
     </div>
@@ -183,16 +183,16 @@ const AdminSettings = () => {
 
   // Select component
   const SelectInput = ({ value, onChange, label, description, options }) => (
-    <div className="py-3">
+    <div className="py-3.5">
       <div className="flex items-center justify-between">
         <div>
-          <p className="font-medium text-gray-900">{label}</p>
-          {description && <p className="text-sm text-gray-500">{description}</p>}
+          <p className="font-semibold text-slate-900 dark:text-white">{label}</p>
+          {description && <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>}
         </div>
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
+          className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
         >
           {options.map(opt => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -216,8 +216,8 @@ const AdminSettings = () => {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600">Configure system settings</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Settings</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Configure system settings</p>
         </div>
         <LoadingCard message="Loading settings..." />
       </div>
@@ -229,8 +229,8 @@ const AdminSettings = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600">Configure system settings and preferences</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Settings</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Configure system settings and preferences</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -252,16 +252,16 @@ const AdminSettings = () => {
 
       {/* Unsaved changes alert */}
       {hasChanges && (
-        <div className="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <AlertTriangle className="w-5 h-5 text-yellow-600" />
-          <p className="text-sm text-yellow-700">You have unsaved changes</p>
+        <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30 rounded-xl">
+          <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <p className="text-sm text-amber-700 dark:text-amber-400 font-medium">You have unsaved changes</p>
         </div>
       )}
 
       {/* Settings content */}
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Sidebar navigation */}
-        <Card className="lg:col-span-1 h-fit">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm lg:col-span-1 h-fit p-3">
           <nav className="space-y-1">
             {tabs.map(tab => {
               const Icon = tab.icon
@@ -269,50 +269,50 @@ const AdminSettings = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all ${
                     activeTab === tab.id
-                      ? 'bg-primary-50 text-primary-700 font-medium'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 text-indigo-700 dark:text-indigo-400 font-semibold shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-indigo-600 dark:text-indigo-400' : ''}`} />
                   {tab.label}
                 </button>
               )
             })}
           </nav>
-        </Card>
+        </div>
 
         {/* Settings panel */}
-        <Card className="lg:col-span-3">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm lg:col-span-3 p-6">
           {/* Site Settings */}
           {activeTab === 'site' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   Site Settings
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">General website configuration</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">General website configuration</p>
               </div>
 
-              <div className="py-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Site Name</label>
+              <div className="py-3.5">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Site Name</label>
                 <input
                   type="text"
                   value={settings.site.name}
                   onChange={(e) => handleChange('site', 'name', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                 />
               </div>
 
-              <div className="py-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
+              <div className="py-3.5">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tagline</label>
                 <input
                   type="text"
                   value={settings.site.tagline}
                   onChange={(e) => handleChange('site', 'tagline', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                 />
               </div>
 
@@ -334,13 +334,13 @@ const AdminSettings = () => {
 
           {/* Features Settings */}
           {activeTab === 'features' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   Feature Toggles
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">Enable or disable platform features</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Enable or disable platform features</p>
               </div>
 
               <Toggle
@@ -389,13 +389,13 @@ const AdminSettings = () => {
 
           {/* Security Settings */}
           {activeTab === 'security' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   Security Settings
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">Authentication and security configuration</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Authentication and security configuration</p>
               </div>
 
               <NumberInput
@@ -443,13 +443,13 @@ const AdminSettings = () => {
 
           {/* Interview Settings */}
           {activeTab === 'interviews' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   Interview Settings
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">Configure mock interview behavior</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure mock interview behavior</p>
               </div>
 
               <NumberInput
@@ -497,13 +497,13 @@ const AdminSettings = () => {
 
           {/* API Settings */}
           {activeTab === 'api' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Database className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Database className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   API Configuration
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">Rate limiting and logging settings</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Rate limiting and logging settings</p>
               </div>
 
               <NumberInput
@@ -548,13 +548,13 @@ const AdminSettings = () => {
 
           {/* Notification Settings */}
           {activeTab === 'notifications' && (
-            <div className="space-y-1 divide-y divide-gray-100">
+            <div className="space-y-1 divide-y divide-slate-100 dark:divide-slate-800">
               <div className="pb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-primary-600" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   Notification Settings
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">Email and notification preferences</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Email and notification preferences</p>
               </div>
 
               <Toggle
@@ -586,16 +586,16 @@ const AdminSettings = () => {
               />
             </div>
           )}
-        </Card>
+        </div>
       </div>
 
       {/* Info card */}
-      <Card className="bg-blue-50 border-blue-200">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-2xl p-5">
         <div className="flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-600 mt-0.5" />
+          <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
           <div>
-            <h4 className="font-medium text-blue-900">Configuration Notes</h4>
-            <ul className="text-sm text-blue-700 mt-1 space-y-1">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-300">Configuration Notes</h4>
+            <ul className="text-sm text-blue-700 dark:text-blue-400 mt-1.5 space-y-1">
               <li>• Changes take effect immediately after saving</li>
               <li>• Security settings may require users to re-authenticate</li>
               <li>• Disabling features will hide them from the user interface</li>
@@ -603,7 +603,7 @@ const AdminSettings = () => {
             </ul>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   )
 }

@@ -15,7 +15,11 @@ import {
   MessageSquare,
   CheckCircle,
   Clock,
-  Calendar
+  Calendar,
+  ArrowUpRight,
+  ArrowDownRight,
+  Zap,
+  BarChart3
 } from 'lucide-react'
 import {
   LineChart,
@@ -30,7 +34,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
+  Legend,
+  AreaChart,
+  Area
 } from 'recharts'
 
 const AdminDashboard = () => {
@@ -60,34 +66,51 @@ const AdminDashboard = () => {
       title: 'Total Users',
       value: statsData?.totalUsers || 0,
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      gradient: 'from-blue-600 to-indigo-600',
+      lightBg: 'bg-blue-50 dark:bg-blue-950/30',
+      iconBg: 'bg-blue-500/10',
+      iconColor: 'text-blue-600',
       link: '/admin/users',
-      description: 'Registered users'
+      description: 'Registered users',
+      trend: '+12%',
+      trendUp: true
     },
     {
       title: 'Total Interviews',
       value: statsData?.totalInterviews || 0,
       icon: Target,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-      description: 'Interview sessions'
+      gradient: 'from-emerald-600 to-teal-600',
+      lightBg: 'bg-emerald-50 dark:bg-emerald-950/30',
+      iconBg: 'bg-emerald-500/10',
+      iconColor: 'text-emerald-600',
+      link: '/admin/interviews',
+      description: 'Interview sessions',
+      trend: '+8%',
+      trendUp: true
     },
     {
       title: 'Avg Score',
       value: `${statsData?.averageScore || 0}%`,
       icon: TrendingUp,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
-      description: 'Overall performance'
+      gradient: 'from-violet-600 to-purple-600',
+      lightBg: 'bg-violet-50 dark:bg-violet-950/30',
+      iconBg: 'bg-violet-500/10',
+      iconColor: 'text-violet-600',
+      description: 'Overall performance',
+      trend: '+3%',
+      trendUp: true
     },
     {
       title: 'Completed',
       value: statsData?.completedInterviews || 0,
       icon: CheckCircle,
-      color: 'text-teal-600',
-      bgColor: 'bg-teal-100',
-      description: 'Finished interviews'
+      gradient: 'from-amber-500 to-orange-600',
+      lightBg: 'bg-amber-50 dark:bg-amber-950/30',
+      iconBg: 'bg-amber-500/10',
+      iconColor: 'text-amber-600',
+      description: 'Finished interviews',
+      trend: '+15%',
+      trendUp: true
     },
   ]
 
@@ -112,20 +135,20 @@ const AdminDashboard = () => {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">Monitor user performance and platform analytics</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Dashboard</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Monitor platform activity and performance analytics</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+            <Calendar className="w-4 h-4 text-slate-400" />
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary-500"
+              className="bg-transparent text-slate-900 dark:text-white text-sm font-medium focus:outline-none cursor-pointer"
             >
               <option value="all">All Time</option>
               <option value="7d">Last 7 Days</option>
@@ -134,73 +157,78 @@ const AdminDashboard = () => {
               <option value="1y">Last Year</option>
             </select>
           </div>
-          <Link 
-            to="/admin/users" 
-            className="flex items-center text-primary-600 hover:text-primary-700 font-medium text-sm"
-          >
-            View All Users
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </Link>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((stat, index) => (
-          <Card key={index} hover className={stat.link ? 'cursor-pointer' : ''}>
+          <div key={index} className={`relative overflow-hidden rounded-2xl ${stat.lightBg} border border-slate-200/60 dark:border-slate-700/60 p-5 transition-all duration-200 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 hover:-translate-y-0.5 ${stat.link ? 'cursor-pointer' : ''} group`}>
             {stat.link ? (
               <Link to={stat.link} className="block">
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-11 h-11 ${stat.iconBg} rounded-xl flex items-center justify-center`}>
+                    <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
+                  </div>
+                  <div className={`flex items-center gap-1 text-xs font-semibold ${stat.trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+                    {stat.trendUp ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                    {stat.trend}
+                  </div>
+                </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{stat.description}</p>
+                  <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{stat.value}</p>
+                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">{stat.title}</p>
                 </div>
-                <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-              </div>
-                <div className="flex items-center mt-3 text-sm text-primary-600">
+                <div className="flex items-center mt-4 text-xs font-semibold text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span>View details</span>
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
                 </div>
               </Link>
             ) : (
-              <div className="flex items-start justify-between">
+              <>
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-11 h-11 ${stat.iconBg} rounded-xl flex items-center justify-center`}>
+                    <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
+                  </div>
+                  <div className={`flex items-center gap-1 text-xs font-semibold ${stat.trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+                    {stat.trendUp ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                    {stat.trend}
+                  </div>
+                </div>
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{stat.description}</p>
+                  <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{stat.value}</p>
+                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">{stat.title}</p>
                 </div>
-                <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-              </div>
+              </>
             )}
-          </Card>
+          </div>
         ))}
       </div>
 
       {/* Performance Charts Row */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Performance Distribution Pie Chart */}
-        <Card>
-          <Card.Header>
-            <Card.Title className="flex items-center">
-              <Award className="w-5 h-5 mr-2 text-purple-600" />
-              Score Distribution
-            </Card.Title>
-            <Card.Description>Overall user performance breakdown</Card.Description>
-          </Card.Header>
-          <Card.Content>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden">
+          <div className="p-6 pb-0">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-9 h-9 bg-violet-500/10 rounded-xl flex items-center justify-center">
+                <Award className="w-4.5 h-4.5 text-violet-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">Score Distribution</h3>
+                <p className="text-xs text-slate-500">Overall user performance breakdown</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-6">
             {isLoading ? (
               <LoadingCard />
             ) : performanceDistribution.length === 0 ? (
-              <div className="h-[280px] flex items-center justify-center text-gray-500">
+              <div className="h-[280px] flex items-center justify-center text-slate-500">
                 <div className="text-center">
-                  <Award className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-                  <p>No interview data yet</p>
-                  <p className="text-sm text-gray-400">Data will appear once interviews are completed</p>
+                  <BarChart3 className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                  <p className="font-medium">No interview data yet</p>
+                  <p className="text-sm text-slate-400 mt-1">Data will appear once interviews are completed</p>
                 </div>
               </div>
             ) : (
@@ -210,17 +238,25 @@ const AdminDashboard = () => {
                     data={performanceDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
+                    innerRadius={70}
+                    outerRadius={110}
+                    paddingAngle={3}
                     dataKey="value"
                     label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                    strokeWidth={0}
                   >
                     {performanceDistribution.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#fff', 
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
+                    }}
+                  />
                   <Legend 
                     layout="horizontal" 
                     verticalAlign="bottom" 
@@ -230,182 +266,225 @@ const AdminDashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
             )}
-          </Card.Content>
-        </Card>
+          </div>
+        </div>
 
         {/* Category Performance */}
-        <Card>
-          <Card.Header>
-            <Card.Title className="flex items-center">
-              <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
-              Performance by Category
-            </Card.Title>
-            <Card.Description>Average scores across assessments</Card.Description>
-          </Card.Header>
-          <Card.Content>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden">
+          <div className="p-6 pb-0">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-9 h-9 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                <TrendingUp className="w-4.5 h-4.5 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">Performance by Category</h3>
+                <p className="text-xs text-slate-500">Average scores across assessments</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-6">
             {isLoading ? (
               <LoadingCard />
             ) : (
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={categoryPerformance} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis type="number" domain={[0, 100]} stroke="#6b7280" />
-                  <YAxis dataKey="name" type="category" stroke="#6b7280" width={80} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
+                  <XAxis type="number" domain={[0, 100]} stroke="#94a3b8" tick={{ fontSize: 12 }} />
+                  <YAxis dataKey="name" type="category" stroke="#94a3b8" width={80} tick={{ fontSize: 13, fontWeight: 500 }} />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: '#fff', 
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px'
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
                     }}
                     formatter={(value) => [`${value}%`, 'Avg Score']}
                   />
-                  <Bar dataKey="avgScore" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={30} />
+                  <Bar dataKey="avgScore" fill="url(#barGradient)" radius={[0, 8, 8, 0]} barSize={28} />
+                  <defs>
+                    <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
                 </BarChart>
               </ResponsiveContainer>
             )}
-          </Card.Content>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* User Growth & Quick Stats */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* User Growth Chart */}
-        <Card className="lg:col-span-2">
-          <Card.Header>
-            <Card.Title className="flex items-center">
-              <Users className="w-5 h-5 mr-2 text-blue-600" />
-              User Growth
-            </Card.Title>
-            <Card.Description>New registrations over time</Card.Description>
-          </Card.Header>
-          <Card.Content>
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden">
+          <div className="p-6 pb-0">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-9 h-9 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                <Users className="w-4.5 h-4.5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">User Growth</h3>
+                <p className="text-xs text-slate-500">New registrations over time</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-6">
             {isLoading ? (
               <LoadingCard />
             ) : (
               <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={userGrowth}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" stroke="#6b7280" />
-                  <YAxis stroke="#6b7280" />
+                <AreaChart data={userGrowth}>
+                  <defs>
+                    <linearGradient id="userGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15}/>
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                  <XAxis dataKey="month" stroke="#94a3b8" tick={{ fontSize: 12 }} />
+                  <YAxis stroke="#94a3b8" tick={{ fontSize: 12 }} />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: '#fff', 
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px'
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
                     }}
                   />
-                  <Line 
+                  <Area 
                     type="monotone" 
                     dataKey="users" 
-                    stroke="#3b82f6" 
+                    stroke="#6366f1" 
                     strokeWidth={3}
-                    dot={{ fill: '#3b82f6', strokeWidth: 2 }}
+                    fill="url(#userGradient)"
+                    dot={{ fill: '#6366f1', strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, stroke: '#6366f1', strokeWidth: 2, fill: '#fff' }}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             )}
-          </Card.Content>
-        </Card>
+          </div>
+        </div>
 
         {/* Quick Stats */}
-        <Card>
-          <Card.Header>
-            <Card.Title className="flex items-center">
-              <Activity className="w-5 h-5 mr-2 text-orange-600" />
-              Quick Stats
-            </Card.Title>
-          </Card.Header>
-          <Card.Content>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="flex items-center">
-                  <Target className="w-5 h-5 text-blue-600 mr-3" />
-                  <span className="text-gray-700 dark:text-gray-300">Total Interviews</span>
-                </div>
-                <span className="font-bold text-blue-600">{statsData?.totalInterviews || 0}</span>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden">
+          <div className="p-6 pb-0">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-9 h-9 bg-amber-500/10 rounded-xl flex items-center justify-center">
+                <Zap className="w-4.5 h-4.5 text-amber-600" />
               </div>
-              
-              <div className="flex items-center justify-between p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                <div className="flex items-center">
-                  <Brain className="w-5 h-5 text-purple-600 mr-3" />
-                  <span className="text-gray-700 dark:text-gray-300">Aptitude Tests</span>
-                </div>
-                <span className="font-bold text-purple-600">{statsData?.totalAptitudeTests || 0}</span>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                <div className="flex items-center">
-                  <MessageSquare className="w-5 h-5 text-orange-600 mr-3" />
-                  <span className="text-gray-700 dark:text-gray-300">GD Sessions</span>
-                </div>
-                <span className="font-bold text-orange-600">{statsData?.totalGDSessions || 0}</span>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="flex items-center">
-                  <Clock className="w-5 h-5 text-green-600 mr-3" />
-                  <span className="text-gray-700 dark:text-gray-300">Active Today</span>
-                </div>
-                <span className="font-bold text-green-600">{statsData?.activeToday || 0}</span>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">Quick Stats</h3>
               </div>
             </div>
-          </Card.Content>
-        </Card>
+          </div>
+          <div className="p-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3.5 bg-blue-50/80 dark:bg-blue-900/20 rounded-xl border border-blue-100/60 dark:border-blue-800/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800/30 rounded-lg flex items-center justify-center">
+                    <Target className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Interviews</span>
+                </div>
+                <span className="text-lg font-bold text-blue-600">{statsData?.totalInterviews || 0}</span>
+              </div>
+              
+              <div className="flex items-center justify-between p-3.5 bg-violet-50/80 dark:bg-violet-900/20 rounded-xl border border-violet-100/60 dark:border-violet-800/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-violet-100 dark:bg-violet-800/30 rounded-lg flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-violet-600" />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Aptitude Tests</span>
+                </div>
+                <span className="text-lg font-bold text-violet-600">{statsData?.totalAptitudeTests || 0}</span>
+              </div>
+              
+              <div className="flex items-center justify-between p-3.5 bg-amber-50/80 dark:bg-amber-900/20 rounded-xl border border-amber-100/60 dark:border-amber-800/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-amber-100 dark:bg-amber-800/30 rounded-lg flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-amber-600" />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">GD Sessions</span>
+                </div>
+                <span className="text-lg font-bold text-amber-600">{statsData?.totalGDSessions || 0}</span>
+              </div>
+              
+              <div className="flex items-center justify-between p-3.5 bg-emerald-50/80 dark:bg-emerald-900/20 rounded-xl border border-emerald-100/60 dark:border-emerald-800/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800/30 rounded-lg flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Active Today</span>
+                </div>
+                <span className="text-lg font-bold text-emerald-600">{statsData?.activeToday || 0}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Recent Activity */}
-      <Card>
-        <Card.Header>
-          <Card.Title className="flex items-center">
-            <Activity className="w-5 h-5 mr-2 text-indigo-600" />
-            Recent Activity
-          </Card.Title>
-          <Card.Description>Latest platform events</Card.Description>
-        </Card.Header>
-        <Card.Content>
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm overflow-hidden">
+        <div className="p-6 pb-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-indigo-500/10 rounded-xl flex items-center justify-center">
+                <Activity className="w-4.5 h-4.5 text-indigo-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">Recent Activity</h3>
+                <p className="text-xs text-slate-500">Latest platform events</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
           {activityLoading ? (
             <LoadingCard />
           ) : (activityData?.recentActivity || activityData?.activities || []).length === 0 ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <Activity className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
-              <p>No recent activity</p>
+            <div className="text-center py-10 text-slate-500 dark:text-slate-400">
+              <Activity className="w-12 h-12 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
+              <p className="font-medium">No recent activity</p>
+              <p className="text-sm text-slate-400 mt-1">Activity will appear here as users interact with the platform</p>
             </div>
           ) : (
             <div className="space-y-3">
               {(activityData?.recentActivity || activityData?.activities || []).slice(0, 10).map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                <div key={index} className="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
                       item.type === 'interview' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                      item.type === 'registration' ? 'bg-green-100 dark:bg-green-900/30' :
-                      'bg-gray-100 dark:bg-gray-700'
+                      item.type === 'registration' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
+                      'bg-slate-100 dark:bg-slate-700'
                     }`}>
                       {item.type === 'interview' ? (
                         <Target className="w-4 h-4 text-blue-600" />
                       ) : item.type === 'registration' ? (
-                        <Users className="w-4 h-4 text-green-600" />
+                        <Users className="w-4 h-4 text-emerald-600" />
                       ) : (
-                        <Activity className="w-4 h-4 text-gray-600" />
+                        <Activity className="w-4 h-4 text-slate-600" />
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-slate-900 dark:text-white">
                         {item.description || item.message || `${item.type} activity`}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {item.userName || item.user || 'Unknown user'}
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
-                    {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : ''}
+                  <span className="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap">
+                    {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
                   </span>
                 </div>
               ))}
             </div>
           )}
-        </Card.Content>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
