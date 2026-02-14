@@ -204,6 +204,7 @@ const Profile = () => {
     changePasswordMutation.mutate({
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword,
+      confirmPassword: passwordData.confirmPassword,
     })
   }
 
