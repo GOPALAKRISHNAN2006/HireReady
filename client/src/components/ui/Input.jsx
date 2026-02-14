@@ -25,27 +25,27 @@ const Input = forwardRef(({
 
   const variants = {
     default: `
-      border-gray-200 dark:border-gray-600
-      bg-white dark:bg-gray-800
-      text-gray-900 dark:text-white
-      placeholder:text-gray-400 dark:placeholder:text-gray-500
-      focus:border-primary-500 focus:ring-primary-500/20
+      border-slate-200 dark:border-slate-600
+      bg-white dark:bg-slate-800
+      text-slate-900 dark:text-white
+      placeholder:text-slate-400 dark:placeholder:text-slate-500
+      focus:border-indigo-500 focus:ring-indigo-500/20
     `,
     filled: `
       border-transparent
-      bg-gray-100 dark:bg-gray-700
-      text-gray-900 dark:text-white
-      placeholder:text-gray-500 dark:placeholder:text-gray-400
-      focus:bg-gray-50 dark:focus:bg-gray-600
-      focus:border-primary-500 focus:ring-primary-500/20
+      bg-slate-100 dark:bg-slate-700
+      text-slate-900 dark:text-white
+      placeholder:text-slate-500 dark:placeholder:text-slate-400
+      focus:bg-slate-50 dark:focus:bg-slate-600
+      focus:border-indigo-500 focus:ring-indigo-500/20
     `,
     underline: `
       border-0 border-b-2 rounded-none px-0
-      border-gray-300 dark:border-gray-600
+      border-slate-300 dark:border-slate-600
       bg-transparent
-      text-gray-900 dark:text-white
-      placeholder:text-gray-400 dark:placeholder:text-gray-500
-      focus:border-primary-500 focus:ring-0
+      text-slate-900 dark:text-white
+      placeholder:text-slate-400 dark:placeholder:text-slate-500
+      focus:border-indigo-500 focus:ring-0
     `,
     glass: `
       border-white/20
@@ -89,14 +89,14 @@ const Input = forwardRef(({
     ${Icon && iconPosition === 'right' ? 'pr-11' : ''}
     ${isPassword ? 'pr-11' : ''}
     ${(error || success) ? 'pr-11' : ''}
-    ${props.disabled ? 'opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-900' : ''}
+    ${props.disabled ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-900' : ''}
     ${className}
   `
 
   return (
     <div className={`space-y-1.5 ${containerClassName}`}>
       {label && !floating && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
           {label}
           {props.required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -108,7 +108,7 @@ const Input = forwardRef(({
           <div className={`
             absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none
             transition-colors duration-200
-            ${isFocused ? 'text-primary-500' : 'text-gray-400'}
+            ${isFocused ? 'text-indigo-500' : 'text-slate-400'}
           `}>
             <Icon className="w-5 h-5" />
           </div>
@@ -119,8 +119,8 @@ const Input = forwardRef(({
           <label className={`
             absolute left-4 transition-all duration-200 pointer-events-none
             ${isFocused || value 
-              ? '-top-2.5 text-xs bg-white dark:bg-gray-800 px-1 text-primary-500' 
-              : 'top-1/2 -translate-y-1/2 text-gray-400'
+              ? '-top-2.5 text-xs bg-white dark:bg-slate-800 px-1 text-indigo-500' 
+              : 'top-1/2 -translate-y-1/2 text-slate-400'
             }
           `}>
             {label}
@@ -149,7 +149,7 @@ const Input = forwardRef(({
         {variant === 'default' && (
           <div className={`
             absolute inset-0 rounded-lg pointer-events-none
-            bg-gradient-to-r from-primary-500 via-purple-500 to-primary-500
+            bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500
             opacity-0 group-hover:opacity-10 transition-opacity duration-300
             -z-10 blur-sm
           `} />
@@ -160,7 +160,7 @@ const Input = forwardRef(({
           <div className={`
             absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none
             transition-colors duration-200
-            ${isFocused ? 'text-primary-500' : 'text-gray-400'}
+            ${isFocused ? 'text-indigo-500' : 'text-slate-400'}
           `}>
             <Icon className="w-5 h-5" />
           </div>
@@ -186,7 +186,7 @@ const Input = forwardRef(({
             onClick={() => setShowPassword(!showPassword)}
             className="
               absolute inset-y-0 right-0 pr-3.5 flex items-center
-              text-gray-400 hover:text-gray-600 dark:hover:text-gray-300
+              text-slate-400 hover:text-slate-600 dark:hover:text-slate-300
               transition-colors duration-200
             "
           >
@@ -204,7 +204,7 @@ const Input = forwardRef(({
         {(error || helperText || success) && (
           <p className={`
             text-sm transition-colors duration-200
-            ${error ? 'text-red-600' : success ? 'text-green-600' : 'text-gray-500'}
+            ${error ? 'text-red-600' : success ? 'text-green-600' : 'text-slate-500'}
           `}>
             {error || (success && typeof success === 'string' ? success : helperText) || helperText}
           </p>
@@ -213,7 +213,7 @@ const Input = forwardRef(({
         {showCount && maxLength && (
           <span className={`
             text-xs ml-auto
-            ${value.length >= maxLength ? 'text-red-500' : 'text-gray-400'}
+            ${value.length >= maxLength ? 'text-red-500' : 'text-slate-400'}
           `}>
             {value.length}/{maxLength}
           </span>
@@ -241,15 +241,15 @@ export const Textarea = forwardRef(({
   const [value, setValue] = useState(props.value || props.defaultValue || '')
 
   const variants = {
-    default: 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary-500 focus:ring-primary-500/20',
-    filled: 'border-transparent bg-gray-100 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:border-primary-500',
+    default: 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-indigo-500 focus:ring-indigo-500/20',
+    filled: 'border-transparent bg-slate-100 dark:bg-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500',
     glass: 'border-white/20 bg-white/10 backdrop-blur-md text-white placeholder:text-white/50 focus:border-white/40',
   }
 
   return (
     <div className={`space-y-1.5 ${containerClassName}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
           {label}
           {props.required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -278,13 +278,13 @@ export const Textarea = forwardRef(({
       
       <div className="flex items-center justify-between">
         {(error || helperText) && (
-          <p className={`text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
+          <p className={`text-sm ${error ? 'text-red-600' : 'text-slate-500'}`}>
             {error || helperText}
           </p>
         )}
         
         {showCount && maxLength && (
-          <span className={`text-xs ml-auto ${value.length >= maxLength ? 'text-red-500' : 'text-gray-400'}`}>
+          <span className={`text-xs ml-auto ${value.length >= maxLength ? 'text-red-500' : 'text-slate-400'}`}>
             {value.length}/{maxLength}
           </span>
         )}

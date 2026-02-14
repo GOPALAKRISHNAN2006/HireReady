@@ -75,6 +75,11 @@ import InterviewNotes from './pages/InterviewNotes'
 import ProgressReport from './pages/ProgressReport'
 import Flashcards from './pages/Flashcards'
 
+// Legal / Info Pages
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import Contact from './pages/Contact'
+
 
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -125,6 +130,9 @@ function App() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/contact" element={<Contact />} />
       
       {/* Auth Routes */}
       <Route element={<AuthLayout />}>

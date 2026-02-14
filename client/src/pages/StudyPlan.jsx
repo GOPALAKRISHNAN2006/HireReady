@@ -159,7 +159,7 @@ const StudyPlan = () => {
       'Soft Skills': 'from-pink-500 to-rose-600',
       'Custom': 'from-violet-500 to-purple-600',
     }
-    return gradients[category] || 'from-gray-500 to-gray-600'
+    return gradients[category] || 'from-slate-500 to-slate-600'
   }
 
   const getCategoryBadge = (category) => {
@@ -169,50 +169,17 @@ const StudyPlan = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-8 md:p-10 text-white">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-white/5 rounded-full translate-y-1/3 -translate-x-1/4 blur-2xl" />
-        <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-purple-400/20 rounded-full blur-3xl" />
-
-        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center px-3 py-1.5 bg-white/15 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 mr-2 text-yellow-300" />
-              Personalized Study Tracker
-            </div>
-            <h1 className="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Study Plan</h1>
-            <p className="text-purple-100 max-w-lg text-lg leading-relaxed">
-              Track your progress, build study streaks, and stay on top of every topic with spaced repetition.
-            </p>
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Calendar className="w-4 h-4 mr-2" />
+            Your Plan
           </div>
-          <div className="flex gap-3 md:gap-4">
-            {[
-              { label: 'Progress', value: `${overallProgress}%`, icon: Target },
-              { label: 'Streak', value: streak, icon: Flame, highlight: streak >= 3 },
-              { label: 'Done', value: `${completedSubtopics}/${totalSubtopics}`, icon: CheckCircle },
-            ].map(stat => (
-              <div key={stat.label} className={`text-center backdrop-blur-sm rounded-2xl px-5 py-3.5 min-w-[80px] ${stat.highlight ? 'bg-amber-500/20 ring-1 ring-amber-400/40' : 'bg-white/10'}`}>
-                <stat.icon className={`w-5 h-5 mx-auto mb-1.5 ${stat.highlight ? 'text-amber-300' : 'text-purple-200'}`} />
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <div className="text-[11px] text-purple-200 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Overall Progress in Hero */}
-        <div className="relative mt-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-purple-200">Overall Completion</span>
-            <span className="text-sm font-bold text-white">{overallProgress}%</span>
-          </div>
-          <div className="h-3 bg-white/15 rounded-full overflow-hidden backdrop-blur-sm">
-            <div
-              className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400"
-              style={{ width: `${overallProgress}%` }}
-            />
-          </div>
+          <h1 className="text-3xl font-bold mb-2">Study Plan</h1>
+          <p className="text-white/70 max-w-lg">Follow your personalized study schedule</p>
         </div>
       </div>
 
@@ -221,7 +188,7 @@ const StudyPlan = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={resetProgress}
-            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/10 text-gray-400 hover:text-red-500 transition-all text-sm font-medium"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/10 text-slate-400 hover:text-red-500 transition-all text-sm font-medium"
             title="Reset all progress"
           >
             <RotateCcw className="w-4 h-4" />
@@ -239,27 +206,27 @@ const StudyPlan = () => {
         <Card className="overflow-hidden">
           <div className="h-1 bg-gradient-to-r from-violet-500 to-purple-600" />
           <div className="p-6">
-            <h3 className="font-bold text-gray-900 dark:text-white mb-1 text-lg">Add Custom Topic</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">Create a new topic to track your learning progress</p>
+            <h3 className="font-bold text-slate-900 dark:text-white mb-1 text-lg">Add Custom Topic</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">Create a new topic to track your learning progress</p>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Topic Name</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Topic Name</label>
                 <input
                   type="text"
                   value={newTopic}
                   onChange={e => setNewTopic(e.target.value)}
                   placeholder="e.g., Machine Learning, Cloud Architecture..."
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Subtopics</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Subtopics</label>
                 <input
                   type="text"
                   value={newSubtopics}
                   onChange={e => setNewSubtopics(e.target.value)}
                   placeholder="Comma-separated, e.g., Neural Networks, NLP, Computer Vision"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
               </div>
               <div className="flex gap-3 pt-1">
@@ -308,8 +275,8 @@ const StudyPlan = () => {
             onClick={() => setFilter(f)}
             className={`px-4 py-2 text-sm font-medium rounded-xl transition-all ${
               filter === f
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md'
-                : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md'
+                : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             {f === 'all' ? '📋 All' : f === 'incomplete' ? '⏳ Incomplete' : f === 'Technical' ? '💻 Technical' : f === 'Soft Skills' ? '🤝 Soft Skills' : `📌 ${f}`}
@@ -327,8 +294,8 @@ const StudyPlan = () => {
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white">Spaced Repetition Review</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">These subtopics were last studied over 3 days ago — time for a refresh!</p>
+                <h3 className="font-bold text-slate-900 dark:text-white">Spaced Repetition Review</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">These subtopics were last studied over 3 days ago — time for a refresh!</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
@@ -342,7 +309,7 @@ const StudyPlan = () => {
                 </span>
               ))}
               {needsReview.length > 12 && (
-                <span className="inline-flex items-center px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-lg text-sm font-medium">
+                <span className="inline-flex items-center px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-lg text-sm font-medium">
                   +{needsReview.length - 12} more
                 </span>
               )}
@@ -374,19 +341,19 @@ const StudyPlan = () => {
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 ${
                       isDone
                         ? 'bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/20'
-                        : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800'
+                        : 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800'
                     }`}>
                       {isDone ? <Award className="w-6 h-6 text-white" /> : <span>{topic.emoji || '📚'}</span>}
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-gray-900 dark:text-white text-lg group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-lg group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
                         {topic.title}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant={getCategoryBadge(topic.category)} className="text-xs">
                           {topic.category}
                         </Badge>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
                           {completed}/{topic.subtopics.length} completed
                         </span>
                         {isDone && (
@@ -400,7 +367,7 @@ const StudyPlan = () => {
                     <div className="relative w-12 h-12 hidden sm:flex items-center justify-center">
                       <svg className="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
                         <circle cx="18" cy="18" r="15" fill="none" strokeWidth="3"
-                          className="stroke-gray-200 dark:stroke-gray-700" />
+                          className="stroke-slate-200 dark:stroke-slate-700" />
                         <circle cx="18" cy="18" r="15" fill="none" strokeWidth="3"
                           strokeDasharray={`${progress * 0.94} 100`}
                           strokeLinecap="round"
@@ -410,7 +377,7 @@ const StudyPlan = () => {
                         {progress}%
                       </span>
                     </div>
-                    <div className="text-gray-400 dark:text-gray-600">
+                    <div className="text-slate-400 dark:text-slate-600">
                       {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </div>
                   </div>
@@ -418,7 +385,7 @@ const StudyPlan = () => {
 
                 {/* Linear Progress Bar (for mobile) */}
                 <div className="mt-3 sm:hidden">
-                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${isDone ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 'bg-gradient-to-r from-purple-500 to-indigo-500'}`}
                       style={{ width: `${progress}%` }}
@@ -428,7 +395,7 @@ const StudyPlan = () => {
 
                 {/* Subtopics - expandable */}
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                  <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {topic.subtopics.map((sub, i) => (
                         <button
@@ -437,18 +404,18 @@ const StudyPlan = () => {
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-left transition-all group/sub ${
                             sub.completed
                               ? 'bg-emerald-50 dark:bg-emerald-900/15 border border-emerald-200 dark:border-emerald-800/50'
-                              : 'hover:bg-gray-50 dark:hover:bg-gray-800 border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                              : 'hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700'
                           }`}
                         >
                           {sub.completed
                             ? <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
-                            : <Circle className="w-5 h-5 text-gray-300 dark:text-gray-600 group-hover/sub:text-purple-400 shrink-0 transition-colors" />
+                            : <Circle className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover/sub:text-purple-400 shrink-0 transition-colors" />
                           }
-                          <span className={`font-medium ${sub.completed ? 'text-emerald-700 dark:text-emerald-400 line-through opacity-70' : 'text-gray-700 dark:text-gray-300'}`}>
+                          <span className={`font-medium ${sub.completed ? 'text-emerald-700 dark:text-emerald-400 line-through opacity-70' : 'text-slate-700 dark:text-slate-300'}`}>
                             {sub.name}
                           </span>
                           {sub.completed && sub.lastStudied && (
-                            <span className="ml-auto text-[10px] text-gray-400 dark:text-gray-500 shrink-0">
+                            <span className="ml-auto text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
                               {new Date(sub.lastStudied).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                             </span>
                           )}
@@ -457,10 +424,10 @@ const StudyPlan = () => {
                     </div>
 
                     {/* Topic Actions */}
-                    <div className="flex justify-end mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                    <div className="flex justify-end mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
                       <button
                         onClick={() => removeTopic(topic.id)}
-                        className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                        className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         Remove Topic
@@ -476,13 +443,13 @@ const StudyPlan = () => {
 
       {/* Empty State */}
       {filteredTopics.length === 0 && (
-        <Card className="border-dashed border-2 dark:border-gray-600">
+        <Card className="border-dashed border-2 dark:border-slate-600">
           <div className="text-center py-16">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <BookOpen className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <BookOpen className="w-8 h-8 text-slate-400 dark:text-slate-500" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No topics found</h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No topics found</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
               {filter !== 'all' ? 'Try selecting a different filter' : 'Add your first study topic to get started!'}
             </p>
             {filter !== 'all' ? (
@@ -499,7 +466,7 @@ const StudyPlan = () => {
       {/* Motivation Footer */}
       {completedSubtopics > 0 && (
         <div className="text-center py-6">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             {overallProgress === 100
               ? '🎉 You\'ve completed everything! Amazing work — you\'re interview-ready!'
               : overallProgress >= 75

@@ -266,8 +266,8 @@ const AdminQuestions = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Manage Questions</h1>
-          <p className="text-gray-600">Create, edit, and manage interview questions</p>
+          <h1 className="text-2xl font-bold text-slate-900">Manage Questions</h1>
+          <p className="text-slate-600">Create, edit, and manage interview questions</p>
         </div>
         <Button icon={Plus} onClick={() => { resetForm(); setShowAddModal(true); }}>
           Add Question
@@ -327,7 +327,7 @@ const AdminQuestions = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search questions..."
@@ -336,7 +336,7 @@ const AdminQuestions = () => {
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
           
@@ -347,7 +347,7 @@ const AdminQuestions = () => {
               setCategoryFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[180px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[180px]"
           >
             {CATEGORIES.map(cat => (
               <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -361,7 +361,7 @@ const AdminQuestions = () => {
               setDifficultyFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[140px]"
           >
             {DIFFICULTIES.map(diff => (
               <option key={diff.value} value={diff.value}>{diff.label}</option>
@@ -378,22 +378,22 @@ const AdminQuestions = () => {
           </div>
         ) : questions.length === 0 ? (
           <div className="p-12 text-center">
-            <FileQuestion className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No questions found</p>
-            <p className="text-sm text-gray-400 mt-1">Try adjusting your filters or add a new question</p>
+            <FileQuestion className="w-12 h-12 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-500">No questions found</p>
+            <p className="text-sm text-slate-400 mt-1">Try adjusting your filters or add a new question</p>
           </div>
         ) : (
           <>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-slate-200">
               {questions.map((question) => (
                 <div 
                   key={question._id}
-                  className="p-4 hover:bg-gray-50 transition-colors"
+                  className="p-4 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       {/* Question Text */}
-                      <p className="text-gray-900 font-medium line-clamp-2">
+                      <p className="text-slate-900 font-medium line-clamp-2">
                         {question.text}
                       </p>
                       
@@ -425,12 +425,12 @@ const AdminQuestions = () => {
                       {question.tags?.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-2">
                           {question.tags.slice(0, 5).map((tag, i) => (
-                            <span key={i} className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                            <span key={i} className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
                               {tag}
                             </span>
                           ))}
                           {question.tags.length > 5 && (
-                            <span className="text-xs text-gray-400">+{question.tags.length - 5} more</span>
+                            <span className="text-xs text-slate-400">+{question.tags.length - 5} more</span>
                           )}
                         </div>
                       )}
@@ -440,14 +440,14 @@ const AdminQuestions = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleView(question)}
-                        className="p-2 text-gray-500 hover:text-primary-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors"
                         title="View"
                       >
                         <Eye className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => handleEdit(question)}
-                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Edit"
                       >
                         <Edit2 className="w-5 h-5" />
@@ -457,7 +457,7 @@ const AdminQuestions = () => {
                           setSelectedQuestion(question)
                           setShowDeleteModal(true)
                         }}
-                        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="w-5 h-5" />
@@ -469,25 +469,25 @@ const AdminQuestions = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-              <p className="text-sm text-gray-500">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
+              <p className="text-sm text-slate-500">
                 Showing {((page - 1) * 15) + 1} to {Math.min(page * 15, pagination.total)} of {pagination.total}
               </p>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-slate-600">
                   Page {page} of {pagination.pages}
                 </span>
                 <button
                   onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
                   disabled={page >= pagination.pages}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -510,14 +510,14 @@ const AdminQuestions = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Question Text */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Question Text *
             </label>
             <textarea
               value={formData.text}
               onChange={(e) => setFormData({ ...formData, text: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter the interview question..."
               required
             />
@@ -526,13 +526,13 @@ const AdminQuestions = () => {
           {/* Category, Difficulty, Type */}
           <div className="grid md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Category
               </label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 {CATEGORIES.filter(c => c.value).map(cat => (
                   <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -540,13 +540,13 @@ const AdminQuestions = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Difficulty
               </label>
               <select
                 value={formData.difficulty}
                 onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 {DIFFICULTIES.filter(d => d.value).map(diff => (
                   <option key={diff.value} value={diff.value}>{diff.label}</option>
@@ -554,13 +554,13 @@ const AdminQuestions = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Type
               </label>
               <select
                 value={formData.type}
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 {TYPES.map(type => (
                   <option key={type.value} value={type.value}>{type.label}</option>
@@ -571,14 +571,14 @@ const AdminQuestions = () => {
 
           {/* Expected Answer */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Expected Answer
             </label>
             <textarea
               value={formData.expectedAnswer}
               onChange={(e) => setFormData({ ...formData, expectedAnswer: e.target.value })}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               placeholder="Enter the ideal answer or key concepts..."
             />
           </div>
@@ -586,26 +586,26 @@ const AdminQuestions = () => {
           {/* Key Points and Hints */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Key Points (one per line)
               </label>
               <textarea
                 value={formData.keyPoints}
                 onChange={(e) => setFormData({ ...formData, keyPoints: e.target.value })}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                 placeholder="Key point 1&#10;Key point 2&#10;Key point 3"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Hints (one per line)
               </label>
               <textarea
                 value={formData.hints}
                 onChange={(e) => setFormData({ ...formData, hints: e.target.value })}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                 placeholder="Hint 1&#10;Hint 2"
               />
             </div>
@@ -614,19 +614,19 @@ const AdminQuestions = () => {
           {/* Tags and Time */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Tags (comma separated)
               </label>
               <input
                 type="text"
                 value={formData.tags}
                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="arrays, sorting, optimization"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Recommended Time (minutes)
               </label>
               <input
@@ -635,7 +635,7 @@ const AdminQuestions = () => {
                 onChange={(e) => setFormData({ ...formData, recommendedTimeMinutes: parseInt(e.target.value) || 5 })}
                 min={1}
                 max={60}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -679,8 +679,8 @@ const AdminQuestions = () => {
           <div className="space-y-4">
             {/* Question */}
             <div>
-              <h4 className="text-sm font-medium text-gray-500 mb-1">Question</h4>
-              <p className="text-gray-900">{selectedQuestion.text}</p>
+              <h4 className="text-sm font-medium text-slate-500 mb-1">Question</h4>
+              <p className="text-slate-900">{selectedQuestion.text}</p>
             </div>
 
             {/* Meta */}
@@ -698,8 +698,8 @@ const AdminQuestions = () => {
             {/* Expected Answer */}
             {selectedQuestion.expectedAnswer && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Expected Answer</h4>
-                <p className="text-gray-700 bg-gray-50 p-3 rounded-lg text-sm whitespace-pre-wrap">
+                <h4 className="text-sm font-medium text-slate-500 mb-1">Expected Answer</h4>
+                <p className="text-slate-700 bg-slate-50 p-3 rounded-lg text-sm whitespace-pre-wrap">
                   {selectedQuestion.expectedAnswer}
                 </p>
               </div>
@@ -708,8 +708,8 @@ const AdminQuestions = () => {
             {/* Key Points */}
             {selectedQuestion.keyPoints?.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Key Points</h4>
-                <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                <h4 className="text-sm font-medium text-slate-500 mb-1">Key Points</h4>
+                <ul className="list-disc list-inside text-slate-700 text-sm space-y-1">
                   {selectedQuestion.keyPoints.map((point, i) => (
                     <li key={i}>{point}</li>
                   ))}
@@ -720,8 +720,8 @@ const AdminQuestions = () => {
             {/* Hints */}
             {selectedQuestion.hints?.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Hints</h4>
-                <ul className="list-disc list-inside text-gray-700 text-sm space-y-1">
+                <h4 className="text-sm font-medium text-slate-500 mb-1">Hints</h4>
+                <ul className="list-disc list-inside text-slate-700 text-sm space-y-1">
                   {selectedQuestion.hints.map((hint, i) => (
                     <li key={i}>{hint}</li>
                   ))}
@@ -732,10 +732,10 @@ const AdminQuestions = () => {
             {/* Tags */}
             {selectedQuestion.tags?.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Tags</h4>
+                <h4 className="text-sm font-medium text-slate-500 mb-1">Tags</h4>
                 <div className="flex flex-wrap gap-1">
                   {selectedQuestion.tags.map((tag, i) => (
-                    <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    <span key={i} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
                       {tag}
                     </span>
                   ))}
@@ -746,16 +746,16 @@ const AdminQuestions = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 pt-4 border-t">
               <div className="text-center">
-                <p className="text-2xl font-bold text-gray-900">{selectedQuestion.timesAsked || 0}</p>
-                <p className="text-sm text-gray-500">Times Asked</p>
+                <p className="text-2xl font-bold text-slate-900">{selectedQuestion.timesAsked || 0}</p>
+                <p className="text-sm text-slate-500">Times Asked</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-gray-900">{selectedQuestion.averageScore || 0}%</p>
-                <p className="text-sm text-gray-500">Avg Score</p>
+                <p className="text-2xl font-bold text-slate-900">{selectedQuestion.averageScore || 0}%</p>
+                <p className="text-sm text-slate-500">Avg Score</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-gray-900">{selectedQuestion.recommendedTimeMinutes || 5}</p>
-                <p className="text-sm text-gray-500">Minutes</p>
+                <p className="text-2xl font-bold text-slate-900">{selectedQuestion.recommendedTimeMinutes || 5}</p>
+                <p className="text-sm text-slate-500">Minutes</p>
               </div>
             </div>
 
@@ -795,7 +795,7 @@ const AdminQuestions = () => {
             </div>
           </div>
           
-          <p className="text-sm text-gray-600 line-clamp-2">
+          <p className="text-sm text-slate-600 line-clamp-2">
             "{selectedQuestion?.text}"
           </p>
           

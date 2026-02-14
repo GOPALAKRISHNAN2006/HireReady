@@ -32,8 +32,8 @@ const MarkdownText = ({ text }) => {
   const renderLine = (line) => {
     let html = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
-    html = html.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono text-primary-600 dark:text-primary-400">$1</code>')
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-primary-500 underline hover:text-primary-600">$1</a>')
+    html = html.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-xs font-mono text-indigo-600 dark:text-indigo-400">$1</code>')
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-indigo-500 underline hover:text-indigo-600">$1</a>')
     return html
   }
 
@@ -61,13 +61,13 @@ const MarkdownText = ({ text }) => {
     if (line.startsWith('```')) {
       if (inCodeBlock) {
         elements.push(
-          <div key={`code-${i}`} className="my-3 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+          <div key={`code-${i}`} className="my-3 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
             {codeLang && (
-              <div className="bg-gray-100 dark:bg-gray-800 px-4 py-1.5 text-xs text-gray-500 dark:text-gray-400 font-mono border-b border-gray-200 dark:border-gray-700">
+              <div className="bg-slate-100 dark:bg-slate-800 px-4 py-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono border-b border-slate-200 dark:border-slate-700">
                 {codeLang}
               </div>
             )}
-            <pre className="bg-gray-50 dark:bg-[#0d1526] p-4 overflow-x-auto text-sm font-mono leading-relaxed">
+            <pre className="bg-slate-50 dark:bg-[#0d1526] p-4 overflow-x-auto text-sm font-mono leading-relaxed">
               <code>{codeLines.join('\n')}</code>
             </pre>
           </div>
@@ -96,9 +96,9 @@ const MarkdownText = ({ text }) => {
     flushList()
 
     if (line.startsWith('### ')) {
-      elements.push(<h4 key={i} className="font-bold text-base mt-3 mb-1 text-gray-900 dark:text-white">{line.slice(4)}</h4>)
+      elements.push(<h4 key={i} className="font-bold text-base mt-3 mb-1 text-slate-900 dark:text-white">{line.slice(4)}</h4>)
     } else if (line.startsWith('## ')) {
-      elements.push(<h3 key={i} className="font-bold text-lg mt-3 mb-1 text-gray-900 dark:text-white">{line.slice(3)}</h3>)
+      elements.push(<h3 key={i} className="font-bold text-lg mt-3 mb-1 text-slate-900 dark:text-white">{line.slice(3)}</h3>)
     } else if (line.trim() === '') {
       elements.push(<div key={i} className="h-2" />)
     } else {
@@ -108,7 +108,7 @@ const MarkdownText = ({ text }) => {
   flushList()
   if (inCodeBlock && codeLines.length) {
     elements.push(
-      <pre key="code-end" className="bg-gray-50 dark:bg-[#0d1526] rounded-xl p-4 my-3 overflow-x-auto text-sm font-mono border border-gray-200 dark:border-gray-700">
+      <pre key="code-end" className="bg-slate-50 dark:bg-[#0d1526] rounded-xl p-4 my-3 overflow-x-auto text-sm font-mono border border-slate-200 dark:border-slate-700">
         <code>{codeLines.join('\n')}</code>
       </pre>
     )
@@ -361,20 +361,20 @@ const AIChatPage = () => {
       {/* Sidebar - Conversation History */}
       <div className={`${
         showSidebar ? 'fixed inset-y-0 left-0 z-50 w-80 pt-16' : 'hidden'
-      } lg:relative lg:flex lg:pt-0 lg:w-72 lg:z-auto flex flex-col bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-700/50 overflow-hidden shadow-xl lg:shadow-none`}>
+      } lg:relative lg:flex lg:pt-0 lg:w-72 lg:z-auto flex flex-col bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-700/50 overflow-hidden shadow-xl lg:shadow-none`}>
         {/* New Chat Button */}
-        <div className="p-4 border-b border-gray-100 dark:border-gray-700/50">
+        <div className="p-4 border-b border-slate-100 dark:border-slate-700/50">
           <div className="flex items-center gap-2">
             <button
               onClick={startNewChat}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-primary-500/25"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-indigo-500/25"
             >
               <Plus className="w-5 h-5" />
               New Chat
             </button>
             <button
               onClick={() => setShowSidebar(false)}
-              className="lg:hidden p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-500"
+              className="lg:hidden p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-slate-500"
             >
               <X className="w-5 h-5" />
             </button>
@@ -389,15 +389,15 @@ const AIChatPage = () => {
               onClick={() => { setActiveConvIndex(idx); setShowSidebar(false) }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all group ${
                 idx === activeConvIndex
-                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-600 dark:text-gray-400'
+                  ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300'
+                  : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400'
               }`}
             >
               <MessageSquare className="w-4 h-4 flex-shrink-0" />
               <span className="truncate flex-1">{conv.title}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); deleteConversation(idx) }}
-                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded text-gray-400 hover:text-red-500 transition-all"
+                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded text-slate-400 hover:text-red-500 transition-all"
               >
                 <Trash2 className="w-3 h-3" />
               </button>
@@ -406,8 +406,8 @@ const AIChatPage = () => {
         </div>
 
         {/* Stats */}
-        <div className="p-4 border-t border-gray-100 dark:border-gray-700/50">
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-700/50">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>{conversations.length} conversation{conversations.length !== 1 ? 's' : ''}</span>
             <span>{messages.length} messages</span>
           </div>
@@ -415,9 +415,9 @@ const AIChatPage = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-700/50 overflow-hidden">
+      <div className="flex-1 flex flex-col bg-white dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-700/50 overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary-600 via-purple-600 to-indigo-600 px-6 py-4 text-white flex-shrink-0">
+        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 px-6 py-4 text-white flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -460,7 +460,7 @@ const AIChatPage = () => {
         </div>
 
         {/* Mode Selector */}
-        <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-800/30 flex-shrink-0">
+        <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30 flex-shrink-0">
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {CONVERSATION_MODES.map((mode) => (
               <button
@@ -479,7 +479,7 @@ const AIChatPage = () => {
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                   selectedMode === mode.id
                     ? `bg-gradient-to-r ${mode.color} text-white shadow-md`
-                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                 }`}
               >
                 <mode.icon className="w-4 h-4" />
@@ -499,7 +499,7 @@ const AIChatPage = () => {
               <div className={`flex items-start gap-3 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
                   message.type === 'user'
-                    ? 'bg-primary-600 text-white'
+                    ? 'bg-indigo-600 text-white'
                     : 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
                 }`}>
                   {message.type === 'user' ? (
@@ -510,25 +510,25 @@ const AIChatPage = () => {
                 </div>
                 <div className={`rounded-2xl px-5 py-4 ${
                   message.type === 'user'
-                    ? 'bg-primary-600 text-white rounded-tr-md'
-                    : 'bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700/50 text-gray-700 dark:text-gray-200 rounded-tl-md'
+                    ? 'bg-indigo-600 text-white rounded-tr-md'
+                    : 'bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 rounded-tl-md'
                 }`}>
                   {message.type === 'bot' ? (
                     <MarkdownText text={message.text} />
                   ) : (
                     <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.text}</p>
                   )}
-                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200/50 dark:border-gray-600/30">
-                    <span className={`text-xs ${message.type === 'user' ? 'text-primary-200' : 'text-gray-400'}`}>
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-600/30">
+                    <span className={`text-xs ${message.type === 'user' ? 'text-indigo-200' : 'text-slate-400'}`}>
                       {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     {message.type === 'bot' && message.id !== 1 && (
                       <button
                         onClick={() => copyMessage(message.text, message.id)}
-                        className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
                         title="Copy"
                       >
-                        {copiedId === message.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
+                        {copiedId === message.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
                       </button>
                     )}
                   </div>
@@ -543,14 +543,14 @@ const AIChatPage = () => {
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                   <Bot className="w-5 h-5" />
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700/50 rounded-2xl rounded-tl-md px-5 py-4">
+                <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 rounded-2xl rounded-tl-md px-5 py-4">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} /> 
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} /> 
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
-                    <span className="text-xs text-gray-400 ml-2">AI is thinking...</span>
+                    <span className="text-xs text-slate-400 ml-2">AI is thinking...</span>
                   </div>
                 </div>
               </div>
@@ -562,14 +562,14 @@ const AIChatPage = () => {
 
         {/* Quick Prompts - shown when few messages */}
         {messages.length <= 2 && (
-          <div className="px-6 py-3 border-t border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-800/20 flex-shrink-0">
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Try asking:</p>
+          <div className="px-6 py-3 border-t border-slate-100 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/20 flex-shrink-0">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">Try asking:</p>
             <div className="flex flex-wrap gap-2">
               {QUICK_PROMPTS.map((prompt, i) => (
                 <button
                   key={i}
                   onClick={() => handleSend(prompt.label)}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-medium text-gray-600 dark:text-gray-300 transition-all hover:border-primary-300 dark:hover:border-primary-500/30"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-300 transition-all hover:border-indigo-300 dark:hover:border-indigo-500/30"
                 >
                   <prompt.icon className="w-3.5 h-3.5" />
                   {prompt.label}
@@ -580,7 +580,7 @@ const AIChatPage = () => {
         )}
 
         {/* Input Area */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700/50 bg-white dark:bg-[#111827] flex-shrink-0">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-700/50 bg-white dark:bg-[#111827] flex-shrink-0">
           <div className="flex items-end gap-3">
             {hasSpeechAPI && (
               <button
@@ -588,7 +588,7 @@ const AIChatPage = () => {
                 className={`p-3 rounded-xl transition-all flex-shrink-0 ${
                   isListening
                     ? 'bg-red-100 dark:bg-red-900/30 text-red-600 animate-pulse ring-2 ring-red-300'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'
+                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700'
                 }`}
                 title={isListening ? 'Stop listening' : 'Voice input'}
               >
@@ -608,7 +608,7 @@ const AIChatPage = () => {
                 }}
                 placeholder={isListening ? 'Listening...' : 'Ask me anything about interviews, coding, career...'}
                 rows={1}
-                className="w-full px-4 py-3 pr-12 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 resize-none"
+                className="w-full px-4 py-3 pr-12 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 resize-none"
                 style={{ minHeight: '48px', maxHeight: '120px' }}
                 onInput={(e) => {
                   e.target.style.height = '48px'
@@ -619,7 +619,7 @@ const AIChatPage = () => {
             <button
               onClick={() => handleSend()}
               disabled={!inputValue.trim() || isTyping}
-              className="p-3 bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl hover:from-primary-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-primary-500/25 flex-shrink-0"
+              className="p-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-indigo-500/25 flex-shrink-0"
             >
               {isTyping ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -628,7 +628,7 @@ const AIChatPage = () => {
               )}
             </button>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">
             AI responses are generated and may not always be accurate. Verify important information.
           </p>
         </div>

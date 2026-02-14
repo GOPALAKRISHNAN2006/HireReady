@@ -190,40 +190,38 @@ const CompanyPrep = () => {
   })
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 text-white">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-        
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-600 via-blue-600 to-slate-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
-          <div className="flex items-center space-x-3 mb-2">
-            <Building2 className="w-8 h-8" />
-            <h1 className="text-3xl font-bold">Company Preparation</h1>
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Building2 className="w-4 h-4 mr-2" />
+            Interview Prep
           </div>
-          <p className="text-blue-100 max-w-xl">
-            Prepare for interviews at top companies with curated questions, tips, and insights from real interview experiences.
-          </p>
+          <h1 className="text-3xl font-bold mb-2">Company Preparation</h1>
+          <p className="text-white/70 max-w-lg">Research companies and prepare for specific interviews</p>
         </div>
       </div>
 
       {/* Search and Filters */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
             type="text"
             placeholder="Search companies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400"
+            className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
           />
         </div>
         <div className="flex gap-2">
           <select
             value={selectedIndustry}
             onChange={(e) => setSelectedIndustry(e.target.value)}
-            className="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer"
+            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
           >
             {industries.map(ind => (
               <option key={ind.id} value={ind.id}>{ind.label}</option>
@@ -232,7 +230,7 @@ const CompanyPrep = () => {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer"
+            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
           >
             <option value="all">All Difficulties</option>
             <option value="easy">Easy</option>
@@ -300,7 +298,7 @@ const CompanyPrep = () => {
           >
             <div className="flex items-start gap-4">
               {/* Logo */}
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <img 
                   src={company.logo} 
                   alt={company.name}
@@ -316,13 +314,13 @@ const CompanyPrep = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
                       {company.name}
                     </h3>
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
                       <MapPin className="w-4 h-4" />
                       <span>{company.location}</span>
-                      <span className="text-gray-300">•</span>
+                      <span className="text-slate-300">•</span>
                       <Users className="w-4 h-4" />
                       <span>{company.employees}</span>
                     </div>
@@ -332,12 +330,12 @@ const CompanyPrep = () => {
                   </span>
                 </div>
 
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">{company.description}</p>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-3 line-clamp-2">{company.description}</p>
 
                 {/* Interview Types */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {company.interviewTypes.map((type, index) => (
-                    <span key={index} className="px-2 py-1 bg-primary-50 text-primary-600 rounded-lg text-xs font-medium">
+                    <span key={index} className="px-2 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-medium">
                       {type}
                     </span>
                   ))}
@@ -345,7 +343,7 @@ const CompanyPrep = () => {
 
                 {/* Meta Info */}
                 <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center space-x-4 text-slate-500 dark:text-slate-400">
                     <span className="flex items-center space-x-1">
                       <Star className="w-4 h-4 text-yellow-500 fill-current" />
                       <span>{company.rating}</span>
@@ -359,7 +357,7 @@ const CompanyPrep = () => {
                       <span>{company.interviewRounds} rounds</span>
                     </span>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </div>
@@ -371,9 +369,9 @@ const CompanyPrep = () => {
       {filteredCompanies.length === 0 && (
         <Card>
           <div className="text-center py-12">
-            <Building2 className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No companies found</h3>
-            <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
+            <Building2 className="w-12 h-12 mx-auto text-slate-300 mb-3" />
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">No companies found</h3>
+            <p className="text-slate-500 dark:text-slate-400">Try adjusting your search or filters</p>
           </div>
         </Card>
       )}

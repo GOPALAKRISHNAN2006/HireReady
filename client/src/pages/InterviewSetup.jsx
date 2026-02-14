@@ -113,7 +113,7 @@ const InterviewSetup = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header with gradient */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary-600 via-purple-600 to-indigo-600 rounded-3xl p-8 text-white">
+      <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 rounded-3xl p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative text-center">
@@ -138,8 +138,8 @@ const InterviewSetup = () => {
                 index < currentStep 
                   ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' 
                   : index === currentStep 
-                    ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30 scale-110' 
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-110' 
+                    : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
               }`}>
                 {index < currentStep ? (
                   <CheckCircle className="w-5 h-5" />
@@ -148,13 +148,13 @@ const InterviewSetup = () => {
                 )}
               </div>
               <div className="hidden md:block text-left">
-                <p className={`text-sm font-semibold ${index <= currentStep ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}`}>{step.title}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{step.description}</p>
+                <p className={`text-sm font-semibold ${index <= currentStep ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>{step.title}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{step.description}</p>
               </div>
             </button>
             {index < steps.length - 1 && (
               <div className={`flex-1 h-0.5 mx-4 rounded transition-all duration-500 ${
-                index < currentStep ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
+                index < currentStep ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'
               }`} />
             )}
           </div>
@@ -168,7 +168,7 @@ const InterviewSetup = () => {
           <Card className="animate-slide-up">
             <Card.Header>
               <Card.Title className="flex items-center gap-2 text-xl">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
                   <Target className="w-4 h-4 text-white" />
                 </div>
                 Choose Your Category
@@ -185,20 +185,20 @@ const InterviewSetup = () => {
                     }}
                     className={`group relative p-5 rounded-2xl border-2 text-left transition-all duration-300 hover:-translate-y-1 ${
                       localSettings.category === category.id
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-lg shadow-primary-500/20'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 shadow-lg shadow-indigo-500/20'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md'
                     }`}
                   >
                     {localSettings.category === category.id && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-5 h-5 text-primary-500" />
+                        <CheckCircle className="w-5 h-5 text-indigo-500" />
                       </div>
                     )}
                     <div className={`w-12 h-12 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-lg`}>
                       <span className="text-xl">{category.emoji}</span>
                     </div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">{category.name}</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{category.description}</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white">{category.name}</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{category.description}</p>
                   </button>
                 ))}
               </div>
@@ -228,13 +228,13 @@ const InterviewSetup = () => {
                     }}
                     className={`group relative p-6 rounded-2xl border-2 text-center transition-all duration-300 hover:-translate-y-1 ${
                       localSettings.difficulty === difficulty.id
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-lg shadow-primary-500/20'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 shadow-lg shadow-indigo-500/20'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md'
                     }`}
                   >
                     {localSettings.difficulty === difficulty.id && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-5 h-5 text-primary-500" />
+                        <CheckCircle className="w-5 h-5 text-indigo-500" />
                       </div>
                     )}
                     <div className={`w-16 h-16 bg-gradient-to-br ${difficulty.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
@@ -243,10 +243,10 @@ const InterviewSetup = () => {
                     <Badge variant={difficulty.color} size="lg" className="mb-2">
                       {difficulty.name}
                     </Badge>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{difficulty.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{difficulty.description}</p>
                     {localSettings.difficulty === difficulty.id && (
-                      <div className="mt-3 p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                        <p className="text-xs text-primary-700 dark:text-primary-300 flex items-center justify-center gap-1">
+                      <div className="mt-3 p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                        <p className="text-xs text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-1">
                           <Lightbulb className="w-3 h-3" />
                           {difficulty.tip}
                         </p>
@@ -279,8 +279,8 @@ const InterviewSetup = () => {
                       onClick={() => setLocalSettings(prev => ({ ...prev, questionCount: count }))}
                       className={`relative py-5 rounded-2xl font-bold text-xl transition-all duration-300 hover:-translate-y-1 ${
                         localSettings.questionCount === count
-                          ? 'bg-gradient-to-br from-primary-500 to-purple-600 text-white shadow-lg shadow-primary-500/30'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md'
+                          ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 hover:shadow-md'
                       }`}
                     >
                       {count}
@@ -309,7 +309,7 @@ const InterviewSetup = () => {
                       className={`py-4 rounded-2xl font-medium transition-all duration-300 hover:-translate-y-1 ${
                         localSettings.timeLimit === time.value
                           ? 'bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 hover:shadow-md'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 hover:shadow-md'
                       }`}
                     >
                       <span className="text-lg block mb-1">{time.icon}</span>
@@ -328,11 +328,11 @@ const InterviewSetup = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-amber-700 dark:text-amber-300">Estimated Session Time</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{estimatedTime} minutes</p>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{estimatedTime} minutes</p>
                 </div>
                 <div className="ml-auto text-right">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Based on {localSettings.questionCount} {localSettings.difficulty} questions</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">~{Math.round(estimatedTime / localSettings.questionCount)} min per question</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Based on {localSettings.questionCount} {localSettings.difficulty} questions</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">~{Math.round(estimatedTime / localSettings.questionCount)} min per question</p>
                 </div>
               </div>
             </Card>
@@ -345,32 +345,32 @@ const InterviewSetup = () => {
             {/* Session Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Card className="text-center">
-                <div className={`w-14 h-14 bg-gradient-to-br ${selectedCategory?.gradient || 'from-gray-400 to-gray-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                <div className={`w-14 h-14 bg-gradient-to-br ${selectedCategory?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
                   <span className="text-2xl">{selectedCategory?.emoji}</span>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Category</p>
-                <p className="font-bold text-gray-900 dark:text-white">{selectedCategory?.name}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Category</p>
+                <p className="font-bold text-slate-900 dark:text-white">{selectedCategory?.name}</p>
               </Card>
               <Card className="text-center">
-                <div className={`w-14 h-14 bg-gradient-to-br ${selectedDifficulty?.gradient || 'from-gray-400 to-gray-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                <div className={`w-14 h-14 bg-gradient-to-br ${selectedDifficulty?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
                   <span className="text-2xl">{selectedDifficulty?.emoji}</span>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Difficulty</p>
-                <p className="font-bold text-gray-900 dark:text-white">{selectedDifficulty?.name}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Difficulty</p>
+                <p className="font-bold text-slate-900 dark:text-white">{selectedDifficulty?.name}</p>
               </Card>
               <Card className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Questions</p>
-                <p className="font-bold text-gray-900 dark:text-white">{localSettings.questionCount}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Questions</p>
+                <p className="font-bold text-slate-900 dark:text-white">{localSettings.questionCount}</p>
               </Card>
               <Card className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
                   <Clock className="w-6 h-6 text-white" />
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Time Limit</p>
-                <p className="font-bold text-gray-900 dark:text-white">{localSettings.timeLimit ? `${localSettings.timeLimit} min` : 'No limit'}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Time Limit</p>
+                <p className="font-bold text-slate-900 dark:text-white">{localSettings.timeLimit ? `${localSettings.timeLimit} min` : 'No limit'}</p>
               </Card>
             </div>
 
@@ -381,19 +381,19 @@ const InterviewSetup = () => {
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-1">Quick Tips Before You Start</h3>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <h3 className="font-bold text-slate-900 dark:text-white mb-1">Quick Tips Before You Start</h3>
+                  <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
                     <li>• Find a quiet place with no distractions</li>
                     <li>• Speak clearly and structure your answers using the STAR method</li>
                     <li>• Take your time to think before answering each question</li>
-                    <li>• Estimated session time: <strong className="text-gray-900 dark:text-white">{estimatedTime} minutes</strong></li>
+                    <li>• Estimated session time: <strong className="text-slate-900 dark:text-white">{estimatedTime} minutes</strong></li>
                   </ul>
                 </div>
               </div>
             </Card>
 
             {/* Start Button */}
-            <Card className="bg-gradient-to-r from-primary-600 via-purple-600 to-indigo-600 text-white border-0 shadow-2xl">
+            <Card className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white border-0 shadow-2xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <h3 className="text-2xl font-bold mb-1">Ready to Begin? 🚀</h3>
@@ -422,7 +422,7 @@ const InterviewSetup = () => {
           icon={ChevronLeft}
           onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
           disabled={currentStep === 0}
-          className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          className="dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
         >
           Previous
         </Button>
@@ -433,7 +433,7 @@ const InterviewSetup = () => {
               key={i}
               onClick={() => setCurrentStep(i)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                i === currentStep ? 'bg-primary-600 w-8' : i < currentStep ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'
+                i === currentStep ? 'bg-indigo-600 w-8' : i < currentStep ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'
               }`}
             />
           ))}
@@ -450,7 +450,7 @@ const InterviewSetup = () => {
           <Button
             onClick={handleStartInterview}
             isLoading={createInterviewMutation.isPending}
-            className="shadow-lg bg-gradient-to-r from-primary-600 to-purple-600"
+            className="shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600"
           >
             Start <ArrowRight className="w-4 h-4 ml-1" />
           </Button>

@@ -194,8 +194,8 @@ const AdminInterviews = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Manage Interviews</h1>
-          <p className="text-gray-600">View and manage mock interview sessions</p>
+          <h1 className="text-2xl font-bold text-slate-900">Manage Interviews</h1>
+          <p className="text-slate-600">View and manage mock interview sessions</p>
         </div>
         <div className="flex items-center gap-2">
           <Button 
@@ -262,7 +262,7 @@ const AdminInterviews = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search by user name or email..."
@@ -271,7 +271,7 @@ const AdminInterviews = () => {
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
           
@@ -282,7 +282,7 @@ const AdminInterviews = () => {
               setStatusFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[150px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[150px]"
           >
             {STATUS_OPTIONS.map(status => (
               <option key={status.value} value={status.value}>{status.label}</option>
@@ -296,7 +296,7 @@ const AdminInterviews = () => {
               setCategoryFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[180px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[180px]"
           >
             {CATEGORY_OPTIONS.map(cat => (
               <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -311,7 +311,7 @@ const AdminInterviews = () => {
               setDateFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
           />
         </div>
       </Card>
@@ -324,14 +324,14 @@ const AdminInterviews = () => {
           </div>
         ) : interviews.length === 0 ? (
           <div className="p-12 text-center">
-            <Video className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No interviews found</p>
-            <p className="text-sm text-gray-400 mt-1">Try adjusting your filters</p>
+            <Video className="w-12 h-12 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-500">No interviews found</p>
+            <p className="text-sm text-slate-400 mt-1">Try adjusting your filters</p>
           </div>
         ) : (
           <>
             {/* Table Header */}
-            <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-6 py-3 bg-gray-50 border-b text-sm font-medium text-gray-500">
+            <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-6 py-3 bg-slate-50 border-b text-sm font-medium text-slate-500">
               <div className="col-span-3">User</div>
               <div className="col-span-2">Category</div>
               <div className="col-span-2">Date</div>
@@ -341,24 +341,24 @@ const AdminInterviews = () => {
               <div className="col-span-2 text-right">Actions</div>
             </div>
 
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-slate-200">
               {interviews.map((interview) => (
                 <div 
                   key={interview._id}
-                  className="p-4 lg:px-6 hover:bg-gray-50 transition-colors"
+                  className="p-4 lg:px-6 hover:bg-slate-50 transition-colors"
                 >
                   {/* Desktop View */}
                   <div className="hidden lg:grid lg:grid-cols-12 gap-4 items-center">
                     {/* User */}
                     <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary-600" />
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <User className="w-5 h-5 text-indigo-600" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-slate-900 truncate">
                           {interview.user?.name || 'Unknown User'}
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-sm text-slate-500 truncate">
                           {interview.user?.email || 'No email'}
                         </p>
                       </div>
@@ -372,12 +372,12 @@ const AdminInterviews = () => {
                     </div>
 
                     {/* Date */}
-                    <div className="col-span-2 text-sm text-gray-600">
+                    <div className="col-span-2 text-sm text-slate-600">
                       {formatDate(interview.createdAt)}
                     </div>
 
                     {/* Duration */}
-                    <div className="col-span-1 text-sm text-gray-600">
+                    <div className="col-span-1 text-sm text-slate-600">
                       {formatDuration(interview.duration)}
                     </div>
 
@@ -399,7 +399,7 @@ const AdminInterviews = () => {
                     <div className="col-span-2 flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleView(interview)}
-                        className="p-2 text-gray-500 hover:text-primary-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors"
                         title="View Details"
                       >
                         <Eye className="w-5 h-5" />
@@ -409,7 +409,7 @@ const AdminInterviews = () => {
                           setSelectedInterview(interview)
                           setShowDeleteModal(true)
                         }}
-                        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="w-5 h-5" />
@@ -421,14 +421,14 @@ const AdminInterviews = () => {
                   <div className="lg:hidden space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                          <User className="w-5 h-5 text-primary-600" />
+                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <User className="w-5 h-5 text-indigo-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-slate-900">
                             {interview.user?.name || 'Unknown User'}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-slate-500">
                             {interview.user?.email || 'No email'}
                           </p>
                         </div>
@@ -440,11 +440,11 @@ const AdminInterviews = () => {
 
                     <div className="flex flex-wrap gap-2 text-sm">
                       <Badge variant="secondary">{interview.category || 'General'}</Badge>
-                      <span className="text-gray-500 flex items-center gap-1">
+                      <span className="text-slate-500 flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {formatDate(interview.createdAt)}
                       </span>
-                      <span className="text-gray-500 flex items-center gap-1">
+                      <span className="text-slate-500 flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         {formatDuration(interview.duration)}
                       </span>
@@ -456,7 +456,7 @@ const AdminInterviews = () => {
                     <div className="flex justify-end gap-2">
                       <button
                         onClick={() => handleView(interview)}
-                        className="px-3 py-1.5 text-sm text-primary-600 hover:bg-primary-50 rounded-lg"
+                        className="px-3 py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg"
                       >
                         View
                       </button>
@@ -476,25 +476,25 @@ const AdminInterviews = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-              <p className="text-sm text-gray-500">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
+              <p className="text-sm text-slate-500">
                 Showing {((page - 1) * 15) + 1} to {Math.min(page * 15, pagination.total)} of {pagination.total}
               </p>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-slate-600">
                   Page {page} of {pagination.pages}
                 </span>
                 <button
                   onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
                   disabled={page >= pagination.pages}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -519,59 +519,59 @@ const AdminInterviews = () => {
         ) : detail ? (
           <div className="space-y-6">
             {/* User Info */}
-            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                <User className="w-6 h-6 text-primary-600" />
+            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg">
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                <User className="w-6 h-6 text-indigo-600" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{detail.user?.name || 'Unknown User'}</h3>
-                <p className="text-sm text-gray-500">{detail.user?.email || 'No email'}</p>
+                <h3 className="font-medium text-slate-900">{detail.user?.name || 'Unknown User'}</h3>
+                <p className="text-sm text-slate-500">{detail.user?.email || 'No email'}</p>
               </div>
               <div className="text-right">
                 <p className={`text-3xl font-bold ${getScoreColor(detail.overallScore)}`}>
                   {detail.overallScore || 0}%
                 </p>
-                <p className="text-sm text-gray-500">Overall Score</p>
+                <p className="text-sm text-slate-500">Overall Score</p>
               </div>
             </div>
 
             {/* Meta Info */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <Calendar className="w-5 h-5 mx-auto text-gray-400 mb-1" />
-                <p className="text-sm text-gray-500">Date</p>
-                <p className="font-medium text-gray-900">{formatDate(detail.createdAt)}</p>
+              <div className="text-center p-3 bg-slate-50 rounded-lg">
+                <Calendar className="w-5 h-5 mx-auto text-slate-400 mb-1" />
+                <p className="text-sm text-slate-500">Date</p>
+                <p className="font-medium text-slate-900">{formatDate(detail.createdAt)}</p>
               </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <Clock className="w-5 h-5 mx-auto text-gray-400 mb-1" />
-                <p className="text-sm text-gray-500">Duration</p>
-                <p className="font-medium text-gray-900">{formatDuration(detail.duration)}</p>
+              <div className="text-center p-3 bg-slate-50 rounded-lg">
+                <Clock className="w-5 h-5 mx-auto text-slate-400 mb-1" />
+                <p className="text-sm text-slate-500">Duration</p>
+                <p className="font-medium text-slate-900">{formatDuration(detail.duration)}</p>
               </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <BarChart3 className="w-5 h-5 mx-auto text-gray-400 mb-1" />
-                <p className="text-sm text-gray-500">Category</p>
-                <p className="font-medium text-gray-900">{detail.category || 'General'}</p>
+              <div className="text-center p-3 bg-slate-50 rounded-lg">
+                <BarChart3 className="w-5 h-5 mx-auto text-slate-400 mb-1" />
+                <p className="text-sm text-slate-500">Category</p>
+                <p className="font-medium text-slate-900">{detail.category || 'General'}</p>
               </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
+              <div className="text-center p-3 bg-slate-50 rounded-lg">
                 <Badge variant={getStatusColor(detail.status)} className="mx-auto mb-1">
                   {detail.status}
                 </Badge>
-                <p className="text-sm text-gray-500">Status</p>
+                <p className="text-sm text-slate-500">Status</p>
               </div>
             </div>
 
             {/* Score Breakdown */}
             {detail.feedback && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">Score Breakdown</h4>
+                <h4 className="font-medium text-slate-900 mb-3">Score Breakdown</h4>
                 <div className="space-y-3">
                   {detail.feedback.technicalAccuracy !== undefined && (
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600">Technical Accuracy</span>
+                        <span className="text-slate-600">Technical Accuracy</span>
                         <span className="font-medium">{detail.feedback.technicalAccuracy}%</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-blue-500 rounded-full"
                           style={{ width: `${detail.feedback.technicalAccuracy}%` }}
@@ -582,10 +582,10 @@ const AdminInterviews = () => {
                   {detail.feedback.communication !== undefined && (
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600">Communication</span>
+                        <span className="text-slate-600">Communication</span>
                         <span className="font-medium">{detail.feedback.communication}%</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-green-500 rounded-full"
                           style={{ width: `${detail.feedback.communication}%` }}
@@ -596,10 +596,10 @@ const AdminInterviews = () => {
                   {detail.feedback.problemSolving !== undefined && (
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600">Problem Solving</span>
+                        <span className="text-slate-600">Problem Solving</span>
                         <span className="font-medium">{detail.feedback.problemSolving}%</span>
                       </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-purple-500 rounded-full"
                           style={{ width: `${detail.feedback.problemSolving}%` }}
@@ -614,21 +614,21 @@ const AdminInterviews = () => {
             {/* Questions & Responses */}
             {detail.responses && detail.responses.length > 0 && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">
+                <h4 className="font-medium text-slate-900 mb-3">
                   Questions & Responses ({detail.responses.length})
                 </h4>
                 <div className="space-y-4 max-h-64 overflow-y-auto">
                   {detail.responses.map((response, index) => (
-                    <div key={index} className="p-4 border border-gray-200 rounded-lg">
+                    <div key={index} className="p-4 border border-slate-200 rounded-lg">
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <p className="font-medium text-gray-900 text-sm">
+                        <p className="font-medium text-slate-900 text-sm">
                           Q{index + 1}: {response.question?.text || 'Question text unavailable'}
                         </p>
                         <span className={`text-sm font-bold ${getScoreColor(response.score)}`}>
                           {response.score || 0}%
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                      <p className="text-sm text-slate-600 bg-slate-50 p-2 rounded">
                         {response.answer || 'No answer provided'}
                       </p>
                       {response.feedback && (
@@ -645,7 +645,7 @@ const AdminInterviews = () => {
             {/* AI Feedback */}
             {detail.aiFeedback && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-2">AI Feedback</h4>
+                <h4 className="font-medium text-slate-900 mb-2">AI Feedback</h4>
                 <div className="p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
                   {detail.aiFeedback}
                 </div>
@@ -659,7 +659,7 @@ const AdminInterviews = () => {
                   <h4 className="font-medium text-green-700 mb-2 flex items-center gap-2">
                     <CheckCircle className="w-4 h-4" /> Strengths
                   </h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <ul className="text-sm text-slate-600 space-y-1">
                     {detail.feedback.strengths.map((s, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <span className="text-green-500 mt-1">•</span>
@@ -674,7 +674,7 @@ const AdminInterviews = () => {
                   <h4 className="font-medium text-orange-700 mb-2 flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" /> Areas to Improve
                   </h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <ul className="text-sm text-slate-600 space-y-1">
                     {detail.feedback.areasToImprove.map((s, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <span className="text-orange-500 mt-1">•</span>
@@ -694,8 +694,8 @@ const AdminInterviews = () => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <AlertCircle className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">Could not load interview details</p>
+            <AlertCircle className="w-12 h-12 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-500">Could not load interview details</p>
           </div>
         )}
       </Modal>
@@ -722,7 +722,7 @@ const AdminInterviews = () => {
           </div>
           
           {selectedInterview && (
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-slate-600">
               <p><strong>User:</strong> {selectedInterview.user?.name || 'Unknown'}</p>
               <p><strong>Date:</strong> {formatDate(selectedInterview.createdAt)}</p>
               <p><strong>Score:</strong> {selectedInterview.overallScore || 0}%</p>

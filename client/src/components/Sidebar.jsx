@@ -99,15 +99,15 @@ const Sidebar = ({ isOpen, onClose }) => {
       className={({ isActive }) =>
         `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
         ${isActive 
-          ? 'bg-gradient-to-r from-primary-600 to-purple-600 text-white shadow-lg shadow-primary-500/30 dark:shadow-primary-500/20' 
-          : 'text-gray-600 dark:text-gray-400 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-indigo-500/[0.08] dark:hover:to-purple-500/[0.05]'
+          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/20' 
+          : 'text-slate-600 dark:text-slate-400 hover:bg-gradient-to-r hover:from-slate-50 hover:to-slate-100 dark:hover:from-indigo-500/[0.08] dark:hover:to-purple-500/[0.05]'
         }`
       }
     >
       {({ isActive }) => (
         <>
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-gray-100 dark:bg-indigo-500/10 group-hover:bg-primary-100 dark:group-hover:bg-indigo-500/20'}`}>
-            <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400'}`} />
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-slate-100 dark:bg-indigo-500/10 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20'}`}>
+            <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400'}`} />
           </div>
           <span className="font-medium flex-1">{item.name}</span>
           {item.badge && (
@@ -115,7 +115,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               {item.badge}
             </span>
           )}
-          <ChevronRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'text-white opacity-100 translate-x-0' : 'text-gray-400 dark:text-gray-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} />
+          <ChevronRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'text-white opacity-100 translate-x-0' : 'text-slate-400 dark:text-slate-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} />
         </>
       )}
     </NavLink>
@@ -135,18 +135,18 @@ const Sidebar = ({ isOpen, onClose }) => {
       <aside
         className={`
           fixed top-0 left-0 z-50 h-screen w-72 bg-white dark:bg-[#0d1526] shadow-xl dark:shadow-black/40 transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:top-16 lg:h-[calc(100vh-4rem)] lg:shadow-none lg:border-r lg:border-gray-200 dark:lg:border-indigo-500/[0.08]
+          lg:translate-x-0 lg:top-16 lg:h-[calc(100vh-4rem)] lg:shadow-none lg:border-r lg:border-slate-200 dark:lg:border-indigo-500/[0.08]
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
         {/* Mobile Close Button */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-indigo-500/10">
-          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">Menu</span>
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-indigo-500/10">
+          <span className="text-lg font-bold text-slate-900 dark:text-slate-100">Menu</span>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-indigo-500/10 transition-colors"
+            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-indigo-500/10 transition-colors"
           >
-            <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
         </div>
 
@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {!isAdmin && (
             <>
               <div className="space-y-1">
-                <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                <p className="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
                   Practice
                 </p>
                 {navItems.map((item) => (
@@ -163,8 +163,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
               
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
-                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-slate-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">
                   Learn
                 </p>
                 {learnItems.map((item) => (
@@ -172,8 +172,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
 
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
-                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-slate-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">
                   Community
                 </p>
                 {socialItems.map((item) => (
@@ -181,8 +181,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 ))}
               </div>
               
-              <div className="space-y-1 pt-4 mt-4 border-t border-gray-100 dark:border-indigo-500/[0.08]">
-                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+              <div className="space-y-1 pt-4 mt-4 border-t border-slate-100 dark:border-indigo-500/[0.08]">
+                <p className="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">
                   AI & More
                 </p>
                 {aiItems.map((item) => (
@@ -198,7 +198,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Admin Navigation */}
           {isAdmin && (
             <div className="space-y-1">
-              <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+              <p className="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
                 Administration
               </p>
               {adminItems.map((item) => (
@@ -211,13 +211,13 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* Bottom CTA - Only show for non-admin users */}
         {!isAdmin && (
           <div className="absolute bottom-4 left-4 right-4">
-            <div className="bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-700 dark:to-purple-600 rounded-xl p-4 text-white shadow-lg dark:shadow-primary-900/30">
+            <div className="bg-gradient-to-r from-indigo-600 to-violet-400 dark:from-indigo-700 dark:to-purple-600 rounded-xl p-4 text-white shadow-lg dark:shadow-indigo-900/30">
                 <h4 className="font-semibold mb-1">Ready for Practice?</h4>
-                <p className="text-sm text-primary-100 mb-3">Start a mock interview now!</p>
+                <p className="text-sm text-indigo-100 mb-3">Start a mock interview now!</p>
                 <NavLink
                   to="/interview/setup"
                   onClick={onClose}
-                  className="block w-full py-2 bg-white dark:bg-white/95 text-primary-600 rounded-lg text-center font-medium hover:bg-primary-50 dark:hover:bg-white transition-colors"
+                  className="block w-full py-2 bg-white dark:bg-white/95 text-indigo-600 rounded-lg text-center font-medium hover:bg-indigo-50 dark:hover:bg-white transition-colors"
                 >
                   Start Interview
                 </NavLink>

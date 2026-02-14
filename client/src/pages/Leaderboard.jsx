@@ -58,11 +58,11 @@ const Leaderboard = () => {
       case 1:
         return <Crown className="w-6 h-6 text-yellow-500" />
       case 2:
-        return <Medal className="w-6 h-6 text-gray-400" />
+        return <Medal className="w-6 h-6 text-slate-400" />
       case 3:
         return <Medal className="w-6 h-6 text-amber-600" />
       default:
-        return <span className="text-lg font-bold text-gray-500">#{rank}</span>
+        return <span className="text-lg font-bold text-slate-500">#{rank}</span>
     }
   }
 
@@ -71,11 +71,11 @@ const Leaderboard = () => {
       case 1:
         return 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-200 dark:border-yellow-700'
       case 2:
-        return 'bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-800 dark:to-slate-800 border-gray-200 dark:border-gray-600'
+        return 'bg-gradient-to-r from-slate-50 to-slate-50 dark:from-slate-800 dark:to-slate-800 border-slate-200 dark:border-slate-600'
       case 3:
         return 'bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-700'
       default:
-        return 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700'
+        return 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700'
     }
   }
 
@@ -86,57 +86,40 @@ const Leaderboard = () => {
       case 'down':
         return <ChevronDown className="w-4 h-4 text-red-500" />
       default:
-        return <Minus className="w-4 h-4 text-gray-400" />
+        return <Minus className="w-4 h-4 text-slate-400" />
     }
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 p-8 text-white">
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
-        <div className="absolute top-4 right-4 opacity-10">
-          <Trophy className="w-32 h-32" />
-        </div>
-        
-        <div className="relative flex items-center justify-between">
-          <div>
-            <div className="inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-3 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 mr-1" />
-              Rankings
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Leaderboard</h1>
-            <p className="text-purple-100">Compete with others and climb the ranks!</p>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Trophy className="w-4 h-4 mr-2" />
+            Top Performers
           </div>
-          
-          <div className="hidden md:flex items-center space-x-6">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-4 min-w-[100px]">
-              <p className="text-3xl font-bold">{leaderboardData.length}</p>
-              <p className="text-sm text-purple-200">Players</p>
-            </div>
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-4 min-w-[100px]">
-              <p className="text-3xl font-bold">{leaderboardData.reduce((sum, u) => sum + u.interviews, 0)}</p>
-              <p className="text-sm text-purple-200">Interviews</p>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold mb-2">Leaderboard</h1>
+          <p className="text-white/70 max-w-lg">See how you rank against other candidates</p>
         </div>
       </div>
 
       {/* Your Rank Card — only show if user has a rank */}
       {userRank && (
-        <Card className="bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 border-primary-200 dark:border-primary-800">
+        <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border-indigo-200 dark:border-indigo-800">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Star className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-primary-600 dark:text-primary-400">Your Position</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">Rank #{userRank}</p>
+              <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Your Position</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">Rank #{userRank}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Average Score</p>
-              <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">{userScore}%</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Average Score</p>
+              <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{userScore}%</p>
             </div>
           </div>
         </Card>
@@ -145,19 +128,19 @@ const Leaderboard = () => {
       {/* Filters & Search */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search players..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400"
           />
         </div>
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100"
+          className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100"
         >
           <option value="all">All Time</option>
           <option value="month">This Month</option>
@@ -168,7 +151,7 @@ const Leaderboard = () => {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100"
+          className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 dark:text-slate-100"
         >
           <option value="all">All Categories</option>
           <option value="dsa">DSA</option>
@@ -181,9 +164,9 @@ const Leaderboard = () => {
       {/* Top 3 Podium */}
       {leaderboardData.length === 0 && !isLoading ? (
         <Card className="text-center py-16">
-          <Trophy className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">No Rankings Yet</h3>
-          <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+          <Trophy className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">No Rankings Yet</h3>
+          <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
             Complete at least 5 interviews to appear on the leaderboard. Start practicing to climb the ranks!
           </p>
         </Card>
@@ -194,27 +177,27 @@ const Leaderboard = () => {
         {/* 2nd Place */}
         {leaderboardData[1] && (
           <div className="flex-1 max-w-[200px]">
-            <Card className="relative overflow-hidden text-center bg-gradient-to-b from-slate-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-600">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-gray-300 to-slate-400" />
+            <Card className="relative overflow-hidden text-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-600">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-slate-300 to-slate-400" />
               <div className="p-4 pt-5">
-                <div className="w-14 h-14 mx-auto mb-2 rounded-full bg-gradient-to-br from-gray-300 to-slate-500 flex items-center justify-center text-white text-xl font-bold shadow-lg overflow-hidden ring-3 ring-gray-300 dark:ring-gray-500">
+                <div className="w-14 h-14 mx-auto mb-2 rounded-full bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center text-white text-xl font-bold shadow-lg overflow-hidden ring-3 ring-slate-300 dark:ring-slate-500">
                   {getAvatarUrl(leaderboardData[1].avatar) ? (
                     <img src={getAvatarUrl(leaderboardData[1].avatar)} alt={leaderboardData[1].name} className="w-14 h-14 object-cover" />
                   ) : (
                     leaderboardData[1].name.charAt(0)
                   )}
                 </div>
-                <Medal className="w-6 h-6 text-gray-400 mx-auto mb-1" />
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm truncate">{leaderboardData[1].name}</h3>
-                <p className="text-xl font-bold text-gray-600 dark:text-gray-300">{leaderboardData[1].score}%</p>
-                <div className="flex justify-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <Medal className="w-6 h-6 text-slate-400 mx-auto mb-1" />
+                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm truncate">{leaderboardData[1].name}</h3>
+                <p className="text-xl font-bold text-slate-600 dark:text-slate-300">{leaderboardData[1].score}%</p>
+                <div className="flex justify-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400">
                   <span><Target className="w-3 h-3 inline mr-0.5" />{leaderboardData[1].interviews}</span>
                   <span><Flame className="w-3 h-3 inline mr-0.5 text-orange-500" />{leaderboardData[1].streak}d</span>
                 </div>
               </div>
             </Card>
-            <div className="h-16 bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-b-xl mx-2 flex items-center justify-center">
-              <span className="text-2xl font-black text-gray-400 dark:text-gray-500">2</span>
+            <div className="h-16 bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 rounded-b-xl mx-2 flex items-center justify-center">
+              <span className="text-2xl font-black text-slate-400 dark:text-slate-500">2</span>
             </div>
           </div>
         )}
@@ -237,9 +220,9 @@ const Leaderboard = () => {
                     <Crown className="w-8 h-8 text-yellow-500 drop-shadow-lg" />
                   </div>
                 </div>
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg truncate mt-1">{leaderboardData[0].name}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-lg truncate mt-1">{leaderboardData[0].name}</h3>
                 <p className="text-3xl font-black bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">{leaderboardData[0].score}%</p>
-                <div className="flex justify-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex justify-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400">
                   <span><Target className="w-3 h-3 inline mr-0.5" />{leaderboardData[0].interviews}</span>
                   <span><Flame className="w-3 h-3 inline mr-0.5 text-orange-500" />{leaderboardData[0].streak}d</span>
                 </div>
@@ -265,9 +248,9 @@ const Leaderboard = () => {
                   )}
                 </div>
                 <Medal className="w-6 h-6 text-amber-600 mx-auto mb-1" />
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm truncate">{leaderboardData[2].name}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm truncate">{leaderboardData[2].name}</h3>
                 <p className="text-xl font-bold text-amber-700 dark:text-amber-300">{leaderboardData[2].score}%</p>
-                <div className="flex justify-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex justify-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400">
                   <span><Target className="w-3 h-3 inline mr-0.5" />{leaderboardData[2].interviews}</span>
                   <span><Flame className="w-3 h-3 inline mr-0.5 text-orange-500" />{leaderboardData[2].streak}d</span>
                 </div>
@@ -282,11 +265,11 @@ const Leaderboard = () => {
 
       {/* Full Leaderboard */}
       <Card padding="none">
-        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
-          <h2 className="font-bold text-gray-900 dark:text-gray-100 flex items-center">
-            <Users className="w-5 h-5 mr-2 text-primary-600" />
+        <div className="p-4 border-b border-slate-100 dark:border-slate-700">
+          <h2 className="font-bold text-slate-900 dark:text-slate-100 flex items-center">
+            <Users className="w-5 h-5 mr-2 text-indigo-600" />
             Full Rankings
-            <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+            <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">
               ({leaderboardData.filter(u => !searchQuery || u.name.toLowerCase().includes(searchQuery.toLowerCase())).length} players)
             </span>
           </h2>
@@ -297,7 +280,7 @@ const Leaderboard = () => {
             <LoadingCard message="Loading leaderboard..." />
           </div>
         ) : (
-          <div className="divide-y divide-gray-100 dark:divide-gray-700">
+          <div className="divide-y divide-slate-100 dark:divide-slate-700">
             {leaderboardData
               .filter(u => !searchQuery || u.name.toLowerCase().includes(searchQuery.toLowerCase()))
               .map((user) => {
@@ -305,8 +288,8 @@ const Leaderboard = () => {
               return (
               <div
                 key={user.rank}
-                className={`flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${getRankBg(user.rank)} border-l-4 ${
-                  isCurrentUser ? 'ring-2 ring-primary-500 ring-inset bg-primary-50/50 dark:bg-primary-900/10' : ''
+                className={`flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors ${getRankBg(user.rank)} border-l-4 ${
+                  isCurrentUser ? 'ring-2 ring-indigo-500 ring-inset bg-indigo-50/50 dark:bg-indigo-900/10' : ''
                 }`}
               >
                 <div className="flex items-center space-x-4">
@@ -314,7 +297,7 @@ const Leaderboard = () => {
                     {getRankIcon(user.rank)}
                   </div>
                   
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-md overflow-hidden">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-md overflow-hidden">
                     {getAvatarUrl(user.avatar) ? (
                       <img src={getAvatarUrl(user.avatar)} alt={user.name} className="w-12 h-12 object-cover" />
                     ) : (
@@ -323,13 +306,13 @@ const Leaderboard = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                       {user.name}
                       {isCurrentUser && (
                         <Badge variant="primary" size="sm">You</Badge>
                       )}
                     </h3>
-                    <div className="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
                       <span className="flex items-center">
                         <Target className="w-3 h-3 mr-1" />
                         {user.interviews} interviews
@@ -348,8 +331,8 @@ const Leaderboard = () => {
                   </div>
                   
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{user.score}%</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">avg score</p>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{user.score}%</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">avg score</p>
                   </div>
                 </div>
               </div>

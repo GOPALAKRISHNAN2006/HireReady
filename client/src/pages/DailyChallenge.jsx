@@ -163,7 +163,7 @@ const DailyChallenge = () => {
   }
 
   return (
-    <div className="space-y-8 animate-slide-up max-h-screen overflow-y-auto pb-8 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+    <div className="space-y-8 animate-slide-up max-h-screen overflow-y-auto pb-8 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
       {/* Header with Countdown */}
       <div className="relative overflow-hidden bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 rounded-3xl p-8 text-white shadow-2xl">
         <div className="absolute inset-0">
@@ -222,12 +222,12 @@ const DailyChallenge = () => {
               </div>
               <div>
                 <Card.Title>This Week's Progress</Card.Title>
-                <p className="text-sm text-gray-500 dark:text-gray-400">You're on fire! 🔥</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">You're on fire! 🔥</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Flame className="w-5 h-5 text-orange-500" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">{currentStreak} day streak</span>
+              <span className="text-xl font-bold text-slate-900 dark:text-white">{currentStreak} day streak</span>
             </div>
           </div>
         </Card.Header>
@@ -240,17 +240,17 @@ const DailyChallenge = () => {
                     ? 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg shadow-green-500/30' 
                     : day.isToday
                       ? 'bg-gradient-to-br from-orange-400 to-amber-500 shadow-lg shadow-orange-500/30 animate-pulse'
-                      : 'bg-gray-100 dark:bg-gray-700'
+                      : 'bg-slate-100 dark:bg-slate-700'
                 }`}>
                   {day.completed ? (
                     <CheckCircle className="w-6 h-6 text-white" />
                   ) : day.isToday ? (
                     <Flame className="w-6 h-6 text-white" />
                   ) : (
-                    <Lock className="w-5 h-5 text-gray-400" />
+                    <Lock className="w-5 h-5 text-slate-400" />
                   )}
                 </div>
-                <span className={`text-sm font-medium ${day.isToday ? 'text-orange-500' : 'text-gray-500 dark:text-gray-400'}`}>
+                <span className={`text-sm font-medium ${day.isToday ? 'text-orange-500' : 'text-slate-500 dark:text-slate-400'}`}>
                   {day.day}
                 </span>
                 {day.completed && (
@@ -278,15 +278,15 @@ const DailyChallenge = () => {
                     </Badge>
                     <Badge variant="default">{todayChallenge.category}</Badge>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{todayChallenge.title}</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">{todayChallenge.description}</p>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{todayChallenge.title}</h2>
+                  <p className="text-slate-600 dark:text-slate-400 mt-1">{todayChallenge.description}</p>
                 </div>
                 <div className="text-right">
                   <div className="flex items-center gap-2 text-amber-600">
                     <Sparkles className="w-5 h-5" />
                     <span className="text-xl font-bold">+{todayChallenge.points} XP</span>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     <Timer className="w-4 h-4 inline mr-1" />
                     {todayChallenge.timeLimit} min limit
                   </p>
@@ -299,7 +299,7 @@ const DailyChallenge = () => {
                   ? 'bg-green-50 border border-green-200' 
                   : !canAttempt
                     ? 'bg-amber-50 border border-amber-200'
-                    : 'bg-white border border-gray-200'
+                    : 'bg-white border border-slate-200'
               }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -316,7 +316,7 @@ const DailyChallenge = () => {
                     </div>
                     <div>
                       <h4 className={`font-medium ${
-                        userAttempt?.isCompleted ? 'text-green-700' : !canAttempt ? 'text-amber-700' : 'text-gray-900'
+                        userAttempt?.isCompleted ? 'text-green-700' : !canAttempt ? 'text-amber-700' : 'text-slate-900'
                       }`}>
                         {userAttempt?.isCompleted 
                           ? 'Completed!' 
@@ -325,12 +325,12 @@ const DailyChallenge = () => {
                             : 'Ready to solve'}
                       </h4>
                       {userAttempt && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-slate-500">
                           Score: {userAttempt.score}% | Earned: +{userAttempt.pointsEarned} XP
                         </p>
                       )}
                       {!userAttempt?.isCompleted && canAttempt && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-slate-500">
                           Attempts today: {todayAttemptCount}/{maxDailyAttempts}
                         </p>
                       )}
@@ -366,11 +366,11 @@ const DailyChallenge = () => {
               )}
             </Card>
           ) : (
-            <Card className="border-2 border-gray-200">
+            <Card className="border-2 border-slate-200">
               <div className="text-center py-8">
-                <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Challenge Available</h3>
-                <p className="text-gray-600 dark:text-gray-400">Check back later for new challenges!</p>
+                <AlertCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Challenge Available</h3>
+                <p className="text-slate-600 dark:text-slate-400">Check back later for new challenges!</p>
               </div>
             </Card>
           )}
@@ -381,7 +381,7 @@ const DailyChallenge = () => {
               <Card.Title>Recent Challenges</Card.Title>
             </Card.Header>
             <Card.Content>
-              <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+              <p className="text-center text-slate-500 dark:text-slate-400 py-4">
                 Complete challenges to see your history here!
               </p>
             </Card.Content>
@@ -406,25 +406,25 @@ const DailyChallenge = () => {
                     className={`flex items-center gap-4 p-3 rounded-xl ${
                       reward.unlocked 
                         ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800' 
-                        : 'bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700'
+                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700'
                     }`}
                   >
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                       reward.unlocked 
                         ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
-                        : 'bg-gray-200 dark:bg-gray-700'
+                        : 'bg-slate-200 dark:bg-slate-700'
                     }`}>
                       {reward.unlocked ? (
                         <CheckCircle className="w-5 h-5 text-white" />
                       ) : (
-                        <Lock className="w-4 h-4 text-gray-400" />
+                        <Lock className="w-4 h-4 text-slate-400" />
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className={`font-medium ${reward.unlocked ? 'text-green-700 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                      <p className={`font-medium ${reward.unlocked ? 'text-green-700 dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}`}>
                         {reward.streak} Day Streak
                       </p>
-                      <p className={`text-sm ${reward.unlocked ? 'text-green-600 dark:text-green-500' : 'text-gray-400 dark:text-gray-500'}`}>
+                      <p className={`text-sm ${reward.unlocked ? 'text-green-600 dark:text-green-500' : 'text-slate-400 dark:text-slate-500'}`}>
                         {reward.reward}
                       </p>
                     </div>
@@ -449,7 +449,7 @@ const DailyChallenge = () => {
                     <div key={user.rank} className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                         user.rank === 1 ? 'bg-amber-100 text-amber-600' :
-                        user.rank === 2 ? 'bg-gray-100 text-gray-600' :
+                        user.rank === 2 ? 'bg-slate-100 text-slate-600' :
                         'bg-orange-100 text-orange-600'
                       }`}>
                         {user.rank}
@@ -460,7 +460,7 @@ const DailyChallenge = () => {
                         className="w-10 h-10 rounded-full object-cover"
                       />
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900 dark:text-white">{user.name}</p>
+                        <p className="font-medium text-slate-900 dark:text-white">{user.name}</p>
                         <div className="flex items-center gap-1 text-sm text-orange-500">
                           <Flame className="w-3 h-3" />
                           {user.streak} days
@@ -470,7 +470,7 @@ const DailyChallenge = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+                <p className="text-center text-slate-500 dark:text-slate-400 py-4">
                   No leaderboard data yet
                 </p>
               )}

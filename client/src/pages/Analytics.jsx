@@ -143,16 +143,18 @@ const Analytics = () => {
   ]
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Analytics Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">Track your progress and performance over time</p>
-        </div>
-        <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <Calendar className="w-4 h-4" />
-          <span>Last updated: Today</span>
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <TrendingUp className="w-4 h-4 mr-2" />
+            Track Progress
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Performance Analytics</h1>
+          <p className="text-white/70 max-w-lg">Monitor your interview performance and identify areas for improvement</p>
         </div>
       </div>
 
@@ -162,8 +164,8 @@ const Analytics = () => {
           <Card key={index} hover>
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{stat.title}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{stat.value}</p>
                 <div className={`flex items-center mt-2 text-sm ${
                   stat.isPositive ? 'text-green-600' : 'text-red-600'
                 }`}>
@@ -340,11 +342,11 @@ const Analytics = () => {
                 className={`text-center p-4 rounded-xl border-2 ${
                   achievement.unlocked 
                     ? 'border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20' 
-                    : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 opacity-50'
+                    : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 opacity-50'
                 }`}
               >
                 <div className="text-3xl mb-2">{achievement.icon}</div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{achievement.name}</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{achievement.name}</p>
                 {achievement.unlocked && (
                   <Badge variant="success" size="sm" className="mt-2">Unlocked</Badge>
                 )}

@@ -390,41 +390,41 @@ const Interview = () => {
 
   // Wrap with ProctoredSession if enabled
   const InterviewContent = (
-    <div className="fixed inset-0 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 overflow-auto z-40">
+    <div className="fixed inset-0 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-auto z-40">
       <div className="max-w-6xl mx-auto p-6">
         {/* Premium Header Bar */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50 p-5 mb-8 sticky top-4 z-30">
+        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-slate-700/50 p-5 mb-8 sticky top-4 z-30">
           <div className="flex items-center justify-between">
             {/* Left Section - Progress */}
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Question</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">{currentQuestionIndex + 1} <span className="text-gray-400 font-normal">/ {totalQuestions}</span></p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide font-medium">Question</p>
+                  <p className="text-xl font-bold text-slate-900 dark:text-white">{currentQuestionIndex + 1} <span className="text-slate-400 font-normal">/ {totalQuestions}</span></p>
                 </div>
               </div>
               
-              <div className="hidden md:block h-10 w-px bg-gray-200"></div>
+              <div className="hidden md:block h-10 w-px bg-slate-200"></div>
               
               <div className="hidden md:flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
-                    <div className="w-48 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="w-48 h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-500 ease-out rounded-full"
+                      className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 transition-all duration-500 ease-out rounded-full"
                       style={{ width: `${(currentQuestionIndex / totalQuestions) * 100}%` }}
                     />
                   </div>
-                  <span className="text-sm font-semibold text-primary-600">{Math.round((currentQuestionIndex / totalQuestions) * 100)}%</span>
+                  <span className="text-sm font-semibold text-indigo-600">{Math.round((currentQuestionIndex / totalQuestions) * 100)}%</span>
                 </div>
                 <div className="flex items-center space-x-3 text-xs">
                   <span className="flex items-center text-green-600">
                     <CheckCircle className="w-3 h-3 mr-1" />
                     {answeredCount} answered
                   </span>
-                  <span className="flex items-center text-gray-400">
+                  <span className="flex items-center text-slate-400">
                     <XCircle className="w-3 h-3 mr-1" />
                     {totalQuestions - answeredCount} remaining
                   </span>
@@ -440,7 +440,7 @@ const Interview = () => {
                     ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 animate-pulse' 
                     : timeRemaining < 600 
                       ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/30'
-                      : 'bg-gray-100 text-gray-700'
+                      : 'bg-slate-100 text-slate-700'
                 }`}>
                   <Clock className="w-5 h-5" />
                   <span className="font-bold">{formatTime(timeRemaining)}</span>
@@ -472,10 +472,10 @@ const Interview = () => {
                 onClick={() => goToQuestion(index)}
                 className={`flex-shrink-0 w-12 h-12 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 ${
                   isCurrent
-                    ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/40 scale-110'
+                    ? 'bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/40 scale-110'
                     : hasAnswer
                       ? 'bg-gradient-to-br from-green-400 to-green-500 text-white shadow-md shadow-green-500/30'
-                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 shadow-sm'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 shadow-sm'
                 }`}
               >
                 {hasAnswer && !isCurrent ? (
@@ -492,9 +492,9 @@ const Interview = () => {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Question Card - Takes up more space */}
           <div className="lg:col-span-3">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 overflow-hidden">
+              <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 dark:border-slate-700/50 overflow-hidden">
                 {/* Question Header */}
-                <div className="bg-gradient-to-r from-primary-500 to-indigo-500 px-8 py-6">
+                <div className="bg-gradient-to-r from-indigo-500 to-indigo-500 px-8 py-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Badge variant="default" className="bg-white/20 text-white border-0 px-3 py-1">
@@ -516,10 +516,10 @@ const Interview = () => {
                 <div className="p-8">
                   <div className="mb-8">
                     <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <MessageSquare className="w-5 h-5 text-primary-600" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-violet-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <MessageSquare className="w-5 h-5 text-indigo-600" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-relaxed flex-1">
+                      <h2 className="text-xl font-semibold text-slate-900 dark:text-white leading-relaxed flex-1">
                         {currentQuestion?.text || (currentInterview?.category === 'behavioral' 
                           ? 'Tell me about yourself and your relevant experience.' 
                           : currentInterview?.category === 'dsa'
@@ -533,8 +533,8 @@ const Interview = () => {
                   
                   {/* Answer Section */}
                   <div className="space-y-4">
-                    <label className="flex items-center text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      <Award className="w-4 h-4 mr-2 text-primary-500" />
+                    <label className="flex items-center text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <Award className="w-4 h-4 mr-2 text-indigo-500" />
                       Your Answer
                     </label>
                     <div className="relative">
@@ -548,16 +548,16 @@ const Interview = () => {
                         }}
                         placeholder="Type your comprehensive answer here... Be detailed and specific."
                         rows={12}
-                        className="w-full px-6 py-5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-300 resize-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                        className="w-full px-6 py-5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 resize-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
                       />
                       <div className="absolute bottom-4 left-6 right-6 flex justify-between text-sm">
-                        <span className={`font-medium ${answer.length > 100 ? 'text-green-500' : 'text-gray-400'}`}>
+                        <span className={`font-medium ${answer.length > 100 ? 'text-green-500' : 'text-slate-400'}`}>
                           {answer.length} characters
                         </span>
-                        <span className="text-gray-400 flex items-center">
-                          <kbd className="px-2 py-1 bg-gray-200 rounded text-xs mr-1">Ctrl</kbd>
+                        <span className="text-slate-400 flex items-center">
+                          <kbd className="px-2 py-1 bg-slate-200 rounded text-xs mr-1">Ctrl</kbd>
                           <span className="mr-1">+</span>
-                          <kbd className="px-2 py-1 bg-gray-200 rounded text-xs mr-2">Enter</kbd>
+                          <kbd className="px-2 py-1 bg-slate-200 rounded text-xs mr-2">Enter</kbd>
                           to submit
                         </span>
                       </div>
@@ -566,7 +566,7 @@ const Interview = () => {
                 </div>
                 
                 {/* Action Footer */}
-                <div className="bg-gray-50/50 dark:bg-gray-900/50 px-8 py-6 border-t border-gray-100 dark:border-gray-700">
+                <div className="bg-slate-50/50 dark:bg-slate-900/50 px-8 py-6 border-t border-slate-100 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <Button
                       variant="ghost"
@@ -574,7 +574,7 @@ const Interview = () => {
                       disabled={currentQuestionIndex === 0}
                       icon={ChevronLeft}
                       size="lg"
-                      className="text-gray-600"
+                      className="text-slate-600"
                     >
                       Previous
                     </Button>
@@ -595,7 +595,7 @@ const Interview = () => {
                         icon={currentQuestionIndex === totalQuestions - 1 ? CheckCircle : Send}
                         iconPosition="right"
                         size="lg"
-                        className="bg-gradient-to-r from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30 px-8"
+                        className="bg-gradient-to-r from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30 px-8"
                       >
                         {currentQuestionIndex === totalQuestions - 1 ? 'Submit & Finish' : 'Submit & Next'}
                       </Button>
@@ -608,21 +608,21 @@ const Interview = () => {
           {/* Side Panel - Tips & Info */}
           <div className="lg:col-span-1 space-y-6">
             {/* Quick Stats */}
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-gray-700/50 p-6">
-              <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                <Award className="w-5 h-5 mr-2 text-primary-500" />
+            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-slate-700/50 p-6">
+              <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+                <Award className="w-5 h-5 mr-2 text-indigo-500" />
                 Your Progress
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 dark:text-gray-400 text-sm">Answered</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-sm">Answered</span>
                   <span className="font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full text-sm">{answeredCount}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-500 dark:text-gray-400 text-sm">Remaining</span>
-                  <span className="font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded-full text-sm">{totalQuestions - answeredCount}</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-sm">Remaining</span>
+                  <span className="font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full text-sm">{totalQuestions - answeredCount}</span>
                 </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mt-4">
+                <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden mt-4">
                   <div 
                     className="h-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-500"
                     style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
@@ -696,16 +696,16 @@ const Interview = () => {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6">
-              <h4 className="font-bold text-gray-900 mb-4">Summary</h4>
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6">
+              <h4 className="font-bold text-slate-900 mb-4">Summary</h4>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
                   <div className="text-3xl font-bold text-green-600">{answeredCount}</div>
-                  <div className="text-sm text-gray-500 mt-1">Answered</div>
+                  <div className="text-sm text-slate-500 mt-1">Answered</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
                   <div className="text-3xl font-bold text-amber-500">{totalQuestions - answeredCount}</div>
-                  <div className="text-sm text-gray-500 mt-1">Skipped</div>
+                  <div className="text-sm text-slate-500 mt-1">Skipped</div>
                 </div>
               </div>
             </div>
@@ -720,7 +720,7 @@ const Interview = () => {
               onClick={handleCompleteInterview}
               isLoading={completeInterviewMutation.isPending}
               size="lg"
-              className="bg-gradient-to-r from-primary-500 to-primary-600"
+              className="bg-gradient-to-r from-indigo-500 to-violet-600"
               icon={Award}
             >
               End & Get Results
@@ -750,7 +750,7 @@ const Interview = () => {
                     stroke="currentColor"
                     strokeWidth="8"
                     fill="transparent"
-                    className="text-gray-200"
+                    className="text-slate-200"
                   />
                   <circle
                     cx="50"
@@ -777,7 +777,7 @@ const Interview = () => {
                   }`}>
                     {resultData?.overallScore || 0}%
                   </span>
-                  <span className="text-sm text-gray-500">Score</span>
+                  <span className="text-sm text-slate-500">Score</span>
                 </div>
               </div>
             </div>
@@ -863,7 +863,7 @@ const Interview = () => {
                 navigate(`/interview/${id}/result`)
               }}
               size="lg"
-              className="bg-gradient-to-r from-primary-500 to-primary-600"
+              className="bg-gradient-to-r from-indigo-500 to-violet-600"
               icon={ChevronRight}
               iconPosition="right"
             >

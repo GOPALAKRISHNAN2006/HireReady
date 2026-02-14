@@ -37,7 +37,7 @@ const GDResult = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">No result data found</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">No result data found</p>
           <Button onClick={() => navigate('/gd')}>Go to GD Topics</Button>
         </div>
       </div>
@@ -84,23 +84,23 @@ const GDResult = () => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">GD Session Complete!</h1>
-        <p className="text-gray-600 dark:text-gray-400">{topic?.title || 'Group Discussion'}</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">GD Session Complete!</h1>
+        <p className="text-slate-600 dark:text-slate-400">{topic?.title || 'Group Discussion'}</p>
       </div>
 
       {/* Overall Score */}
       <Card className="p-6">
         <div className="grid md:grid-cols-3 gap-6 text-center">
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Score</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Overall Score</p>
             <p className={`text-4xl font-bold ${gradeInfo.color}`}>{overallScore || 72}%</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Grade</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Grade</p>
             <p className={`text-4xl font-bold ${gradeInfo.color}`}>{gradeInfo.grade}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Performance</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Performance</p>
             <Badge 
               variant={overallScore >= 70 ? 'success' : overallScore >= 50 ? 'warning' : 'error'}
               className="text-lg py-1 px-3"
@@ -113,7 +113,7 @@ const GDResult = () => {
 
       {/* Detailed Feedback */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
           <Star className="w-5 h-5 text-yellow-500" />
           Skill-wise Performance
         </h2>
@@ -121,14 +121,14 @@ const GDResult = () => {
           {Object.entries(feedbackCategories).map(([skill, score]) => (
             <div key={skill}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">{skill}</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">{skill}</span>
                 <span className={`text-sm font-medium ${
                   score >= 70 ? 'text-green-600' : score >= 50 ? 'text-yellow-600' : 'text-red-600'
                 }`}>
                   {score}%
                 </span>
               </div>
-              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div 
                   className={`h-full rounded-full transition-all ${
                     score >= 70 ? 'bg-green-500' : score >= 50 ? 'bg-yellow-500' : 'bg-red-500'
@@ -154,7 +154,7 @@ const GDResult = () => {
               'Clear communication style',
               'Respectful of others\' opinions'
             ]).map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <li key={idx} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
                 <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                 {item}
               </li>
@@ -173,7 +173,7 @@ const GDResult = () => {
               'Try to use more examples',
               'Work on building on others\' points'
             ]).map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <li key={idx} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
                 <ArrowRight className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
                 {item}
               </li>
@@ -184,15 +184,15 @@ const GDResult = () => {
 
       {/* Your Contributions */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-primary-500" />
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <MessageSquare className="w-5 h-5 text-indigo-500" />
           Your Contributions ({contributionsList.length})
         </h2>
         <div className="space-y-3">
           {contributionsList.map((contribution, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div key={idx} className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
               <div className="flex-1">
-                <p className="text-sm text-gray-700 dark:text-gray-300">{contribution.content}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{contribution.content}</p>
               </div>
               <Badge variant={contribution.score >= 70 ? 'success' : contribution.score >= 50 ? 'warning' : 'error'}>
                 {contribution.score}%
@@ -203,9 +203,9 @@ const GDResult = () => {
       </Card>
 
       {/* Tips for Next Time */}
-      <Card className="p-6 bg-primary-50 border-primary-200">
-        <h3 className="font-semibold text-primary-700 mb-3">💡 Tips for Your Next GD</h3>
-        <ul className="grid md:grid-cols-2 gap-2 text-sm text-primary-600">
+      <Card className="p-6 bg-indigo-50 border-indigo-200">
+        <h3 className="font-semibold text-indigo-700 mb-3">💡 Tips for Your Next GD</h3>
+        <ul className="grid md:grid-cols-2 gap-2 text-sm text-indigo-600">
           <li>• Start with a clear stance on the topic</li>
           <li>• Support your points with facts and examples</li>
           <li>• Listen actively to others' viewpoints</li>

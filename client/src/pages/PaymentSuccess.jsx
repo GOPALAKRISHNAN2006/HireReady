@@ -36,24 +36,24 @@ const PaymentSuccess = () => {
           <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/30 animate-bounce">
             <CheckCircle className="w-14 h-14 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
             Welcome to {plan}! 🎉
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-lg">
+          <p className="text-slate-500 dark:text-slate-400 text-lg">
             Your premium features are now active
           </p>
         </div>
 
         {/* Plan details */}
         <Card className="p-6 space-y-4">
-          <div className="flex items-center gap-3 pb-4 border-b border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-700">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
               <Crown className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 dark:text-white">{plan} Plan</h3>
+              <h3 className="font-bold text-slate-900 dark:text-white">{plan} Plan</h3>
               {expiresAt && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-slate-500">
                   Active until {new Date(expiresAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               )}
@@ -62,13 +62,13 @@ const PaymentSuccess = () => {
 
           {features.length > 0 && (
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 What you unlocked
               </p>
               {features.map((f, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{f}</span>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">{f}</span>
                 </div>
               ))}
             </div>
@@ -92,7 +92,7 @@ const PaymentSuccess = () => {
           </Button>
         </div>
 
-        <p className="text-center text-sm text-gray-400">
+        <p className="text-center text-sm text-slate-400">
           A confirmation email has been sent to your inbox.
         </p>
       </div>

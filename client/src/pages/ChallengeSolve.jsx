@@ -128,8 +128,8 @@ const ChallengeSolve = () => {
   if (!challenge) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">No Challenge Found</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">There's no active challenge available right now.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">No Challenge Found</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">There's no active challenge available right now.</p>
         <Button onClick={() => navigate('/daily-challenge')}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Challenges
@@ -139,16 +139,16 @@ const ChallengeSolve = () => {
   }
 
   return (
-    <div className="space-y-6 animate-slide-up max-h-screen overflow-y-auto pb-8 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+    <div className="space-y-6 animate-slide-up max-h-screen overflow-y-auto pb-8 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
       {/* Header */}
-      <div className="flex items-center justify-between sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm z-10 py-2">
+      <div className="flex items-center justify-between sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm z-10 py-2">
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={() => navigate('/daily-challenge')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{challenge.title}</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{challenge.title}</h1>
             <div className="flex items-center gap-2 mt-1">
               <Badge variant={
                 challenge.difficulty === 'easy' ? 'success' :
@@ -157,14 +157,14 @@ const ChallengeSolve = () => {
                 {challenge.difficulty}
               </Badge>
               <Badge variant="default">{challenge.category}</Badge>
-              <span className="text-sm text-gray-500 dark:text-gray-400">+{challenge.points} points</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">+{challenge.points} points</span>
             </div>
           </div>
         </div>
 
         {/* Timer */}
         <div className={`flex items-center gap-3 px-4 py-2 rounded-xl ${
-          isOverTime ? 'bg-red-100 text-red-700' : 'bg-primary-100 text-primary-700'
+          isOverTime ? 'bg-red-100 text-red-700' : 'bg-indigo-100 text-indigo-700'
         }`}>
           <Timer className="w-5 h-5" />
           <span className="text-xl font-mono font-bold">{formatTime(timeSpent)}</span>
@@ -193,10 +193,10 @@ const ChallengeSolve = () => {
                 </div>
               )}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   {result.attempt?.isCompleted ? 'Challenge Completed!' : 'Keep Practicing!'}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-slate-600 dark:text-slate-400">
                   Score: {result.attempt?.score}% • Points earned: +{result.attempt?.pointsEarned}
                 </p>
               </div>
@@ -219,13 +219,13 @@ const ChallengeSolve = () => {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Problem Panel */}
         <Card className="min-h-[500px] max-h-[700px] flex flex-col overflow-hidden">
-          <div className="flex border-b border-gray-200 dark:border-gray-700">
+          <div className="flex border-b border-slate-200 dark:border-slate-700">
             <button
               onClick={() => setActiveTab('problem')}
               className={`px-4 py-3 font-medium transition-colors ${
                 activeTab === 'problem'
-                  ? 'text-primary-600 border-b-2 border-primary-600'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
               <FileText className="w-4 h-4 inline mr-2" />
@@ -235,8 +235,8 @@ const ChallengeSolve = () => {
               onClick={() => setActiveTab('hints')}
               className={`px-4 py-3 font-medium transition-colors ${
                 activeTab === 'hints'
-                  ? 'text-primary-600 border-b-2 border-primary-600'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
               <Lightbulb className="w-4 h-4 inline mr-2" />
@@ -244,20 +244,20 @@ const ChallengeSolve = () => {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
             {activeTab === 'problem' ? (
               <div className="prose prose-sm max-w-none">
-                <p className="text-gray-600 dark:text-gray-400 mb-4">{challenge.description}</p>
+                <p className="text-slate-600 dark:text-slate-400 mb-4">{challenge.description}</p>
                 
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Question</h4>
-                <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-300 p-4 rounded-lg whitespace-pre-wrap font-mono text-sm">
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Question</h4>
+                <div className="bg-slate-50 dark:bg-slate-800 dark:text-slate-300 p-4 rounded-lg whitespace-pre-wrap font-mono text-sm">
                   {challenge.question}
                 </div>
 
                 {challenge.sampleInput && (
                   <>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mt-4 mb-2">Sample Input</h4>
-                    <div className="bg-gray-800 text-green-400 p-3 rounded-lg font-mono text-sm">
+                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">Sample Input</h4>
+                    <div className="bg-slate-800 text-green-400 p-3 rounded-lg font-mono text-sm">
                       {challenge.sampleInput}
                     </div>
                   </>
@@ -265,8 +265,8 @@ const ChallengeSolve = () => {
 
                 {challenge.sampleOutput && (
                   <>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mt-4 mb-2">Expected Output</h4>
-                    <div className="bg-gray-800 text-green-400 p-3 rounded-lg font-mono text-sm">
+                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">Expected Output</h4>
+                    <div className="bg-slate-800 text-green-400 p-3 rounded-lg font-mono text-sm">
                       {challenge.sampleOutput}
                     </div>
                   </>
@@ -275,7 +275,7 @@ const ChallengeSolve = () => {
                 {challenge.tags && challenge.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {challenge.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
+                      <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded">
                         #{tag}
                       </span>
                     ))}
@@ -292,7 +292,7 @@ const ChallengeSolve = () => {
                           <Lightbulb className="w-4 h-4" />
                           Hint {index + 1}
                         </div>
-                        <p className="text-gray-700 dark:text-gray-300">{hint}</p>
+                        <p className="text-slate-700 dark:text-slate-300">{hint}</p>
                       </div>
                     ))}
                     
@@ -308,13 +308,13 @@ const ChallengeSolve = () => {
                     )}
                     
                     {hintsUsed === 0 && (
-                      <p className="text-center text-gray-500 dark:text-gray-400 py-4">
+                      <p className="text-center text-slate-500 dark:text-slate-400 py-4">
                         No hints revealed yet. Using hints will reduce your points.
                       </p>
                     )}
                   </>
                 ) : (
-                  <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                  <p className="text-center text-slate-500 dark:text-slate-400 py-8">
                     No hints available for this challenge.
                   </p>
                 )}
@@ -325,10 +325,10 @@ const ChallengeSolve = () => {
 
         {/* Code/Answer Panel */}
         <Card className="min-h-[500px] max-h-[700px] flex flex-col overflow-hidden">
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-2">
-              <Code className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-              <span className="font-medium text-gray-900 dark:text-white">Your Solution</span>
+              <Code className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <span className="font-medium text-slate-900 dark:text-white">Your Solution</span>
             </div>
             <Button
               variant="ghost"
@@ -347,7 +347,7 @@ const ChallengeSolve = () => {
           <div className="flex-1 p-4 flex flex-col">
             {/* Code Editor */}
             <div className="flex-1 mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Code Solution
               </label>
               <textarea
@@ -355,13 +355,13 @@ const ChallengeSolve = () => {
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="// Write your code here..."
                 disabled={submitted}
-                className="w-full h-[200px] p-4 font-mono text-sm bg-gray-900 text-green-400 rounded-lg border-0 focus:ring-2 focus:ring-primary-500 resize-none"
+                className="w-full h-[200px] p-4 font-mono text-sm bg-slate-900 text-green-400 rounded-lg border-0 focus:ring-2 focus:ring-indigo-500 resize-none"
               />
             </div>
 
             {/* Text Answer */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Explanation / Answer
               </label>
               <textarea
@@ -369,13 +369,13 @@ const ChallengeSolve = () => {
                 onChange={(e) => setAnswer(e.target.value)}
                 placeholder="Explain your approach or write your answer here..."
                 disabled={submitted}
-                className="w-full h-[150px] p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary-500 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                className="w-full h-[150px] p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
               />
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-700">
             {!submitted ? (
               <Button
                 className="w-full"
@@ -393,7 +393,7 @@ const ChallengeSolve = () => {
                 )}
               </Button>
             ) : (
-                <div className="text-center text-gray-500 dark:text-gray-400">
+                <div className="text-center text-slate-500 dark:text-slate-400">
                 Solution submitted • Time: {formatTime(timeSpent)}
               </div>
             )}
@@ -408,7 +408,7 @@ const ChallengeSolve = () => {
             <Card.Title>Solution</Card.Title>
           </Card.Header>
           <Card.Content>
-            <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
+            <div className="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
               {result.solution}
             </div>
           </Card.Content>

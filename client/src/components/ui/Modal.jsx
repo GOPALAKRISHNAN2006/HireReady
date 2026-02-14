@@ -41,7 +41,7 @@ const Modal = ({
       : 'bg-white',
     glass: 'bg-white/10 backdrop-blur-xl border border-white/20 text-white',
     neon: 'bg-black/90 border border-neon-green/50 shadow-lg shadow-neon-green/20',
-    gradient: 'bg-gradient-to-br from-primary-500 to-purple-600 text-white',
+    gradient: 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white',
   }
 
   const iconVariants = {
@@ -110,14 +110,14 @@ const Modal = ({
       >
         {/* Decorative gradient border */}
         {variant === 'default' && !dark && (
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
         )}
 
         {/* Header */}
         {(title || showCloseButton || icon) && (
           <div className={`
             flex items-start gap-4 p-6 
-            ${title ? `border-b ${dark ? 'border-slate-700' : variant === 'default' ? 'border-gray-100' : 'border-white/10'}` : ''}
+            ${title ? `border-b ${dark ? 'border-slate-700' : variant === 'default' ? 'border-slate-100' : 'border-white/10'}` : ''}
           `}>
             {/* Icon */}
             {IconComponent && (
@@ -135,7 +135,7 @@ const Modal = ({
               {title && (
                 <h2 className={`
                   text-xl font-semibold 
-                  ${dark || variant === 'glass' || variant === 'neon' ? 'text-white' : variant === 'gradient' ? 'text-white' : 'text-gray-900'}
+                  ${dark || variant === 'glass' || variant === 'neon' ? 'text-white' : variant === 'gradient' ? 'text-white' : 'text-slate-900'}
                 `}>
                   {title}
                 </h2>
@@ -143,7 +143,7 @@ const Modal = ({
               {subtitle && (
                 <p className={`
                   mt-1 text-sm 
-                  ${dark || variant === 'glass' || variant === 'neon' ? 'text-gray-400' : variant === 'gradient' ? 'text-white/80' : 'text-gray-500'}
+                  ${dark || variant === 'glass' || variant === 'neon' ? 'text-slate-400' : variant === 'gradient' ? 'text-white/80' : 'text-slate-500'}
                 `}>
                   {subtitle}
                 </p>
@@ -158,10 +158,10 @@ const Modal = ({
                   flex-shrink-0 p-2 rounded-xl transition-all duration-200
                   hover:scale-110 active:scale-95
                   ${dark || variant === 'glass' || variant === 'neon' 
-                    ? 'hover:bg-white/10 text-gray-400 hover:text-white' 
+                    ? 'hover:bg-white/10 text-slate-400 hover:text-white' 
                     : variant === 'gradient'
                       ? 'hover:bg-white/20 text-white/80 hover:text-white'
-                      : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
+                      : 'hover:bg-slate-100 text-slate-500 hover:text-slate-700'
                   }
                 `}
               >
@@ -174,7 +174,7 @@ const Modal = ({
         {/* Content */}
         <div className={`
           p-6 overflow-y-auto flex-1
-          ${dark || variant === 'glass' || variant === 'neon' || variant === 'gradient' ? 'text-gray-300' : 'text-gray-600'}
+          ${dark || variant === 'glass' || variant === 'neon' || variant === 'gradient' ? 'text-slate-300' : 'text-slate-600'}
         `}>
           {children}
         </div>
@@ -183,7 +183,7 @@ const Modal = ({
         {footer && (
           <div className={`
             p-6 border-t 
-            ${dark ? 'border-slate-700 bg-slate-900/50' : variant === 'default' ? 'border-gray-100 bg-gray-50/50' : 'border-white/10 bg-black/20'}
+            ${dark ? 'border-slate-700 bg-slate-900/50' : variant === 'default' ? 'border-slate-100 bg-slate-50/50' : 'border-white/10 bg-black/20'}
           `}>
             {footer}
           </div>
@@ -237,7 +237,7 @@ export const ConfirmModal = ({
         <ModalFooter>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            className="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
           >
             {cancelText}
           </button>
@@ -258,7 +258,7 @@ export const ConfirmModal = ({
         </ModalFooter>
       }
     >
-      <p className="text-gray-600">{message}</p>
+      <p className="text-slate-600">{message}</p>
     </Modal>
   )
 }

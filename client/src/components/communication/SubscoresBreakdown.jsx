@@ -82,8 +82,8 @@ const SubscoresBreakdown = ({ subscores = {}, animated = true }) => {
                   <IconComponent className={`w-4 h-4 ${colors.text}`} />
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-gray-900">{config.label}</span>
-                  <p className="text-xs text-gray-500 hidden group-hover:block">
+                  <span className="text-sm font-medium text-slate-900">{config.label}</span>
+                  <p className="text-xs text-slate-500 hidden group-hover:block">
                     {config.description}
                   </p>
                 </div>
@@ -93,7 +93,7 @@ const SubscoresBreakdown = ({ subscores = {}, animated = true }) => {
               </span>
             </div>
             
-            <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-2.5 bg-slate-200 rounded-full overflow-hidden">
               <motion.div
                 className={`h-full rounded-full ${colors.bar}`}
                 initial={animated ? { width: 0 } : { width: `${percentage}%` }}

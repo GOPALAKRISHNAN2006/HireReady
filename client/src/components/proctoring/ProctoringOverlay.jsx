@@ -94,7 +94,7 @@ const ProctoringOverlay = ({
       <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${
         isOk ? 'bg-green-500/10 text-green-400' :
         isDenied ? 'bg-red-500/10 text-red-400' :
-        'bg-gray-500/10 text-gray-400'
+        'bg-slate-500/10 text-slate-400'
       }`}>
         {isOk ? <Icon className="w-3.5 h-3.5" /> : <OffIcon className="w-3.5 h-3.5" />}
         <span className="text-xs font-medium">{label}</span>
@@ -125,7 +125,7 @@ const ProctoringOverlay = ({
               Risk: {riskScore}
             </span>
           )}
-          <Maximize className="w-4 h-4 text-gray-400" />
+          <Maximize className="w-4 h-4 text-slate-400" />
         </button>
 
         {/* Warning popup in minimized mode */}
@@ -155,25 +155,25 @@ const ProctoringOverlay = ({
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="fixed top-20 right-4 z-40 w-72 bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-700 shadow-2xl"
+        className="fixed top-20 right-4 z-40 w-72 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-700 shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b border-gray-700">
+        <div className="flex items-center justify-between p-3 border-b border-slate-700">
           <div className="flex items-center gap-2">
             {getShieldIcon()}
             <span className="text-sm font-medium text-white">Proctoring Active</span>
           </div>
           <button
             onClick={onToggleMinimize}
-            className="p-1 hover:bg-gray-700 rounded-md transition-colors"
+            className="p-1 hover:bg-slate-700 rounded-md transition-colors"
           >
-            <X className="w-4 h-4 text-gray-400" />
+            <X className="w-4 h-4 text-slate-400" />
           </button>
         </div>
 
         {/* Camera Feed */}
         <div className="p-3">
-          <div className="relative w-full aspect-video bg-gray-800 rounded-lg overflow-hidden">
+          <div className="relative w-full aspect-video bg-slate-800 rounded-lg overflow-hidden">
             <video
               ref={videoRef}
               autoPlay
@@ -197,7 +197,7 @@ const ProctoringOverlay = ({
             </div>
 
             {cameraStatus === 'denied' && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900/80">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80">
                 <CameraOff className="w-8 h-8 text-red-400 mb-2" />
                 <span className="text-xs text-red-400">Camera Access Denied</span>
               </div>
@@ -239,10 +239,10 @@ const ProctoringOverlay = ({
         <div className="px-3 pb-3">
           <div className={`p-3 rounded-lg border ${getRiskBgColor()}`}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-400">Risk Score</span>
+              <span className="text-xs text-slate-400">Risk Score</span>
               <span className={`text-lg font-bold ${getRiskColor()}`}>{riskScore}/100</span>
             </div>
-            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${riskScore}%` }}
@@ -265,9 +265,9 @@ const ProctoringOverlay = ({
         <div className="px-3 pb-3">
           <button
             onClick={() => setShowViolations(!showViolations)}
-            className="w-full flex items-center justify-between p-2 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
+            className="w-full flex items-center justify-between p-2 bg-slate-800 rounded-lg hover:bg-slate-750 transition-colors"
           >
-            <span className="text-sm text-gray-300">Violations</span>
+            <span className="text-sm text-slate-300">Violations</span>
             <div className="flex items-center gap-2">
               {stats.highViolations > 0 && (
                 <span className="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded">
@@ -279,7 +279,7 @@ const ProctoringOverlay = ({
                   {stats.mediumViolations} Med
                 </span>
               )}
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-slate-500">
                 Total: {stats.totalViolations}
               </span>
             </div>
@@ -299,7 +299,7 @@ const ProctoringOverlay = ({
                     className={`p-2 rounded text-xs ${
                       v.severity === 'high' ? 'bg-red-500/10 text-red-400' :
                       v.severity === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
-                      'bg-gray-700 text-gray-400'
+                      'bg-slate-700 text-slate-400'
                     }`}
                   >
                     <div className="flex items-center gap-1">
@@ -315,7 +315,7 @@ const ProctoringOverlay = ({
 
         {/* Fullscreen prompt */}
         {!isFullscreen && (
-          <div className="p-3 border-t border-gray-700">
+          <div className="p-3 border-t border-slate-700">
             <button
               onClick={onRequestFullscreen}
               className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
@@ -358,7 +358,7 @@ const ProctoringOverlay = ({
               className={`flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg ${
                 v.severity === 'high' ? 'bg-red-500/90' :
                 v.severity === 'medium' ? 'bg-yellow-500/90' :
-                'bg-gray-600/90'
+                'bg-slate-600/90'
               } text-white`}
             >
               <AlertCircle className="w-4 h-4" />

@@ -236,8 +236,8 @@ const MockInterviewLab = () => {
 
       {/* Interview Mode Selection */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-          <Rocket className="w-6 h-6 text-primary-500" />
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+          <Rocket className="w-6 h-6 text-indigo-500" />
           Choose Your Challenge
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -246,7 +246,7 @@ const MockInterviewLab = () => {
               key={mode.id} 
               hover 
               className={`cursor-pointer group relative overflow-hidden transition-all duration-300 ${
-                selectedMode === mode.id ? 'ring-2 ring-primary-500 ring-offset-2' : ''
+                selectedMode === mode.id ? 'ring-2 ring-indigo-500 ring-offset-2' : ''
               }`}
               onClick={() => setSelectedMode(mode.id)}
             >
@@ -258,8 +258,8 @@ const MockInterviewLab = () => {
                   <mode.icon className="w-7 h-7 text-white" />
                 </div>
                 
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{mode.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{mode.description}</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{mode.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{mode.description}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
                   <Badge variant={mode.difficulty === 'Easy' ? 'success' : mode.difficulty === 'Medium' ? 'warning' : mode.difficulty === 'Hard' ? 'danger' : 'purple'}>
@@ -271,7 +271,7 @@ const MockInterviewLab = () => {
                   </Badge>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-gray-400">
+                <div className="flex items-center justify-between text-sm text-slate-400">
                   <span>{mode.questions} questions</span>
                   <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${selectedMode === mode.id ? 'translate-x-1' : ''}`} />
                 </div>
@@ -283,15 +283,15 @@ const MockInterviewLab = () => {
 
       {/* Start Session Panel */}
       {selectedMode && (
-        <Card className="bg-gradient-to-r from-gray-50 to-white border-2 border-dashed border-primary-200 animate-scale-in">
+        <Card className="bg-gradient-to-r from-slate-50 to-white border-2 border-dashed border-indigo-200 animate-scale-in">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/30 animate-pulse-slow">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse-slow">
                 <Play className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Ready to Start?</h3>
-                <p className="text-gray-500 dark:text-gray-400">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Ready to Start?</h3>
+                <p className="text-slate-500 dark:text-slate-400">
                   {interviewModes.find(m => m.id === selectedMode)?.title} - {interviewModes.find(m => m.id === selectedMode)?.duration}
                 </p>
               </div>
@@ -300,12 +300,12 @@ const MockInterviewLab = () => {
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setSoundEnabled(!soundEnabled)}
-                className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 transition-colors"
+                className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition-colors"
               >
-                {soundEnabled ? <Volume2 className="w-5 h-5 text-gray-600" /> : <VolumeX className="w-5 h-5 text-gray-400" />}
+                {soundEnabled ? <Volume2 className="w-5 h-5 text-slate-600" /> : <VolumeX className="w-5 h-5 text-slate-400" />}
               </button>
-              <button className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 transition-colors">
-                <Settings className="w-5 h-5 text-gray-600" />
+              <button className="p-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition-colors">
+                <Settings className="w-5 h-5 text-slate-600" />
               </button>
               <Button 
                 size="lg" 
@@ -333,15 +333,15 @@ const MockInterviewLab = () => {
                   {recentSessions.map((session) => (
                     <div 
                       key={session.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors group"
+                      className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors group"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-purple-100 rounded-xl flex items-center justify-center">
-                          <Code2 className="w-6 h-6 text-primary-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center">
+                          <Code2 className="w-6 h-6 text-indigo-600" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white">{session.mode}</h4>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{session.date}</p>
+                          <h4 className="font-semibold text-slate-900 dark:text-white">{session.mode}</h4>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">{session.date}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
@@ -349,7 +349,7 @@ const MockInterviewLab = () => {
                           <div className={`text-xl font-bold ${session.score >= 85 ? 'text-green-500' : session.score >= 70 ? 'text-amber-500' : 'text-red-500'}`}>
                             {session.score}%
                           </div>
-                          <div className="text-xs text-gray-400">Score</div>
+                          <div className="text-xs text-slate-400">Score</div>
                         </div>
                         <Button 
                           variant="ghost" 
@@ -364,7 +364,7 @@ const MockInterviewLab = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-slate-500 dark:text-slate-400 py-8">
                   No interview sessions yet. Start your first interview above!
                 </p>
               )}
@@ -384,18 +384,18 @@ const MockInterviewLab = () => {
                   key={index}
                   className={`p-4 rounded-xl text-center transition-all duration-300 ${
                     achievement.unlocked 
-                      ? 'bg-gradient-to-br from-primary-50 to-purple-50 border border-primary-100' 
-                      : 'bg-gray-50 dark:bg-gray-800 opacity-50'
+                      ? 'bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100' 
+                      : 'bg-slate-50 dark:bg-slate-800 opacity-50'
                   }`}
                 >
                   <div className={`w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center ${
                     achievement.unlocked 
-                      ? 'bg-gradient-to-br from-primary-500 to-purple-500 shadow-lg shadow-primary-500/30' 
-                      : 'bg-gray-200'
+                      ? 'bg-gradient-to-br from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/30' 
+                      : 'bg-slate-200'
                   }`}>
-                    <achievement.icon className={`w-5 h-5 ${achievement.unlocked ? 'text-white' : 'text-gray-400'}`} />
+                    <achievement.icon className={`w-5 h-5 ${achievement.unlocked ? 'text-white' : 'text-slate-400'}`} />
                   </div>
-                  <p className={`text-sm font-medium ${achievement.unlocked ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
+                  <p className={`text-sm font-medium ${achievement.unlocked ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
                     {achievement.label}
                   </p>
                 </div>
@@ -405,7 +405,7 @@ const MockInterviewLab = () => {
             <div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100">
               <div className="flex items-center gap-3 mb-2">
                 <Coffee className="w-5 h-5 text-amber-500" />
-                <span className="font-semibold text-gray-900 dark:text-white">Daily Goal</span>
+                <span className="font-semibold text-slate-900 dark:text-white">Daily Goal</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-2 bg-amber-200 rounded-full overflow-hidden">
@@ -419,14 +419,14 @@ const MockInterviewLab = () => {
       </div>
 
       {/* Tips Section */}
-      <Card className="bg-gradient-to-r from-primary-50 to-purple-50 border-none">
+      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-none">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 flex-shrink-0">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 flex-shrink-0">
             <Lightbulb className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Pro Tip</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-1">Pro Tip</h3>
+            <p className="text-slate-600 dark:text-slate-400">
               Start with Speed Round to warm up, then move to Deep Dive sessions for more thorough practice. 
               Consistency is key - try to complete at least one session daily!
             </p>

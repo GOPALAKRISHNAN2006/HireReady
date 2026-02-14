@@ -15,6 +15,7 @@ import {
   XCircle,
   Star,
   MessageSquare,
+  MessageCircle,
   Clock,
   RefreshCcw,
   BookOpen,
@@ -92,8 +93,8 @@ const InterviewFeedback = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
         <XCircle className="w-16 h-16 text-red-400 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Failed to Load Feedback</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-4">Could not retrieve interview data.</p>
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">Failed to Load Feedback</h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-4">Could not retrieve interview data.</p>
         <Button onClick={() => navigate('/analytics')}>Back to Analytics</Button>
       </div>
     )
@@ -103,9 +104,9 @@ const InterviewFeedback = () => {
   if (!feedback) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <MessageSquare className="w-16 h-16 text-gray-300 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Feedback Available</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-4">Complete an interview first to receive feedback.</p>
+        <MessageSquare className="w-16 h-16 text-slate-300 mb-4" />
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">No Feedback Available</h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-4">Complete an interview first to receive feedback.</p>
         <Link to="/interview/setup"><Button>Start Interview</Button></Link>
       </div>
     )
@@ -119,20 +120,27 @@ const InterviewFeedback = () => {
   ]
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Interview Debrief</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {interview?.type || 'Technical'} Interview • {new Date(interview?.createdAt).toLocaleDateString()}
-            </p>
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <MessageCircle className="w-4 h-4 mr-2" />
+            Feedback
           </div>
+          <h1 className="text-3xl font-bold mb-2">Interview Feedback</h1>
+          <p className="text-white/70 max-w-lg">Detailed feedback from your interview sessions</p>
         </div>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-between">
+        <button onClick={() => navigate(-1)} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-400">
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
         <Badge variant={feedback.performanceColor}>{feedback.performanceLevel}</Badge>
       </div>
 
@@ -141,19 +149,19 @@ const InterviewFeedback = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
             <div className={`text-3xl font-bold text-${feedback.performanceColor}-600`}>{feedback.overallScore}%</div>
-            <p className="text-sm text-gray-500 mt-1">Overall Score</p>
+            <p className="text-sm text-slate-500 mt-1">Overall Score</p>
           </div>
           <div>
-            <div className="text-3xl font-bold text-gray-900 dark:text-white">{feedback.totalQuestions}</div>
-            <p className="text-sm text-gray-500 mt-1">Total Questions</p>
+            <div className="text-3xl font-bold text-slate-900 dark:text-white">{feedback.totalQuestions}</div>
+            <p className="text-sm text-slate-500 mt-1">Total Questions</p>
           </div>
           <div>
             <div className="text-3xl font-bold text-emerald-600">{feedback.answered}</div>
-            <p className="text-sm text-gray-500 mt-1">Answered</p>
+            <p className="text-sm text-slate-500 mt-1">Answered</p>
           </div>
           <div>
             <div className="text-3xl font-bold text-amber-600">{feedback.totalQuestions - feedback.answered}</div>
-            <p className="text-sm text-gray-500 mt-1">Skipped</p>
+            <p className="text-sm text-slate-500 mt-1">Skipped</p>
           </div>
         </div>
         <div className="mt-4">
@@ -168,7 +176,7 @@ const InterviewFeedback = () => {
       </Card>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700 gap-1">
+      <div className="flex border-b border-slate-200 dark:border-slate-700 gap-1">
         {tabs.map(tab => (
           <button
             key={tab.key}
@@ -176,7 +184,7 @@ const InterviewFeedback = () => {
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
                 ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
-                : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
             {tab.icon} {tab.label}
@@ -188,12 +196,12 @@ const InterviewFeedback = () => {
       {activeTab === 'overview' && (
         <div className="grid md:grid-cols-2 gap-4">
           <Card className="p-5">
-            <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
+            <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
               <Trophy className="w-5 h-5 text-emerald-500" /> Top Strengths
             </h3>
             <ul className="space-y-2">
               {feedback.strengths.slice(0, 3).map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
                   <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
                   {s}
                 </li>
@@ -201,18 +209,18 @@ const InterviewFeedback = () => {
             </ul>
           </Card>
           <Card className="p-5">
-            <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
+            <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
               <Target className="w-5 h-5 text-amber-500" /> Key Improvements
             </h3>
             <ul className="space-y-2">
               {feedback.improvements.slice(0, 3).map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
                   <TrendingDown className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                   {s}
                 </li>
               ))}
               {feedback.improvements.length === 0 && (
-                <li className="text-sm text-gray-400">Great job! No major issues found.</li>
+                <li className="text-sm text-slate-400">Great job! No major issues found.</li>
               )}
             </ul>
           </Card>
@@ -221,14 +229,14 @@ const InterviewFeedback = () => {
 
       {activeTab === 'strengths' && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h3 className="font-semibold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <Star className="w-5 h-5 text-yellow-500" /> Your Strengths
           </h3>
           <div className="space-y-3">
             {feedback.strengths.map((s, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20">
                 <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
-                <p className="text-sm text-gray-700 dark:text-gray-300">{s}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{s}</p>
               </div>
             ))}
           </div>
@@ -237,18 +245,18 @@ const InterviewFeedback = () => {
 
       {activeTab === 'improve' && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h3 className="font-semibold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-blue-500" /> Areas to Improve
           </h3>
           <div className="space-y-3">
             {feedback.improvements.map((s, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20">
                 <Target className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-                <p className="text-sm text-gray-700 dark:text-gray-300">{s}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{s}</p>
               </div>
             ))}
             {feedback.improvements.length === 0 && (
-              <p className="text-gray-400 text-sm">No major improvements needed — keep going!</p>
+              <p className="text-slate-400 text-sm">No major improvements needed — keep going!</p>
             )}
           </div>
         </Card>
@@ -256,14 +264,14 @@ const InterviewFeedback = () => {
 
       {activeTab === 'tips' && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <h3 className="font-semibold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <Lightbulb className="w-5 h-5 text-purple-500" /> Personalized Tips
           </h3>
           <div className="space-y-3">
             {feedback.tips.map((tip, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20">
                 <Lightbulb className="w-5 h-5 text-purple-500 mt-0.5 shrink-0" />
-                <p className="text-sm text-gray-700 dark:text-gray-300">{tip}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{tip}</p>
               </div>
             ))}
           </div>
@@ -272,15 +280,15 @@ const InterviewFeedback = () => {
 
       {/* Question Breakdown */}
       <Card className="p-6">
-        <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <h3 className="font-semibold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
           <MessageSquare className="w-5 h-5 text-blue-500" /> Question Breakdown
         </h3>
         <div className="space-y-2">
           {(interview?.questions || []).map((q, i) => (
-            <div key={i} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+            <div key={i} className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
               <button
                 onClick={() => toggleSection(`q-${i}`)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -290,7 +298,7 @@ const InterviewFeedback = () => {
                   }`}>
                     {q.score || 0}
                   </span>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white text-left">
+                  <span className="text-sm font-medium text-slate-900 dark:text-white text-left">
                     {q.question?.substring(0, 80)}{q.question?.length > 80 ? '...' : ''}
                   </span>
                 </div>
@@ -299,15 +307,15 @@ const InterviewFeedback = () => {
               {expandedSections[`q-${i}`] && (
                 <div className="px-4 pb-4 space-y-3">
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase mb-1">Your Answer</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                      {q.userAnswer || <span className="italic text-gray-400">No answer provided</span>}
+                    <p className="text-xs font-medium text-slate-500 uppercase mb-1">Your Answer</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg">
+                      {q.userAnswer || <span className="italic text-slate-400">No answer provided</span>}
                     </p>
                   </div>
                   {q.feedback && (
                     <div>
-                      <p className="text-xs font-medium text-gray-500 uppercase mb-1">AI Feedback</p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                      <p className="text-xs font-medium text-slate-500 uppercase mb-1">AI Feedback</p>
+                      <p className="text-sm text-slate-700 dark:text-slate-300 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
                         {q.feedback}
                       </p>
                     </div>

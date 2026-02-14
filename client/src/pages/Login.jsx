@@ -165,30 +165,30 @@ const Login = () => {
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
             <Brain className="w-7 h-7 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">HireReady</span>
         </Link>
       </div>
 
       <div className="text-center mb-8">
-        <div className="inline-flex items-center px-3 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-full text-xs font-medium text-primary-600 dark:text-primary-400 mb-4">
+        <div className="inline-flex items-center px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 rounded-full text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-4">
           <Sparkles className="w-3 h-3 mr-1" />
           AI-Powered Interview Prep
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">Welcome back!</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">Sign in to continue your interview preparation</p>
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Welcome back!</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">Sign in to continue your interview preparation</p>
       </div>
 
       {/* Trust badges */}
       <div className="flex items-center justify-center gap-4 mb-8">
-        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <Shield className="w-3.5 h-3.5 text-green-500" />
           <span>Secure</span>
         </div>
-        <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-        <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+        <div className="w-1 h-1 bg-slate-300 dark:bg-slate-600 rounded-full" />
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <Sparkles className="w-3.5 h-3.5 text-purple-500" />
           <span>Free Plan</span>
         </div>
@@ -234,11 +234,11 @@ const Login = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 cursor-pointer"
+              className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
             />
-            <span className="ml-2 text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Remember me</span>
+            <span className="ml-2 text-sm text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Remember me</span>
           </label>
-          <Link to="/forgot-password" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+          <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
             Forgot password?
           </Link>
         </div>
@@ -260,60 +260,60 @@ const Login = () => {
       <div className="mt-8">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+            <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-transparent text-gray-500 dark:text-gray-400">Or continue with</span>
+            <span className="px-4 bg-transparent text-slate-500 dark:text-slate-400">Or continue with</span>
           </div>
         </div>
 
         <div className="mt-6">
           {googleLoading ? (
-            <div className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl">
-              <Loader2 className="w-5 h-5 mr-2 animate-spin text-gray-500" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Signing in...</span>
+            <div className="w-full flex items-center justify-center px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl">
+              <Loader2 className="w-5 h-5 mr-2 animate-spin text-slate-500" />
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Signing in...</span>
             </div>
           ) : (
             <div ref={googleBtnRef} className="flex justify-center" />
           )}
           {!googleReady && !googleLoading && (
-            <div className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl opacity-50">
+            <div className="w-full flex items-center justify-center px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl opacity-50">
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Loading Google Sign-In...</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Loading Google Sign-In...</span>
             </div>
           )}
         </div>
       </div>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Don't have an account?{' '}
-          <Link to="/signup" className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
+          <Link to="/signup" className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
             Sign up for free →
           </Link>
         </p>
       </div>
 
       {/* Bottom feature highlights */}
-      <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+      <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <div className="text-center group">
             <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">🎯</span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Mock Interviews</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Mock Interviews</p>
           </div>
           <div className="text-center group">
             <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">🤖</span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">AI Feedback</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">AI Feedback</p>
           </div>
           <div className="text-center group">
             <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">📊</span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Track Progress</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Track Progress</p>
           </div>
         </div>
       </div>

@@ -204,8 +204,8 @@ const AdminUsers = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Manage Users</h1>
-          <p className="text-gray-600">View, edit, and manage user accounts</p>
+          <h1 className="text-2xl font-bold text-slate-900">Manage Users</h1>
+          <p className="text-slate-600">View, edit, and manage user accounts</p>
         </div>
         <Badge variant="primary" size="lg" className="self-start">
           <Users className="w-4 h-4 mr-1" />
@@ -218,7 +218,7 @@ const AdminUsers = () => {
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search by name or email..."
@@ -227,7 +227,7 @@ const AdminUsers = () => {
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
           
@@ -238,7 +238,7 @@ const AdminUsers = () => {
               setRoleFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[140px]"
           >
             <option value="">All Roles</option>
             <option value="user">Users</option>
@@ -253,7 +253,7 @@ const AdminUsers = () => {
               setStatusFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[140px]"
           >
             <option value="">All Status</option>
             <option value="true">Active</option>
@@ -270,51 +270,51 @@ const AdminUsers = () => {
           </div>
         ) : users.length === 0 ? (
           <div className="p-12 text-center">
-            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No users found</p>
-            <p className="text-sm text-gray-400 mt-1">Try adjusting your search or filters</p>
+            <Users className="w-12 h-12 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-500">No users found</p>
+            <p className="text-sm text-slate-400 mt-1">Try adjusting your search or filters</p>
           </div>
         ) : (
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-slate-50 border-b border-slate-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                       User
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Role
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Interviews
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Joined
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-200">
                   {users.map((user) => (
-                    <tr key={user._id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={user._id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
                             <span className="text-sm font-medium text-white">
                               {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
                             </span>
                           </div>
                           <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-slate-900">
                               {user.firstName} {user.lastName}
                             </p>
-                            <p className="text-sm text-gray-500">{user.email}</p>
+                            <p className="text-sm text-slate-500">{user.email}</p>
                           </div>
                         </div>
                       </td>
@@ -325,18 +325,18 @@ const AdminUsers = () => {
                         {getStatusBadge(user.isActive)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm text-gray-900">{user.interviewCount || 0}</span>
+                        <span className="text-sm text-slate-900">{user.interviewCount || 0}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm text-gray-500">{formatDate(user.createdAt)}</span>
+                        <span className="text-sm text-slate-500">{formatDate(user.createdAt)}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
                         <div className="relative inline-block text-left">
                           <button
                             onClick={() => setShowActionMenu(showActionMenu === user._id ? null : user._id)}
-                            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
                           >
-                            <MoreVertical className="w-5 h-5 text-gray-500" />
+                            <MoreVertical className="w-5 h-5 text-slate-500" />
                           </button>
                           
                           {showActionMenu === user._id && (
@@ -345,17 +345,17 @@ const AdminUsers = () => {
                                 className="fixed inset-0 z-10"
                                 onClick={() => setShowActionMenu(null)}
                               />
-                              <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
+                              <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 py-1">
                                 <button
                                   onClick={() => handleViewDetails(user)}
-                                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
                                 >
                                   <Eye className="w-4 h-4 mr-2" />
                                   View Details
                                 </button>
                                 <button
                                   onClick={() => handleRoleClick(user)}
-                                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
                                   disabled={user.role === 'admin'}
                                 >
                                   <Shield className="w-4 h-4 mr-2" />
@@ -363,7 +363,7 @@ const AdminUsers = () => {
                                 </button>
                                 <button
                                   onClick={() => handleBanClick(user)}
-                                  className={`flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 ${
+                                  className={`flex items-center w-full px-4 py-2 text-sm hover:bg-slate-100 ${
                                     user.isActive ? 'text-orange-600' : 'text-green-600'
                                   }`}
                                   disabled={user.role === 'admin'}
@@ -401,25 +401,25 @@ const AdminUsers = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-              <p className="text-sm text-gray-500">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
+              <p className="text-sm text-slate-500">
                 Showing {((page - 1) * 15) + 1} to {Math.min(page * 15, pagination.total)} of {pagination.total} users
               </p>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-slate-600">
                   Page {page} of {pagination.pages}
                 </span>
                 <button
                   onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
                   disabled={page >= pagination.pages}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -445,16 +445,16 @@ const AdminUsers = () => {
           <div className="space-y-6">
             {/* User Header */}
             <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-violet-600 rounded-full flex items-center justify-center">
                 <span className="text-xl font-bold text-white">
                   {userDetails.data.user.firstName?.charAt(0)}{userDetails.data.user.lastName?.charAt(0)}
                 </span>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900">
+                <h3 className="text-xl font-bold text-slate-900">
                   {userDetails.data.user.firstName} {userDetails.data.user.lastName}
                 </h3>
-                <p className="text-gray-500">{userDetails.data.user.email}</p>
+                <p className="text-slate-500">{userDetails.data.user.email}</p>
                 <div className="flex items-center gap-2 mt-2">
                   {getRoleBadge(userDetails.data.user.role)}
                   {getStatusBadge(userDetails.data.user.isActive)}
@@ -464,41 +464,41 @@ const AdminUsers = () => {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gray-50 rounded-lg p-4 text-center">
-                <Target className="w-6 h-6 mx-auto text-primary-600 mb-2" />
-                <p className="text-2xl font-bold text-gray-900">{userDetails.data.stats.totalInterviews}</p>
-                <p className="text-sm text-gray-500">Interviews</p>
+              <div className="bg-slate-50 rounded-lg p-4 text-center">
+                <Target className="w-6 h-6 mx-auto text-indigo-600 mb-2" />
+                <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.totalInterviews}</p>
+                <p className="text-sm text-slate-500">Interviews</p>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4 text-center">
+              <div className="bg-slate-50 rounded-lg p-4 text-center">
                 <CheckCircle className="w-6 h-6 mx-auto text-green-600 mb-2" />
-                <p className="text-2xl font-bold text-gray-900">{userDetails.data.stats.completedInterviews}</p>
-                <p className="text-sm text-gray-500">Completed</p>
+                <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.completedInterviews}</p>
+                <p className="text-sm text-slate-500">Completed</p>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4 text-center">
+              <div className="bg-slate-50 rounded-lg p-4 text-center">
                 <Award className="w-6 h-6 mx-auto text-yellow-600 mb-2" />
-                <p className="text-2xl font-bold text-gray-900">{userDetails.data.stats.averageScore}%</p>
-                <p className="text-sm text-gray-500">Avg Score</p>
+                <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.averageScore}%</p>
+                <p className="text-sm text-slate-500">Avg Score</p>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4 text-center">
+              <div className="bg-slate-50 rounded-lg p-4 text-center">
                 <FileText className="w-6 h-6 mx-auto text-purple-600 mb-2" />
-                <p className="text-2xl font-bold text-gray-900">{userDetails.data.stats.resumeCount}</p>
-                <p className="text-sm text-gray-500">Resumes</p>
+                <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.resumeCount}</p>
+                <p className="text-sm text-slate-500">Resumes</p>
               </div>
             </div>
 
             {/* Recent Interviews */}
             {userDetails.data.recentInterviews?.length > 0 && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">Recent Interviews</h4>
+                <h4 className="font-medium text-slate-900 mb-3">Recent Interviews</h4>
                 <div className="space-y-2">
                   {userDetails.data.recentInterviews.slice(0, 5).map((interview) => (
                     <div 
                       key={interview._id}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
                         <Badge variant="secondary">{interview.category}</Badge>
-                        <span className="text-sm text-gray-600">{interview.difficulty}</span>
+                        <span className="text-sm text-slate-600">{interview.difficulty}</span>
                       </div>
                       <div className="flex items-center space-x-4">
                         <span className={`font-medium ${
@@ -507,7 +507,7 @@ const AdminUsers = () => {
                         }`}>
                           {Math.round(interview.overallScore)}%
                         </span>
-                        <span className="text-sm text-gray-400">
+                        <span className="text-sm text-slate-400">
                           {formatDate(interview.createdAt)}
                         </span>
                       </div>
@@ -520,25 +520,25 @@ const AdminUsers = () => {
             {/* User Info */}
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-500">Job Title</p>
-                <p className="font-medium text-gray-900">{userDetails.data.user.jobTitle || 'Not specified'}</p>
+                <p className="text-slate-500">Job Title</p>
+                <p className="font-medium text-slate-900">{userDetails.data.user.jobTitle || 'Not specified'}</p>
               </div>
               <div>
-                <p className="text-gray-500">Company</p>
-                <p className="font-medium text-gray-900">{userDetails.data.user.company || 'Not specified'}</p>
+                <p className="text-slate-500">Company</p>
+                <p className="font-medium text-slate-900">{userDetails.data.user.company || 'Not specified'}</p>
               </div>
               <div>
-                <p className="text-gray-500">Experience</p>
-                <p className="font-medium text-gray-900">{userDetails.data.user.experience || 0} years</p>
+                <p className="text-slate-500">Experience</p>
+                <p className="font-medium text-slate-900">{userDetails.data.user.experience || 0} years</p>
               </div>
               <div>
-                <p className="text-gray-500">Joined</p>
-                <p className="font-medium text-gray-900">{formatDate(userDetails.data.user.createdAt)}</p>
+                <p className="text-slate-500">Joined</p>
+                <p className="font-medium text-slate-900">{formatDate(userDetails.data.user.createdAt)}</p>
               </div>
             </div>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">User not found</p>
+          <p className="text-slate-500 text-center py-8">User not found</p>
         )}
       </Modal>
 
@@ -553,7 +553,7 @@ const AdminUsers = () => {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Select a new role for <span className="font-medium">{selectedUser?.firstName} {selectedUser?.lastName}</span>
           </p>
           
@@ -565,15 +565,15 @@ const AdminUsers = () => {
                 disabled={updateRoleMutation.isPending}
                 className={`w-full p-3 rounded-lg border text-left transition-colors ${
                   selectedUser?.role === role 
-                    ? 'border-primary-500 bg-primary-50' 
-                    : 'border-gray-200 hover:border-primary-300 hover:bg-gray-50'
+                    ? 'border-indigo-500 bg-indigo-50' 
+                    : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     {role === 'admin' && <Shield className="w-5 h-5 text-red-500" />}
                     {role === 'moderator' && <ShieldOff className="w-5 h-5 text-yellow-500" />}
-                    {role === 'user' && <User className="w-5 h-5 text-gray-500" />}
+                    {role === 'user' && <User className="w-5 h-5 text-slate-500" />}
                     <span className="font-medium capitalize">{role}</span>
                   </div>
                   {selectedUser?.role === role && (

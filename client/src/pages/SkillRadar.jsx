@@ -246,15 +246,15 @@ const SkillRadar = () => {
                   <select
                     value={timeRange}
                     onChange={(e) => setTimeRange(e.target.value)}
-                    className="px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 dark:text-white"
+                    className="px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 dark:text-white"
                   >
                     <option value="week">This Week</option>
                     <option value="month">This Month</option>
                     <option value="quarter">This Quarter</option>
                     <option value="year">This Year</option>
                   </select>
-                  <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                    <RefreshCw className="w-4 h-4 text-gray-500" />
+                  <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                    <RefreshCw className="w-4 h-4 text-slate-500" />
                   </button>
                 </div>
               </div>
@@ -280,8 +280,8 @@ const SkillRadar = () => {
                     key={skill.name}
                     className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${
                       selectedSkill === skill.name 
-                        ? 'bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700' 
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-700' 
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'
                     }`}
                     onClick={() => setSelectedSkill(skill.name)}
                   >
@@ -291,13 +291,13 @@ const SkillRadar = () => {
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: skill.color }}
                         />
-                        <span className="font-medium text-gray-900 dark:text-white">{skill.name}</span>
+                        <span className="font-medium text-slate-900 dark:text-white">{skill.name}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-gray-900 dark:text-white">{skill.score}%</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{skill.score}%</span>
                         <span className={`flex items-center text-xs ${
                           skill.trend === 'up' ? 'text-green-500' : 
-                          skill.trend === 'down' ? 'text-red-500' : 'text-gray-400'
+                          skill.trend === 'down' ? 'text-red-500' : 'text-slate-400'
                         }`}>
                           {skill.trend === 'up' && <TrendingUp className="w-3 h-3 mr-0.5" />}
                           {skill.trend === 'down' && <TrendingDown className="w-3 h-3 mr-0.5" />}
@@ -305,7 +305,7 @@ const SkillRadar = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div 
                         className="h-full rounded-full transition-all duration-500"
                         style={{ 
@@ -354,7 +354,7 @@ const SkillRadar = () => {
               </div>
               <div>
                 <Card.Title>Improvement Recommendations</Card.Title>
-                <p className="text-sm text-gray-500 dark:text-gray-400">AI-powered suggestions to boost your skills</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">AI-powered suggestions to boost your skills</p>
               </div>
             </div>
           </div>
@@ -364,17 +364,17 @@ const SkillRadar = () => {
             {recommendations.map((rec, index) => (
               <div 
                 key={index}
-                className="p-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl hover:shadow-md transition-all duration-300 group"
+                className="p-4 bg-gradient-to-br from-slate-50 to-white dark:from-slate-800 dark:to-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl hover:shadow-md transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant={rec.priority === 'High' ? 'danger' : 'warning'}>
                     {rec.priority} Priority
                   </Badge>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{rec.skill}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{rec.action}</p>
-                <div className="flex items-center gap-2 text-sm text-primary-600">
+                <h4 className="font-semibold text-slate-900 dark:text-white mb-1">{rec.skill}</h4>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">{rec.action}</p>
+                <div className="flex items-center gap-2 text-sm text-indigo-600">
                   <BookOpen className="w-4 h-4" />
                   <span>{rec.resources} resources available</span>
                 </div>
@@ -404,9 +404,9 @@ const SkillRadar = () => {
               <div className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-3`}>
                 <stat.icon className="w-5 h-5 text-white" />
               </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{stat.label}</p>
-              <p className="text-lg font-bold text-gray-900 dark:text-white">{stat.value}</p>
-              <p className="text-sm text-gray-400 dark:text-gray-500">{stat.subtext}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{stat.label}</p>
+              <p className="text-lg font-bold text-slate-900 dark:text-white">{stat.value}</p>
+              <p className="text-sm text-slate-400 dark:text-slate-500">{stat.subtext}</p>
             </div>
           </Card>
         ))}

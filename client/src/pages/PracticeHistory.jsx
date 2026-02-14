@@ -142,36 +142,18 @@ const PracticeHistory = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-        
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
-          <div className="flex items-center space-x-3 mb-4">
-            <History className="w-8 h-8" />
-            <h1 className="text-3xl font-bold">Practice History</h1>
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <History className="w-4 h-4 mr-2" />
+            Your History
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-              <p className="text-3xl font-bold">{stats.totalSessions}</p>
-              <p className="text-sm text-indigo-100">Total Sessions</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-              <p className="text-3xl font-bold">{stats.completedSessions}</p>
-              <p className="text-sm text-indigo-100">Completed</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-              <p className="text-3xl font-bold">{stats.averageScore}%</p>
-              <p className="text-sm text-indigo-100">Avg Score</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-              <p className="text-3xl font-bold">{Math.round(stats.totalTime / 60)}h</p>
-              <p className="text-sm text-indigo-100">Total Time</p>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold mb-2">Practice History</h1>
+          <p className="text-white/70 max-w-lg">Review your past practice sessions and track improvement</p>
         </div>
       </div>
 
@@ -180,13 +162,13 @@ const PracticeHistory = () => {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder="Search by category..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
             />
           </div>
 
@@ -194,7 +176,7 @@ const PracticeHistory = () => {
           <select
             value={filter}
             onChange={(e) => { setFilter(e.target.value); setPage(1) }}
-            className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
             <option value="all">All Status</option>
             <option value="completed">Completed</option>
@@ -206,7 +188,7 @@ const PracticeHistory = () => {
           <select
             value={dateRange}
             onChange={(e) => { setDateRange(e.target.value); setPage(1) }}
-            className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
             <option value="all">All Time</option>
             <option value="today">Today</option>
@@ -232,9 +214,9 @@ const PracticeHistory = () => {
         <LoadingCard message="Loading practice history..." />
       ) : filteredHistory.length === 0 ? (
         <Card className="text-center py-12">
-          <History className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No Practice Sessions Yet</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">Start practicing to build your history!</p>
+          <History className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No Practice Sessions Yet</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-6">Start practicing to build your history!</p>
           <Link to="/interview/setup">
             <Button icon={Play}>Start Practice</Button>
           </Link>
@@ -251,14 +233,14 @@ const PracticeHistory = () => {
                       ? 'bg-green-100 dark:bg-green-900/30' 
                       : session.status === 'in-progress'
                         ? 'bg-yellow-100 dark:bg-yellow-900/30'
-                        : 'bg-gray-100 dark:bg-gray-700'
+                        : 'bg-slate-100 dark:bg-slate-700'
                   }`}>
                     {session.status === 'completed' ? (
                       <CheckCircle className="w-6 h-6 text-green-600" />
                     ) : session.status === 'in-progress' ? (
                       <Clock className="w-6 h-6 text-yellow-600" />
                     ) : (
-                      <XCircle className="w-6 h-6 text-gray-400" />
+                      <XCircle className="w-6 h-6 text-slate-400" />
                     )}
                   </div>
 
@@ -276,7 +258,7 @@ const PracticeHistory = () => {
                       </Badge>
                     </div>
                     
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mt-2">
                       <span className="flex items-center">
                         <Calendar className="w-4 h-4 mr-1" />
                         {new Date(session.createdAt).toLocaleDateString()}
@@ -300,7 +282,7 @@ const PracticeHistory = () => {
                       <p className={`text-3xl font-bold ${getScoreColor(session.overallScore)}`}>
                         {session.overallScore}%
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Score</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Score</p>
                     </div>
                   )}
                   

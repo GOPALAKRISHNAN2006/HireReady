@@ -32,8 +32,8 @@ const PremiumGate = ({ feature, fallback, blur = false, children }) => {
             <div className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/30">
               <Lock className="w-7 h-7 text-white" />
             </div>
-            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Premium Feature</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-1">Premium Feature</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
               Upgrade to unlock this feature
             </p>
             <Link to="/premium">
@@ -57,10 +57,10 @@ const PremiumGate = ({ feature, fallback, blur = false, children }) => {
       <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30 animate-pulse-slow">
         <Crown className="w-8 h-8 text-white" />
       </div>
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
         Premium Feature
       </h3>
-      <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto">
+      <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
         This feature is available on paid plans. Upgrade to unlock AI feedback, advanced analytics, and more.
       </p>
       <Link to="/premium">

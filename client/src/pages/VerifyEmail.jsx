@@ -71,10 +71,10 @@ const VerifyEmail = () => {
               <div className="w-20 h-20 mx-auto mb-6 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
                 <Loader2 className="w-10 h-10 text-indigo-600 dark:text-indigo-400 animate-spin" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                 Verifying Your Email
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-slate-600 dark:text-slate-400">
                 Please wait while we verify your email address...
               </p>
             </>
@@ -85,13 +85,13 @@ const VerifyEmail = () => {
               <div className="w-20 h-20 mx-auto mb-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                 Email Verified! 🎉
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
                 {message || 'Your email has been verified successfully. You can now access all features.'}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
                 Redirecting to login page...
               </p>
               <Link to="/login">
@@ -107,10 +107,10 @@ const VerifyEmail = () => {
               <div className="w-20 h-20 mx-auto mb-6 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
                 <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                 Verification Failed
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
                 {message}
               </p>
               <div className="space-y-3">
@@ -136,10 +136,10 @@ const VerifyEmail = () => {
               <div className="w-20 h-20 mx-auto mb-6 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
                 <Mail className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                 Resend Verification Email
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
                 Enter your email address and we'll send you a new verification link.
               </p>
               <form onSubmit={handleResendVerification} className="space-y-4">
@@ -148,10 +148,10 @@ const VerifyEmail = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-                           bg-white dark:bg-slate-700 text-gray-900 dark:text-white
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg 
+                           bg-white dark:bg-slate-700 text-slate-900 dark:text-white
                            focus:ring-2 focus:ring-indigo-500 focus:border-transparent
-                           placeholder-gray-400 dark:placeholder-gray-500"
+                           placeholder-slate-400 dark:placeholder-slate-500"
                   required
                 />
                 <Button 
@@ -182,7 +182,7 @@ const VerifyEmail = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
+        <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-6">
           Need help?{' '}
           <Link to="/help" className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Contact Support

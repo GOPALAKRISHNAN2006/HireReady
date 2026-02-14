@@ -107,7 +107,7 @@ const CommunicationScoreCard = ({
           >
             {score}
           </motion.span>
-          <span className="text-xs text-gray-500">/10</span>
+          <span className="text-xs text-slate-500">/10</span>
         </div>
       </div>
 

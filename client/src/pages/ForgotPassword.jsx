@@ -57,10 +57,10 @@ const ForgotPassword = () => {
         {/* Logo for mobile */}
         <div className="lg:hidden mb-8 text-center">
           <Link to="/" className="inline-flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Brain className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">HireReady</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
           </Link>
         </div>
 
@@ -68,12 +68,12 @@ const ForgotPassword = () => {
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Check your email</h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
-            If an account with <span className="font-medium text-gray-700 dark:text-gray-300">{email}</span> exists, 
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Check your email</h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-8">
+            If an account with <span className="font-medium text-slate-700 dark:text-slate-300">{email}</span> exists, 
             we've sent password reset instructions to your inbox.
           </p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
+          <p className="text-sm text-slate-400 dark:text-slate-500 mb-8">
             Didn't receive the email? Check your spam folder or try again.
           </p>
           
@@ -106,16 +106,16 @@ const ForgotPassword = () => {
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
             <Brain className="w-7 h-7 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
         </Link>
       </div>
 
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">Forgot password?</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">No worries, we'll send you reset instructions</p>
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Forgot password?</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">No worries, we'll send you reset instructions</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -145,7 +145,7 @@ const ForgotPassword = () => {
       <div className="mt-8 text-center">
         <Link 
           to="/login" 
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to sign in

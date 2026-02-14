@@ -147,9 +147,9 @@ const ProctoredSession = ({
   // Waiting for setup to complete
   if (!setupComplete) {
     return (
-      <div className="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-slate-900 flex items-center justify-center z-50">
         <div className="text-center">
-          <p className="text-gray-400 mb-4">Proctoring setup required</p>
+          <p className="text-slate-400 mb-4">Proctoring setup required</p>
           <button
             onClick={() => setShowSetup(true)}
             className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"

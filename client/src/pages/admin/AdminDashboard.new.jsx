@@ -144,7 +144,7 @@ const AdminDashboard = () => {
       interview_started: 'text-yellow-600 bg-yellow-100',
       question_added: 'text-purple-600 bg-purple-100',
     }
-    return colors[type] || 'text-gray-600 bg-gray-100'
+    return colors[type] || 'text-slate-600 bg-slate-100'
   }
 
   // Chart colors
@@ -155,15 +155,15 @@ const AdminDashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">Overview of your platform's performance and activity</p>
+          <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
+          <p className="text-slate-600">Overview of your platform's performance and activity</p>
         </div>
         <button
           onClick={() => refetchStats()}
-          className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
         >
-          <RefreshCw className="w-4 h-4 text-gray-600" />
-          <span className="text-sm text-gray-600">Refresh</span>
+          <RefreshCw className="w-4 h-4 text-slate-600" />
+          <span className="text-sm text-slate-600">Refresh</span>
         </button>
       </div>
 
@@ -173,7 +173,7 @@ const AdminDashboard = () => {
           // Loading skeletons
           Array(6).fill(0).map((_, i) => (
             <Card key={i} className="animate-pulse">
-              <div className="h-24 bg-gray-200 rounded"></div>
+              <div className="h-24 bg-slate-200 rounded"></div>
             </Card>
           ))
         ) : (
@@ -309,7 +309,7 @@ const AdminDashboard = () => {
         <Card.Header className="flex items-center justify-between">
           <div>
             <Card.Title className="flex items-center">
-              <Activity className="w-5 h-5 mr-2 text-primary-600" />
+              <Activity className="w-5 h-5 mr-2 text-indigo-600" />
               Recent Activity
             </Card.Title>
             <Card.Description>Latest platform events</Card.Description>
@@ -320,8 +320,8 @@ const AdminDashboard = () => {
           {activityLoading ? (
             <LoadingCard />
           ) : activity.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <Activity className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <div className="text-center py-8 text-slate-500">
+              <Activity className="w-12 h-12 mx-auto mb-3 text-slate-300" />
               <p>No recent activity</p>
             </div>
           ) : (
@@ -333,18 +333,18 @@ const AdminDashboard = () => {
                 return (
                   <div 
                     key={index} 
-                    className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-start space-x-4 p-3 rounded-lg hover:bg-slate-50 transition-colors"
                   >
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${colorClass}`}>
                       <Icon className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-900 font-medium truncate">{item.message}</p>
+                      <p className="text-slate-900 font-medium truncate">{item.message}</p>
                       {item.details && (
-                        <p className="text-sm text-gray-500 truncate">{item.details}</p>
+                        <p className="text-sm text-slate-500 truncate">{item.details}</p>
                       )}
                     </div>
-                    <div className="text-sm text-gray-400 whitespace-nowrap">
+                    <div className="text-sm text-slate-400 whitespace-nowrap">
                       {item.time}
                     </div>
                   </div>
@@ -359,33 +359,33 @@ const AdminDashboard = () => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link to="/admin/questions" className="block">
           <Card hover className="text-center py-6">
-            <FileQuestion className="w-8 h-8 mx-auto text-primary-600 mb-2" />
-            <p className="font-medium text-gray-900">Add Question</p>
-            <p className="text-sm text-gray-500">Create new interview question</p>
+            <FileQuestion className="w-8 h-8 mx-auto text-indigo-600 mb-2" />
+            <p className="font-medium text-slate-900">Add Question</p>
+            <p className="text-sm text-slate-500">Create new interview question</p>
           </Card>
         </Link>
         
         <Link to="/admin/aptitude" className="block">
           <Card hover className="text-center py-6">
             <Brain className="w-8 h-8 mx-auto text-pink-600 mb-2" />
-            <p className="font-medium text-gray-900">Add Aptitude</p>
-            <p className="text-sm text-gray-500">Create aptitude test question</p>
+            <p className="font-medium text-slate-900">Add Aptitude</p>
+            <p className="text-sm text-slate-500">Create aptitude test question</p>
           </Card>
         </Link>
         
         <Link to="/admin/gd-topics" className="block">
           <Card hover className="text-center py-6">
             <MessageSquare className="w-8 h-8 mx-auto text-cyan-600 mb-2" />
-            <p className="font-medium text-gray-900">Add GD Topic</p>
-            <p className="text-sm text-gray-500">Create discussion topic</p>
+            <p className="font-medium text-slate-900">Add GD Topic</p>
+            <p className="text-sm text-slate-500">Create discussion topic</p>
           </Card>
         </Link>
         
         <Link to="/admin/users" className="block">
           <Card hover className="text-center py-6">
             <Users className="w-8 h-8 mx-auto text-blue-600 mb-2" />
-            <p className="font-medium text-gray-900">Manage Users</p>
-            <p className="text-sm text-gray-500">View and manage accounts</p>
+            <p className="font-medium text-slate-900">Manage Users</p>
+            <p className="text-sm text-slate-500">View and manage accounts</p>
           </Card>
         </Link>
       </div>
@@ -397,10 +397,10 @@ const AdminDashboard = () => {
 const StatCardContent = ({ stat }) => (
   <div className="flex items-start justify-between">
     <div className="flex-1">
-      <p className="text-sm text-gray-500">{stat.title}</p>
-      <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
+      <p className="text-sm text-slate-500">{stat.title}</p>
+      <p className="text-2xl font-bold text-slate-900 mt-1">{stat.value}</p>
       {stat.subValue && (
-        <p className="text-xs text-gray-400 mt-1">{stat.subValue}</p>
+        <p className="text-xs text-slate-400 mt-1">{stat.subValue}</p>
       )}
       {stat.trend !== undefined && (
         <div className={`flex items-center mt-2 text-sm ${stat.trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -411,12 +411,12 @@ const StatCardContent = ({ stat }) => (
           )}
           <span>{stat.trend >= 0 ? '+' : ''}{stat.trend}%</span>
           {stat.trendLabel && (
-            <span className="text-gray-400 ml-1">{stat.trendLabel}</span>
+            <span className="text-slate-400 ml-1">{stat.trendLabel}</span>
           )}
         </div>
       )}
       {stat.link && (
-        <div className="flex items-center mt-3 text-sm text-primary-600">
+        <div className="flex items-center mt-3 text-sm text-indigo-600">
           <span>View details</span>
           <ChevronRight className="w-4 h-4 ml-1" />
         </div>

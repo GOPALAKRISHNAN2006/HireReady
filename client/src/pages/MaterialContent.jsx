@@ -403,7 +403,7 @@ const getCategoryGradient = (cat) => {
     devops: 'from-orange-500 to-amber-600',
     ml: 'from-cyan-500 to-blue-600',
   }
-  return map[cat] || 'from-gray-500 to-gray-600'
+  return map[cat] || 'from-slate-500 to-slate-600'
 }
 
 const getDifficultyConfig = (d) => {
@@ -426,18 +426,18 @@ const renderContent = (text) => {
   const flushCode = (key) => {
     if (codeLines.length) {
       elements.push(
-        <div key={key} className="my-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-            <span className="text-xs font-mono font-semibold text-gray-500 dark:text-gray-400 uppercase">{codeLang || 'code'}</span>
+        <div key={key} className="my-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+          <div className="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+            <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">{codeLang || 'code'}</span>
             <button
               onClick={() => { navigator.clipboard.writeText(codeLines.join('\n')); toast.success('Copied!') }}
-              className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
             >
               Copy
             </button>
           </div>
-          <pre className="p-4 overflow-x-auto bg-gray-50 dark:bg-[#0d1117] text-sm">
-            <code className="text-gray-800 dark:text-gray-200 font-mono leading-relaxed">{codeLines.join('\n')}</code>
+          <pre className="p-4 overflow-x-auto bg-slate-50 dark:bg-[#0d1117] text-sm">
+            <code className="text-slate-800 dark:text-slate-200 font-mono leading-relaxed">{codeLines.join('\n')}</code>
           </pre>
         </div>
       )
@@ -457,14 +457,14 @@ const renderContent = (text) => {
     // bold heading line
     if (/^\*\*[^*]+\*\*$/.test(line.trim())) {
       const text = line.trim().replace(/\*\*/g, '')
-      elements.push(<h4 key={i} className="font-bold text-gray-900 dark:text-white mt-5 mb-1.5 text-[15px]">{text}</h4>)
+      elements.push(<h4 key={i} className="font-bold text-slate-900 dark:text-white mt-5 mb-1.5 text-[15px]">{text}</h4>)
       return
     }
     // inline bold
     const renderBold = (str) => {
       const parts = str.split(/(\*\*[^*]+\*\*)/g)
       return parts.map((p, j) =>
-        p.startsWith('**') ? <strong key={j} className="font-semibold text-gray-900 dark:text-white">{p.replace(/\*\*/g, '')}</strong> : p
+        p.startsWith('**') ? <strong key={j} className="font-semibold text-slate-900 dark:text-white">{p.replace(/\*\*/g, '')}</strong> : p
       )
     }
     // inline code
@@ -472,7 +472,7 @@ const renderContent = (text) => {
       if (typeof nodes === 'string') {
         const pts = nodes.split(/(`[^`]+`)/g)
         return pts.map((p, j) =>
-          p.startsWith('`') ? <code key={j} className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm font-mono text-pink-600 dark:text-pink-400">{p.replace(/`/g, '')}</code> : renderBold(p)
+          p.startsWith('`') ? <code key={j} className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-sm font-mono text-pink-600 dark:text-pink-400">{p.replace(/`/g, '')}</code> : renderBold(p)
         )
       }
       return nodes
@@ -480,19 +480,19 @@ const renderContent = (text) => {
     
     if (line.startsWith('- ')) {
       elements.push(
-        <li key={i} className="ml-5 list-disc text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed my-0.5">
+        <li key={i} className="ml-5 list-disc text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5">
           {renderInlineCode(line.substring(2))}
         </li>
       )
     } else if (/^\d+\./.test(line)) {
       elements.push(
-        <li key={i} className="ml-5 list-decimal text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed my-0.5">
+        <li key={i} className="ml-5 list-decimal text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5">
           {renderInlineCode(line.replace(/^\d+\.\s*/, ''))}
         </li>
       )
     } else if (line.trim()) {
       elements.push(
-        <p key={i} className="text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed my-2">
+        <p key={i} className="text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-2">
           {renderInlineCode(line)}
         </p>
       )
@@ -529,11 +529,11 @@ const MaterialContent = () => {
   if (!material) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
-          <BookOpen className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+        <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <BookOpen className="w-10 h-10 text-slate-400 dark:text-slate-500" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Material Not Found</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">This study material doesn't exist or has been removed.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Material Not Found</h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-8">This study material doesn't exist or has been removed.</p>
         <Button onClick={() => navigate('/study-materials')}>
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Materials
         </Button>
@@ -618,8 +618,8 @@ const MaterialContent = () => {
         <div className="lg:order-1 order-2">
           <Card className="sticky top-20">
             <div className="flex items-center gap-2 mb-5">
-              <ListChecks className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-              <h3 className="font-bold text-gray-900 dark:text-white">Sections</h3>
+              <ListChecks className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+              <h3 className="font-bold text-slate-900 dark:text-white">Sections</h3>
             </div>
             <nav className="space-y-1.5">
               {material.sections.map((section, index) => {
@@ -631,16 +631,16 @@ const MaterialContent = () => {
                     onClick={() => { setCurrentSection(index); setShowQuiz(false) }}
                     className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-3 group ${
                       active
-                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium shadow-sm'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     {done ? (
                       <CheckCircle className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
                     ) : active ? (
-                      <CircleDot className="w-4.5 h-4.5 text-primary-500 shrink-0" />
+                      <CircleDot className="w-4.5 h-4.5 text-indigo-500 shrink-0" />
                     ) : (
-                      <div className="w-4.5 h-4.5 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0" />
+                      <div className="w-4.5 h-4.5 rounded-full border-2 border-slate-300 dark:border-slate-600 shrink-0" />
                     )}
                     <span className="text-sm truncate">{section.title}</span>
                   </button>
@@ -649,13 +649,13 @@ const MaterialContent = () => {
 
               {material.quiz && (
                 <>
-                  <div className="border-t border-gray-100 dark:border-gray-700 my-2" />
+                  <div className="border-t border-slate-100 dark:border-slate-700 my-2" />
                   <button
                     onClick={() => setShowQuiz(true)}
                     className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-3 ${
                       showQuiz
                         ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-medium shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     <Star className={`w-4.5 h-4.5 shrink-0 ${showQuiz ? 'text-amber-500' : ''}`} />
@@ -666,7 +666,7 @@ const MaterialContent = () => {
             </nav>
 
             {/* Quick Stats */}
-            <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700 grid grid-cols-2 gap-3">
+            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700 grid grid-cols-2 gap-3">
               <div className="text-center p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/15">
                 <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{completedSections.length}</p>
                 <p className="text-[10px] font-medium text-emerald-600 dark:text-emerald-500">Done</p>
@@ -689,12 +689,12 @@ const MaterialContent = () => {
               <div className="pt-2">
                 {/* Section chip */}
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                     Section {currentSection + 1} of {material.sections.length}
                   </span>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 leading-snug">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 leading-snug">
                   {material.sections[currentSection].title}
                 </h2>
 
@@ -704,7 +704,7 @@ const MaterialContent = () => {
                 </div>
 
                 {/* Bottom Navigation */}
-                <div className="mt-10 pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <div className="mt-10 pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
                   <Button
                     variant="outline"
                     onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
@@ -737,8 +737,8 @@ const MaterialContent = () => {
                     <Brain className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Knowledge Check</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Test what you've learned</p>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Knowledge Check</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Test what you've learned</p>
                   </div>
                 </div>
 
@@ -768,9 +768,9 @@ const MaterialContent = () => {
 
                 <div className="space-y-5">
                   {material.quiz.map((question, qIndex) => (
-                    <div key={qIndex} className="p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700">
-                      <p className="font-semibold text-gray-900 dark:text-white mb-3 text-[15px]">
-                        <span className="inline-flex items-center justify-center w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-400 mr-2">
+                    <div key={qIndex} className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                      <p className="font-semibold text-slate-900 dark:text-white mb-3 text-[15px]">
+                        <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 mr-2">
                           {qIndex + 1}
                         </span>
                         {question.question}
@@ -779,13 +779,13 @@ const MaterialContent = () => {
                         {question.options.map((option, oIndex) => {
                           const selected = quizAnswers[qIndex] === oIndex
                           const isCorrect = oIndex === question.correctIndex
-                          let cls = 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20'
+                          let cls = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'
                           if (quizSubmitted) {
                             if (isCorrect) cls = 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300'
                             else if (selected) cls = 'bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-700 text-red-800 dark:text-red-300'
-                            else cls = 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 opacity-60'
+                            else cls = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 opacity-60'
                           } else if (selected) {
-                            cls = 'bg-primary-50 dark:bg-primary-900/20 border-primary-400 dark:border-primary-700 ring-2 ring-primary-200 dark:ring-primary-800'
+                            cls = 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-400 dark:border-indigo-700 ring-2 ring-indigo-200 dark:ring-indigo-800'
                           }
                           return (
                             <button
@@ -795,10 +795,10 @@ const MaterialContent = () => {
                               className={`w-full text-left px-4 py-3 rounded-xl border transition-all text-sm font-medium ${cls}`}
                             >
                               <span className="flex items-center gap-3">
-                                <span className="w-6 h-6 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-400 shrink-0">
+                                <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">
                                   {String.fromCharCode(65 + oIndex)}
                                 </span>
-                                <span className="text-gray-800 dark:text-gray-200">{option}</span>
+                                <span className="text-slate-800 dark:text-slate-200">{option}</span>
                                 {quizSubmitted && isCorrect && <CheckCircle className="w-4 h-4 ml-auto text-emerald-500 shrink-0" />}
                               </span>
                             </button>
@@ -809,7 +809,7 @@ const MaterialContent = () => {
                   ))}
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
                   <Button variant="outline" onClick={() => setShowQuiz(false)} className="rounded-xl">
                     <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Sections
                   </Button>

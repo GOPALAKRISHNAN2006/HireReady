@@ -25,15 +25,15 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100"
+          className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100"
         >
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-primary-100 rounded-lg">
-              <Sparkles className="w-5 h-5 text-primary-600" />
+            <div className="p-2 bg-indigo-100 rounded-lg">
+              <Sparkles className="w-5 h-5 text-indigo-600" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-primary-900 mb-1">Assessment Summary</h4>
-              <p className="text-sm text-primary-700 leading-relaxed">{summary}</p>
+              <h4 className="text-sm font-semibold text-indigo-900 mb-1">Assessment Summary</h4>
+              <p className="text-sm text-indigo-700 leading-relaxed">{summary}</p>
             </div>
           </div>
         </motion.div>
@@ -50,7 +50,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
             <div className="p-1.5 bg-green-100 rounded-lg">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
             </div>
-            <h4 className="font-semibold text-gray-900">Strengths</h4>
+            <h4 className="font-semibold text-slate-900">Strengths</h4>
           </div>
           
           <div className="space-y-2">
@@ -70,7 +70,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
                 </motion.div>
               ))
             ) : (
-              <p className="text-sm text-gray-500 italic">No specific strengths identified</p>
+              <p className="text-sm text-slate-500 italic">No specific strengths identified</p>
             )}
           </div>
         </motion.div>
@@ -85,7 +85,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
             <div className="p-1.5 bg-amber-100 rounded-lg">
               <Lightbulb className="w-4 h-4 text-amber-600" />
             </div>
-            <h4 className="font-semibold text-gray-900">Areas for Improvement</h4>
+            <h4 className="font-semibold text-slate-900">Areas for Improvement</h4>
           </div>
           
           <div className="space-y-2">
@@ -105,7 +105,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
                 </motion.div>
               ))
             ) : (
-              <p className="text-sm text-gray-500 italic">No specific improvements suggested</p>
+              <p className="text-sm text-slate-500 italic">No specific improvements suggested</p>
             )}
           </div>
         </motion.div>

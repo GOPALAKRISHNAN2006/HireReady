@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Card, Button, Badge, Input } from '../components/ui'
 import { LoadingCard } from '../components/ui/Spinner'
 import api from '../services/api'
 import { 
   Search, 
-  Filter, 
   BookOpen, 
   Code, 
   Users, 
@@ -59,38 +57,37 @@ const Questions = () => {
     return cat?.icon || BookOpen
   }
 
-  const getDifficultyColor = (difficulty) => {
-    const colors = {
-      easy: 'success',
-      medium: 'warning',
-      hard: 'danger',
-    }
-    return colors[difficulty] || 'default'
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Question Bank</h1>
-        <p className="text-gray-600 dark:text-gray-400">Browse and practice interview questions</p>
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <BookOpen className="w-4 h-4 mr-2" />
+            Practice & Learn
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Question Bank</h1>
+          <p className="text-white/70 max-w-lg">Browse and practice interview questions across multiple categories and difficulty levels</p>
+        </div>
       </div>
 
-      {/* Filters */}
-      <Card>
+      {/* Search & Filters */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-5">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search questions..."
-                value={filters.search}
-                onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500"
-              />
+          <div className="flex-1 relative">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <Search className="w-4 h-4 text-white" />
             </div>
+            <input
+              type="text"
+              placeholder="Search questions..."
+              value={filters.search}
+              onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+              className="w-full pl-16 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 transition-all duration-200"
+            />
           </div>
 
           {/* Category Filter */}
@@ -98,13 +95,13 @@ const Questions = () => {
             <select
               value={filters.category}
               onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
-              className="appearance-none w-full md:w-48 px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white"
+              className="appearance-none w-full md:w-48 px-4 py-3 pr-10 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white transition-all duration-200"
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
 
           {/* Difficulty Filter */}
@@ -112,74 +109,93 @@ const Questions = () => {
             <select
               value={filters.difficulty}
               onChange={(e) => setFilters(prev => ({ ...prev, difficulty: e.target.value }))}
-              className="appearance-none w-full md:w-40 px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white"
+              className="appearance-none w-full md:w-40 px-4 py-3 pr-10 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white transition-all duration-200"
             >
               {difficulties.map((diff) => (
                 <option key={diff.id} value={diff.id}>{diff.name}</option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Questions List */}
       <div className="grid gap-4">
         {isLoading ? (
-          <Card>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm p-8">
             <LoadingCard message="Loading questions..." />
-          </Card>
+          </div>
         ) : data?.questions?.length > 0 ? (
           data.questions.map((question) => {
             const CategoryIcon = getCategoryIcon(question.category)
             const isExpanded = selectedQuestion === question._id
             
             return (
-              <Card key={question._id} hover className="cursor-pointer" onClick={() => setSelectedQuestion(isExpanded ? null : question._id)}>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4 flex-1">
-                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <CategoryIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge variant={getDifficultyColor(question.difficulty)} size="sm">
-                          {question.difficulty}
-                        </Badge>
-                        <Badge variant="primary" size="sm">
-                          {question.category}
-                        </Badge>
-                        {question.isAIGenerated && (
-                          <Badge variant="purple" size="sm">AI Generated</Badge>
+              <div 
+                key={question._id} 
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-800/50 transition-all duration-300 cursor-pointer overflow-hidden" 
+                onClick={() => setSelectedQuestion(isExpanded ? null : question._id)}
+              >
+                <div className="p-5">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className="w-11 h-11 bg-gradient-to-br from-indigo-500/10 to-violet-500/10 dark:from-indigo-500/20 dark:to-violet-500/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-100 dark:border-indigo-800/30">
+                        <CategoryIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center flex-wrap gap-2 mb-2">
+                          <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold ${
+                            question.difficulty === 'easy' 
+                              ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
+                              : question.difficulty === 'medium'
+                                ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
+                          }`}>
+                            {question.difficulty}
+                          </span>
+                          <span className="inline-flex items-center px-2.5 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 rounded-lg text-xs font-bold">
+                            {question.category}
+                          </span>
+                          {question.isAIGenerated && (
+                            <span className="inline-flex items-center px-2.5 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-lg text-xs font-bold">
+                              <Brain className="w-3 h-3 mr-1" />
+                              AI
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-slate-900 dark:text-white mb-1 leading-snug">
+                          {question.text}
+                        </h3>
+                        {question.tags && question.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mt-2.5">
+                            {question.tags.map((tag, index) => (
+                              <span key={index} className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg font-medium">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
                         )}
                       </div>
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1">
-                        {question.text}
-                      </h3>
-                      {question.tags && question.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {question.tags.map((tag, index) => (
-                            <span key={index} className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
                     </div>
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors flex-shrink-0 ml-3">
+                      <Eye className="w-3.5 h-3.5" />
+                      {isExpanded ? 'Hide' : 'View'}
+                    </button>
                   </div>
-                  <Button variant="ghost" size="sm" icon={Eye}>
-                    {isExpanded ? 'Hide' : 'View'}
-                  </Button>
                 </div>
                 
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 space-y-4">
+                  <div className="px-5 pb-5 pt-1 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 space-y-4">
                     {question.hints && question.hints.length > 0 && (
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Hints</h4>
-                        <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Hints</h4>
+                        <ul className="space-y-1.5">
                           {question.hints.map((hint, index) => (
-                            <li key={index}>{hint}</li>
+                            <li key={index} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                              <span className="text-amber-500 mt-0.5">•</span>
+                              {hint}
+                            </li>
                           ))}
                         </ul>
                       </div>
@@ -187,43 +203,47 @@ const Questions = () => {
                     
                     {question.expectedAnswer && (
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Expected Answer</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">Expected Answer</h4>
+                        <div className="text-sm text-slate-700 dark:text-slate-300 bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 leading-relaxed">
                           {question.expectedAnswer}
-                        </p>
+                        </div>
                       </div>
                     )}
                     
                     {question.explanation && (
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Explanation</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{question.explanation}</p>
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-2">Explanation</h4>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 bg-blue-50 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-200/60 dark:border-blue-800/40 leading-relaxed">
+                          {question.explanation}
+                        </div>
                       </div>
                     )}
                   </div>
                 )}
-              </Card>
+              </div>
             )
           })
         ) : (
-          <Card className="text-center py-12">
-            <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Questions Found</h3>
-            <p className="text-gray-500 dark:text-gray-400">Try adjusting your filters or search terms</p>
-          </Card>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm text-center py-16">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <BookOpen className="w-8 h-8 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Questions Found</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Try adjusting your filters or search terms</p>
+          </div>
         )}
       </div>
 
       {/* Pagination */}
       {data?.pagination && data.pagination.pages > 1 && (
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center gap-2">
           {Array.from({ length: data.pagination.pages }, (_, i) => (
             <button
               key={i}
-              className={`w-10 h-10 rounded-lg font-medium ${
+              className={`w-10 h-10 rounded-xl font-semibold text-sm transition-all duration-200 ${
                 i + 1 === data.pagination.page
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-600 dark:hover:text-indigo-400'
               }`}
             >
               {i + 1}

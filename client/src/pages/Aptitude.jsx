@@ -66,10 +66,19 @@ const Aptitude = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Aptitude Tests</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">Practice quantitative, logical, and verbal reasoning</p>
+    <div className="space-y-8 animate-in">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-violet-600 via-purple-600 to-violet-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Brain className="w-4 h-4 mr-2" />
+            Test Your Skills
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Aptitude Tests</h1>
+          <p className="text-white/70 max-w-lg">Practice aptitude questions to sharpen your problem-solving skills</p>
+        </div>
       </div>
 
       {/* Category Selection */}
@@ -82,17 +91,17 @@ const Aptitude = () => {
               onClick={() => setSelectedCategory(cat.id)}
               className={`p-4 rounded-xl border-2 transition-all ${
                 selectedCategory === cat.id
-                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300'
               }`}
             >
               <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 ${
-                selectedCategory === cat.id ? 'bg-primary-500' : 'bg-gray-100 dark:bg-gray-700'
+                selectedCategory === cat.id ? 'bg-indigo-500' : 'bg-slate-100 dark:bg-slate-700'
               }`}>
-                <IconComponent className={`w-6 h-6 ${selectedCategory === cat.id ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`} />
+                <IconComponent className={`w-6 h-6 ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600 dark:text-slate-300'}`} />
               </div>
               <h3 className="font-medium text-sm text-center dark:text-white">{cat.name}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">{cat.questionCount} questions</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-1">{cat.questionCount} questions</p>
               <Badge variant="secondary" className="mt-2 mx-auto block w-fit text-xs">
                 {cat.testsCompleted} completed
               </Badge>
@@ -107,7 +116,7 @@ const Aptitude = () => {
           <h2 className="text-lg font-semibold mb-4 dark:text-white">Configure Your Test</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Difficulty</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Difficulty</label>
               <div className="flex gap-2">
                 {['easy', 'medium', 'hard'].map((d) => (
                   <button
@@ -115,8 +124,8 @@ const Aptitude = () => {
                     onClick={() => setSelectedDifficulty(d)}
                     className={`flex-1 py-2 rounded-lg border capitalize ${
                       selectedDifficulty === d
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:text-gray-300'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:text-slate-300'
                     }`}
                   >
                     {d}
@@ -125,7 +134,7 @@ const Aptitude = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Number of Questions</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Number of Questions</label>
               <div className="flex gap-2">
                 {[5, 10, 15, 20].map((n) => (
                   <button
@@ -133,8 +142,8 @@ const Aptitude = () => {
                     onClick={() => setQuestionCount(n)}
                     className={`flex-1 py-2 rounded-lg border ${
                       questionCount === n
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:text-gray-300'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:text-slate-300'
                     }`}
                   >
                     {n}
@@ -162,13 +171,13 @@ const Aptitude = () => {
         </div>
         {history.length === 0 ? (
           <div className="text-center py-8">
-            <History className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400">No tests taken yet</p>
+            <History className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-500 dark:text-slate-400">No tests taken yet</p>
           </div>
         ) : (
           <div className="space-y-3">
             {history.map((test) => (
-              <div key={test._id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div key={test._id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                     test.percentage >= 70 ? 'bg-green-100' : test.percentage >= 50 ? 'bg-yellow-100' : 'bg-red-100'
@@ -179,14 +188,14 @@ const Aptitude = () => {
                   </div>
                   <div>
                     <p className="font-medium capitalize dark:text-white">{test.category}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       {new Date(test.completedAt).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-lg dark:text-white">{test.percentage}%</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
                     {test.correctAnswers}/{test.totalQuestions} correct
                   </p>
                 </div>

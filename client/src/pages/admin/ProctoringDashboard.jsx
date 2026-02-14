@@ -160,8 +160,8 @@ const ProctoringDashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Proctoring Dashboard</h1>
-          <p className="text-gray-600 mt-1">Monitor and review proctored sessions</p>
+          <h1 className="text-2xl font-bold text-slate-900">Proctoring Dashboard</h1>
+          <p className="text-slate-600 mt-1">Monitor and review proctored sessions</p>
         </div>
         <Button
           onClick={() => queryClient.invalidateQueries(['proctoring-review', 'proctoring-alerts'])}
@@ -179,8 +179,8 @@ const ProctoringDashboard = () => {
               <Shield className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Sessions</p>
-              <p className="text-xl font-bold text-gray-900">{stats.totalSessions}</p>
+              <p className="text-sm text-slate-500">Total Sessions</p>
+              <p className="text-xl font-bold text-slate-900">{stats.totalSessions}</p>
             </div>
           </div>
         </Card>
@@ -191,7 +191,7 @@ const ProctoringDashboard = () => {
               <ShieldCheck className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Clean</p>
+              <p className="text-sm text-slate-500">Clean</p>
               <p className="text-xl font-bold text-green-600">{stats.cleanSessions}</p>
             </div>
           </div>
@@ -203,7 +203,7 @@ const ProctoringDashboard = () => {
               <ShieldAlert className="w-5 h-5 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Review Needed</p>
+              <p className="text-sm text-slate-500">Review Needed</p>
               <p className="text-xl font-bold text-yellow-600">{stats.reviewNeeded}</p>
             </div>
           </div>
@@ -215,7 +215,7 @@ const ProctoringDashboard = () => {
               <ShieldX className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">High Risk</p>
+              <p className="text-sm text-slate-500">High Risk</p>
               <p className="text-xl font-bold text-red-600">{stats.highRisk}</p>
             </div>
           </div>
@@ -227,7 +227,7 @@ const ProctoringDashboard = () => {
               <AlertTriangle className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Active Alerts</p>
+              <p className="text-sm text-slate-500">Active Alerts</p>
               <p className="text-xl font-bold text-purple-600">{stats.unresolvedAlerts}</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ const ProctoringDashboard = () => {
       {alerts && alerts.length > 0 && (
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-500" />
               Active Alerts
               <Badge variant="danger">{alerts.length}</Badge>
@@ -254,21 +254,21 @@ const ProctoringDashboard = () => {
                 className={`flex items-center justify-between p-4 rounded-lg border ${
                   alert.alertType === 'critical' ? 'bg-red-50 border-red-200' :
                   alert.alertType === 'alert' ? 'bg-yellow-50 border-yellow-200' :
-                  'bg-gray-50 border-gray-200'
+                  'bg-slate-50 border-slate-200'
                 }`}
               >
                 <div className="flex items-center gap-4">
                   <AlertCircle className={`w-5 h-5 ${
                     alert.alertType === 'critical' ? 'text-red-500' :
                     alert.alertType === 'alert' ? 'text-yellow-500' :
-                    'text-gray-500'
+                    'text-slate-500'
                   }`} />
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-slate-900">
                       {alert.candidate?.firstName} {alert.candidate?.lastName}
                     </p>
                     <p className="text-sm text-red-600 font-medium">{alert.message}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-500">
                       {alert.violation?.type?.replace(/_/g, ' ')} • {formatDate(alert.createdAt)}
                     </p>
                   </div>
@@ -292,25 +292,25 @@ const ProctoringDashboard = () => {
       {/* Sessions for Review */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Eye className="w-5 h-5 text-gray-500" />
+          <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+            <Eye className="w-5 h-5 text-slate-500" />
             Sessions for Review
           </h2>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+              className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
             >
               <option value="all">All Status</option>
               <option value="pending_review">Pending Review</option>
@@ -327,29 +327,29 @@ const ProctoringDashboard = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">User</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Session Type</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Risk Score</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Violations</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Date</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                <tr className="border-b border-slate-200">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">User</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Session Type</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Status</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Risk Score</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Violations</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Date</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {reviewSessions.map((session) => (
-                  <tr key={session._id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <tr key={session._id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-primary-600" />
+                        <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4 text-indigo-600" />
                         </div>
                         <div>
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-slate-900">
                             {session.candidate?.firstName} {session.candidate?.lastName}
                           </span>
-                          <p className="text-xs text-gray-500">{session.candidate?.email}</p>
+                          <p className="text-xs text-slate-500">{session.candidate?.email}</p>
                         </div>
                       </div>
                     </td>
@@ -370,7 +370,7 @@ const ProctoringDashboard = () => {
                         }`}>
                           {session.riskScore}/100
                         </div>
-                        <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${
                               session.riskScore < 20 ? 'bg-green-500' :
@@ -384,13 +384,13 @@ const ProctoringDashboard = () => {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1">
-                        <span className="text-sm text-gray-900">{session.stats?.totalViolations || 0}</span>
+                        <span className="text-sm text-slate-900">{session.stats?.totalViolations || 0}</span>
                         {session.stats?.highViolations > 0 && (
                           <Badge variant="danger" size="sm">{session.stats.highViolations} high</Badge>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-500">
+                    <td className="py-3 px-4 text-sm text-slate-500">
                       {formatDate(session.startTime)}
                     </td>
                     <td className="py-3 px-4">
@@ -416,8 +416,8 @@ const ProctoringDashboard = () => {
         ) : (
           <div className="text-center py-12">
             <ShieldCheck className="w-16 h-16 text-green-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Sessions to Review</h3>
-            <p className="text-gray-500">All proctored sessions are clean or have been reviewed.</p>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">No Sessions to Review</h3>
+            <p className="text-slate-500">All proctored sessions are clean or have been reviewed.</p>
           </div>
         )}
       </Card>
@@ -437,16 +437,16 @@ const ProctoringDashboard = () => {
             {/* Session Info */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">User</p>
-                <p className="font-medium text-gray-900">{selectedSession.candidate?.firstName} {selectedSession.candidate?.lastName}</p>
-                <p className="text-xs text-gray-500">{selectedSession.candidate?.email}</p>
+                <p className="text-sm text-slate-500">User</p>
+                <p className="font-medium text-slate-900">{selectedSession.candidate?.firstName} {selectedSession.candidate?.lastName}</p>
+                <p className="text-xs text-slate-500">{selectedSession.candidate?.email}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Session Type</p>
-                <p className="font-medium text-gray-900 capitalize">{selectedSession.sessionType}</p>
+                <p className="text-sm text-slate-500">Session Type</p>
+                <p className="font-medium text-slate-900 capitalize">{selectedSession.sessionType}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Risk Score</p>
+                <p className="text-sm text-slate-500">Risk Score</p>
                 <p className={`font-bold ${
                   selectedSession.riskScore < 20 ? 'text-green-600' :
                   selectedSession.riskScore < 50 ? 'text-yellow-600' :
@@ -454,7 +454,7 @@ const ProctoringDashboard = () => {
                 }`}>{selectedSession.riskScore}/100</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Status</p>
+                <p className="text-sm text-slate-500">Status</p>
                 {getIntegrityBadge(selectedSession.integrityStatus)}
               </div>
             </div>
@@ -462,7 +462,7 @@ const ProctoringDashboard = () => {
             {/* Violations */}
             {selectedSession.violations && selectedSession.violations.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">Violations ({selectedSession.violations.length})</h4>
+                <h4 className="text-sm font-medium text-slate-900 mb-2">Violations ({selectedSession.violations.length})</h4>
                 <div className="max-h-48 overflow-y-auto space-y-2">
                   {selectedSession.violations.map((v, i) => (
                     <div
@@ -470,7 +470,7 @@ const ProctoringDashboard = () => {
                       className={`flex items-center justify-between p-2 rounded ${
                         v.severity === 'high' ? 'bg-red-50' :
                         v.severity === 'medium' ? 'bg-yellow-50' :
-                        'bg-gray-50'
+                        'bg-slate-50'
                       }`}
                     >
                       <span className="text-sm capitalize">{v.type.replace(/_/g, ' ')}</span>
@@ -483,14 +483,14 @@ const ProctoringDashboard = () => {
 
             {/* Review Decision */}
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Decision</label>
+              <label className="block text-sm font-medium text-slate-900 mb-2">Decision</label>
               <div className="flex gap-3">
                 <button
                   onClick={() => setReviewDecision('valid')}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-colors ${
                     reviewDecision === 'valid'
                       ? 'border-green-500 bg-green-50 text-green-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <CheckCircle2 className="w-5 h-5" />
@@ -501,7 +501,7 @@ const ProctoringDashboard = () => {
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-colors ${
                     reviewDecision === 'invalid'
                       ? 'border-red-500 bg-red-50 text-red-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <XCircle className="w-5 h-5" />
@@ -512,13 +512,13 @@ const ProctoringDashboard = () => {
 
             {/* Notes */}
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Review Notes</label>
+              <label className="block text-sm font-medium text-slate-900 mb-2">Review Notes</label>
               <textarea
                 value={reviewNotes}
                 onChange={(e) => setReviewNotes(e.target.value)}
                 placeholder="Add notes about your decision..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
 

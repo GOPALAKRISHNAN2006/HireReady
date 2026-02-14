@@ -259,7 +259,7 @@ const ResumeEditor = () => {
               type="text"
               value={resume.title}
               onChange={(e) => setResume({ ...resume, title: e.target.value })}
-              className="text-2xl font-bold text-gray-900 dark:text-white border-none outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 dark:bg-transparent"
+              className="text-2xl font-bold text-slate-900 dark:text-white border-none outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 dark:bg-transparent"
             />
           </div>
         </div>
@@ -287,8 +287,8 @@ const ResumeEditor = () => {
                   onClick={() => setActiveSection(section.id)}
                   className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
                     activeSection === section.id
-                      ? 'bg-primary-50 text-primary-700 font-medium'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                      ? 'bg-indigo-50 text-indigo-700 font-medium'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                   }`}
                 >
                   {section.label}
@@ -343,12 +343,12 @@ const ResumeEditor = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Summary</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Summary</label>
                   <textarea
                     rows={4}
                     value={resume.personalInfo?.summary || ''}
                     onChange={(e) => updateField('personalInfo', 'summary', e.target.value)}
-                    className="w-full px-4 py-2 border dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
                     placeholder="Brief professional summary..."
                   />
                 </div>
@@ -365,7 +365,7 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.education || []).map((edu, index) => (
-                  <div key={index} className="p-4 border dark:border-gray-700 rounded-lg space-y-3">
+                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
                     <div className="flex justify-end">
                       <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('education', index)}>
                         <Trash2 className="w-4 h-4" />
@@ -408,7 +408,7 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.experience || []).map((exp, index) => (
-                  <div key={index} className="p-4 border dark:border-gray-700 rounded-lg space-y-3">
+                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
                     <div className="flex justify-end">
                       <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('experience', index)}>
                         <Trash2 className="w-4 h-4" />
@@ -432,12 +432,12 @@ const ResumeEditor = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
                       <textarea
                         rows={3}
                         value={exp.description}
                         onChange={(e) => updateItem('experience', index, 'description', e.target.value)}
-                        className="w-full px-4 py-2 border dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
                       />
                     </div>
                   </div>
@@ -455,7 +455,7 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.skills || []).map((skill, index) => (
-                  <div key={index} className="p-4 border dark:border-gray-700 rounded-lg space-y-3">
+                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
                     <div className="flex justify-between items-start">
                       <Input
                         label="Category"
@@ -489,7 +489,7 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.projects || []).map((project, index) => (
-                  <div key={index} className="p-4 border dark:border-gray-700 rounded-lg space-y-3">
+                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
                     <div className="flex justify-end">
                       <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('projects', index)}>
                         <Trash2 className="w-4 h-4" />
@@ -508,12 +508,12 @@ const ResumeEditor = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
                       <textarea
                         rows={2}
                         value={project.description}
                         onChange={(e) => updateItem('projects', index, 'description', e.target.value)}
-                        className="w-full px-4 py-2 border dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
                       />
                     </div>
                     <Input
@@ -536,7 +536,7 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.certifications || []).map((cert, index) => (
-                  <div key={index} className="p-4 border dark:border-gray-700 rounded-lg space-y-3">
+                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
                     <div className="flex justify-end">
                       <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('certifications', index)}>
                         <Trash2 className="w-4 h-4" />

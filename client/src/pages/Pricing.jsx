@@ -149,22 +149,22 @@ const Pricing = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
             Choose Your Plan
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Select the perfect plan for your interview preparation journey. Upgrade anytime as your needs grow.
           </p>
 
           {/* Billing Toggle */}
           <div className="mt-8 flex items-center justify-center gap-4">
-            <span className={`text-sm ${interval === 'monthly' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500'}`}>
+            <span className={`text-sm ${interval === 'monthly' ? 'text-slate-900 dark:text-white font-semibold' : 'text-slate-500'}`}>
               Monthly
             </span>
             <button
               onClick={() => setInterval(interval === 'monthly' ? 'yearly' : 'monthly')}
               className={`relative w-14 h-7 rounded-full transition-colors ${
-                interval === 'yearly' ? 'bg-indigo-600' : 'bg-gray-300 dark:bg-gray-600'
+                interval === 'yearly' ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
               }`}
             >
               <span
@@ -173,7 +173,7 @@ const Pricing = () => {
                 }`}
               />
             </button>
-            <span className={`text-sm ${interval === 'yearly' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500'}`}>
+            <span className={`text-sm ${interval === 'yearly' ? 'text-slate-900 dark:text-white font-semibold' : 'text-slate-500'}`}>
               Yearly
               <span className="ml-1 text-green-600 font-semibold">(Save 17%)</span>
             </span>
@@ -218,21 +218,21 @@ const Pricing = () => {
                       <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
                   )}
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                     {plan.name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                     {plan.description}
                   </p>
                 </div>
 
                 <div className="text-center mb-6">
                   <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                    <span className="text-4xl font-bold text-slate-900 dark:text-white">
                       ${price}
                     </span>
                     {price > 0 && (
-                      <span className="text-gray-500 dark:text-gray-400 ml-2">
+                      <span className="text-slate-500 dark:text-slate-400 ml-2">
                         /{interval === 'yearly' ? 'year' : 'month'}
                       </span>
                     )}
@@ -248,7 +248,7 @@ const Pricing = () => {
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
+                      <span className="text-sm text-slate-600 dark:text-slate-300">
                         {feature}
                       </span>
                     </li>
@@ -277,31 +277,31 @@ const Pricing = () => {
 
         {/* FAQ Section */}
         <div className="mt-16 max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
             <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
                 Can I cancel my subscription anytime?
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 mt-2">
                 Yes, you can cancel your subscription at any time. You'll continue to have access until the end of your billing period.
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
                 What payment methods do you accept?
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 mt-2">
                 We accept all major credit cards (Visa, MasterCard, American Express), debit cards, and PayPal through our secure payment processor, Stripe.
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
                 Can I upgrade or downgrade my plan?
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-slate-600 dark:text-slate-400 mt-2">
                 Absolutely! You can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference. When downgrading, the change takes effect at the end of your current billing period.
               </p>
             </div>
@@ -310,7 +310,7 @@ const Pricing = () => {
 
         {/* Money Back Guarantee */}
         <div className="mt-12 text-center">
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-slate-600 dark:text-slate-400">
             🛡️ <strong>30-Day Money Back Guarantee</strong> - If you're not satisfied, we'll refund your payment, no questions asked.
           </p>
         </div>

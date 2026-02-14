@@ -287,8 +287,8 @@ const CommunityHub = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-primary-300'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-indigo-300'
             }`}
           >
             <tab.icon className="w-5 h-5" />
@@ -303,7 +303,7 @@ const CommunityHub = () => {
           {/* Create Post */}
           <Card>
             <div className="flex gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div className="flex-1">
@@ -311,18 +311,18 @@ const CommunityHub = () => {
                   value={newPost}
                   onChange={(e) => setNewPost(e.target.value)}
                   placeholder="Share your interview experience, ask questions, or help others..."
-                  className="w-full p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border border-gray-200 dark:border-gray-700 resize-none focus:ring-2 focus:ring-primary-500 min-h-[100px] placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  className="w-full p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl border border-slate-200 dark:border-slate-700 resize-none focus:ring-2 focus:ring-indigo-500 min-h-[100px] placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex gap-2">
-                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                      <ImageIcon className="w-5 h-5 text-gray-400" />
+                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                      <ImageIcon className="w-5 h-5 text-slate-400" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                      <LinkIcon className="w-5 h-5 text-gray-400" />
+                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                      <LinkIcon className="w-5 h-5 text-slate-400" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                      <Smile className="w-5 h-5 text-gray-400" />
+                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                      <Smile className="w-5 h-5 text-slate-400" />
                     </button>
                   </div>
                   <Button icon={Send} disabled={!newPost.trim() || createPostMutation.isPending} onClick={handlePostSubmit}>Post</Button>
@@ -345,50 +345,50 @@ const CommunityHub = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{post.author}</span>
                         {post.verified && (
                           <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
                         )}
-                        <span className="text-gray-400">·</span>
-                        <span className="text-sm text-gray-500">{post.time}</span>
+                        <span className="text-slate-400">·</span>
+                        <span className="text-sm text-slate-500">{post.time}</span>
                       </div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{post.role}</p>
-                      <p className="text-gray-700 dark:text-gray-300 mb-4">{post.content}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">{post.role}</p>
+                      <p className="text-slate-700 dark:text-slate-300 mb-4">{post.content}</p>
                       
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
                           {post.tags.map((tag) => (
-                            <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 hover:text-primary-700 dark:hover:text-primary-400 cursor-pointer transition-colors">
+                            <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:text-indigo-700 dark:hover:text-indigo-400 cursor-pointer transition-colors">
                               #{tag}
                             </span>
                           ))}
                         </div>
                       )}
 
-                      <div className="flex items-center gap-6 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
+                      <div className="flex items-center gap-6 pt-4 border-t border-slate-100 dark:border-slate-700">
+                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm transition-colors ${post.isLiked ? 'text-red-500' : 'text-slate-500 hover:text-red-500'}`}>
                           <Heart className={`w-5 h-5 ${post.isLiked ? 'fill-current' : ''}`} />
                           {post.likes}
                         </button>
                         <button 
                           onClick={() => setExpandedComments(prev => ({ ...prev, [post.id]: !prev[post.id] }))}
-                          className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary-500 transition-colors"
+                          className="flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-500 transition-colors"
                         >
                           <MessageSquare className="w-5 h-5" />
                           {post.comments}
                         </button>
                         <button 
                           onClick={() => sharePost(post.id)}
-                          className="flex items-center gap-2 text-sm text-gray-500 hover:text-green-500 transition-colors"
+                          className="flex items-center gap-2 text-sm text-slate-500 hover:text-green-500 transition-colors"
                         >
                           <Share2 className="w-5 h-5" />
                           Share
                         </button>
                         <button 
                           onClick={() => bookmarkPostMutation.mutate(post.id)}
-                          className="ml-auto text-gray-400 hover:text-amber-500 transition-colors"
+                          className="ml-auto text-slate-400 hover:text-amber-500 transition-colors"
                         >
                           <Bookmark className="w-5 h-5" />
                         </button>
@@ -396,9 +396,9 @@ const CommunityHub = () => {
 
                       {/* Inline comment form */}
                       {expandedComments[post.id] && (
-                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
                           <div className="flex gap-3">
-                            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                               {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
                             </div>
                             <div className="flex-1 flex gap-2">
@@ -407,7 +407,7 @@ const CommunityHub = () => {
                                 value={commentInputs[post.id] || ''}
                                 onChange={(e) => setCommentInputs(prev => ({ ...prev, [post.id]: e.target.value }))}
                                 placeholder="Write a comment..."
-                                className="flex-1 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder:text-gray-400"
+                                className="flex-1 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder:text-slate-400"
                                 onKeyPress={(e) => {
                                   if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
                                     addCommentMutation.mutate({ postId: post.id, content: commentInputs[post.id] })
@@ -421,7 +421,7 @@ const CommunityHub = () => {
                                   }
                                 }}
                                 disabled={!commentInputs[post.id]?.trim() || addCommentMutation.isPending}
-                                className="px-4 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 disabled:opacity-50 transition-colors"
                               >
                                 <Send className="w-4 h-4" />
                               </button>
@@ -435,9 +435,9 @@ const CommunityHub = () => {
               )) : (
                 <Card>
                   <div className="text-center py-12">
-                    <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Posts Yet</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Be the first to share something with the community!</p>
+                    <MessageCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Posts Yet</h3>
+                    <p className="text-slate-600 dark:text-slate-400">Be the first to share something with the community!</p>
                   </div>
                 </Card>
               )}
@@ -454,9 +454,9 @@ const CommunityHub = () => {
                       <MessageCircle className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-1">{discussion.title || discussion.topic}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 line-clamp-2">{discussion.description || discussion.content}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-400">
+                      <h3 className="font-bold text-slate-900 dark:text-white mb-1">{discussion.title || discussion.topic}</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">{discussion.description || discussion.content}</p>
+                      <div className="flex items-center gap-4 text-xs text-slate-400">
                         <span className="flex items-center gap-1"><Users className="w-3 h-3" />{discussion.participantCount || discussion.participants?.length || 0} participants</span>
                         <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" />{discussion.replyCount || discussion.replies?.length || 0} replies</span>
                       </div>
@@ -466,9 +466,9 @@ const CommunityHub = () => {
               )) : (
                 <Card>
                   <div className="text-center py-12">
-                    <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Discussions Yet</h3>
-                    <p className="text-gray-600 dark;text-gray-400">Start a discussion by creating a post!</p>
+                    <MessageCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Discussions Yet</h3>
+                    <p className="text-slate-600 dark;text-slate-400">Start a discussion by creating a post!</p>
                   </div>
                 </Card>
               )}
@@ -484,13 +484,13 @@ const CommunityHub = () => {
                     <img src={post.avatar} alt={post.author} className="w-12 h-12 rounded-full object-cover flex-shrink-0" onError={(e) => { e.target.onerror = null; e.target.src = getAvatarUrl(null, post.author) }} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{post.author}</span>
                         <Trophy className="w-4 h-4 text-amber-500" />
-                        <span className="text-sm text-gray-500">{post.time}</span>
+                        <span className="text-sm text-slate-500">{post.time}</span>
                       </div>
-                      <p className="text-gray-700 dark:text-gray-300 mb-3">{post.content}</p>
-                      <div className="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-gray-700">
-                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
+                      <p className="text-slate-700 dark:text-slate-300 mb-3">{post.content}</p>
+                      <div className="flex items-center gap-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+                        <button onClick={() => likePostMutation.mutate(post.id)} className={`flex items-center gap-2 text-sm ${post.isLiked ? 'text-red-500' : 'text-slate-500 hover:text-red-500'}`}>
                           <Heart className={`w-4 h-4 ${post.isLiked ? 'fill-current' : ''}`} /> {post.likes}
                         </button>
                       </div>
@@ -500,9 +500,9 @@ const CommunityHub = () => {
               )) : (
                 <Card>
                   <div className="text-center py-12">
-                    <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Success Stories Yet</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Share your interview success with the community!</p>
+                    <Trophy className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Success Stories Yet</h3>
+                    <p className="text-slate-600 dark:text-slate-400">Share your interview success with the community!</p>
                   </div>
                 </Card>
               )}
@@ -523,18 +523,18 @@ const CommunityHub = () => {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-gray-900 dark:text-white">{mentor.name}</h3>
+                        <h3 className="font-bold text-slate-900 dark:text-white">{mentor.name}</h3>
                         {mentor.available ? (
                           <Badge variant="success" size="sm">Available</Badge>
                         ) : (
                           <Badge variant="default" size="sm">Busy</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{mentor.role}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">{mentor.role}</p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
                         {mentor.expertise.map((skill) => (
-                          <span key={skill} className="px-3 py-1 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 text-sm rounded-lg">
+                          <span key={skill} className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 text-sm rounded-lg">
                             {skill}
                           </span>
                         ))}
@@ -546,8 +546,8 @@ const CommunityHub = () => {
                             <Star className="w-4 h-4 fill-current" />
                             <span className="font-medium">{mentor.rating}</span>
                           </div>
-                          <span className="text-gray-400">|</span>
-                          <span className="text-gray-500 dark:text-gray-400">{mentor.sessions} sessions</span>
+                          <span className="text-slate-400">|</span>
+                          <span className="text-slate-500 dark:text-slate-400">{mentor.sessions} sessions</span>
                         </div>
                         <Button size="sm" variant={mentor.available ? 'primary' : 'outline'} disabled={!mentor.available}>
                           {mentor.available ? 'Book' : 'Notify Me'}
@@ -559,9 +559,9 @@ const CommunityHub = () => {
               )) : (
                 <Card>
                   <div className="text-center py-8">
-                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Mentors Available</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Check back later for available mentors!</p>
+                    <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Mentors Available</h3>
+                    <p className="text-slate-600 dark:text-slate-400">Check back later for available mentors!</p>
                   </div>
                 </Card>
               )}
@@ -575,7 +575,7 @@ const CommunityHub = () => {
           <Card>
             <Card.Header>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-primary-500" />
+                <TrendingUp className="w-5 h-5 text-indigo-500" />
                 <Card.Title>Trending Topics</Card.Title>
               </div>
             </Card.Header>
@@ -585,20 +585,20 @@ const CommunityHub = () => {
                   {trendingTopics.map((topic, index) => (
                     <div 
                       key={topic.tag}
-                      className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg cursor-pointer transition-colors group"
+                      className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg cursor-pointer transition-colors group"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold">
+                        <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">
                           {index + 1}
                         </span>
-                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">#{topic.tag}</span>
+                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">#{topic.tag}</span>
                       </div>
-                      <span className="text-xs text-gray-400">{topic.count}</span>
+                      <span className="text-xs text-slate-400">{topic.count}</span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-4">No trending topics yet</p>
+                <p className="text-center text-slate-500 dark:text-slate-400 py-4">No trending topics yet</p>
               )}
             </Card.Content>
           </Card>
@@ -612,7 +612,7 @@ const CommunityHub = () => {
               </div>
             </Card.Header>
             <Card.Content>
-              <p className="text-center text-gray-500 dark:text-gray-400 py-4">Start contributing to appear here!</p>
+              <p className="text-center text-slate-500 dark:text-slate-400 py-4">Start contributing to appear here!</p>
             </Card.Content>
           </Card>
 

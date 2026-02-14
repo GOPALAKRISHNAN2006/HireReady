@@ -60,7 +60,7 @@ const ResumeBuilder = () => {
 
   const templates = [
     { id: 'modern', name: 'Modern', color: 'bg-blue-500' },
-    { id: 'classic', name: 'Classic', color: 'bg-gray-500' },
+    { id: 'classic', name: 'Classic', color: 'bg-slate-500' },
     { id: 'minimal', name: 'Minimal', color: 'bg-green-500' },
     { id: 'professional', name: 'Professional', color: 'bg-purple-500' },
     { id: 'creative', name: 'Creative', color: 'bg-orange-500' },
@@ -75,12 +75,22 @@ const ResumeBuilder = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Resume Builder</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Create professional resumes with ease</p>
+    <div className="space-y-8 animate-in">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <FileText className="w-4 h-4 mr-2" />
+            Build & Share
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Resume Builder</h1>
+          <p className="text-white/70 max-w-lg">Create professional resumes tailored for your dream job</p>
         </div>
+      </div>
+
+      <div className="flex justify-end">
         <Button onClick={createResume} isLoading={creating}>
           <Plus className="w-4 h-4 mr-2" />
           Create New Resume
@@ -98,7 +108,7 @@ const ResumeBuilder = () => {
                 api.post('/resumes', { title: `${template.name} Resume`, template: template.id })
                   .then(res => setResumes([res.data.data, ...resumes]))
               }}
-              className="p-4 border dark:border-gray-700 rounded-lg hover:border-primary-500 hover:shadow-md transition-all group"
+              className="p-4 border dark:border-slate-700 rounded-lg hover:border-indigo-500 hover:shadow-md transition-all group"
             >
               <div className={`w-full h-24 ${template.color} rounded mb-2 flex items-center justify-center`}>
                 <FileText className="w-10 h-10 text-white" />
@@ -114,9 +124,9 @@ const ResumeBuilder = () => {
         <h2 className="text-lg font-semibold mb-4">Your Resumes ({resumes.length})</h2>
         {resumes.length === 0 ? (
           <Card className="p-12 text-center">
-            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No resumes yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Create your first resume to get started</p>
+            <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No resumes yet</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">Create your first resume to get started</p>
             <Button onClick={createResume} isLoading={creating}>
               <Plus className="w-4 h-4 mr-2" />
               Create Resume
@@ -128,13 +138,13 @@ const ResumeBuilder = () => {
               <Card key={resume._id} className="p-4 hover:shadow-lg transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">{resume.title}</h3>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">{resume.title}</h3>
                     <Badge variant="secondary" className="mt-1">{resume.template}</Badge>
                   </div>
-                  <FileText className="w-8 h-8 text-primary-500" />
+                  <FileText className="w-8 h-8 text-indigo-500" />
                 </div>
                 
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                   Updated {new Date(resume.updatedAt).toLocaleDateString()}
                 </p>
 

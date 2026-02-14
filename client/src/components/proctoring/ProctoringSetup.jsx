@@ -232,7 +232,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
     if (status === 'denied') {
       return <XCircle className="w-5 h-5 text-red-400" />;
     }
-    return <div className="w-5 h-5 rounded-full border-2 border-gray-500" />;
+    return <div className="w-5 h-5 rounded-full border-2 border-slate-500" />;
   };
 
   return (
@@ -240,7 +240,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-2xl bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden"
+        className="w-full max-w-2xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden"
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6">
@@ -273,7 +273,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
               >
                 {countdown || 'GO!'}
               </motion.div>
-              <p className="text-gray-400">Starting proctored session...</p>
+              <p className="text-slate-400">Starting proctored session...</p>
             </motion.div>
           )}
 
@@ -287,23 +287,23 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                     className={`flex items-center gap-4 p-4 rounded-lg border ${
                       req.status === 'granted' ? 'border-green-500/30 bg-green-500/5' :
                       req.status === 'denied' ? 'border-red-500/30 bg-red-500/5' :
-                      'border-gray-700 bg-gray-800'
+                      'border-slate-700 bg-slate-800'
                     }`}
                   >
                     <div className={`p-3 rounded-lg ${
                       req.status === 'granted' ? 'bg-green-500/20' :
                       req.status === 'denied' ? 'bg-red-500/20' :
-                      'bg-gray-700'
+                      'bg-slate-700'
                     }`}>
                       <req.icon className={`w-6 h-6 ${
                         req.status === 'granted' ? 'text-green-400' :
                         req.status === 'denied' ? 'text-red-400' :
-                        'text-gray-400'
+                        'text-slate-400'
                       }`} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-white">{req.title}</h3>
-                      <p className="text-sm text-gray-400">{req.description}</p>
+                      <p className="text-sm text-slate-400">{req.description}</p>
                     </div>
                     <StatusIcon status={req.status} />
                   </div>
@@ -352,7 +352,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <h3 className="text-lg font-medium text-white mb-2">
                   Share Your Screen
                 </h3>
-                <p className="text-gray-400 max-w-md mx-auto">
+                <p className="text-slate-400 max-w-md mx-auto">
                   Screen sharing is required to monitor your activity during the session. Please share your <strong className="text-white">entire screen</strong> (not just a window).
                 </p>
               </div>
@@ -364,12 +364,12 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 </div>
               )}
 
-              <div className="bg-gray-800 rounded-lg p-4">
+              <div className="bg-slate-800 rounded-lg p-4">
                 <h4 className="font-medium text-white mb-3 flex items-center gap-2">
                   <Monitor className="w-4 h-4" />
                   Screen Sharing Tips:
                 </h4>
-                <ul className="space-y-2 text-sm text-gray-400">
+                <ul className="space-y-2 text-sm text-slate-400">
                   <li>• Select "Entire Screen" when prompted</li>
                   <li>• Close any sensitive applications before sharing</li>
                   <li>• Keep screen sharing active throughout the session</li>
@@ -411,7 +411,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <h3 className="text-lg font-medium text-white mb-2">
                   Enable Fullscreen Mode
                 </h3>
-                <p className="text-gray-400 max-w-md mx-auto">
+                <p className="text-slate-400 max-w-md mx-auto">
                   This session requires fullscreen mode to prevent distraction and ensure exam integrity.
                 </p>
               </div>
@@ -450,12 +450,12 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <h3 className="text-lg font-medium text-white mb-2">
                   Face Enrollment
                 </h3>
-                <p className="text-gray-400">
+                <p className="text-slate-400">
                   Position your face in the center of the frame
                 </p>
               </div>
 
-              <div className="relative w-full max-w-md mx-auto aspect-video bg-gray-800 rounded-lg overflow-hidden">
+              <div className="relative w-full max-w-md mx-auto aspect-video bg-slate-800 rounded-lg overflow-hidden">
                 <video
                   ref={videoRef}
                   autoPlay
@@ -467,10 +467,10 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 
                 {/* No camera fallback */}
                 {!cameraReady && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                  <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
                     <div className="text-center">
-                      <Camera className="w-12 h-12 text-gray-500 mx-auto mb-2" />
-                      <p className="text-gray-400">Initializing camera...</p>
+                      <Camera className="w-12 h-12 text-slate-500 mx-auto mb-2" />
+                      <p className="text-slate-400">Initializing camera...</p>
                     </div>
                   </div>
                 )}
@@ -506,7 +506,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
               {!faceEnrolled ? (
                 <div className="text-center py-8">
                   <Loader2 className="w-12 h-12 text-blue-400 animate-spin mx-auto mb-4" />
-                  <p className="text-gray-400">Processing face enrollment...</p>
+                  <p className="text-slate-400">Processing face enrollment...</p>
                 </div>
               ) : (
                 <>
@@ -517,14 +517,14 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                     <h3 className="text-lg font-medium text-white mb-2">
                       All Set!
                     </h3>
-                    <p className="text-gray-400 max-w-md mx-auto">
+                    <p className="text-slate-400 max-w-md mx-auto">
                       You're ready to begin your proctored session. Please ensure you remain visible throughout the session.
                     </p>
                   </div>
 
-                  <div className="bg-gray-800 rounded-lg p-4">
+                  <div className="bg-slate-800 rounded-lg p-4">
                     <h4 className="font-medium text-white mb-3">Guidelines:</h4>
-                    <ul className="space-y-2 text-sm text-gray-400">
+                    <ul className="space-y-2 text-sm text-slate-400">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                         Keep your face visible in the camera at all times
@@ -558,7 +558,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-800/50 border-t border-gray-700">
+        <div className="px-6 py-4 bg-slate-800/50 border-t border-slate-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {[0, 1, 2, 3, 4].map(s => (
@@ -567,14 +567,14 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                   className={`w-2 h-2 rounded-full ${
                     s < step ? 'bg-green-400' :
                     s === step ? 'bg-blue-400' :
-                    'bg-gray-600'
+                    'bg-slate-600'
                   }`}
                 />
               ))}
             </div>
             <button
               onClick={onCancel}
-              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
             >
               Cancel
             </button>

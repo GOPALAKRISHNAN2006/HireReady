@@ -179,9 +179,9 @@ const Dashboard = () => {
   }
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 80) return 'text-emerald-600'
+    if (score >= 60) return 'text-amber-600'
+    return 'text-rose-600'
   }
 
   return (
@@ -226,8 +226,8 @@ const Dashboard = () => {
                 <stat.icon className="w-7 h-7 text-white" />
               </div>
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{stat.title}</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{stat.title}</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
               </div>
             </div>
           </Card>
@@ -253,16 +253,16 @@ const Dashboard = () => {
         }
         return (
           <Link to={suggestion.link}>
-            <Card hover className="group relative overflow-hidden border-l-4 border-l-primary-500">
+            <Card hover className="group relative overflow-hidden border-l-4 border-l-indigo-500">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 bg-gradient-to-br ${suggestion.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
                   <suggestion.icon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-primary-600 dark:text-primary-400 font-semibold uppercase tracking-wider mb-1">Suggested Next Action</p>
-                  <p className="font-medium text-gray-900 dark:text-white">{suggestion.text}</p>
+                  <p className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider mb-1">Suggested Next Action</p>
+                  <p className="font-medium text-slate-900 dark:text-white">{suggestion.text}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" />
               </div>
             </Card>
           </Link>
@@ -272,21 +272,21 @@ const Dashboard = () => {
       {/* Motivational Quote + Preparation Checklist Row */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Quote of the Day */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-800 border-l-4 border-l-primary-500">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 border-l-4 border-l-indigo-500">
           <div className="absolute top-4 right-4 opacity-5">
             <Quote className="w-24 h-24" />
           </div>
           <div className="relative">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-lg flex items-center justify-center">
                 <Quote className="w-4 h-4 text-white" />
               </div>
-              <span className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider">Quote of the Day</span>
+              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Quote of the Day</span>
             </div>
-            <blockquote className="text-lg font-medium text-gray-800 dark:text-gray-200 leading-relaxed mb-3 italic">
+            <blockquote className="text-lg font-medium text-slate-800 dark:text-slate-200 leading-relaxed mb-3 italic">
               "{dailyQuote.text}"
             </blockquote>
-            <p className="text-sm text-gray-500 dark:text-gray-400">— {dailyQuote.author}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">— {dailyQuote.author}</p>
           </div>
         </Card>
 
@@ -307,7 +307,7 @@ const Dashboard = () => {
           </Card.Header>
           <Card.Content>
             {/* Progress bar */}
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4 overflow-hidden">
+            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${(checklist.filter(i => i.done).length / checklist.length) * 100}%` }}
@@ -320,14 +320,14 @@ const Dashboard = () => {
                   onClick={() => toggleCheckItem(item.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 ${
                     item.done 
-                      ? 'bg-emerald-50 dark:bg-emerald-900/20 line-through text-gray-400 dark:text-gray-500' 
-                      : 'bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'bg-emerald-50 dark:bg-emerald-900/20 line-through text-slate-400 dark:text-slate-500' 
+                      : 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
                   {item.done ? (
                     <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
                   ) : (
-                    <Circle className="w-5 h-5 text-gray-300 dark:text-gray-500 flex-shrink-0" />
+                    <Circle className="w-5 h-5 text-slate-300 dark:text-slate-500 flex-shrink-0" />
                   )}
                   <span className="text-sm font-medium">{item.text}</span>
                 </button>
@@ -348,12 +348,12 @@ const Dashboard = () => {
                 onChange={(e) => setNewCheckItem(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addCheckItem()}
                 placeholder="Add a task..."
-                className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
               <button
                 onClick={addCheckItem}
                 disabled={!newCheckItem.trim()}
-                className="px-3 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                className="px-3 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 disabled:opacity-50 transition-colors"
               >
                 +
               </button>
@@ -369,7 +369,7 @@ const Dashboard = () => {
             <Card.Header>
               <div className="flex items-center justify-between">
                 <Card.Title>Recent Interviews</Card.Title>
-                <Link to="/analytics" className="text-sm text-primary-600 hover:text-primary-700 flex items-center">
+                <Link to="/analytics" className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center">
                   View All <ChevronRight className="w-4 h-4 ml-1" />
                 </Link>
               </div>
@@ -383,21 +383,21 @@ const Dashboard = () => {
                     <Link
                       key={interview._id}
                       to={`/interview/${interview._id}/result`}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                          <Target className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                          <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">
+                          <h4 className="font-medium text-slate-900 dark:text-white">
                             {interview.type} Interview
                           </h4>
                           <div className="flex items-center space-x-2 mt-1">
                             <Badge variant={getCategoryColor(interview.category)} size="sm">
                               {interview.category}
                             </Badge>
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
                               {new Date(interview.createdAt).toLocaleDateString()}
                             </span>
                           </div>
@@ -407,7 +407,7 @@ const Dashboard = () => {
                         <p className={`text-lg font-bold ${getScoreColor(interview.score)}`}>
                           {interview.score}%
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           {interview.responses?.length || 0} questions
                         </p>
                       </div>
@@ -416,8 +416,8 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Target className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">No interviews yet</p>
+                  <Target className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                  <p className="text-slate-500 dark:text-slate-400 mb-4">No interviews yet</p>
                   <Link to="/interview/setup">
                     <Button size="sm">Start Your First Interview</Button>
                   </Link>
@@ -472,8 +472,8 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/30">
                   <Beaker className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-gray-700 dark:text-gray-200 flex-1">Interview Lab</span>
-                <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Interview Lab</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/skills"
@@ -482,8 +482,8 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/30">
                   <Radar className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-gray-700 dark:text-gray-200 flex-1">Skill Radar</span>
-                <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Skill Radar</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/roadmap"
@@ -492,8 +492,8 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/30">
                   <Map className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-gray-700 dark:text-gray-200 flex-1">Career Roadmap</span>
-                <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Career Roadmap</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/community"
@@ -502,8 +502,8 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center shadow-lg shadow-pink-500/30">
                   <Users className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-gray-700 dark:text-gray-200 flex-1">Community Hub</span>
-                <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Community Hub</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Card.Content>
           </Card>
@@ -516,13 +516,13 @@ const Dashboard = () => {
               </div>
               <div className="flex-1">
                 <p className="text-sm text-amber-600 dark:text-amber-400 font-medium">Current Streak</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">
                   {streakData?.currentStreak || stats.currentStreak || 0} Days {(streakData?.currentStreak || stats.currentStreak || 0) > 0 && '🔥'}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-500 dark:text-gray-400">Best Streak</p>
-                <p className="font-bold text-gray-700 dark:text-gray-200">{streakData?.longestStreak || stats.longestStreak || 0} Days</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Best Streak</p>
+                <p className="font-bold text-slate-700 dark:text-slate-200">{streakData?.longestStreak || stats.longestStreak || 0} Days</p>
               </div>
             </div>
           </Card>
@@ -538,8 +538,8 @@ const Dashboard = () => {
                 <Lightbulb className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Interview Tips</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Expert advice to ace your next interview</p>
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1">Interview Tips</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Expert advice to ace your next interview</p>
               </div>
             </div>
           </Card>
@@ -552,8 +552,8 @@ const Dashboard = () => {
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Leaderboard</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Compete with others and climb the ranks</p>
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1">Leaderboard</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Compete with others and climb the ranks</p>
               </div>
             </div>
           </Card>
@@ -566,8 +566,8 @@ const Dashboard = () => {
                 <Award className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Achievements</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Track your progress and earn badges</p>
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1">Achievements</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Track your progress and earn badges</p>
               </div>
             </div>
           </Card>

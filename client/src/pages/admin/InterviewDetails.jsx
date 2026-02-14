@@ -25,7 +25,7 @@ export default function InterviewDetails() {
         </Link>
         <div className="bg-white rounded-lg shadow p-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-500">Loading interview details...</p>
+          <p className="mt-4 text-slate-500">Loading interview details...</p>
         </div>
       </div>
     );
@@ -40,8 +40,8 @@ export default function InterviewDetails() {
         </Link>
         <div className="bg-white rounded-lg shadow p-8 text-center">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Error Loading Interview</h2>
-          <p className="text-gray-500">{error.message || 'Something went wrong'}</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Error Loading Interview</h2>
+          <p className="text-slate-500">{error.message || 'Something went wrong'}</p>
         </div>
       </div>
     );
@@ -78,7 +78,7 @@ export default function InterviewDetails() {
       pending: 'bg-blue-100 text-blue-800',
       cancelled: 'bg-red-100 text-red-800',
     };
-    return styles[status] || 'bg-gray-100 text-gray-800';
+    return styles[status] || 'bg-slate-100 text-slate-800';
   };
 
   const getDifficultyBadge = (difficulty) => {
@@ -87,7 +87,7 @@ export default function InterviewDetails() {
       medium: 'bg-yellow-100 text-yellow-800',
       hard: 'bg-red-100 text-red-800',
     };
-    return styles[difficulty] || 'bg-gray-100 text-gray-800';
+    return styles[difficulty] || 'bg-slate-100 text-slate-800';
   };
 
   return (
@@ -142,7 +142,7 @@ export default function InterviewDetails() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Info */}
         <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
             👤 Candidate Information
           </h3>
           <div className="flex items-center gap-3">
@@ -152,10 +152,10 @@ export default function InterviewDetails() {
               </span>
             </div>
             <div>
-              <p className="font-medium text-gray-900">
+              <p className="font-medium text-slate-900">
                 {user?.firstName || 'Unknown'} {user?.lastName || 'User'}
               </p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-slate-500 text-sm">
                 📧 {user?.email || 'No email'}
               </p>
             </div>
@@ -164,35 +164,35 @@ export default function InterviewDetails() {
 
         {/* Interview Details */}
         <div className="bg-white rounded-xl shadow p-6 lg:col-span-2">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">📋 Interview Details</h3>
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">📋 Interview Details</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Category</p>
-              <p className="font-medium text-gray-900">{interview?.category || 'N/A'}</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Category</p>
+              <p className="font-medium text-slate-900">{interview?.category || 'N/A'}</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Difficulty</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Difficulty</p>
               <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${getDifficultyBadge(interview?.difficulty)}`}>
                 {interview?.difficulty || 'N/A'}
               </span>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Status</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Status</p>
               <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${getStatusBadge(interview?.status)}`}>
                 {interview?.status || 'N/A'}
               </span>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Started At</p>
-              <p className="font-medium text-gray-900 text-sm">{formatDate(interview?.startedAt || interview?.createdAt)}</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Started At</p>
+              <p className="font-medium text-slate-900 text-sm">{formatDate(interview?.startedAt || interview?.createdAt)}</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Completed At</p>
-              <p className="font-medium text-gray-900 text-sm">{formatDate(interview?.completedAt)}</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Completed At</p>
+              <p className="font-medium text-slate-900 text-sm">{formatDate(interview?.completedAt)}</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 text-sm">Interview ID</p>
-              <p className="font-mono text-xs text-gray-600 truncate">{interview?._id || 'N/A'}</p>
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-slate-500 text-sm">Interview ID</p>
+              <p className="font-mono text-xs text-slate-600 truncate">{interview?._id || 'N/A'}</p>
             </div>
           </div>
         </div>
@@ -200,10 +200,10 @@ export default function InterviewDetails() {
 
       {/* Questions & Responses */}
       <div className="bg-white rounded-xl shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800">💬 Questions & Responses ({responses.length})</h3>
+        <div className="p-6 border-b border-slate-200">
+          <h3 className="text-lg font-semibold text-slate-800">💬 Questions & Responses ({responses.length})</h3>
         </div>
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-slate-200">
           {responses.length > 0 ? (
             responses.map((response, index) => (
               <div key={response._id || index} className="p-6">
@@ -234,22 +234,22 @@ export default function InterviewDetails() {
 
                 {/* Question */}
                 <div className="mb-4">
-                  <p className="text-gray-900 font-medium">
+                  <p className="text-slate-900 font-medium">
                     {response.question?.text || response.questionText || 'Question not available'}
                   </p>
                 </div>
 
                 {/* Answer */}
                 {response.answer ? (
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="bg-slate-50 rounded-lg p-4 mb-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-gray-600 text-sm font-medium">👤 Candidate's Answer</span>
+                      <span className="text-slate-600 text-sm font-medium">👤 Candidate's Answer</span>
                     </div>
-                    <p className="text-gray-800">{response.answer}</p>
+                    <p className="text-slate-800">{response.answer}</p>
                   </div>
                 ) : (
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4 text-center">
-                    <p className="text-gray-400 italic">No answer provided</p>
+                  <div className="bg-slate-50 rounded-lg p-4 mb-4 text-center">
+                    <p className="text-slate-400 italic">No answer provided</p>
                   </div>
                 )}
 
@@ -259,13 +259,13 @@ export default function InterviewDetails() {
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-indigo-700 text-sm font-medium">🤖 AI Feedback</span>
                     </div>
-                    <p className="text-gray-700 text-sm">{response.feedback}</p>
+                    <p className="text-slate-700 text-sm">{response.feedback}</p>
                   </div>
                 )}
 
                 {/* Time Taken */}
                 {response.timeTaken && (
-                  <div className="mt-3 flex items-center gap-2 text-gray-500 text-sm">
+                  <div className="mt-3 flex items-center gap-2 text-slate-500 text-sm">
                     <span>⏱️ Time taken: {Math.round(response.timeTaken / 1000)}s</span>
                   </div>
                 )}
@@ -273,8 +273,8 @@ export default function InterviewDetails() {
             ))
           ) : (
             <div className="p-12 text-center">
-              <div className="text-gray-400 text-6xl mb-4">📝</div>
-              <p className="text-gray-500">No responses recorded for this interview</p>
+              <div className="text-slate-400 text-6xl mb-4">📝</div>
+              <p className="text-slate-500">No responses recorded for this interview</p>
             </div>
           )}
         </div>
@@ -283,9 +283,9 @@ export default function InterviewDetails() {
       {/* Performance Summary */}
       {interview?.overallFeedback && (
         <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">📊 Overall Performance Feedback</h3>
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">📊 Overall Performance Feedback</h3>
           <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-6">
-            <p className="text-gray-700">{interview.overallFeedback}</p>
+            <p className="text-slate-700">{interview.overallFeedback}</p>
           </div>
         </div>
       )}

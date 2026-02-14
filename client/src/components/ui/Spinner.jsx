@@ -11,9 +11,9 @@ const Spinner = ({ size = 'md', variant = 'default', className = '' }) => {
   }
 
   const variants = {
-    default: 'text-primary-600',
+    default: 'text-indigo-600',
     white: 'text-white',
-    gradient: 'text-transparent bg-gradient-to-r from-primary-500 to-purple-500 bg-clip-text',
+    gradient: 'text-transparent bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text',
     neon: 'text-neon-green drop-shadow-lg',
   }
 
@@ -38,7 +38,7 @@ const DotsSpinner = ({ size = 'md', className = '' }) => {
         <div
           key={i}
           className={`
-            ${sizes[size]} rounded-full bg-primary-500
+            ${sizes[size]} rounded-full bg-indigo-500
             animate-bounce
           `}
           style={{ animationDelay: `${i * 0.1}s` }}
@@ -58,8 +58,8 @@ const PulseSpinner = ({ size = 'md', className = '' }) => {
 
   return (
     <div className={`relative ${sizes[size]} ${className}`}>
-      <div className="absolute inset-0 rounded-full bg-primary-500 animate-ping opacity-75" />
-      <div className="absolute inset-2 rounded-full bg-primary-600" />
+      <div className="absolute inset-0 rounded-full bg-indigo-500 animate-ping opacity-75" />
+      <div className="absolute inset-2 rounded-full bg-indigo-600" />
     </div>
   )
 }
@@ -75,7 +75,7 @@ const RingSpinner = ({ size = 'md', className = '' }) => {
   return (
     <div className={`
       ${sizes[size]} rounded-full
-      border-primary-200 border-t-primary-600
+      border-indigo-200 border-t-primary-600
       animate-spin
       ${className}
     `} />
@@ -102,7 +102,7 @@ const BarsSpinner = ({ size = 'md', className = '' }) => {
         <div
           key={i}
           className={`
-            ${barWidths[size]} bg-primary-500 rounded-full
+            ${barWidths[size]} bg-indigo-500 rounded-full
             animate-wave origin-bottom
           `}
           style={{ 
@@ -118,12 +118,12 @@ const BarsSpinner = ({ size = 'md', className = '' }) => {
 const LoadingOverlay = ({ message = 'Loading...', variant = 'default' }) => {
   const variants = {
     default: 'bg-white/80 backdrop-blur-sm',
-    dark: 'bg-gray-900/80 backdrop-blur-sm',
+    dark: 'bg-slate-900/80 backdrop-blur-sm',
     glass: 'bg-white/10 backdrop-blur-xl',
   }
 
   const textColors = {
-    default: 'text-gray-600',
+    default: 'text-slate-600',
     dark: 'text-white',
     glass: 'text-white',
   }
@@ -132,9 +132,9 @@ const LoadingOverlay = ({ message = 'Loading...', variant = 'default' }) => {
     <div className={`fixed inset-0 ${variants[variant]} z-50 flex items-center justify-center`}>
       <div className="text-center">
         <div className="relative">
-          <div className="w-20 h-20 rounded-full border-4 border-primary-200 border-t-primary-600 animate-spin" />
+          <div className="w-20 h-20 rounded-full border-4 border-indigo-200 border-t-primary-600 animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 animate-pulse" />
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 animate-pulse" />
           </div>
         </div>
         <p className={`mt-6 ${textColors[variant]} font-medium animate-pulse`}>{message}</p>
@@ -155,7 +155,7 @@ const LoadingCard = ({ message = 'Loading...', variant = 'spinner' }) => {
   return (
     <div className="flex flex-col items-center justify-center p-8 min-h-[200px]">
       {spinners[variant]}
-      <p className="mt-4 text-gray-500 animate-pulse">{message}</p>
+      <p className="mt-4 text-slate-500 animate-pulse">{message}</p>
     </div>
   )
 }
@@ -175,7 +175,7 @@ const Skeleton = ({ variant = 'text', width, height, className = '', count = 1 }
     <div
       key={i}
       className={`
-        bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200
+        bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200
         animate-shimmer bg-[length:200%_100%]
         ${variants[variant]}
         ${className}

@@ -380,11 +380,11 @@ const CommunicationTest = () => {
 
         {/* Overall Score */}
         <Card className="p-8 text-center">
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Overall Score</h2>
+          <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Overall Score</h2>
           <div className={`text-7xl font-bold mb-2 ${getScoreColor(results.summary?.averageScore || 0)}`}>
             {(results.summary?.averageScore || 0).toFixed(1)}
           </div>
-          <div className="text-2xl text-gray-500 dark:text-gray-400">out of 10</div>
+          <div className="text-2xl text-slate-500 dark:text-slate-400">out of 10</div>
           <Badge className="mt-4" variant={results.summary?.averageScore >= 7 ? 'success' : results.summary?.averageScore >= 5 ? 'warning' : 'danger'}>
             {getScoreLabel(results.summary?.averageScore || 0)}
           </Badge>
@@ -398,11 +398,11 @@ const CommunicationTest = () => {
           <Card.Content>
             <div className="grid md:grid-cols-3 gap-6">
               {results.summary?.averageSubscores && Object.entries(results.summary.averageSubscores).map(([key, value]) => (
-                <div key={key} className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                <div key={key} className="text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
                   <div className={`text-3xl font-bold mb-1 ${getScoreColor(value)}`}>
                     {value.toFixed(1)}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                  <div className="text-sm text-slate-500 dark:text-slate-400 capitalize">
                     {key.replace(/_/g, ' ')}
                   </div>
                 </div>
@@ -425,7 +425,7 @@ const CommunicationTest = () => {
                 {results.summary?.topStrengths?.map((strength, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <Sparkles className="w-4 h-4 text-green-500 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300">{strength}</span>
+                    <span className="text-slate-700 dark:text-slate-300">{strength}</span>
                   </li>
                 ))}
               </ul>
@@ -444,7 +444,7 @@ const CommunicationTest = () => {
                 {results.summary?.topImprovements?.map((improvement, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <ArrowRight className="w-4 h-4 text-amber-500 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300">{improvement}</span>
+                    <span className="text-slate-700 dark:text-slate-300">{improvement}</span>
                   </li>
                 ))}
               </ul>
@@ -483,17 +483,17 @@ const CommunicationTest = () => {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Communication Skills Test</h1>
-            <p className="text-gray-500 dark:text-gray-400">Question {currentQuestionIndex + 1} of {COMMUNICATION_QUESTIONS.length}</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Communication Skills Test</h1>
+            <p className="text-slate-500 dark:text-slate-400">Question {currentQuestionIndex + 1} of {COMMUNICATION_QUESTIONS.length}</p>
           </div>
         </div>
         
         {/* Progress */}
         <div className="flex items-center gap-4">
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-slate-500 dark:text-slate-400">
             {Object.keys(responses).length} answered
           </div>
-          <div className="w-32 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-violet-500 to-purple-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -517,7 +517,7 @@ const CommunicationTest = () => {
         </div>
         
         <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
             {currentQuestion.question}
           </h2>
           
@@ -540,21 +540,21 @@ const CommunicationTest = () => {
           )}
           
           {/* Recording Section */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
                   isRecording 
                     ? 'bg-red-100 text-red-600 animate-pulse' 
-                    : 'bg-gray-200 text-gray-500'
+                    : 'bg-slate-200 text-slate-500'
                 }`}>
                   {isRecording ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
                 </div>
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+                  <div className="font-medium text-slate-900 dark:text-white">
                     {isRecording ? (isPaused ? 'Paused' : 'Recording...') : 'Ready to record'}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
                     {formatTime(timeElapsed)}
                   </div>
                 </div>
@@ -585,18 +585,18 @@ const CommunicationTest = () => {
             </div>
             
             {/* Transcript Display */}
-            <div className="min-h-[150px] p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="min-h-[150px] p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
               {transcript ? (
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{transcript}</p>
+                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{transcript}</p>
               ) : (
-                <p className="text-gray-400 italic">
+                <p className="text-slate-400 italic">
                   Your speech will appear here as you speak...
                 </p>
               )}
             </div>
             
             {/* Word count */}
-            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-right">
+            <div className="mt-2 text-sm text-slate-500 dark:text-slate-400 text-right">
               {transcript.split(/\s+/).filter(w => w).length} words
             </div>
           </div>
@@ -662,7 +662,7 @@ const CommunicationTest = () => {
                 ? 'bg-violet-500 text-white'
                 : responses[COMMUNICATION_QUESTIONS[index].id]
                   ? 'bg-green-100 dark:bg-green-900/30 text-green-700 border-2 border-green-500'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200'
             }`}
           >
             {responses[COMMUNICATION_QUESTIONS[index].id] ? (

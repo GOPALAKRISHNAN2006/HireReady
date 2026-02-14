@@ -49,7 +49,7 @@ const AptitudeResult = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">No result data found</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">No result data found</p>
           <Button onClick={() => navigate('/aptitude')}>Go to Aptitude Tests</Button>
         </div>
       </div>
@@ -75,17 +75,17 @@ const AptitudeResult = () => {
           <Trophy className={`w-12 h-12 ${gradeInfo.color}`} />
         </div>
         
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Test Completed!</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Test Completed!</h1>
         
         <div className="flex items-center justify-center gap-8 my-6">
           <div>
             <p className={`text-5xl font-bold ${gradeInfo.color}`}>{result.percentage}%</p>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">Score</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1">Score</p>
           </div>
-          <div className="h-16 w-px bg-gray-200 dark:bg-gray-700" />
+          <div className="h-16 w-px bg-slate-200 dark:bg-slate-700" />
           <div>
             <p className={`text-5xl font-bold ${gradeInfo.color}`}>{gradeInfo.grade}</p>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">Grade</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1">Grade</p>
           </div>
         </div>
 
@@ -100,7 +100,7 @@ const AptitudeResult = () => {
           </div>
         </div>
 
-        <p className="text-gray-500 dark:text-gray-400 mt-4">
+        <p className="text-slate-500 dark:text-slate-400 mt-4">
           Time taken: {Math.floor(result.timeTaken / 60)}m {result.timeTaken % 60}s
         </p>
       </Card>
@@ -127,11 +127,11 @@ const AptitudeResult = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white mb-2">
+                  <p className="font-medium text-slate-900 dark:text-white mb-2">
                     Q{index + 1}: {response.question}
                   </p>
                   <div className="text-sm">
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-slate-600 dark:text-slate-400">
                       Your answer: <span className={response.isCorrect ? 'text-green-600' : 'text-red-600'}>
                         Option {String.fromCharCode(65 + response.selectedOption)}
                       </span>

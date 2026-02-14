@@ -21,13 +21,13 @@ export default function Avatar({ src, name, size = 'md', className = '' }) {
       <img
         src={src}
         alt={name || 'Avatar'}
-        className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-gray-800 ${className}`}
+        className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-slate-800 ${className}`}
       />
     )
   }
 
   return (
-    <div className={`${sizes[size]} ${colors[colorIndex]} rounded-full flex items-center justify-center font-semibold text-white ring-2 ring-white dark:ring-gray-800 ${className}`}>
+    <div className={`${sizes[size]} ${colors[colorIndex]} rounded-full flex items-center justify-center font-semibold text-white ring-2 ring-white dark:ring-slate-800 ${className}`}>
       {initials}
     </div>
   )

@@ -70,10 +70,10 @@ export default function CodeEditor({
   const langClass = `language-${LANGUAGE_MAP[language] || 'javascript'}`
 
   return (
-    <div className={`relative rounded-lg border border-gray-700 bg-gray-900 overflow-hidden ${className}`}>
+    <div className={`relative rounded-lg border border-slate-700 bg-slate-900 overflow-hidden ${className}`}>
       {/* Language badge */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-gray-800 border-b border-gray-700">
-        <span className="text-xs text-gray-400 uppercase font-mono">{language}</span>
+      <div className="flex items-center justify-between px-3 py-1.5 bg-slate-800 border-b border-slate-700">
+        <span className="text-xs text-slate-400 uppercase font-mono">{language}</span>
         <div className="flex gap-1.5">
           <span className="w-3 h-3 rounded-full bg-red-500 opacity-70" />
           <span className="w-3 h-3 rounded-full bg-yellow-500 opacity-70" />
@@ -84,7 +84,7 @@ export default function CodeEditor({
       <div className="flex" style={{ minHeight }}>
         {/* Line numbers */}
         {lineNumbers && (
-          <div className="flex-shrink-0 py-3 px-2 bg-gray-800/50 text-gray-500 text-right text-xs font-mono select-none border-r border-gray-700"
+          <div className="flex-shrink-0 py-3 px-2 bg-slate-800/50 text-slate-500 text-right text-xs font-mono select-none border-r border-slate-700"
                style={{ minWidth: '3rem' }}>
             {lines.map((_, i) => (
               <div key={i} className="leading-6">{i + 1}</div>

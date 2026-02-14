@@ -29,7 +29,7 @@ const notificationMeta = {
   achievement: { icon: Trophy, color: 'bg-yellow-500' },
   result:      { icon: Star, color: 'bg-green-500' },
   reminder:    { icon: Calendar, color: 'bg-blue-500' },
-  system:      { icon: Info, color: 'bg-primary-500' },
+  system:      { icon: Info, color: 'bg-indigo-500' },
   milestone:   { icon: Target, color: 'bg-purple-500' },
   improvement: { icon: TrendingUp, color: 'bg-emerald-500' },
   promo:       { icon: Gift, color: 'bg-pink-500' },
@@ -42,7 +42,7 @@ const notificationMeta = {
 }
 
 const getNotificationIcon = (type) => notificationMeta[type]?.icon || Bell
-const getNotificationColor = (type) => notificationMeta[type]?.color || 'bg-gray-500'
+const getNotificationColor = (type) => notificationMeta[type]?.color || 'bg-slate-500'
 
 // Format time: if ISO date string, convert to relative time; otherwise return as-is
 const formatRelativeTime = (time) => {
@@ -176,46 +176,42 @@ const Notifications = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
-              <Bell className="w-6 h-6 text-white" />
-            </div>
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
+    <div className="space-y-8 max-w-3xl mx-auto">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Bell className="w-4 h-4 mr-2" />
+            Stay Updated
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Notifications</h1>
-            <p className="text-gray-500 dark:text-gray-400">{unreadCount} unread notifications</p>
-          </div>
+          <h1 className="text-3xl font-bold mb-2">Notifications</h1>
+          <p className="text-white/70 max-w-lg">View your latest notifications and updates</p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            icon={CheckCheck}
-            onClick={markAllAsRead}
-            disabled={unreadCount === 0}
-          >
-            Mark all read
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            icon={Trash2}
-            onClick={clearAll}
-            disabled={displayNotifications.length === 0}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-          >
-            Clear all
-          </Button>
-        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center justify-end space-x-2">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          icon={CheckCheck}
+          onClick={markAllAsRead}
+          disabled={unreadCount === 0}
+        >
+          Mark all read
+        </Button>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          icon={Trash2}
+          onClick={clearAll}
+          disabled={displayNotifications.length === 0}
+          className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+        >
+          Clear all
+        </Button>
       </div>
 
       {/* Filters */}
@@ -226,8 +222,8 @@ const Notifications = () => {
             onClick={() => setActiveFilter(filter.id)}
             className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${
               activeFilter === filter.id
-                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
             }`}
           >
             {filter.label}
@@ -245,18 +241,18 @@ const Notifications = () => {
         <Card.Content>
           {filteredNotifications.length === 0 ? (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bell className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Bell className="w-8 h-8 text-slate-400 dark:text-slate-500" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No notifications</h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">No notifications</h3>
+              <p className="text-slate-500 dark:text-slate-400">
                 {activeFilter === 'unread' 
                   ? "You're all caught up!" 
                   : 'You have no notifications yet'}
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100 dark:divide-gray-700 -mx-6 -my-4">
+            <div className="divide-y divide-slate-100 dark:divide-slate-700 -mx-6 -my-4">
               {filteredNotifications.map((notification) => {
                 const IconComponent = getNotificationIcon(notification.type)
                 const colorClass = getNotificationColor(notification.type)
@@ -264,8 +260,8 @@ const Notifications = () => {
                 return (
                   <div 
                     key={notification.id || notification._id}
-                    className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${
-                      !notification.read ? 'bg-primary-50/50 dark:bg-primary-900/10' : ''
+                    className={`p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${
+                      !notification.read ? 'bg-indigo-50/50 dark:bg-indigo-900/10' : ''
                     }`}
                   >
                     <div className="flex items-start space-x-4">
@@ -279,15 +275,15 @@ const Notifications = () => {
                         <div className="flex items-start justify-between">
                           <div>
                             <div className="flex items-center space-x-2">
-                              <h3 className={`font-semibold ${!notification.read ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+                              <h3 className={`font-semibold ${!notification.read ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>
                                 {notification.title}
                               </h3>
                               {!notification.read && (
-                                <span className="w-2 h-2 bg-primary-500 rounded-full"></span>
+                                <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
                               )}
                             </div>
-                            <p className="text-gray-600 dark:text-gray-400 mt-1">{notification.message}</p>
-                            <span className="text-xs text-gray-400 dark:text-gray-500 mt-2 block">
+                            <p className="text-slate-600 dark:text-slate-400 mt-1">{notification.message}</p>
+                            <span className="text-xs text-slate-400 dark:text-slate-500 mt-2 block">
                               {formatRelativeTime(notification.time || notification.createdAt)}
                             </span>
                           </div>
@@ -299,7 +295,7 @@ const Notifications = () => {
                         {!notification.read && (
                           <button
                             onClick={() => markAsRead(notification.id || notification._id)}
-                            className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
                             title="Mark as read"
                           >
                             <Check className="w-4 h-4" />
@@ -307,7 +303,7 @@ const Notifications = () => {
                         )}
                         <button
                           onClick={() => deleteNotification(notification.id || notification._id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />

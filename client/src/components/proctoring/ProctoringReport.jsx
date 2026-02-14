@@ -91,7 +91,7 @@ const ProctoringReport = ({ report, onClose }) => {
   const getSeverityColor = (severity) => {
     if (severity === 'high') return 'text-red-400 bg-red-500/10 border-red-500/30';
     if (severity === 'medium') return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30';
-    return 'text-gray-400 bg-gray-500/10 border-gray-500/30';
+    return 'text-slate-400 bg-slate-500/10 border-slate-500/30';
   };
 
   // Get violation icon
@@ -112,7 +112,7 @@ const ProctoringReport = ({ report, onClose }) => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-3xl bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden my-4"
+        className="w-full max-w-3xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden my-4"
       >
         {/* Header */}
         <div className={`p-6 ${integrityInfo.bgColor} border-b ${integrityInfo.borderColor}`}>
@@ -130,9 +130,9 @@ const ProctoringReport = ({ report, onClose }) => {
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-gray-400" />
+              <X className="w-5 h-5 text-slate-400" />
             </button>
           </div>
         </div>
@@ -141,40 +141,40 @@ const ProctoringReport = ({ report, onClose }) => {
         <div className="p-6 space-y-6">
           {/* Overview Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className={`w-4 h-4 ${integrityInfo.color}`} />
-                <span className="text-xs text-gray-400">Risk Score</span>
+                <span className="text-xs text-slate-400">Risk Score</span>
               </div>
               <p className={`text-2xl font-bold ${integrityInfo.color}`}>
                 {riskScore}/100
               </p>
             </div>
 
-            <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-blue-400" />
-                <span className="text-xs text-gray-400">Duration</span>
+                <span className="text-xs text-slate-400">Duration</span>
               </div>
               <p className="text-2xl font-bold text-white">
                 {formatDuration(sessionDuration)}
               </p>
             </div>
 
-            <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-yellow-400" />
-                <span className="text-xs text-gray-400">Violations</span>
+                <span className="text-xs text-slate-400">Violations</span>
               </div>
               <p className="text-2xl font-bold text-white">
                 {stats.totalViolations || 0}
               </p>
             </div>
 
-            <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Eye className="w-4 h-4 text-purple-400" />
-                <span className="text-xs text-gray-400">Warnings</span>
+                <span className="text-xs text-slate-400">Warnings</span>
               </div>
               <p className="text-2xl font-bold text-white">
                 {stats.warningsIssued || 0}
@@ -190,7 +190,7 @@ const ProctoringReport = ({ report, onClose }) => {
                 <h3 className={`font-medium ${integrityInfo.color}`}>
                   {integrityInfo.label}
                 </h3>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-slate-400 mt-1">
                   {integrityInfo.description}
                 </p>
               </div>
@@ -201,27 +201,27 @@ const ProctoringReport = ({ report, onClose }) => {
           {stats.totalViolations > 0 && (
             <div>
               <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-gray-400" />
+                <AlertCircle className="w-5 h-5 text-slate-400" />
                 Violation Summary
               </h3>
 
               <div className="grid grid-cols-3 gap-4 mb-4">
                 <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-center">
                   <p className="text-2xl font-bold text-red-400">{stats.highViolations || 0}</p>
-                  <p className="text-xs text-gray-400">High Severity</p>
+                  <p className="text-xs text-slate-400">High Severity</p>
                 </div>
                 <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-center">
                   <p className="text-2xl font-bold text-yellow-400">{stats.mediumViolations || 0}</p>
-                  <p className="text-xs text-gray-400">Medium Severity</p>
+                  <p className="text-xs text-slate-400">Medium Severity</p>
                 </div>
-                <div className="bg-gray-500/10 border border-gray-500/30 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-gray-400">{stats.lowViolations || 0}</p>
-                  <p className="text-xs text-gray-400">Low Severity</p>
+                <div className="bg-slate-500/10 border border-slate-500/30 rounded-lg p-4 text-center">
+                  <p className="text-2xl font-bold text-slate-400">{stats.lowViolations || 0}</p>
+                  <p className="text-xs text-slate-400">Low Severity</p>
                 </div>
               </div>
 
               {/* Violations List */}
-              <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+              <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
                 <div className="max-h-64 overflow-y-auto">
                   {violations.length > 0 ? (
                     violations.map((violation, index) => {
@@ -229,14 +229,14 @@ const ProctoringReport = ({ report, onClose }) => {
                       return (
                         <div
                           key={index}
-                          className={`flex items-center gap-3 p-3 border-b border-gray-700 last:border-b-0 ${getSeverityColor(violation.severity)}`}
+                          className={`flex items-center gap-3 p-3 border-b border-slate-700 last:border-b-0 ${getSeverityColor(violation.severity)}`}
                         >
                           <ViolationIcon className="w-4 h-4 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium capitalize">
                               {violation.type.replace(/_/g, ' ')}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-slate-500">
                               {new Date(violation.timestamp).toLocaleTimeString()}
                             </p>
                           </div>
@@ -249,7 +249,7 @@ const ProctoringReport = ({ report, onClose }) => {
                   ) : (
                     <div className="p-8 text-center">
                       <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto mb-3" />
-                      <p className="text-gray-400">No violations recorded</p>
+                      <p className="text-slate-400">No violations recorded</p>
                     </div>
                   )}
                 </div>
@@ -259,12 +259,12 @@ const ProctoringReport = ({ report, onClose }) => {
 
           {/* No Violations Message */}
           {stats.totalViolations === 0 && (
-            <div className="text-center py-8 bg-gray-800 rounded-xl border border-gray-700">
+            <div className="text-center py-8 bg-slate-800 rounded-xl border border-slate-700">
               <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-2">
                 Clean Session!
               </h3>
-              <p className="text-gray-400 max-w-md mx-auto">
+              <p className="text-slate-400 max-w-md mx-auto">
                 No integrity violations were detected during this session. Great job maintaining proper exam conduct!
               </p>
             </div>
@@ -272,16 +272,16 @@ const ProctoringReport = ({ report, onClose }) => {
 
           {/* Summary */}
           {summary && Object.keys(summary).length > 0 && (
-            <div className="bg-gray-800 rounded-xl border border-gray-700 p-4">
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
               <h3 className="text-lg font-medium text-white mb-3 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gray-400" />
+                <FileText className="w-5 h-5 text-slate-400" />
                 Session Summary
               </h3>
               <div className="space-y-2 text-sm">
                 {summary.recommendedActions && (
                   <div>
-                    <p className="text-gray-400 mb-1">Recommended Actions:</p>
-                    <ul className="list-disc list-inside text-gray-300 space-y-1">
+                    <p className="text-slate-400 mb-1">Recommended Actions:</p>
+                    <ul className="list-disc list-inside text-slate-300 space-y-1">
                       {summary.recommendedActions.map((action, i) => (
                         <li key={i}>{action}</li>
                       ))}
@@ -289,8 +289,8 @@ const ProctoringReport = ({ report, onClose }) => {
                   </div>
                 )}
                 {summary.notes && (
-                  <p className="text-gray-400">
-                    <span className="text-gray-500">Notes: </span>
+                  <p className="text-slate-400">
+                    <span className="text-slate-500">Notes: </span>
                     {summary.notes}
                   </p>
                 )}
@@ -300,14 +300,14 @@ const ProctoringReport = ({ report, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-800/50 border-t border-gray-700 flex items-center justify-between">
-          <p className="text-xs text-gray-500">
+        <div className="px-6 py-4 bg-slate-800/50 border-t border-slate-700 flex items-center justify-between">
+          <p className="text-xs text-slate-500">
             Report generated at {new Date().toLocaleString()}
           </p>
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
             >
               Close
             </button>

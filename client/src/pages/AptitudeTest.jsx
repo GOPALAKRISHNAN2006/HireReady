@@ -34,7 +34,7 @@ const AptitudeTest = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">Test data not found</p>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">Test data not found</p>
           <Button onClick={() => navigate('/aptitude')}>Go Back</Button>
         </div>
       </div>
@@ -111,7 +111,7 @@ const AptitudeTest = () => {
           </Badge>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
             <Clock className="w-4 h-4" />
             <span className="font-mono">{formatTime(timeElapsed)}</span>
           </div>
@@ -119,22 +119,22 @@ const AptitudeTest = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
         <div 
-          className="bg-primary-500 h-2 rounded-full transition-all"
+          className="bg-indigo-500 h-2 rounded-full transition-all"
           style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
         />
       </div>
 
       {/* Question Card */}
       <Card className="p-6">
-        <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">
+        <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-6">
           {currentQuestion.question}
         </h2>
 
         <div className="space-y-3">
           {currentQuestion.options.map((option, index) => {
-            let optionClass = 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
+            let optionClass = 'border-slate-200 dark:border-slate-700 hover:border-indigo-300'
             
             if (showResult) {
               if (index === lastResult.correctAnswer) {
@@ -143,7 +143,7 @@ const AptitudeTest = () => {
                 optionClass = 'border-red-500 bg-red-50'
               }
             } else if (selectedOption === index) {
-              optionClass = 'border-primary-500 bg-primary-50'
+              optionClass = 'border-indigo-500 bg-indigo-50'
             }
 
             return (
@@ -155,7 +155,7 @@ const AptitudeTest = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center font-medium">
+                    <span className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-medium">
                       {String.fromCharCode(65 + index)}
                     </span>
                     <span>{option}</span>
@@ -218,19 +218,19 @@ const AptitudeTest = () => {
 
       {/* Question Navigator */}
       <Card className="p-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Question Navigator</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">Question Navigator</p>
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: totalQuestions }).map((_, idx) => (
             <button
               key={idx}
               className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
                 idx === currentIndex
-                  ? 'bg-primary-500 text-white'
+                  ? 'bg-indigo-500 text-white'
                   : answers[idx]
                   ? answers[idx].isCorrect
                     ? 'bg-green-100 dark:bg-green-900/30 text-green-700'
                     : 'bg-red-100 dark:bg-red-900/30 text-red-700'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
               }`}
             >
               {idx + 1}

@@ -48,15 +48,15 @@ const CommunicationStats = ({ className = '' }) => {
 
   if (isLoading) {
     return (
-      <div className={`bg-white rounded-2xl border border-gray-200 p-6 ${className}`}>
+      <div className={`bg-white rounded-2xl border border-slate-200 p-6 ${className}`}>
         <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+          <div className="h-6 bg-slate-200 rounded w-1/3"></div>
           <div className="flex justify-center">
-            <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
+            <div className="w-24 h-24 bg-slate-200 rounded-full"></div>
           </div>
           <div className="space-y-2">
             {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="h-4 bg-gray-100 rounded"></div>
+              <div key={i} className="h-4 bg-slate-100 rounded"></div>
             ))}
           </div>
         </div>
@@ -66,9 +66,9 @@ const CommunicationStats = ({ className = '' }) => {
 
   if (error || !stats) {
     return (
-      <div className={`bg-white rounded-2xl border border-gray-200 p-6 ${className}`}>
-        <div className="text-center text-gray-500 py-8">
-          <Mic className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+      <div className={`bg-white rounded-2xl border border-slate-200 p-6 ${className}`}>
+        <div className="text-center text-slate-500 py-8">
+          <Mic className="w-12 h-12 mx-auto mb-3 text-slate-300" />
           <p className="font-medium">No Communication Data</p>
           <p className="text-sm">Complete interviews to see your stats</p>
         </div>
@@ -88,23 +88,23 @@ const CommunicationStats = ({ className = '' }) => {
   const getTrendIcon = (trend) => {
     if (trend > 0.2) return <TrendingUp className="w-4 h-4 text-green-500" />;
     if (trend < -0.2) return <TrendingDown className="w-4 h-4 text-red-500" />;
-    return <Minus className="w-4 h-4 text-gray-400" />;
+    return <Minus className="w-4 h-4 text-slate-400" />;
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-2xl border border-gray-200 overflow-hidden ${className}`}
+      className={`bg-white rounded-2xl border border-slate-200 overflow-hidden ${className}`}
     >
       {/* Header */}
-      <div className="p-5 border-b border-gray-100">
+      <div className="p-5 border-b border-slate-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Mic className="w-5 h-5 text-purple-600" />
-            <h3 className="font-semibold text-gray-900">Communication Skills</h3>
+            <h3 className="font-semibold text-slate-900">Communication Skills</h3>
           </div>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-slate-500">
             {totalAssessments} assessments
           </span>
         </div>
@@ -118,12 +118,12 @@ const CommunicationStats = ({ className = '' }) => {
           size="medium"
           showAnimation={true}
         />
-        <p className="text-sm text-gray-500 mt-2">Average Score</p>
+        <p className="text-sm text-slate-500 mt-2">Average Score</p>
       </div>
 
       {/* Subscore Breakdown with Trends */}
-      <div className="p-5 border-t border-gray-100">
-        <h4 className="text-sm font-medium text-gray-700 mb-4">
+      <div className="p-5 border-t border-slate-100">
+        <h4 className="text-sm font-medium text-slate-700 mb-4">
           Skills Breakdown & Trends
         </h4>
         <div className="space-y-3">
@@ -134,18 +134,18 @@ const CommunicationStats = ({ className = '' }) => {
             
             return (
               <div key={key} className="flex items-center gap-3">
-                <Icon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                <Icon className="w-4 h-4 text-slate-400 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-gray-600 truncate">{label}</span>
+                    <span className="text-xs text-slate-600 truncate">{label}</span>
                     <div className="flex items-center gap-1">
-                      <span className="text-xs font-semibold text-gray-900">
+                      <span className="text-xs font-semibold text-slate-900">
                         {score.toFixed(1)}
                       </span>
                       {getTrendIcon(trend)}
                     </div>
                   </div>
-                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${(score / 10) * 100}%` }}
@@ -165,7 +165,7 @@ const CommunicationStats = ({ className = '' }) => {
 
       {/* Improvement Areas */}
       {improvementAreas?.length > 0 && (
-        <div className="p-5 border-t border-gray-100 bg-amber-50/50">
+        <div className="p-5 border-t border-slate-100 bg-amber-50/50">
           <h4 className="text-sm font-medium text-amber-700 mb-2">
             Focus Areas
           </h4>
@@ -182,7 +182,7 @@ const CommunicationStats = ({ className = '' }) => {
 
       {/* Strength Areas */}
       {strengthAreas?.length > 0 && (
-        <div className="p-5 border-t border-gray-100 bg-green-50/50">
+        <div className="p-5 border-t border-slate-100 bg-green-50/50">
           <h4 className="text-sm font-medium text-green-700 mb-2">
             Your Strengths
           </h4>

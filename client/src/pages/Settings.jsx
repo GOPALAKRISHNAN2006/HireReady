@@ -175,31 +175,50 @@ const Settings = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-          <SettingsIcon className="w-7 h-7 mr-3 text-primary-600" />
-          Settings
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your account preferences and settings</p>
+      {/* Hero Banner Header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-slate-800 via-slate-900 to-indigo-900 rounded-3xl p-8 text-white">
+        {/* Decorative blur circles */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-1/4 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl" />
+        <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-white/5 rounded-full blur-xl" />
+        {/* Big background icon */}
+        <SettingsIcon className="absolute right-8 top-1/2 -translate-y-1/2 w-32 h-32 text-white/[0.06]" />
+        <div className="relative z-10 flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center">
+              <SettingsIcon className="w-8 h-8 mr-3 text-indigo-400" />
+              Settings
+            </h1>
+            <p className="text-slate-300 mt-1">Manage your account preferences and settings</p>
+          </div>
+          <Button onClick={handleSaveSettings} icon={Save} size="lg" className="shrink-0">
+            Save Settings
+          </Button>
+        </div>
       </div>
 
       {/* Appearance */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center">
-            <Monitor className="w-5 h-5 mr-2 text-purple-600" />
-            Appearance
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-purple-500/10 dark:bg-purple-500/20 rounded-xl flex items-center justify-center">
+                <Monitor className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Appearance</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Customize how the app looks</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Customize how the app looks</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="space-y-6">
             {/* Theme */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div>
-                <p className="font-medium text-gray-900 dark:text-gray-100">Theme</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Choose your preferred color scheme</p>
+                <p className="font-medium text-slate-900 dark:text-slate-100">Theme</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Choose your preferred color scheme</p>
               </div>
               <div className="flex space-x-2">
                 {[
@@ -210,10 +229,10 @@ const Settings = () => {
                   <button
                     key={theme.value}
                     onClick={() => handleSettingChange('theme', theme.value)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl border transition-all ${
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl border hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 ${
                       settings.theme === theme.value
-                        ? 'bg-primary-50 dark:bg-primary-500/10 border-primary-500 text-primary-700 dark:text-primary-400'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300'
+                        ? 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-500 text-indigo-700 dark:text-indigo-400'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     <theme.icon className="w-4 h-4" />
@@ -224,15 +243,15 @@ const Settings = () => {
             </div>
 
             {/* Font Size */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div>
-                <p className="font-medium text-gray-900 dark:text-gray-100">Font Size</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Adjust the text size</p>
+                <p className="font-medium text-slate-900 dark:text-slate-100">Font Size</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Adjust the text size</p>
               </div>
               <select
                 value={settings.fontSize}
                 onChange={(e) => handleSettingChange('fontSize', e.target.value)}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
@@ -241,19 +260,19 @@ const Settings = () => {
             </div>
 
             {/* Reduced Motion */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div>
-                <p className="font-medium text-gray-900 dark:text-gray-100">Reduced Motion</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Minimize animations</p>
+                <p className="font-medium text-slate-900 dark:text-slate-100">Reduced Motion</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Minimize animations</p>
               </div>
               <button
                 onClick={() => handleSettingChange('reducedMotion', !settings.reducedMotion)}
-                className={`relative w-14 h-7 rounded-full transition-colors ${
-                  settings.reducedMotion ? 'bg-primary-600' : 'bg-gray-200'
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  settings.reducedMotion ? 'bg-indigo-600' : 'bg-slate-200'
                 }`}
               >
-                <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                  settings.reducedMotion ? 'translate-x-8' : 'translate-x-1'
+                <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                  settings.reducedMotion ? 'translate-x-6' : 'translate-x-0.5'
                 }`} />
               </button>
             </div>
@@ -264,11 +283,17 @@ const Settings = () => {
       {/* Notifications */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center">
-            <Bell className="w-5 h-5 mr-2 text-blue-600" />
-            Notifications
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl flex items-center justify-center">
+                <Bell className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Notifications</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Configure how you receive notifications</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Configure how you receive notifications</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="space-y-4">
@@ -279,24 +304,24 @@ const Settings = () => {
               { key: 'weeklyReport', icon: MessageSquare, label: 'Weekly Progress Report', desc: 'Receive weekly summary of your progress' },
               { key: 'marketingEmails', icon: Mail, label: 'Marketing Emails', desc: 'Tips, offers, and updates' },
             ].map((item) => (
-              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-gray-600" />
+                  <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">{item.label}</p>
-                    <p className="text-sm text-gray-500">{item.desc}</p>
+                    <p className="font-medium text-slate-900 dark:text-white">{item.label}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{item.desc}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => handleSettingChange(item.key, !settings[item.key])}
-                  className={`relative w-14 h-7 rounded-full transition-colors ${
-                    settings[item.key] ? 'bg-primary-600' : 'bg-gray-200'
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    settings[item.key] ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'
                   }`}
                 >
-                  <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                    settings[item.key] ? 'translate-x-8' : 'translate-x-1'
+                  <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                    settings[item.key] ? 'translate-x-6' : 'translate-x-0.5'
                   }`} />
                 </button>
               </div>
@@ -308,32 +333,38 @@ const Settings = () => {
       {/* Privacy */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center">
-            <Shield className="w-5 h-5 mr-2 text-green-600" />
-            Privacy
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                <Shield className="w-5 h-5 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Privacy</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Control your privacy settings</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Control your privacy settings</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center">
                   {settings.profileVisibility === 'public' ? (
-                    <Eye className="w-5 h-5 text-gray-600" />
+                    <Eye className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   ) : (
-                    <EyeOff className="w-5 h-5 text-gray-600" />
+                    <EyeOff className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   )}
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Profile Visibility</p>
-                  <p className="text-sm text-gray-500">Who can see your profile</p>
+                  <p className="font-medium text-slate-900 dark:text-white">Profile Visibility</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Who can see your profile</p>
                 </div>
               </div>
               <select
                 value={settings.profileVisibility}
                 onChange={(e) => handleSettingChange('profileVisibility', e.target.value)}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value="public">Public</option>
                 <option value="friends">Friends Only</option>
@@ -345,19 +376,19 @@ const Settings = () => {
               { key: 'showOnLeaderboard', label: 'Show on Leaderboard', desc: 'Appear in public rankings' },
               { key: 'shareProgress', label: 'Share Progress', desc: 'Allow others to see your progress' },
             ].map((item) => (
-              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <div>
-                  <p className="font-medium text-gray-900">{item.label}</p>
-                  <p className="text-sm text-gray-500">{item.desc}</p>
+                  <p className="font-medium text-slate-900 dark:text-white">{item.label}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{item.desc}</p>
                 </div>
                 <button
                   onClick={() => handleSettingChange(item.key, !settings[item.key])}
-                  className={`relative w-14 h-7 rounded-full transition-colors ${
-                    settings[item.key] ? 'bg-primary-600' : 'bg-gray-200'
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    settings[item.key] ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'
                   }`}
                 >
-                  <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                    settings[item.key] ? 'translate-x-8' : 'translate-x-1'
+                  <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                    settings[item.key] ? 'translate-x-6' : 'translate-x-0.5'
                   }`} />
                 </button>
               </div>
@@ -369,23 +400,29 @@ const Settings = () => {
       {/* Interview Preferences */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center">
-            <MessageSquare className="w-5 h-5 mr-2 text-orange-600" />
-            Interview Preferences
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-orange-500/10 dark:bg-orange-500/20 rounded-xl flex items-center justify-center">
+                <MessageSquare className="w-5 h-5 text-orange-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Interview Preferences</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Customize your interview experience</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Customize your interview experience</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div>
-                <p className="font-medium text-gray-900">Default Difficulty</p>
-                <p className="text-sm text-gray-500">Your preferred difficulty level</p>
+                <p className="font-medium text-slate-900 dark:text-white">Default Difficulty</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Your preferred difficulty level</p>
               </div>
               <select
                 value={settings.defaultDifficulty}
                 onChange={(e) => handleSettingChange('defaultDifficulty', e.target.value)}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -393,15 +430,15 @@ const Settings = () => {
               </select>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
               <div>
-                <p className="font-medium text-gray-900">Default Duration</p>
-                <p className="text-sm text-gray-500">Preferred interview length</p>
+                <p className="font-medium text-slate-900 dark:text-white">Default Duration</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Preferred interview length</p>
               </div>
               <select
                 value={settings.defaultDuration}
                 onChange={(e) => handleSettingChange('defaultDuration', parseInt(e.target.value))}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value={15}>15 minutes</option>
                 <option value={30}>30 minutes</option>
@@ -415,24 +452,24 @@ const Settings = () => {
               { key: 'showHints', icon: Eye, label: 'Show Hints', desc: 'Display helpful hints during interviews' },
               { key: 'soundEnabled', icon: settings.soundEnabled ? Volume2 : VolumeX, label: 'Sound Effects', desc: 'Play sounds for notifications' },
             ].map((item) => (
-              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50">
+              <div key={item.key} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-gray-600" />
+                  <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">{item.label}</p>
-                    <p className="text-sm text-gray-500">{item.desc}</p>
+                    <p className="font-medium text-slate-900 dark:text-white">{item.label}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{item.desc}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => handleSettingChange(item.key, !settings[item.key])}
-                  className={`relative w-14 h-7 rounded-full transition-colors ${
-                    settings[item.key] ? 'bg-primary-600' : 'bg-gray-200'
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    settings[item.key] ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'
                   }`}
                 >
-                  <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                    settings[item.key] ? 'translate-x-8' : 'translate-x-1'
+                  <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                    settings[item.key] ? 'translate-x-6' : 'translate-x-0.5'
                   }`} />
                 </button>
               </div>
@@ -444,20 +481,26 @@ const Settings = () => {
       {/* Language & Region */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center">
-            <Globe className="w-5 h-5 mr-2 text-cyan-600" />
-            Language & Region
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-cyan-500/10 dark:bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                <Globe className="w-5 h-5 text-cyan-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">Language & Region</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Set your language and timezone</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Set your language and timezone</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Language</label>
               <select
                 value={settings.language}
                 onChange={(e) => handleSettingChange('language', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value="en">English</option>
                 <option value="es">Español</option>
@@ -468,11 +511,11 @@ const Settings = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Timezone</label>
               <select
                 value={settings.timezone}
                 onChange={(e) => handleSettingChange('timezone', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
                 <option value="America/New_York">Eastern Time (ET)</option>
                 <option value="America/Chicago">Central Time (CT)</option>
@@ -490,37 +533,43 @@ const Settings = () => {
       {/* Data & Account */}
       <Card>
         <Card.Header>
-          <Card.Title className="flex items-center text-red-600">
-            <Trash2 className="w-5 h-5 mr-2" />
-            Data & Account
+          <Card.Title>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-red-500/10 dark:bg-red-500/20 rounded-xl flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-red-600">Data & Account</h3>
+                <p className="text-sm font-normal text-slate-500 dark:text-slate-400">Manage your data and account</p>
+              </div>
+            </div>
           </Card.Title>
-          <Card.Description>Manage your data and account</Card.Description>
         </Card.Header>
         <Card.Content>
           <div className="space-y-4">
             <button
               onClick={handleExportData}
-              className="w-full flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               <div className="flex items-center space-x-3">
-                <Download className="w-5 h-5 text-gray-600" />
+                <Download className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 <div className="text-left">
-                  <p className="font-medium text-gray-900">Export Your Data</p>
-                  <p className="text-sm text-gray-500">Download all your data in JSON format</p>
+                  <p className="font-medium text-slate-900 dark:text-white">Export Your Data</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Download all your data in JSON format</p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-slate-400" />
             </button>
 
             <button
               onClick={handleDeleteAccount}
-              className="w-full flex items-center justify-between p-4 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 transition-colors"
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
             >
               <div className="flex items-center space-x-3">
-                <Trash2 className="w-5 h-5 text-red-600" />
+                <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
                 <div className="text-left">
-                  <p className="font-medium text-red-900">Delete Account</p>
-                  <p className="text-sm text-red-600">Permanently delete your account and all data</p>
+                  <p className="font-medium text-red-900 dark:text-red-300">Delete Account</p>
+                  <p className="text-sm text-red-600 dark:text-red-400">Permanently delete your account and all data</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-red-400" />
@@ -529,9 +578,9 @@ const Settings = () => {
         </Card.Content>
       </Card>
 
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <Button onClick={handleSaveSettings} icon={Save} size="lg">
+      {/* Sticky bottom Save Button */}
+      <div className="sticky bottom-4 z-20 flex justify-end">
+        <Button onClick={handleSaveSettings} icon={Save} size="lg" className="shadow-lg shadow-indigo-500/25">
           Save Settings
         </Button>
       </div>

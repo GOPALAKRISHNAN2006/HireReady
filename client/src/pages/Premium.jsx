@@ -41,7 +41,7 @@ const plans = [
     priceMonthly: 0,
     priceYearly: 0,
     icon: Zap,
-    color: 'from-gray-400 to-gray-500',
+    color: 'from-slate-400 to-slate-500',
     features: [
       { text: '5 Mock Interviews/month', included: true },
       { text: 'Basic Analytics', included: true },
@@ -204,8 +204,8 @@ const Premium = () => {
           <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
             <CreditCard className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Processing Payment...</h2>
-          <p className="text-gray-500 dark:text-gray-400">Please wait while we activate your premium plan</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Processing Payment...</h2>
+          <p className="text-slate-500 dark:text-slate-400">Please wait while we activate your premium plan</p>
           <Loader2 className="w-8 h-8 mx-auto text-purple-500 animate-spin" />
         </div>
       </div>
@@ -222,7 +222,7 @@ const Premium = () => {
         {/* Back button */}
         <button
           onClick={() => setStep('plans')}
-          className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <ChevronRight className="w-4 h-4 rotate-180" />
           Back to plans
@@ -232,8 +232,8 @@ const Premium = () => {
           {/* Left — Payment form */}
           <div className="lg:col-span-3 space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Complete Your Purchase</h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-1">Choose your preferred payment method</p>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Complete Your Purchase</h1>
+              <p className="text-slate-500 dark:text-slate-400 mt-1">Choose your preferred payment method</p>
             </div>
 
             {/* Payment methods */}
@@ -247,14 +247,14 @@ const Premium = () => {
                     className={`p-4 rounded-xl border-2 transition-all text-left ${
                       selectedPayment === method.id
                         ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 ring-1 ring-purple-500/30'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
-                    <MIcon className={`w-6 h-6 mb-2 ${selectedPayment === method.id ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`} />
-                    <p className={`font-semibold text-sm ${selectedPayment === method.id ? 'text-purple-700 dark:text-purple-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                    <MIcon className={`w-6 h-6 mb-2 ${selectedPayment === method.id ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
+                    <p className={`font-semibold text-sm ${selectedPayment === method.id ? 'text-purple-700 dark:text-purple-300' : 'text-slate-700 dark:text-slate-300'}`}>
                       {method.name}
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">{method.description}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">{method.description}</p>
                   </button>
                 )
               })}
@@ -264,7 +264,7 @@ const Premium = () => {
             {selectedPayment === 'card' && (
               <Card className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Card Number</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Card Number</label>
                   <input
                     type="text"
                     placeholder="4242 4242 4242 4242"
@@ -274,12 +274,12 @@ const Premium = () => {
                       const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()
                       setCardDetails({ ...cardDetails, number: v })
                     }}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expiry</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Expiry</label>
                     <input
                       type="text"
                       placeholder="MM/YY"
@@ -290,28 +290,28 @@ const Premium = () => {
                         if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2)
                         setCardDetails({ ...cardDetails, expiry: v })
                       }}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CVV</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">CVV</label>
                     <input
                       type="password"
                       placeholder="123"
                       maxLength={4}
                       value={cardDetails.cvv}
                       onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value.replace(/\D/g, '') })}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
                     <input
                       type="text"
                       placeholder="John Doe"
                       value={cardDetails.name}
                       onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     />
                   </div>
                 </div>
@@ -321,11 +321,11 @@ const Premium = () => {
             {/* UPI form */}
             {selectedPayment === 'upi' && (
               <Card className="p-6">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">UPI ID</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">UPI ID</label>
                 <input
                   type="text"
                   placeholder="yourname@upi"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
               </Card>
             )}
@@ -333,8 +333,8 @@ const Premium = () => {
             {/* Net banking */}
             {selectedPayment === 'netbanking' && (
               <Card className="p-6">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Bank</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Select Bank</label>
+                <select className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
                   <option value="">Choose your bank</option>
                   <option>State Bank of India</option>
                   <option>HDFC Bank</option>
@@ -349,9 +349,9 @@ const Premium = () => {
             {/* Wallet */}
             {selectedPayment === 'wallet' && (
               <Card className="p-6 space-y-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400">Select your wallet provider</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Select your wallet provider</p>
                 {['PayPal', 'Apple Pay', 'Google Pay'].map((w) => (
-                  <button key={w} className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-slate-700 text-left font-medium text-gray-700 dark:text-gray-300 transition-all">
+                  <button key={w} className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-left font-medium text-slate-700 dark:text-slate-300 transition-all">
                     {w}
                   </button>
                 ))}
@@ -359,7 +359,7 @@ const Premium = () => {
             )}
 
             {/* Security */}
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-slate-400">
               <Shield className="w-4 h-4" />
               <span>256-bit SSL encrypted — your payment details are secure</span>
             </div>
@@ -373,15 +373,15 @@ const Premium = () => {
                   <PlanIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white">{selectedPlanData.name} Plan</h3>
-                  <p className="text-sm text-gray-500">{interval === 'yearly' ? 'Annual' : 'Monthly'} billing</p>
+                  <h3 className="font-bold text-slate-900 dark:text-white">{selectedPlanData.name} Plan</h3>
+                  <p className="text-sm text-slate-500">{interval === 'yearly' ? 'Annual' : 'Monthly'} billing</p>
                 </div>
               </div>
 
-              <div className="border-t border-gray-100 dark:border-gray-700 pt-4 space-y-3">
+              <div className="border-t border-slate-100 dark:border-slate-700 pt-4 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
-                  <span className="text-gray-900 dark:text-white font-medium">${price}</span>
+                  <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
+                  <span className="text-slate-900 dark:text-white font-medium">${price}</span>
                 </div>
                 {interval === 'yearly' && (
                   <div className="flex justify-between text-sm">
@@ -390,11 +390,11 @@ const Premium = () => {
                   </div>
                 )}
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">Tax</span>
-                  <span className="text-gray-900 dark:text-white font-medium">$0</span>
+                  <span className="text-slate-500 dark:text-slate-400">Tax</span>
+                  <span className="text-slate-900 dark:text-white font-medium">$0</span>
                 </div>
-                <div className="border-t border-gray-100 dark:border-gray-700 pt-3 flex justify-between">
-                  <span className="font-bold text-gray-900 dark:text-white">Total</span>
+                <div className="border-t border-slate-100 dark:border-slate-700 pt-3 flex justify-between">
+                  <span className="font-bold text-slate-900 dark:text-white">Total</span>
                   <span className="font-bold text-2xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     ${price}
                   </span>
@@ -413,7 +413,7 @@ const Premium = () => {
                 )}
               </Button>
 
-              <p className="text-xs text-center text-gray-400">
+              <p className="text-xs text-center text-slate-400">
                 30-day money-back guarantee. Cancel anytime.
               </p>
             </Card>
@@ -460,16 +460,16 @@ const Premium = () => {
 
       {/* Billing toggle */}
       <div className="flex items-center justify-center gap-4">
-        <span className={`text-sm font-medium ${interval === 'monthly' ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
+        <span className={`text-sm font-medium ${interval === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
           Monthly
         </span>
         <button
           onClick={() => setInterval(interval === 'monthly' ? 'yearly' : 'monthly')}
-          className={`relative w-14 h-7 rounded-full transition-colors ${interval === 'yearly' ? 'bg-purple-600' : 'bg-gray-300 dark:bg-gray-600'}`}
+          className={`relative w-14 h-7 rounded-full transition-colors ${interval === 'yearly' ? 'bg-purple-600' : 'bg-slate-300 dark:bg-slate-600'}`}
         >
           <span className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform shadow-md ${interval === 'yearly' ? 'translate-x-8' : 'translate-x-1'}`} />
         </button>
-        <span className={`text-sm font-medium ${interval === 'yearly' ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
+        <span className={`text-sm font-medium ${interval === 'yearly' ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
           Yearly <span className="text-green-500 font-bold">(Save 17%)</span>
         </span>
       </div>
@@ -506,14 +506,14 @@ const Premium = () => {
                 <PIcon className="w-6 h-6 text-white" />
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">{plan.name}</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4">{plan.description}</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{plan.name}</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4">{plan.description}</p>
 
               <div className="mb-6">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">${price}</span>
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">${price}</span>
                   {price > 0 && (
-                    <span className="text-gray-400 text-sm">/{interval === 'yearly' ? 'year' : 'mo'}</span>
+                    <span className="text-slate-400 text-sm">/{interval === 'yearly' ? 'year' : 'mo'}</span>
                   )}
                 </div>
                 {price > 0 && interval === 'yearly' && (
@@ -527,9 +527,9 @@ const Premium = () => {
                     {f.included ? (
                       <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                     ) : (
-                      <X className="w-4 h-4 text-gray-300 dark:text-gray-600 mt-0.5 flex-shrink-0" />
+                      <X className="w-4 h-4 text-slate-300 dark:text-slate-600 mt-0.5 flex-shrink-0" />
                     )}
-                    <span className={`text-sm ${f.included ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-600'}`}>
+                    <span className={`text-sm ${f.included ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-600'}`}>
                       {f.text}
                     </span>
                   </li>
@@ -559,7 +559,7 @@ const Premium = () => {
 
       {/* Premium Features Showcase */}
       <div className="mt-12">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">
           Premium Features You&apos;ll Unlock
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -575,8 +575,8 @@ const Premium = () => {
           ].map((feat, i) => (
             <Card key={i} className="p-5 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <feat.icon className={`w-8 h-8 mx-auto mb-3 ${feat.color}`} />
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{feat.title}</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{feat.desc}</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white mb-1">{feat.title}</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{feat.desc}</p>
             </Card>
           ))}
         </div>
@@ -584,7 +584,7 @@ const Premium = () => {
 
       {/* Trust signals */}
       <div className="text-center space-y-4 py-8">
-        <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
+        <div className="flex items-center justify-center gap-6 text-sm text-slate-400">
           <div className="flex items-center gap-1"><Shield className="w-4 h-4" /> Secure Payment</div>
           <div className="flex items-center gap-1"><Clock className="w-4 h-4" /> Cancel Anytime</div>
           <div className="flex items-center gap-1"><Gift className="w-4 h-4" /> 30-Day Guarantee</div>

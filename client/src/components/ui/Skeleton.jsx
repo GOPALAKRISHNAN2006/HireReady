@@ -9,7 +9,7 @@ export default function Skeleton({ width = '100%', height = '1rem', rounded = 'm
 
   return (
     <div
-      className={`animate-pulse bg-gray-200 dark:bg-gray-700 ${roundedMap[rounded]} ${className}`}
+      className={`animate-pulse bg-slate-200 dark:bg-slate-700 ${roundedMap[rounded]} ${className}`}
       style={{ width, height }}
     />
   )
@@ -17,7 +17,7 @@ export default function Skeleton({ width = '100%', height = '1rem', rounded = 'm
 
 export function SkeletonCard({ lines = 3 }) {
   return (
-    <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+    <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 space-y-3">
       <div className="flex items-center gap-3">
         <Skeleton width="2.5rem" height="2.5rem" rounded="full" />
         <div className="flex-1 space-y-2">

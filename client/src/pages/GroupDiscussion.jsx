@@ -68,7 +68,7 @@ const GroupDiscussion = () => {
       case 'easy': return 'bg-green-100 text-green-700'
       case 'medium': return 'bg-yellow-100 text-yellow-700'
       case 'hard': return 'bg-red-100 text-red-700'
-      default: return 'bg-gray-100 text-gray-700'
+      default: return 'bg-slate-100 text-slate-700'
     }
   }
 
@@ -81,10 +81,19 @@ const GroupDiscussion = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Group Discussion Practice</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">Practice GD with AI participants and get detailed feedback</p>
+    <div className="space-y-8 animate-in">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Users className="w-4 h-4 mr-2" />
+            Collaborate
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Group Discussion</h1>
+          <p className="text-white/70 max-w-lg">Practice group discussion skills with AI-powered feedback</p>
+        </div>
       </div>
 
       {/* Category Filter */}
@@ -93,8 +102,8 @@ const GroupDiscussion = () => {
           onClick={() => setSelectedCategory('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             selectedCategory === 'all'
-              ? 'bg-primary-500 text-white'
-              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              ? 'bg-indigo-500 text-white'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
           }`}
         >
           All Topics
@@ -105,8 +114,8 @@ const GroupDiscussion = () => {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedCategory === cat.id
-                ? 'bg-primary-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-indigo-500 text-white'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             {cat.name}
@@ -121,8 +130,8 @@ const GroupDiscussion = () => {
           <div className="space-y-3">
             {topics.length === 0 ? (
               <Card className="p-8 text-center">
-                <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500 dark:text-gray-400">No topics available</p>
+                <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-500 dark:text-slate-400">No topics available</p>
               </Card>
             ) : (
               topics.map((topic) => (
@@ -131,14 +140,14 @@ const GroupDiscussion = () => {
                   onClick={() => setSelectedTopic(topic)}
                   className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                     selectedTopic?._id === topic._id
-                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
+                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                      : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">{topic.title}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{topic.description}</p>
+                      <h3 className="font-semibold text-slate-900 dark:text-white">{topic.title}</h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">{topic.description}</p>
                       <div className="flex gap-2 mt-2">
                         <Badge className={getDifficultyColor(topic.difficulty)}>
                           {topic.difficulty}
@@ -146,7 +155,7 @@ const GroupDiscussion = () => {
                         <Badge variant="secondary">{topic.category}</Badge>
                       </div>
                     </div>
-                    <Users className="w-8 h-8 text-gray-400 flex-shrink-0 ml-4" />
+                    <Users className="w-8 h-8 text-slate-400 flex-shrink-0 ml-4" />
                   </div>
                 </button>
               ))
@@ -160,16 +169,16 @@ const GroupDiscussion = () => {
           {selectedTopic && (
             <Card className="p-6">
               <h3 className="font-semibold mb-4 dark:text-white">Topic Details</h3>
-              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{selectedTopic.title}</h4>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{selectedTopic.description}</p>
+              <h4 className="text-lg font-medium text-slate-900 dark:text-white mb-2">{selectedTopic.title}</h4>
+              <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">{selectedTopic.description}</p>
               
               {selectedTopic.keyPoints?.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Key Points:</p>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Key Points:</p>
+                  <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
                     {selectedTopic.keyPoints.slice(0, 4).map((point, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-primary-500">•</span>
+                        <span className="text-indigo-500">•</span>
                         {point}
                       </li>
                     ))}
@@ -177,7 +186,7 @@ const GroupDiscussion = () => {
                 </div>
               )}
 
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
                 <Clock className="w-4 h-4" />
                 <span>15 minutes session</span>
               </div>
@@ -197,16 +206,16 @@ const GroupDiscussion = () => {
             </div>
             {history.length === 0 ? (
               <div className="text-center py-4">
-                <History className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">No sessions yet</p>
+                <History className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                <p className="text-sm text-slate-500 dark:text-slate-400">No sessions yet</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {history.map((session) => (
-                  <div key={session._id} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div key={session._id} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <p className="font-medium text-sm truncate dark:text-white">{session.topicTitle}</p>
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
                         {new Date(session.completedAt).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-1">

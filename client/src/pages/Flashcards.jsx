@@ -84,7 +84,7 @@ const Flashcards = () => {
   const [isFlipped, setIsFlipped] = useState(false)
   const [isCreatingDeck, setIsCreatingDeck] = useState(false)
   const [isAddingCard, setIsAddingCard] = useState(false)
-  const [newDeck, setNewDeck] = useState({ name: '', icon: 'Layers', color: 'from-primary-500 to-purple-500' })
+  const [newDeck, setNewDeck] = useState({ name: '', icon: 'Layers', color: 'from-indigo-500 to-purple-500' })
   const [newCard, setNewCard] = useState({ front: '', back: '' })
   const [studyMode, setStudyMode] = useState(false)
   const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 })
@@ -151,7 +151,7 @@ const Flashcards = () => {
       cards: [],
     }
     setDecks(prev => [...prev, deck])
-    setNewDeck({ name: '', icon: 'Layers', color: 'from-primary-500 to-purple-500' })
+    setNewDeck({ name: '', icon: 'Layers', color: 'from-indigo-500 to-purple-500' })
     setIsCreatingDeck(false)
     toast.success('Deck created!')
   }
@@ -190,30 +190,35 @@ const Flashcards = () => {
   // Deck Selection View
   if (!activeDeckId) {
     return (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-500 rounded-xl flex items-center justify-center">
-                <Layers className="w-6 h-6 text-white" />
-              </div>
-              Flashcards
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">Study with spaced repetition flashcards</p>
+      <div className="space-y-8">
+        {/* Gradient Header */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 p-8 text-white">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+          <div className="relative">
+            <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+              <Layers className="w-4 h-4 mr-2" />
+              Quick Review
+            </div>
+            <h1 className="text-3xl font-bold mb-2">Flashcards</h1>
+            <p className="text-white/70 max-w-lg">Quick-fire revision with interactive flashcards</p>
           </div>
+        </div>
+
+        <div className="flex justify-end">
           <Button onClick={() => setIsCreatingDeck(true)} icon={Plus}>New Deck</Button>
         </div>
 
         {isCreatingDeck && (
           <Card>
             <Card.Content className="p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Create New Deck</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Create New Deck</h3>
               <div className="space-y-4">
                 <input
                   value={newDeck.name}
                   onChange={(e) => setNewDeck(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Deck name..."
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
                   autoFocus
                 />
                 <div className="flex gap-3 justify-end">
@@ -234,28 +239,28 @@ const Flashcards = () => {
               <div
                 key={deck.id}
                 onClick={() => { setActiveDeckId(deck.id); setCurrentIndex(0); setIsFlipped(false); setStudyMode(false) }}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700/50 p-6 hover:shadow-xl transition-all cursor-pointer group relative"
+                className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/50 p-6 hover:shadow-xl transition-all cursor-pointer group relative"
               >
                 {deck.id.startsWith('custom-') && (
                   <button
                     onClick={(e) => { e.stopPropagation(); deleteDeck(deck.id) }}
                     className="absolute top-3 right-3 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-all"
                   >
-                    <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                    <Trash2 className="w-4 h-4 text-slate-400 hover:text-red-500" />
                   </button>
                 )}
                 <div className={`w-14 h-14 bg-gradient-to-br ${deck.color} rounded-xl flex items-center justify-center mb-4`}>
                   <IconComp className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{deck.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{deck.cards.length} cards</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{deck.name}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{deck.cards.length} cards</p>
                 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 dark:text-gray-400">Mastered</span>
-                    <span className="font-medium text-gray-700 dark:text-gray-300">{masteredCount}/{deck.cards.length}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Mastered</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">{masteredCount}/{deck.cards.length}</span>
                   </div>
-                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
                   </div>
                 </div>
@@ -266,23 +271,23 @@ const Flashcards = () => {
 
         {/* Overall Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 text-center">
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{decks.length}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Total Decks</p>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white">{decks.length}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total Decks</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 text-center">
-            <p className="text-2xl font-bold text-primary-500">{decks.reduce((a, d) => a + d.cards.length, 0)}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Total Cards</p>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
+            <p className="text-2xl font-bold text-indigo-500">{decks.reduce((a, d) => a + d.cards.length, 0)}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Total Cards</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
             <p className="text-2xl font-bold text-green-500">{decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Mastered</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Mastered</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
             <p className="text-2xl font-bold text-orange-500">
               {decks.reduce((a, d) => a + d.cards.length, 0) - decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">To Review</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">To Review</p>
           </div>
         </div>
       </div>
@@ -300,13 +305,13 @@ const Flashcards = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => { setActiveDeckId(null); setStudyMode(false) }}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{activeDeck?.name}</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{activeCards.length} cards · {activeCards.filter(c => c.mastered).length} mastered</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{activeDeck?.name}</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{activeCards.length} cards · {activeCards.filter(c => c.mastered).length} mastered</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -322,26 +327,26 @@ const Flashcards = () => {
       {isAddingCard && (
         <Card>
           <Card.Content className="p-6">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Add New Card</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add New Card</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">Front (Question)</label>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">Front (Question)</label>
                 <textarea
                   value={newCard.front}
                   onChange={(e) => setNewCard(prev => ({ ...prev, front: e.target.value }))}
                   rows={4}
                   placeholder="Enter the question..."
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">Back (Answer)</label>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">Back (Answer)</label>
                 <textarea
                   value={newCard.back}
                   onChange={(e) => setNewCard(prev => ({ ...prev, back: e.target.value }))}
                   rows={4}
                   placeholder="Enter the answer..."
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
@@ -359,22 +364,22 @@ const Flashcards = () => {
           <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Trophy className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Study Session Complete!</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">Great job reviewing this deck.</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Study Session Complete!</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-6">Great job reviewing this deck.</p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="text-center">
               <p className="text-3xl font-bold text-green-500">{sessionStats.correct}</p>
-              <p className="text-sm text-gray-500">Knew It</p>
+              <p className="text-sm text-slate-500">Knew It</p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-bold text-red-500">{sessionStats.incorrect}</p>
-              <p className="text-sm text-gray-500">Review Again</p>
+              <p className="text-sm text-slate-500">Review Again</p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold text-primary-500">
+              <p className="text-3xl font-bold text-indigo-500">
                 {totalStudied > 0 ? Math.round((sessionStats.correct / totalStudied) * 100) : 0}%
               </p>
-              <p className="text-sm text-gray-500">Accuracy</p>
+              <p className="text-sm text-slate-500">Accuracy</p>
             </div>
           </div>
           <div className="flex justify-center gap-3">
@@ -387,10 +392,10 @@ const Flashcards = () => {
           {/* Progress */}
           {studyMode && (
             <div className="flex items-center gap-4">
-              <div className="flex-1 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-primary-500 to-purple-500 rounded-full transition-all" style={{ width: `${(totalStudied / activeCards.length) * 100}%` }} />
+              <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all" style={{ width: `${(totalStudied / activeCards.length) * 100}%` }} />
               </div>
-              <span className="text-sm text-gray-500">{totalStudied}/{activeCards.length}</span>
+              <span className="text-sm text-slate-500">{totalStudied}/{activeCards.length}</span>
             </div>
           )}
 
@@ -410,32 +415,32 @@ const Flashcards = () => {
               >
                 {/* Front */}
                 <div
-                  className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-8 flex flex-col items-center justify-center shadow-lg"
+                  className="absolute inset-0 bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-8 flex flex-col items-center justify-center shadow-lg"
                   style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                 >
-                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mb-4">
-                    <HelpCircle className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mb-4">
+                    <HelpCircle className="w-6 h-6 text-indigo-500" />
                   </div>
-                  <p className="text-xl font-semibold text-gray-900 dark:text-white text-center leading-relaxed whitespace-pre-wrap">
+                  <p className="text-xl font-semibold text-slate-900 dark:text-white text-center leading-relaxed whitespace-pre-wrap">
                     {currentCard?.front}
                   </p>
-                  <p className="text-sm text-gray-400 mt-6">Click to flip</p>
+                  <p className="text-sm text-slate-400 mt-6">Click to flip</p>
                   {currentCard?.mastered && (
                     <Badge variant="success" className="mt-3">✓ Mastered</Badge>
                   )}
                 </div>
                 {/* Back */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-primary-200 dark:border-primary-700/50 p-8 flex flex-col items-center justify-center shadow-lg"
+                  className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl border-2 border-indigo-200 dark:border-indigo-700/50 p-8 flex flex-col items-center justify-center shadow-lg"
                   style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                 >
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
                     <Check className="w-6 h-6 text-green-500" />
                   </div>
-                  <p className="text-lg text-gray-800 dark:text-gray-200 text-center leading-relaxed whitespace-pre-wrap">
+                  <p className="text-lg text-slate-800 dark:text-slate-200 text-center leading-relaxed whitespace-pre-wrap">
                     {currentCard?.back}
                   </p>
-                  <p className="text-sm text-gray-400 mt-6">Click to flip back</p>
+                  <p className="text-sm text-slate-400 mt-6">Click to flip back</p>
                 </div>
               </div>
             </div>
@@ -463,28 +468,28 @@ const Flashcards = () => {
             {/* Navigation */}
             {!studyMode && (
               <div className="flex items-center justify-between mt-6">
-                <button onClick={prevCard} className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
-                  <ChevronLeft className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <button onClick={prevCard} className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                  <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                 </button>
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
                     {currentIndex + 1} / {activeCards.length}
                   </span>
                   <button
                     onClick={() => toggleMastered(currentCard?.id)}
-                    className={`p-2 rounded-lg transition-colors ${currentCard?.mastered ? 'text-green-500 bg-green-50 dark:bg-green-900/20' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                    className={`p-2 rounded-lg transition-colors ${currentCard?.mastered ? 'text-green-500 bg-green-50 dark:bg-green-900/20' : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                   >
                     <Star className={`w-5 h-5 ${currentCard?.mastered ? 'fill-green-500' : ''}`} />
                   </button>
                   <button
                     onClick={() => deleteCard(currentCard?.id)}
-                    className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-gray-400 hover:text-red-500 transition-colors"
+                    className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-                <button onClick={nextCard} className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
-                  <ChevronRight className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <button onClick={nextCard} className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                  <ChevronRight className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                 </button>
               </div>
             )}
@@ -492,11 +497,11 @@ const Flashcards = () => {
         </>
       ) : (
         <div className="text-center py-16">
-          <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Layers className="w-10 h-10 text-gray-400" />
+          <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Layers className="w-10 h-10 text-slate-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No cards in this deck</h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-4">Add some flashcards to start studying</p>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No cards in this deck</h3>
+          <p className="text-slate-500 dark:text-slate-400 mb-4">Add some flashcards to start studying</p>
           <Button onClick={() => setIsAddingCard(true)} icon={Plus}>Add First Card</Button>
         </div>
       )}

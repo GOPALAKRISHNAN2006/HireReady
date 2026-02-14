@@ -30,9 +30,9 @@ const MarkdownText = ({ text }) => {
     // Italic
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
     // Inline code
-    html = html.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono">$1</code>')
+    html = html.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 bg-slate-100 dark:bg-slate-700 rounded text-xs font-mono">$1</code>')
     // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-primary-500 underline">$1</a>')
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="text-indigo-500 underline">$1</a>')
     return html
   }
 
@@ -52,7 +52,7 @@ const MarkdownText = ({ text }) => {
   lines.forEach((line, i) => {
     if (line.startsWith('```')) {
       if (inCodeBlock) {
-        elements.push(<pre key={`code-${i}`} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
+        elements.push(<pre key={`code-${i}`} className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
         codeLines = []
         inCodeBlock = false
       } else {
@@ -86,7 +86,7 @@ const MarkdownText = ({ text }) => {
   })
   flushList()
   if (inCodeBlock && codeLines.length) {
-    elements.push(<pre key="code-end" className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
+    elements.push(<pre key="code-end" className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 my-2 overflow-x-auto text-xs font-mono"><code>{codeLines.join('\n')}</code></pre>)
   }
 
   return <div className="space-y-0.5">{elements}</div>
@@ -296,9 +296,9 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
 
   return (
     <div className={`fixed bottom-6 right-6 z-50 ${isMinimized ? 'w-72' : 'w-96'} transition-all duration-300`}>
-      <div className="bg-white dark:bg-[#0d1526] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col max-h-[600px]">
+      <div className="bg-white dark:bg-[#0d1526] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col max-h-[600px]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary-600 to-purple-600 p-4 text-white flex-shrink-0">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -337,7 +337,7 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
           <>
             {/* Messages */}
             <div 
-              className="flex-1 min-h-[300px] max-h-[350px] overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-[#0a0f1a]"
+              className="flex-1 min-h-[300px] max-h-[350px] overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-[#0a0f1a]"
               style={{ overflowY: 'scroll' }}
             >
               {messages.map((message) => (
@@ -348,15 +348,15 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                   <div className={`flex items-start gap-2 max-w-[85%] ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.type === 'user' 
-                        ? 'bg-primary-600 text-white' 
+                        ? 'bg-indigo-600 text-white' 
                         : 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
                     }`}>
                       {message.type === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                     </div>
                     <div className={`rounded-2xl px-4 py-3 ${
                       message.type === 'user'
-                        ? 'bg-primary-600 text-white rounded-tr-sm'
-                        : 'bg-white dark:bg-[#151d2e] border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-tl-sm shadow-sm'
+                        ? 'bg-indigo-600 text-white rounded-tr-sm'
+                        : 'bg-white dark:bg-[#151d2e] border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-tl-sm shadow-sm'
                     }`}>
                       {message.type === 'bot' ? (
                         <MarkdownText text={message.text} />
@@ -365,17 +365,17 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                       )}
                       <div className="flex items-center justify-between mt-1">
                         <span className={`text-xs ${
-                          message.type === 'user' ? 'text-primary-200' : 'text-gray-400'
+                          message.type === 'user' ? 'text-indigo-200' : 'text-slate-400'
                         }`}>
                           {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                         {message.type === 'bot' && message.id !== 1 && (
                           <button
                             onClick={() => copyMessage(message.text, message.id)}
-                            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors ml-2"
+                            className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors ml-2"
                             title="Copy response"
                           >
-                            {copiedId === message.id ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3 text-gray-400" />}
+                            {copiedId === message.id ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3 text-slate-400" />}
                           </button>
                         )}
                       </div>
@@ -390,11 +390,11 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                       <Bot className="w-4 h-4" />
                     </div>
-                    <div className="bg-white dark:bg-[#151d2e] border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                    <div className="bg-white dark:bg-[#151d2e] border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
                       <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     </div>
                   </div>
@@ -406,14 +406,14 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
 
             {/* Quick Actions */}
             {messages.length <= 2 && (
-              <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-700 bg-white dark:bg-[#0d1526] flex-shrink-0">
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Quick actions:</p>
+              <div className="px-4 py-2 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-[#0d1526] flex-shrink-0">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">Quick actions:</p>
                 <div className="flex flex-wrap gap-2">
                   {quickActions.map((action, index) => (
                     <button
                       key={index}
                       onClick={() => handleQuickAction(action.query)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-[#151d2e] hover:bg-primary-50 dark:hover:bg-primary-900/30 hover:text-primary-600 rounded-full text-xs font-medium text-gray-600 dark:text-gray-300 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-[#151d2e] hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 rounded-full text-xs font-medium text-slate-600 dark:text-slate-300 transition-colors"
                     >
                       <action.icon className="w-3 h-3" />
                       {action.label}
@@ -424,7 +424,7 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1526] flex-shrink-0">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0d1526] flex-shrink-0">
               <div className="flex items-center gap-2">
                 {hasSpeechAPI && (
                   <button
@@ -432,7 +432,7 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                     className={`p-2.5 rounded-xl transition-colors ${
                       isListening 
                         ? 'bg-red-100 dark:bg-red-900/30 text-red-600 animate-pulse' 
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400'
+                        : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400'
                     }`}
                     title={isListening ? 'Stop listening' : 'Voice input'}
                   >
@@ -446,12 +446,12 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={isListening ? 'Listening...' : 'Type your question...'}
-                  className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm bg-white dark:bg-[#151d2e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
+                  className="flex-1 px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm bg-white dark:bg-[#151d2e] text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                 />
                 <button
                   onClick={handleSend}
                   disabled={!inputValue.trim() || isTyping}
-                  className="p-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {isTyping ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

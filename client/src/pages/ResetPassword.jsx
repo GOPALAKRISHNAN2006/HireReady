@@ -76,10 +76,10 @@ const ResetPassword = () => {
         {/* Logo for mobile */}
         <div className="lg:hidden mb-8 text-center">
           <Link to="/" className="inline-flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Brain className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">HireReady</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">HireReady</span>
           </Link>
         </div>
 
@@ -87,8 +87,8 @@ const ResetPassword = () => {
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Password reset successful!</h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Password reset successful!</h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-8">
             Your password has been changed. You can now sign in with your new password.
           </p>
           
@@ -109,10 +109,10 @@ const ResetPassword = () => {
         {/* Logo for mobile */}
         <div className="lg:hidden mb-8 text-center">
           <Link to="/" className="inline-flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Brain className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">HireReady</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
           </Link>
         </div>
 
@@ -120,8 +120,8 @@ const ResetPassword = () => {
           <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Reset link expired</h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Reset link expired</h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-8">
             {errorMessage}
           </p>
           
@@ -149,16 +149,16 @@ const ResetPassword = () => {
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
             <Brain className="w-7 h-7 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
         </Link>
       </div>
 
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">Set new password</h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">Your new password must be different from previous passwords</p>
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Set new password</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">Your new password must be different from previous passwords</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -187,9 +187,9 @@ const ResetPassword = () => {
         />
 
         {/* Password requirements hint */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password must contain:</p>
-          <ul className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password must contain:</p>
+          <ul className="text-sm text-slate-500 dark:text-slate-400 space-y-1">
             <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-600' : ''}`}>
               <span className="w-4 h-4 mr-2">{formData.password.length >= 8 ? '✓' : '○'}</span>
               At least 8 characters
@@ -223,7 +223,7 @@ const ResetPassword = () => {
       <div className="mt-8 text-center">
         <Link 
           to="/login" 
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to sign in

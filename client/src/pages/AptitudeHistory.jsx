@@ -97,8 +97,8 @@ const AptitudeHistory = () => {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Test History</h1>
-            <p className="text-gray-600 dark:text-gray-400">View all your past aptitude tests</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Test History</h1>
+            <p className="text-slate-600 dark:text-slate-400">View all your past aptitude tests</p>
           </div>
         </div>
       </div>
@@ -107,12 +107,12 @@ const AptitudeHistory = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-              <Target className="w-6 h-6 text-primary-600" />
+            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+              <Target className="w-6 h-6 text-indigo-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Total Tests</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalTests}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Total Tests</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">{totalTests}</p>
             </div>
           </div>
         </Card>
@@ -122,8 +122,8 @@ const AptitudeHistory = () => {
               <TrendingUp className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Average Score</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{avgScore}%</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Average Score</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">{avgScore}%</p>
             </div>
           </div>
         </Card>
@@ -133,8 +133,8 @@ const AptitudeHistory = () => {
               <Trophy className="w-6 h-6 text-yellow-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Best Score</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{bestScore}%</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Best Score</p>
+              <p className="text-2xl font-bold text-slate-900 dark:text-white">{bestScore}%</p>
             </div>
           </div>
         </Card>
@@ -143,8 +143,8 @@ const AptitudeHistory = () => {
       {/* Filter */}
       <Card className="p-4">
         <div className="flex items-center gap-4">
-          <Filter className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by category:</span>
+          <Filter className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Filter by category:</span>
           <div className="flex flex-wrap gap-2">
             {categories.map(cat => (
               <button
@@ -155,8 +155,8 @@ const AptitudeHistory = () => {
                 }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   category === cat.id
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200'
+                    ? 'bg-indigo-500 text-white'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
                 }`}
               >
                 {cat.name}
@@ -169,9 +169,9 @@ const AptitudeHistory = () => {
       {/* Test List */}
       {tests.length === 0 ? (
         <Card className="p-12 text-center">
-          <Trophy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No tests found</h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">
+          <Trophy className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No tests found</h3>
+          <p className="text-slate-500 dark:text-slate-400 mb-6">
             {category !== 'all' 
               ? `You haven't completed any ${category} tests yet.`
               : "You haven't completed any aptitude tests yet."}
@@ -190,10 +190,10 @@ const AptitudeHistory = () => {
                     <span className="text-xl font-bold">{getGrade(test.percentage)}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white capitalize">
+                    <h3 className="font-semibold text-slate-900 dark:text-white capitalize">
                       {test.category?.replace('-', ' ')} Test
                     </h3>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-4 mt-1 text-sm text-slate-500 dark:text-slate-400">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {new Date(test.completedAt).toLocaleDateString()}
@@ -208,8 +208,8 @@ const AptitudeHistory = () => {
                 
                 <div className="flex items-center gap-6">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{test.percentage}%</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-2xl font-bold text-slate-900 dark:text-white">{test.percentage}%</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       {test.correctAnswers}/{test.totalQuestions} correct
                     </p>
                   </div>
@@ -238,7 +238,7 @@ const AptitudeHistory = () => {
             <ChevronLeft className="w-4 h-4 mr-1" />
             Previous
           </Button>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-sm text-slate-600 dark:text-slate-400">
             Page {page} of {pagination.pages}
           </span>
           <Button

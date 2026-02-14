@@ -28,7 +28,7 @@ import {
 
 const StatCard = ({ icon: Icon, label, value, subtitle, trend, color = 'primary' }) => {
   const colors = {
-    primary: 'from-primary-500 to-purple-500',
+    primary: 'from-indigo-500 to-purple-500',
     green: 'from-green-500 to-emerald-500',
     blue: 'from-blue-500 to-cyan-500',
     orange: 'from-orange-500 to-amber-500',
@@ -37,23 +37,23 @@ const StatCard = ({ icon: Icon, label, value, subtitle, trend, color = 'primary'
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700/50 hover:shadow-lg transition-all">
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700/50 hover:shadow-lg transition-all">
       <div className="flex items-start justify-between mb-3">
         <div className={`w-11 h-11 bg-gradient-to-br ${colors[color]} rounded-xl flex items-center justify-center`}>
           <Icon className="w-6 h-6 text-white" />
         </div>
         {trend !== undefined && trend !== null && (
           <div className={`flex items-center gap-1 text-sm font-medium ${
-            trend > 0 ? 'text-green-500' : trend < 0 ? 'text-red-500' : 'text-gray-400'
+            trend > 0 ? 'text-green-500' : trend < 0 ? 'text-red-500' : 'text-slate-400'
           }`}>
             {trend > 0 ? <ArrowUpRight className="w-4 h-4" /> : trend < 0 ? <ArrowDownRight className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
             {Math.abs(trend)}%
           </div>
         )}
       </div>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-      {subtitle && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{subtitle}</p>}
+      <p className="text-2xl font-bold text-slate-900 dark:text-white">{value}</p>
+      <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
+      {subtitle && <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{subtitle}</p>}
     </div>
   )
 }
@@ -61,7 +61,7 @@ const StatCard = ({ icon: Icon, label, value, subtitle, trend, color = 'primary'
 const ProgressBar = ({ label, value, max = 100, color = 'primary' }) => {
   const pct = Math.min(Math.round((value / max) * 100), 100)
   const colorMap = {
-    primary: 'bg-primary-500',
+    primary: 'bg-indigo-500',
     green: 'bg-green-500',
     blue: 'bg-blue-500',
     orange: 'bg-orange-500',
@@ -72,10 +72,10 @@ const ProgressBar = ({ label, value, max = 100, color = 'primary' }) => {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-        <span className="text-sm font-bold text-gray-900 dark:text-white">{pct}%</span>
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>
+        <span className="text-sm font-bold text-slate-900 dark:text-white">{pct}%</span>
       </div>
-      <div className="h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-2.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
         <div 
           className={`h-full ${colorMap[color] || colorMap.primary} rounded-full transition-all duration-1000`}
           style={{ width: `${pct}%` }}
@@ -158,7 +158,7 @@ const ProgressReport = () => {
     if (score >= 75) return { label: 'Advanced', color: 'text-blue-500', icon: Star }
     if (score >= 60) return { label: 'Intermediate', color: 'text-green-500', icon: Target }
     if (score >= 40) return { label: 'Beginner', color: 'text-orange-500', icon: BookOpen }
-    return { label: 'Getting Started', color: 'text-gray-500', icon: Zap }
+    return { label: 'Getting Started', color: 'text-slate-500', icon: Zap }
   }
 
   const performance = getPerformanceLevel(avgScore)
@@ -178,21 +178,18 @@ const ProgressReport = () => {
   const recentInterviews = [...interviews].sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)).slice(0, 10).reverse()
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-white" />
-            </div>
-            Progress Report
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Track your interview preparation journey</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <performance.icon className={`w-6 h-6 ${performance.color}`} />
-          <Badge variant="primary" className="text-sm px-3 py-1">{performance.label} Level</Badge>
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 p-8 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+        <div className="relative">
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <BarChart3 className="w-4 h-4 mr-2" />
+            Reports
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Progress Report</h1>
+          <p className="text-white/70 max-w-lg">Detailed analysis of your learning journey</p>
         </div>
       </div>
 
@@ -211,7 +208,7 @@ const ProgressReport = () => {
         <Card>
           <Card.Header>
             <Card.Title className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary-500" />
+              <TrendingUp className="w-5 h-5 text-indigo-500" />
               Score Trend
             </Card.Title>
             <Card.Description>Your last {recentInterviews.length} interview scores</Card.Description>
@@ -226,7 +223,7 @@ const ProgressReport = () => {
                     const height = Math.max((score / 100) * 100, 5)
                     return (
                       <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{Math.round(score)}%</span>
+                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{Math.round(score)}%</span>
                         <div
                           className={`w-full rounded-t-lg transition-all ${
                             score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-blue-500' : score >= 40 ? 'bg-orange-500' : 'bg-red-500'
@@ -237,7 +234,7 @@ const ProgressReport = () => {
                     )
                   })}
                 </div>
-                <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
+                <div className="flex items-center justify-center gap-4 text-xs text-slate-500">
                   <span className="flex items-center gap-1"><div className="w-3 h-3 bg-green-500 rounded" /> 80%+</span>
                   <span className="flex items-center gap-1"><div className="w-3 h-3 bg-blue-500 rounded" /> 60-79%</span>
                   <span className="flex items-center gap-1"><div className="w-3 h-3 bg-orange-500 rounded" /> 40-59%</span>
@@ -245,7 +242,7 @@ const ProgressReport = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                 <BarChart3 className="w-10 h-10 mx-auto mb-2 opacity-50" />
                 <p>Complete some interviews to see your score trend</p>
               </div>
@@ -266,10 +263,10 @@ const ProgressReport = () => {
             <div className="space-y-3">
               {weekActivity.map(({ day, count }) => (
                 <div key={day} className="flex items-center gap-3">
-                  <span className="w-10 text-sm font-medium text-gray-600 dark:text-gray-400">{day}</span>
-                  <div className="flex-1 h-7 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                  <span className="w-10 text-sm font-medium text-slate-600 dark:text-slate-400">{day}</span>
+                  <div className="flex-1 h-7 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-primary-500 to-purple-500 rounded-lg flex items-center justify-end pr-2 transition-all"
+                      className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-end pr-2 transition-all"
                       style={{ width: `${Math.max((count / maxWeekCount) * 100, count > 0 ? 15 : 0)}%` }}
                     >
                       {count > 0 && <span className="text-xs font-bold text-white">{count}</span>}
@@ -303,7 +300,7 @@ const ProgressReport = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                 <Brain className="w-10 h-10 mx-auto mb-2 opacity-50" />
                 <p>Complete interviews in different categories</p>
               </div>
@@ -336,7 +333,7 @@ const ProgressReport = () => {
                 })}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                 <Zap className="w-10 h-10 mx-auto mb-2 opacity-50" />
                 <p>Use Skill Radar to track your abilities</p>
               </div>
@@ -356,11 +353,11 @@ const ProgressReport = () => {
         <Card.Content>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {totalInterviews === 0 && (
-              <div className="flex items-start gap-3 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-700/50">
-                <Target className="w-6 h-6 text-primary-500 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-200 dark:border-indigo-700/50">
+                <Target className="w-6 h-6 text-indigo-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Start Practicing</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Take your first mock interview to begin tracking your progress.</p>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Start Practicing</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Take your first mock interview to begin tracking your progress.</p>
                 </div>
               </div>
             )}
@@ -368,8 +365,8 @@ const ProgressReport = () => {
               <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl border border-orange-200 dark:border-orange-700/50">
                 <BookOpen className="w-6 h-6 text-orange-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Review Fundamentals</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Your average score has room to grow. Check Study Materials for core concepts.</p>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Review Fundamentals</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Your average score has room to grow. Check Study Materials for core concepts.</p>
                 </div>
               </div>
             )}
@@ -377,8 +374,8 @@ const ProgressReport = () => {
               <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-700/50">
                 <Flame className="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Build Consistency</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Start a daily streak! Even 15 minutes of practice keeps skills sharp.</p>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Build Consistency</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Start a daily streak! Even 15 minutes of practice keeps skills sharp.</p>
                 </div>
               </div>
             )}
@@ -386,23 +383,23 @@ const ProgressReport = () => {
               <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-700/50">
                 <Trophy className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Great Performance!</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">You&apos;re doing excellent. Try harder difficulty or System Design questions.</p>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Great Performance!</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">You&apos;re doing excellent. Try harder difficulty or System Design questions.</p>
                 </div>
               </div>
             )}
             <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-700/50">
               <Brain className="w-6 h-6 text-blue-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">Diversify Practice</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Try different categories: DSA, behavioral, system design for well-rounded prep.</p>
+                <h4 className="font-semibold text-slate-900 dark:text-white">Diversify Practice</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Try different categories: DSA, behavioral, system design for well-rounded prep.</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-700/50">
               <Zap className="w-6 h-6 text-purple-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">Daily Challenges</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Complete daily challenges to earn points and build momentum.</p>
+                <h4 className="font-semibold text-slate-900 dark:text-white">Daily Challenges</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Complete daily challenges to earn points and build momentum.</p>
               </div>
             </div>
           </div>

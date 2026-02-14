@@ -11,14 +11,14 @@ export default function Accordion({ items, allowMultiple = false, className = ''
   }
 
   return (
-    <div className={`divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 ${className}`}>
+    <div className={`divide-y divide-slate-200 dark:divide-slate-700 rounded-lg border border-slate-200 dark:border-slate-700 ${className}`}>
       {items.map((item, idx) => {
         const isOpen = openIndexes.includes(idx)
         return (
           <div key={idx}>
             <button
               onClick={() => toggle(idx)}
-              className="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               <span className="flex items-center gap-2">
                 {item.icon && <span>{item.icon}</span>}
@@ -34,7 +34,7 @@ export default function Accordion({ items, allowMultiple = false, className = ''
             <div
               className={`overflow-hidden transition-all duration-200 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
             >
-              <div className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+              <div className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
                 {item.content}
               </div>
             </div>

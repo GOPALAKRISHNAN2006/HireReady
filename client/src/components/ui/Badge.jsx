@@ -12,8 +12,8 @@ const Badge = ({
   ...props
 }) => {
   const variants = {
-    default: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
-    primary: 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25',
+    default: 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200',
+    primary: 'bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/25',
     success: 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-500/25',
     warning: 'bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg shadow-orange-500/25',
     danger: 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/25',
@@ -22,7 +22,7 @@ const Badge = ({
     neon: 'bg-black/80 text-neon-green border border-neon-green/50 shadow-lg shadow-neon-green/20',
     glass: 'bg-white/10 backdrop-blur-md text-white border border-white/20',
     outline: 'bg-transparent border-2 border-current',
-    soft: 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300',
+    soft: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300',
     'soft-success': 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     'soft-warning': 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
     'soft-danger': 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300',
@@ -38,7 +38,7 @@ const Badge = ({
   }
 
   const glowStyles = glow ? {
-    primary: 'animate-pulse shadow-lg shadow-primary-500/50',
+    primary: 'animate-pulse shadow-lg shadow-indigo-500/50',
     success: 'animate-pulse shadow-lg shadow-green-500/50',
     warning: 'animate-pulse shadow-lg shadow-orange-500/50',
     danger: 'animate-pulse shadow-lg shadow-red-500/50',
@@ -48,7 +48,7 @@ const Badge = ({
   }[variant] || '' : ''
 
   const dotColors = {
-    default: 'bg-gray-500',
+    default: 'bg-slate-500',
     primary: 'bg-white',
     success: 'bg-white',
     warning: 'bg-white',
@@ -57,7 +57,7 @@ const Badge = ({
     purple: 'bg-white',
     neon: 'bg-neon-green',
     glass: 'bg-white',
-    soft: 'bg-primary-500',
+    soft: 'bg-indigo-500',
     'soft-success': 'bg-emerald-500',
     'soft-warning': 'bg-amber-500',
     'soft-danger': 'bg-red-500',

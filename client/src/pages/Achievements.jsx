@@ -56,7 +56,7 @@ const Achievements = () => {
   const level = useMemo(() => {
     const xp = stats.totalXP
     const levels = [
-      { name: 'Beginner', minXP: 0, emoji: '🌱', color: 'from-gray-400 to-gray-500' },
+      { name: 'Beginner', minXP: 0, emoji: '🌱', color: 'from-slate-400 to-slate-500' },
       { name: 'Learner', minXP: 200, emoji: '📚', color: 'from-blue-400 to-blue-600' },
       { name: 'Achiever', minXP: 500, emoji: '⭐', color: 'from-purple-400 to-purple-600' },
       { name: 'Expert', minXP: 1000, emoji: '🏆', color: 'from-amber-400 to-orange-500' },
@@ -94,11 +94,11 @@ const Achievements = () => {
 
   const getRarityColor = (rarity) => {
     switch (rarity) {
-      case 'common': return 'from-gray-400 to-gray-500'
+      case 'common': return 'from-slate-400 to-slate-500'
       case 'rare': return 'from-blue-400 to-blue-600'
       case 'epic': return 'from-purple-400 to-purple-600'
       case 'legendary': return 'from-yellow-400 to-orange-500'
-      default: return 'from-gray-400 to-gray-500'
+      default: return 'from-slate-400 to-slate-500'
     }
   }
 
@@ -113,40 +113,18 @@ const Achievements = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-8 text-white">
+    <div className="space-y-8">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
-        <div className="absolute top-4 right-4 opacity-10">
-          <Award className="w-32 h-32" />
-        </div>
-        
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
-          <div className="inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-3 backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 mr-1" />
-            Achievement Hall
+          <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
+            <Award className="w-4 h-4 mr-2" />
+            Your Milestones
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6">Achievements</h1>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/30 transition-colors">
-              <p className="text-3xl font-bold">{stats.unlockedAchievements}</p>
-              <p className="text-sm text-amber-100">Unlocked</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/30 transition-colors">
-              <p className="text-3xl font-bold">{stats.totalAchievements}</p>
-              <p className="text-sm text-amber-100">Total</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/30 transition-colors">
-              <p className="text-3xl font-bold">{stats.totalXP}</p>
-              <p className="text-sm text-amber-100">XP Earned</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/30 transition-colors">
-              <p className="text-3xl font-bold">{stats.totalAchievements > 0 ? Math.round((stats.unlockedAchievements / stats.totalAchievements) * 100) : 0}%</p>
-              <p className="text-sm text-amber-100">Completion</p>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold mb-2">Achievements</h1>
+          <p className="text-white/70 max-w-lg">Track your progress and unlock badges as you practice</p>
         </div>
       </div>
 
@@ -160,23 +138,23 @@ const Achievements = () => {
               <span className="text-xs font-bold text-white/80">Lv.{level.number}</span>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Current Level</p>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{level.current.name}</h2>
-              <p className="text-sm text-primary-600 dark:text-primary-400 font-medium">{stats.totalXP} XP</p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Current Level</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{level.current.name}</h2>
+              <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{stats.totalXP} XP</p>
             </div>
           </div>
 
           {/* Progress */}
           <div className="flex-1">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
                 {level.next ? `${Math.round(level.progress)}% to ${level.next.name} ${level.next.emoji}` : 'Max Level Reached!'}
               </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
                 {level.next ? `${level.next.minXP - stats.totalXP} XP needed` : ''}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-4 overflow-hidden">
               <div 
                 className={`h-full bg-gradient-to-r ${level.current.color} rounded-full transition-all duration-700 ease-out relative`}
                 style={{ width: `${Math.min(level.progress, 100)}%` }}
@@ -195,17 +173,17 @@ const Achievements = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
-            <h3 className="font-bold text-gray-900 dark:text-white">Recently Unlocked</h3>
+            <h3 className="font-bold text-slate-900 dark:text-white">Recently Unlocked</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {recentlyUnlocked.map(a => (
-              <div key={a.id} className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm">
+              <div key={a.id} className="flex items-center gap-3 bg-white dark:bg-slate-800 rounded-xl p-3 shadow-sm">
                 <div className={`w-12 h-12 bg-gradient-to-br ${getRarityColor(a.rarity)} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
                   <span className="text-xl">{a.icon}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{a.name}</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                  <h4 className="font-semibold text-slate-900 dark:text-white text-sm truncate">{a.name}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {new Date(a.unlockedAt).toLocaleDateString()}
                   </p>
@@ -234,8 +212,8 @@ const Achievements = () => {
             onClick={() => setFilter(f.value)}
             className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${
               filter === f.value
-                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
-                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600'
             }`}
           >
             {f.label}
@@ -248,9 +226,9 @@ const Achievements = () => {
         <LoadingCard message="Loading achievements..." />
       ) : achievements.length === 0 ? (
         <Card className="text-center py-16">
-          <Award className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">No Achievements Yet</h3>
-          <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+          <Award className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">No Achievements Yet</h3>
+          <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
             Start completing interviews to unlock achievements and earn XP!
           </p>
         </Card>
@@ -278,7 +256,7 @@ const Achievements = () => {
               
               {!achievement.unlocked && (
                 <div className="absolute top-3 right-3">
-                  <Lock className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                  <Lock className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                 </div>
               )}
               
@@ -289,32 +267,32 @@ const Achievements = () => {
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2 mb-1">
-                    <h3 className="font-bold text-gray-900 dark:text-gray-100 truncate">{achievement.name}</h3>
+                    <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate">{achievement.name}</h3>
                     <Badge variant={getRarityBadge(achievement.rarity)} size="sm">
                       {achievement.rarity}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{achievement.description}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">{achievement.description}</p>
                   
                   <div className="flex items-center justify-between">
                     <div className="flex-1 mr-4">
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
                         <div 
                           className={`h-full bg-gradient-to-r ${getRarityColor(achievement.rarity)} rounded-full transition-all duration-500`}
                           style={{ width: `${achievement.progress}%` }}
                         />
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{achievement.progress}%</span>
+                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{achievement.progress}%</span>
                   </div>
                   
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center gap-1">
+                    <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium flex items-center gap-1">
                       <Zap className="w-3 h-3" />
                       +{achievement.xp} XP
                     </p>
                     {achievement.unlocked && achievement.unlockedAt && (
-                      <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                      <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {new Date(achievement.unlockedAt).toLocaleDateString()}
                       </p>

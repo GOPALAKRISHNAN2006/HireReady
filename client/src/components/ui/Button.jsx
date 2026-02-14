@@ -16,14 +16,14 @@ const Button = forwardRef(({
   ...props
 }, ref) => {
   const variants = {
-    primary: `bg-gradient-to-r from-primary-600 via-primary-500 to-indigo-500 text-white 
-              hover:from-primary-700 hover:via-primary-600 hover:to-indigo-600 
-              focus:ring-primary-500 shadow-lg shadow-primary-500/30 
-              hover:shadow-xl hover:shadow-primary-500/50
+    primary: `bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-500 text-white 
+              hover:from-indigo-700 hover:via-indigo-600 hover:to-indigo-600 
+              focus:ring-indigo-500 shadow-lg shadow-indigo-500/30 
+              hover:shadow-xl hover:shadow-indigo-500/50
               before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent 
               before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-700`,
-    secondary: `bg-white text-gray-900 hover:bg-gray-50 focus:ring-gray-400 
-                border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300`,
+    secondary: `bg-white text-slate-900 hover:bg-slate-50 focus:ring-slate-400 
+                border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300`,
     success: `bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 text-white 
               hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 
               focus:ring-green-500 shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/50`,
@@ -33,14 +33,14 @@ const Button = forwardRef(({
     warning: `bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 text-white 
               hover:from-amber-600 hover:via-orange-600 hover:to-yellow-600 
               focus:ring-amber-400 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/50`,
-    outline: `border-2 border-primary-500 text-primary-600 bg-transparent
-              hover:bg-gradient-to-r hover:from-primary-600 hover:to-indigo-600 hover:text-white hover:border-transparent 
-              focus:ring-primary-500 hover:shadow-lg hover:shadow-primary-500/30`,
-    ghost: `text-gray-600 hover:bg-gray-100/80 hover:text-gray-900 focus:ring-gray-300 backdrop-blur-sm`,
+    outline: `border-2 border-indigo-500 text-indigo-600 bg-transparent
+              hover:bg-gradient-to-r hover:from-indigo-600 hover:to-indigo-600 hover:text-white hover:border-transparent 
+              focus:ring-indigo-500 hover:shadow-lg hover:shadow-indigo-500/30`,
+    ghost: `text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 focus:ring-slate-300 backdrop-blur-sm`,
     glass: `bg-white/20 backdrop-blur-xl text-white border border-white/30 
             hover:bg-white/30 focus:ring-white/50 shadow-lg`,
-    neon: `bg-transparent border-2 border-primary-400 text-primary-400 
-           hover:bg-primary-400/10 hover:shadow-neon focus:ring-primary-400
+    neon: `bg-transparent border-2 border-indigo-400 text-indigo-400 
+           hover:bg-indigo-400/10 hover:shadow-neon focus:ring-indigo-400
            relative overflow-hidden`,
   }
 

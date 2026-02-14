@@ -286,7 +286,7 @@ const AdminLayout = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 space-y-5 overflow-y-auto h-[calc(100%-160px)]">
+        <nav className="p-3 space-y-5 overflow-y-auto h-[calc(100%-64px)] lg:h-full">
           {navGroups.map((group) => (
             <div key={group.label}>
               {!sidebarCollapsed && (
