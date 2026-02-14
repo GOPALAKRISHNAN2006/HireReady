@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useSettingsStore } from '../store/settingsStore'
@@ -19,12 +20,15 @@ import {
   Star,
   Sun,
   Moon,
-  Monitor
+  Monitor,
+  Menu,
+  X
 } from 'lucide-react'
 
 const Home = () => {
   const { isAuthenticated } = useAuthStore()
   const { theme, setTheme } = useSettingsStore()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
   const toggleTheme = () => {
     const cycle = { light: 'dark', dark: 'system', system: 'light' }
@@ -111,26 +115,63 @@ const Home = () => {
               </button>
 
               {isAuthenticated ? (
-                <Link to="/dashboard">
+                <Link to="/dashboard" className="hidden sm:block">
                   <Button>Go to Dashboard</Button>
                 </Link>
               ) : (
                 <>
-                  <Link to="/login">
+                  <Link to="/login" className="hidden sm:block">
                     <Button variant="ghost">Sign In</Button>
                   </Link>
-                  <Link to="/signup">
+                  <Link to="/signup" className="hidden sm:block">
                     <Button>Get Started</Button>
                   </Link>
                 </>
               )}
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-indigo-500/10 transition-all"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6 text-slate-600 dark:text-slate-400" />
+                ) : (
+                  <Menu className="w-6 h-6 text-slate-600 dark:text-slate-400" />
+                )}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu Dropdown */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-slate-100 dark:border-slate-700/50 py-4 space-y-3 animate-slide-down">
+              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50">Features</a>
+              <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50">How It Works</a>
+              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50">Why HireReady</a>
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-700/50 px-4 space-y-2">
+                {isAuthenticated ? (
+                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full">Go to Dashboard</Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                      <Button variant="ghost" className="w-full">Sign In</Button>
+                    </Link>
+                    <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full">Get Started</Button>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-20 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
         {/* Decorative elements */}
         <div className="absolute top-40 left-10 w-72 h-72 bg-indigo-400/30 dark:bg-indigo-500/15 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute top-60 right-10 w-96 h-96 bg-purple-400/20 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
@@ -143,7 +184,7 @@ const Home = () => {
                 <Sparkles className="w-4 h-4 mr-2 text-indigo-500 dark:text-indigo-400" />
                 AI-Powered Interview Preparation
               </div>
-              <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
                 Ace Your Next Interview with{' '}
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">AI-Powered</span> Practice
               </h1>
@@ -228,7 +269,7 @@ const Home = () => {
               <Star className="w-4 h-4 mr-2" />
               Premium Features
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
               Everything You Need to{' '}
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Succeed</span>
             </h2>
@@ -300,7 +341,7 @@ const Home = () => {
               <Users className="w-4 h-4 mr-2" />
               Community
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
               Built for <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Job Seekers</span>
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
@@ -341,7 +382,7 @@ const Home = () => {
               <Sparkles className="w-4 h-4 mr-2 text-yellow-400" />
               Unique Features
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
               What Makes Us <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500">Different</span>
             </h2>
             <p className="text-xl text-purple-200 max-w-2xl mx-auto">
@@ -379,7 +420,7 @@ const Home = () => {
           <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-semibold mb-6 backdrop-blur-sm">
             🚀 Start your journey today
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             Ready to Ace Your Interview?
           </h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
@@ -403,7 +444,7 @@ const Home = () => {
       {/* Footer */}
       <footer className="bg-slate-900 dark:bg-[#060912] text-slate-400 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-12">
             <div className="md:col-span-2">
               <Link to="/" className="flex items-center space-x-3 mb-6">
                 <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">

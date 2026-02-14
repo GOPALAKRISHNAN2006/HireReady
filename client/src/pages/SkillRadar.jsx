@@ -214,7 +214,7 @@ const SkillRadar = () => {
               <Radar className="w-4 h-4 mr-2" />
               Skill Assessment
             </div>
-            <h1 className="text-4xl font-bold mb-3">Skill Radar</h1>
+            <h1 className="text-2xl md:text-4xl font-bold mb-3">Skill Radar</h1>
             <p className="text-blue-100 text-lg max-w-xl">
               Visualize your technical skills and track your improvement over time.
             </p>
@@ -222,9 +222,9 @@ const SkillRadar = () => {
 
           {/* Overall Score */}
           <div className="relative">
-            <div className="w-40 h-40 rounded-full bg-white/10 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center">
+            <div className="w-28 h-28 md:w-40 md:h-40 rounded-full bg-white/10 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-5xl font-bold">{overallScore}</div>
+                <div className="text-3xl md:text-5xl font-bold">{overallScore}</div>
                 <div className="text-sm text-blue-100">Overall Score</div>
               </div>
             </div>
@@ -260,8 +260,8 @@ const SkillRadar = () => {
               </div>
             </Card.Header>
             <Card.Content>
-              <div className="flex justify-center">
-                <canvas ref={canvasRef} width={400} height={400} />
+              <div className="flex justify-center overflow-hidden">
+                <canvas ref={canvasRef} width={400} height={400} className="max-w-full h-auto" />
               </div>
             </Card.Content>
           </Card>
@@ -321,7 +321,7 @@ const SkillRadar = () => {
           </Card>
 
           {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button variant="outline" icon={Download} className="flex-1" onClick={() => {
               const canvas = canvasRef.current
               if (!canvas) return

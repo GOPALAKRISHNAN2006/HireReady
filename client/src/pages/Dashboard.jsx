@@ -187,7 +187,7 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Welcome Section — Dynamic Time-of-Day */}
-      <div className={`relative overflow-hidden bg-gradient-to-r ${greeting.color} rounded-3xl p-8 text-white shadow-2xl`}>
+      <div className={`relative overflow-hidden bg-gradient-to-r ${greeting.color} rounded-3xl p-5 md:p-8 text-white shadow-2xl`}>
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />

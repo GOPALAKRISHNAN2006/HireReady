@@ -207,7 +207,7 @@ const MockInterviewLab = () => {
               <Terminal className="w-4 h-4 mr-2" />
               Interactive Lab Environment
             </div>
-            <h1 className="text-4xl font-bold mb-3 flex items-center gap-3">
+            <h1 className="text-2xl md:text-4xl font-bold mb-3 flex items-center gap-3">
               Mock Interview Lab
               <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
             </h1>
@@ -217,7 +217,7 @@ const MockInterviewLab = () => {
           </div>
 
           {/* Quick Stats */}
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
               <div className="text-2xl font-bold">{statsData?.totalInterviews || 0}</div>
               <div className="text-sm text-purple-200">Sessions</div>

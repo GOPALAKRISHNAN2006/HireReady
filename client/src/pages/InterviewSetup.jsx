@@ -326,11 +326,11 @@ const InterviewSetup = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                   <Timer className="w-6 h-6 text-white" />
                 </div>
-                <div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <p className="text-sm font-medium text-amber-700 dark:text-amber-300">Estimated Session Time</p>
                   <p className="text-2xl font-bold text-slate-900 dark:text-white">{estimatedTime} minutes</p>
                 </div>
-                <div className="ml-auto text-right">
+                <div className="sm:ml-auto sm:text-right mt-2 sm:mt-0">
                   <p className="text-xs text-slate-500 dark:text-slate-400">Based on {localSettings.questionCount} {localSettings.difficulty} questions</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">~{Math.round(estimatedTime / localSettings.questionCount)} min per question</p>
                 </div>

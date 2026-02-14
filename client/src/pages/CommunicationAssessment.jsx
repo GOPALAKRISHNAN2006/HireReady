@@ -143,7 +143,7 @@ const CommunicationAssessment = () => {
             <Mic className="w-4 h-4 mr-2" />
             Communication Skills
           </div>
-          <h1 className="text-4xl font-bold mb-3">Communication Assessment</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-3">Communication Assessment</h1>
           <p className="text-purple-100 text-lg max-w-2xl">
             Track and improve your verbal communication skills with AI-powered analysis.
           </p>
@@ -169,7 +169,7 @@ const CommunicationAssessment = () => {
           </div>
 
           {/* CTA Button */}
-          <div className="mt-6 flex gap-4">
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button 
               onClick={() => navigate('/communication/test')}
               className="bg-white text-purple-600 hover:bg-purple-50"
@@ -194,7 +194,7 @@ const CommunicationAssessment = () => {
           <BarChart3 className="w-6 h-6 text-indigo-500" />
           Skills Breakdown
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {skills.map((skill) => (
             <Card key={skill.name} className="text-center hover:shadow-lg transition-shadow">
               <div className={`w-12 h-12 mx-auto mb-3 bg-gradient-to-br ${skill.color} rounded-xl flex items-center justify-center shadow-lg`}>

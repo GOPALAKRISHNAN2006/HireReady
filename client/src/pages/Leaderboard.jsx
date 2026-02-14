@@ -173,10 +173,10 @@ const Leaderboard = () => {
       ) : (
       <>
       {/* Podium with height differences */}
-      <div className="flex items-end justify-center gap-4 px-4">
+      <div className="flex flex-col sm:flex-row items-center sm:items-end justify-center gap-4 px-4">
         {/* 2nd Place */}
         {leaderboardData[1] && (
-          <div className="flex-1 max-w-[200px]">
+          <div className="w-full sm:flex-1 max-w-[280px] sm:max-w-[200px] order-2 sm:order-1">
             <Card className="relative overflow-hidden text-center bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-600">
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-slate-300 to-slate-400" />
               <div className="p-4 pt-5">
@@ -196,7 +196,7 @@ const Leaderboard = () => {
                 </div>
               </div>
             </Card>
-            <div className="h-16 bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 rounded-b-xl mx-2 flex items-center justify-center">
+            <div className="h-16 bg-gradient-to-b from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 rounded-b-xl mx-2 hidden sm:flex items-center justify-center">
               <span className="text-2xl font-black text-slate-400 dark:text-slate-500">2</span>
             </div>
           </div>
@@ -204,7 +204,7 @@ const Leaderboard = () => {
         
         {/* 1st Place */}
         {leaderboardData[0] && (
-          <div className="flex-1 max-w-[220px]">
+          <div className="w-full sm:flex-1 max-w-[280px] sm:max-w-[220px] order-1 sm:order-2">
             <Card className="relative overflow-hidden text-center bg-gradient-to-b from-yellow-50 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30 border-yellow-300 dark:border-yellow-700 shadow-xl shadow-yellow-500/20">
               <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-400" />
               <div className="p-5 pt-6">
@@ -228,7 +228,7 @@ const Leaderboard = () => {
                 </div>
               </div>
             </Card>
-            <div className="h-24 bg-gradient-to-b from-yellow-300 to-amber-400 dark:from-yellow-700 dark:to-amber-800 rounded-b-xl mx-2 flex items-center justify-center">
+            <div className="h-24 bg-gradient-to-b from-yellow-300 to-amber-400 dark:from-yellow-700 dark:to-amber-800 rounded-b-xl mx-2 hidden sm:flex items-center justify-center">
               <span className="text-3xl font-black text-yellow-600 dark:text-yellow-300">1</span>
             </div>
           </div>
@@ -236,7 +236,7 @@ const Leaderboard = () => {
         
         {/* 3rd Place */}
         {leaderboardData[2] && (
-          <div className="flex-1 max-w-[200px]">
+          <div className="w-full sm:flex-1 max-w-[280px] sm:max-w-[200px] order-3">
             <Card className="relative overflow-hidden text-center bg-gradient-to-b from-amber-50 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 border-amber-200 dark:border-amber-700">
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500" />
               <div className="p-4 pt-5">
@@ -256,7 +256,7 @@ const Leaderboard = () => {
                 </div>
               </div>
             </Card>
-            <div className="h-10 bg-gradient-to-b from-amber-200 to-orange-300 dark:from-amber-800 dark:to-orange-900 rounded-b-xl mx-2 flex items-center justify-center">
+            <div className="h-10 bg-gradient-to-b from-amber-200 to-orange-300 dark:from-amber-800 dark:to-orange-900 rounded-b-xl mx-2 hidden sm:flex items-center justify-center">
               <span className="text-2xl font-black text-amber-500 dark:text-amber-400">3</span>
             </div>
           </div>
@@ -292,46 +292,48 @@ const Leaderboard = () => {
                   isCurrentUser ? 'ring-2 ring-indigo-500 ring-inset bg-indigo-50/50 dark:bg-indigo-900/10' : ''
                 }`}
               >
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 flex justify-center">
+                <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+                  <div className="w-8 sm:w-10 flex justify-center flex-shrink-0">
                     {getRankIcon(user.rank)}
                   </div>
                   
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-md overflow-hidden">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold shadow-md overflow-hidden flex-shrink-0">
                     {getAvatarUrl(user.avatar) ? (
-                      <img src={getAvatarUrl(user.avatar)} alt={user.name} className="w-12 h-12 object-cover" />
+                      <img src={getAvatarUrl(user.avatar)} alt={user.name} className="w-10 h-10 sm:w-12 sm:h-12 object-cover" />
                     ) : (
                       user.name.charAt(0)
                     )}
                   </div>
                   
-                  <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2 text-sm sm:text-base truncate">
                       {user.name}
                       {isCurrentUser && (
                         <Badge variant="primary" size="sm">You</Badge>
                       )}
                     </h3>
-                    <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                       <span className="flex items-center">
                         <Target className="w-3 h-3 mr-1" />
-                        {user.interviews} interviews
+                        <span className="hidden sm:inline">{user.interviews} interviews</span>
+                        <span className="sm:hidden">{user.interviews}</span>
                       </span>
                       <span className="flex items-center">
                         <Flame className="w-3 h-3 mr-1 text-orange-500" />
-                        {user.streak} day streak
+                        <span className="hidden sm:inline">{user.streak} day streak</span>
+                        <span className="sm:hidden">{user.streak}d</span>
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-6">
-                  <div className="flex items-center">
+                <div className="flex items-center space-x-3 sm:space-x-6 flex-shrink-0">
+                  <div className="hidden sm:flex items-center">
                     {getChangeIcon(user.change)}
                   </div>
                   
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{user.score}%</p>
+                    <p className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">{user.score}%</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">avg score</p>
                   </div>
                 </div>

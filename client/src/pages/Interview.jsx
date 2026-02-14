@@ -391,10 +391,10 @@ const Interview = () => {
   // Wrap with ProctoredSession if enabled
   const InterviewContent = (
     <div className="fixed inset-0 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 overflow-auto z-40">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-3 sm:p-6">
         {/* Premium Header Bar */}
-        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-slate-700/50 p-5 mb-8 sticky top-4 z-30">
-          <div className="flex items-center justify-between">
+        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-white/50 dark:border-slate-700/50 p-3 sm:p-5 mb-4 sm:mb-8 sticky top-4 z-30">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
             {/* Left Section - Progress */}
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-3">
@@ -489,12 +489,12 @@ const Interview = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-8">
           {/* Question Card - Takes up more space */}
           <div className="lg:col-span-3">
               <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-3xl shadow-xl border border-white/50 dark:border-slate-700/50 overflow-hidden">
                 {/* Question Header */}
-                <div className="bg-gradient-to-r from-indigo-500 to-indigo-500 px-8 py-6">
+                <div className="bg-gradient-to-r from-indigo-500 to-indigo-500 px-4 py-4 md:px-8 md:py-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <Badge variant="default" className="bg-white/20 text-white border-0 px-3 py-1">
@@ -513,7 +513,7 @@ const Interview = () => {
                 </div>
                 
                 {/* Question Content */}
-                <div className="p-8">
+                <div className="p-4 md:p-8">
                   <div className="mb-8">
                     <div className="flex items-start space-x-4">
                       <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-violet-200 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -566,8 +566,8 @@ const Interview = () => {
                 </div>
                 
                 {/* Action Footer */}
-                <div className="bg-slate-50/50 dark:bg-slate-900/50 px-8 py-6 border-t border-slate-100 dark:border-slate-700">
-                  <div className="flex items-center justify-between">
+                <div className="bg-slate-50/50 dark:bg-slate-900/50 px-4 py-4 md:px-8 md:py-6 border-t border-slate-100 dark:border-slate-700">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <Button
                       variant="ghost"
                       onClick={previousQuestion}

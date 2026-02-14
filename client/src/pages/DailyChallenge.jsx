@@ -201,7 +201,7 @@ const DailyChallenge = () => {
                 { value: timeLeft.seconds, label: 'Sec' },
               ].map((item, index) => (
                 <div key={item.label} className="text-center">
-                  <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center text-3xl font-bold backdrop-blur-sm">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-xl flex items-center justify-center text-xl sm:text-3xl font-bold backdrop-blur-sm">
                     {String(item.value).padStart(2, '0')}
                   </div>
                   <p className="text-xs text-orange-100 mt-1">{item.label}</p>
@@ -232,10 +232,10 @@ const DailyChallenge = () => {
           </div>
         </Card.Header>
         <Card.Content>
-          <div className="flex justify-between">
+          <div className="flex justify-between overflow-x-auto gap-2">
             {weeklyProgress.map((day, index) => (
               <div key={day.day} className="flex flex-col items-center">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-2 transition-all ${
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center mb-2 transition-all ${
                   day.completed 
                     ? 'bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg shadow-green-500/30' 
                     : day.isToday

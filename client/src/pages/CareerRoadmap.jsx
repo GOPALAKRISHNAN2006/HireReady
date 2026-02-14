@@ -675,7 +675,7 @@ const CareerRoadmap = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Gradient Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 p-8 text-white">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 p-5 md:p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
@@ -828,7 +828,7 @@ const CareerRoadmap = () => {
 
       {/* Achievement Banner */}
       <Card className="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border border-amber-200 dark:from-amber-900/20 dark:via-yellow-900/15 dark:to-orange-900/20 dark:border-amber-500/20">
-        <div className="flex items-center justify-between gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30">
               <Trophy className="w-8 h-8 text-white" />

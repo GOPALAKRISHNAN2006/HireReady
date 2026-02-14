@@ -291,20 +291,20 @@ const Profile = () => {
       </div>
 
       {/* Pill / Segment Tabs */}
-      <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl p-1.5">
-        <nav className="flex gap-1">
+      <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl p-1.5 overflow-x-auto">
+        <nav className="flex gap-1 min-w-max sm:min-w-0">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center justify-center gap-2 flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center justify-center gap-2 flex-none sm:flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-sm font-medium transition-all ${
                 activeTab === tab.id
                   ? 'bg-white dark:bg-slate-700 shadow-sm font-semibold text-indigo-600 dark:text-indigo-400'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
               <tab.icon className="w-4 h-4" />
-              <span>{tab.label}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
             </button>
           ))}
         </nav>
