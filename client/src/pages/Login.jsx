@@ -154,10 +154,14 @@ const Login = () => {
       return
     }
     
-    await login(formData.email, formData.password)
+    const result = await login(formData.email, formData.password)
 
     clearTimeout(slowTimerRef.current)
     setSlowRequest(false)
+
+    if (result.success) {
+      navigate('/dashboard')
+    }
   }
 
   return (

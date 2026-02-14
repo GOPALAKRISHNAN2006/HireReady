@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { Button, Input } from '../../components/ui'
 import { Mail, Lock, Shield, ArrowRight } from 'lucide-react'
+import { preWarmServer, waitForServer } from '../../services/api'
+import toast from 'react-hot-toast'
 
 const AdminLogin = () => {
   const { adminLogin, isLoading, error, clearError } = useAuthStore()
@@ -12,6 +14,13 @@ const AdminLogin = () => {
     password: '',
   })
   const [errors, setErrors] = useState({})
+  const [slowRequest, setSlowRequest] = useState(false)
+  const slowTimerRef = useRef(null)
+
+  // Pre-warm the server as soon as the admin login page loads
+  useEffect(() => {
+    preWarmServer()
+  }, [])
 
   const validateForm = () => {
     const newErrors = {}
@@ -32,8 +41,28 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validateForm()) return
+
+    // Detect slow request (Render cold start)
+    setSlowRequest(false)
+    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
+
+    // Ensure server is awake before sending the login request
+    const serverReady = await waitForServer({ silent: false })
+    if (!serverReady) {
+      clearTimeout(slowTimerRef.current)
+      setSlowRequest(false)
+      return
+    }
+
     const res = await adminLogin(formData.email, formData.password)
-    if (res.success) navigate('/admin')
+
+    clearTimeout(slowTimerRef.current)
+    setSlowRequest(false)
+
+    if (res.success) {
+      toast.success('Welcome back, Admin!')
+      navigate('/admin')
+    }
   }
 
   return (
@@ -92,7 +121,7 @@ const AdminLogin = () => {
           <Link to="/forgot-password" className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">Forgot password?</Link>
         </div>
 
-        <Button type="submit" fullWidth size="lg" isLoading={isLoading} icon={ArrowRight} iconPosition="right">Sign In</Button>
+        <Button type="submit" fullWidth size="lg" isLoading={isLoading} loadingText={slowRequest ? 'Starting server... please wait' : 'Signing in...'} icon={ArrowRight} iconPosition="right">Sign In</Button>
       </form>
 
       <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
