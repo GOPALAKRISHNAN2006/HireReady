@@ -295,7 +295,7 @@ const AIChatbot = ({ externalOpen, onExternalClose }) => {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 ${isMinimized ? 'w-72' : 'w-96'} transition-all duration-300`}>
+    <div className={`fixed bottom-6 right-6 z-50 ${isMinimized ? 'w-72' : 'w-[calc(100vw-3rem)] sm:w-96'} transition-all duration-300 max-w-[calc(100vw-3rem)]`}>
       <div className="bg-white dark:bg-[#0d1526] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col max-h-[600px]">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white flex-shrink-0">

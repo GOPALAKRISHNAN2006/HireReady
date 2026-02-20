@@ -115,15 +115,15 @@ const ProctoringReport = ({ report, onClose }) => {
         className="w-full max-w-3xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden my-4"
       >
         {/* Header */}
-        <div className={`p-6 ${integrityInfo.bgColor} border-b ${integrityInfo.borderColor}`}>
+        <div className={`p-4 sm:p-6 ${integrityInfo.bgColor} border-b ${integrityInfo.borderColor}`}>
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-xl ${integrityInfo.bgColor}`}>
-                <IntegrityIcon className={`w-8 h-8 ${integrityInfo.color}`} />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className={`p-2 sm:p-3 rounded-xl ${integrityInfo.bgColor}`}>
+                <IntegrityIcon className={`w-6 h-6 sm:w-8 sm:h-8 ${integrityInfo.color}`} />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">Proctoring Report</h2>
-                <p className={`text-sm ${integrityInfo.color}`}>
+                <h2 className="text-lg sm:text-xl font-bold text-white">Proctoring Report</h2>
+                <p className={`text-xs sm:text-sm ${integrityInfo.color}`}>
                   {integrityInfo.label}
                 </p>
               </div>
@@ -138,45 +138,45 @@ const ProctoringReport = ({ report, onClose }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Overview Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div className="bg-slate-800 rounded-xl p-3 sm:p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className={`w-4 h-4 ${integrityInfo.color}`} />
                 <span className="text-xs text-slate-400">Risk Score</span>
               </div>
-              <p className={`text-2xl font-bold ${integrityInfo.color}`}>
+              <p className={`text-xl sm:text-2xl font-bold ${integrityInfo.color}`}>
                 {riskScore}/100
               </p>
             </div>
 
-            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+            <div className="bg-slate-800 rounded-xl p-3 sm:p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-blue-400" />
                 <span className="text-xs text-slate-400">Duration</span>
               </div>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-xl sm:text-2xl font-bold text-white">
                 {formatDuration(sessionDuration)}
               </p>
             </div>
 
-            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+            <div className="bg-slate-800 rounded-xl p-3 sm:p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-yellow-400" />
                 <span className="text-xs text-slate-400">Violations</span>
               </div>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-xl sm:text-2xl font-bold text-white">
                 {stats.totalViolations || 0}
               </p>
             </div>
 
-            <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+            <div className="bg-slate-800 rounded-xl p-3 sm:p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Eye className="w-4 h-4 text-purple-400" />
                 <span className="text-xs text-slate-400">Warnings</span>
               </div>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-xl sm:text-2xl font-bold text-white">
                 {stats.warningsIssued || 0}
               </p>
             </div>
@@ -205,7 +205,7 @@ const ProctoringReport = ({ report, onClose }) => {
                 Violation Summary
               </h3>
 
-              <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
                 <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-center">
                   <p className="text-2xl font-bold text-red-400">{stats.highViolations || 0}</p>
                   <p className="text-xs text-slate-400">High Severity</p>

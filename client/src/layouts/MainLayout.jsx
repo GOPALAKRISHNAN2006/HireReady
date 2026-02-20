@@ -13,9 +13,9 @@ const MainLayout = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-[#0b1120] dark:via-[#0f172a] dark:to-[#0b1120] transition-colors duration-300">
       {/* Background decorations */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/30 dark:bg-indigo-500/[0.07] rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-100/20 dark:bg-purple-500/[0.05] rounded-full blur-3xl" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ contain: 'strict' }}>
+        <div className="absolute top-0 right-0 w-80 sm:w-[500px] h-80 sm:h-[500px] bg-indigo-100/30 dark:bg-indigo-500/[0.07] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 sm:w-[400px] h-64 sm:h-[400px] bg-purple-100/20 dark:bg-purple-500/[0.05] rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] hidden dark:block bg-indigo-500/[0.04] rounded-full blur-3xl" />
       </div>
       
@@ -27,7 +27,7 @@ const MainLayout = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
+        <main className="flex-1 min-w-0 overflow-x-hidden p-4 sm:p-6 lg:ml-72 min-h-[calc(100vh-4rem)]">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

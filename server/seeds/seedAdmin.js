@@ -27,7 +27,7 @@ const adminUsers = [
     firstName: 'HireReady',
     lastName: 'Admin',
     email: 'hireready007@gmail.com',
-    password: 'Admin@123',
+    password: 'HireReady@2006',
     role: 'admin',
     isEmailVerified: true,
     profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=hireready'
@@ -376,7 +376,7 @@ const seedDatabase = async () => {
 
     console.log('\n✅ Database seeding completed successfully!')
     console.log('\n📝 Login Credentials:')
-    console.log('   Admin:     hireready007@gmail.com / Admin@123')
+    console.log('   Admin:     hireready007@gmail.com / HireReady@2006')
     console.log('   Admin:     admin@interviewportal.com / Admin@123456')
     console.log('   Moderator: moderator@interviewportal.com / Mod@123456')
     console.log('   User:      john@example.com / User@123456')

@@ -155,7 +155,7 @@ const ProctoringOverlay = ({
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="fixed top-20 right-4 z-40 w-72 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-700 shadow-2xl"
+        className="fixed top-20 right-4 z-40 w-[calc(100vw-2rem)] sm:w-72 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-700 shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-3 border-b border-slate-700">

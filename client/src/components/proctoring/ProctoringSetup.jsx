@@ -243,12 +243,12 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
         className="w-full max-w-2xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 sm:p-6">
           <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-white" />
+            <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-white flex-shrink-0" />
             <div>
-              <h2 className="text-xl font-bold text-white">Proctoring Setup</h2>
-              <p className="text-sm text-white/80">
+              <h2 className="text-lg sm:text-xl font-bold text-white">Proctoring Setup</h2>
+              <p className="text-xs sm:text-sm text-white/80">
                 Complete the following steps to start your proctored session
               </p>
             </div>
@@ -256,7 +256,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Countdown overlay */}
           {countdown !== null && (
             <motion.div

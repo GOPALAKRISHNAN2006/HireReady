@@ -277,7 +277,7 @@ const Premium = () => {
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   />
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <div className="col-span-1">
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Expiry</label>
                     <input

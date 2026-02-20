@@ -116,7 +116,7 @@ export default function InterviewDetails() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           <div className="bg-white/20 rounded-lg p-4 text-center">
             <div className={`text-3xl font-bold ${interview?.overallScore >= 60 ? 'text-green-300' : 'text-red-300'}`}>
               {Math.round(interview?.overallScore || 0)}%
