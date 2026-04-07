@@ -89,13 +89,24 @@ app.use(helmet());
 // CORS Configuration
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
-  .map(url => url.trim());
+  .map(url => url.trim().replace(/\/$/, ''));
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
+
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    const isConfiguredOrigin = allowedOrigins.includes(normalizedOrigin);
+
+    let isRenderPreviewOrigin = false;
+    try {
+      isRenderPreviewOrigin = /\.onrender\.com$/i.test(new URL(normalizedOrigin).hostname);
+    } catch {
+      isRenderPreviewOrigin = false;
+    }
+
+    if (isConfiguredOrigin || isRenderPreviewOrigin) {
       return callback(null, true);
     }
     return callback(new Error('Not allowed by CORS'));

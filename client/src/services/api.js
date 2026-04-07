@@ -1,9 +1,22 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : '/api'
+const normalizeApiBase = (rawUrl) => {
+  if (!rawUrl) return '/api'
+
+  const trimmed = String(rawUrl).trim().replace(/\/+$/, '')
+
+  // Accept both forms in env:
+  // - https://my-api.onrender.com
+  // - https://my-api.onrender.com/api
+  if (/\/api$/i.test(trimmed)) {
+    return trimmed
+  }
+
+  return `${trimmed}/api`
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL)
 
 // Create axios instance
 const api = axios.create({
