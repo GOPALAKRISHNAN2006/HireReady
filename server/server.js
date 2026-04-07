@@ -25,6 +25,7 @@ validateEnv();
 
 // Import database connection
 const connectDB = require('./config/database');
+const { ensureDefaultAdmin } = require('./config/bootstrapAdmin');
 
 // Import route handlers
 const authRoutes = require('./routes/auth.routes');
@@ -291,6 +292,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     await connectDB();
+    await ensureDefaultAdmin();
     
     server.listen(PORT, () => {
       console.log('='.repeat(50));
