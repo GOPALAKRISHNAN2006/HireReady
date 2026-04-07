@@ -27,7 +27,7 @@ const adminUsers = [
     firstName: 'HireReady',
     lastName: 'Admin',
     email: 'hireready007@gmail.com',
-    password: 'HireReady@2006',
+    password: 'Hireready@12345',
     role: 'admin',
     isEmailVerified: true,
     profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=hireready'

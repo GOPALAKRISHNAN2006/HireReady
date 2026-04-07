@@ -219,14 +219,6 @@ router.post('/login', validateLogin, asyncHandler(async (req, res) => {
     });
   }
 
-  // Prevent admins from logging in via the regular user login
-  if (user.role === 'admin') {
-    return res.status(401).json({
-      success: false,
-      message: 'Admin accounts must sign in via the admin login page.'
-    });
-  }
-
   // Generate tokens
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
