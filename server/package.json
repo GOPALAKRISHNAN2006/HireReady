@@ -10,7 +10,7 @@
     "seed:challenges": "node seeds/seedCodingChallenges.js",
     "seed:all": "npm run seed && npm run seed:challenges",
     "test": "jest",
-    "test:ci": "jest --coverage --runInBand",
+    "test:ci": "jest --runInBand",
     "lint": "eslint . --ext .js --max-warnings 0"
   },
   "keywords": [
