@@ -36,6 +36,7 @@ const AdminUsers = () => {
       const params = new URLSearchParams()
       if (search) params.append('search', search)
       if (roleFilter) params.append('role', roleFilter)
+      params.append('loggedIn', 'true')
       
       const response = await api.get(`/admin/users?${params.toString()}`)
       return response.data?.data || response.data
@@ -183,12 +184,12 @@ const AdminUsers = () => {
                             />
                           ) : (
                             <span className="text-sm font-semibold text-white">
-                              {user.name?.charAt(0)?.toUpperCase()}
+                              {(user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim())?.charAt(0)?.toUpperCase()}
                             </span>
                           )}
                         </div>
                         <div>
-                          <div className="text-sm font-semibold text-slate-900 dark:text-white">{user.name}</div>
+                          <div className="text-sm font-semibold text-slate-900 dark:text-white">{user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown User'}</div>
                           <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                             <Mail className="w-3 h-3" />
                             {user.email}

@@ -204,6 +204,7 @@ router.get('/users', asyncHandler(async (req, res) => {
     role,
     isActive,
     plan,
+    loggedIn,
     sortBy = 'createdAt',
     sortOrder = 'desc'
   } = req.query;
@@ -220,6 +221,7 @@ router.get('/users', asyncHandler(async (req, res) => {
   if (role) query.role = role;
   if (isActive !== undefined) query.isActive = isActive === 'true';
   if (plan) query.plan = plan;
+  if (loggedIn === 'true') query.loginCount = { $gt: 0 };
 
   const sort = {};
   sort[sortBy] = sortOrder === 'asc' ? 1 : -1;

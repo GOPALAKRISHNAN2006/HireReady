@@ -21,8 +21,10 @@ const User = require('../models/User.model')
 const Question = require('../models/Question.model')
 const Interview = require('../models/Interview.model')
 
-// Sample admin users
-const adminUsers = [
+const includeDemoUsers = process.env.NODE_ENV !== 'production' || process.env.INCLUDE_DEMO_USERS === 'true'
+
+// Core privileged users
+const coreUsers = [
   {
     firstName: 'HireReady',
     lastName: 'Admin',
@@ -49,7 +51,11 @@ const adminUsers = [
     role: 'moderator',
     isEmailVerified: true,
     profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jane'
-  },
+  }
+]
+
+// Demo users for local/dev testing only
+const demoUsers = [
   {
     firstName: 'John',
     lastName: 'Developer',
@@ -78,6 +84,8 @@ const adminUsers = [
     profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=mike'
   }
 ]
+
+const adminUsers = includeDemoUsers ? [...coreUsers, ...demoUsers] : coreUsers
 
 // Sample questions
 const sampleQuestions = [
@@ -325,7 +333,7 @@ const seedDatabase = async () => {
       console.log(`   ⏭ Skipping questions (${existingQuestions} already exist)`)
     }
 
-    // Create sample interviews for regular users
+    // Create sample interviews only when demo users are enabled
     console.log('🎤 Creating sample interviews...')
     const regularUsers = createdUsers.filter(u => u.role === 'user')
     const questions = await Question.find().limit(5)
@@ -379,7 +387,11 @@ const seedDatabase = async () => {
     console.log('   Admin:     hireready007@gmail.com / Hireready@12345')
     console.log('   Admin:     admin@interviewportal.com / Admin@123456')
     console.log('   Moderator: moderator@interviewportal.com / Mod@123456')
-    console.log('   User:      john@example.com / User@123456')
+    if (includeDemoUsers) {
+      console.log('   User:      john@example.com / User@123456')
+    } else {
+      console.log('   Demo users disabled (production mode)')
+    }
     
     process.exit(0)
   } catch (error) {
