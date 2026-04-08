@@ -4,8 +4,12 @@ build/
 /.turbo/
 .turbo/
 coverage/
-.env
-.env.*
+# Environment files (never commit secrets)
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.prod.example
+!**/.env.*.example
 .DS_Store
 .idea/
 .vscode/

@@ -89,10 +89,10 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 ## 📁 Project Structure
 
 ```
-Interview-Portal-main/
+Hireready/
 ├── .github/
 │   ├── workflows/
-│   │   ├── ci.yml              # CI pipeline (lint, test, build, E2E, Docker)
+│   │   ├── ci.yml              # CI pipeline (lint, test, build, E2E)
 │   │   └── codeql.yml          # Security scanning
 │   └── dependabot.yml          # Auto dependency updates
 ├── client/                      # React frontend
@@ -107,7 +107,6 @@ Interview-Portal-main/
 │   │   └── main.jsx
 │   ├── e2e/                     # Playwright E2E tests
 │   ├── tests/                   # Accessibility tests
-│   ├── Dockerfile
 │   └── package.json
 ├── server/                      # Express backend
 │   ├── config/
@@ -119,13 +118,11 @@ Interview-Portal-main/
 │   ├── seeds/
 │   ├── tests/
 │   ├── openapi.yaml             # API documentation
-│   ├── Dockerfile
 │   ├── server.js
 │   └── package.json
 ├── docs/
 │   ├── postman_collection.json
 │   └── schema.md
-├── docker-compose.yml
 ├── package.json                 # Root (Husky, Prettier, lint-staged)
 ├── .prettierrc
 ├── CHANGELOG.md
@@ -174,6 +171,9 @@ cp .env.example .env
 
 5. **Configure environment variables**
 
+Important: do not commit real environment files (`.env`).
+Only keep template files such as `.env.example` and `.env.prod.example` in git.
+
 Edit `server/.env`:
 ```env
 PORT=5000
@@ -218,8 +218,8 @@ npm run dev
 ### Default Credentials
 
 After seeding:
-- **Admin**: admin@hireready.com / Admin@123
-- **Test User**: Register a new account
+- **Admin**: hireready007@gmail.com / Hireready@12345
+- **Admin (secondary)**: admin@interviewportal.com / Admin@123456
 
 ## 📖 API Documentation
 
@@ -327,17 +327,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🐳 Docker Compose
-
-Ensure Docker Desktop / Docker Engine is running, then from the project root:
-
-```bash
-docker compose up -d --build
-```
-
-This will start MongoDB, the backend server, and the frontend client as configured in `docker-compose.yml`.
-
-
 **HireReady** - Made with ❤️ for better interview preparation
 
 <!-- Replace OWNER/REPO in the badge URL with your GitHub repo -->
@@ -366,28 +355,6 @@ npm run build
 
 Add a GitHub secret `NODE_AUTH_TOKEN` or configure package registries if you use private packages.
 
-## Publishing Docker Images
-
-The CI workflow can optionally publish Docker images to Docker Hub or GitHub Container Registry (GHCR).
-
-- Docker Hub: set these repository secrets in GitHub:
-	- `DOCKERHUB_USERNAME` — your Docker Hub username
-	- `DOCKERHUB_TOKEN` — a Docker Hub access token (or password)
-
-	The CI job will log in and push `DOCKERHUB_USERNAME/hireready-backend:latest` when both secrets are present.
-
-- GitHub Container Registry (GHCR): GitHub Actions can push to GHCR using the built-in `GITHUB_TOKEN`.
-	No extra secret is required, but ensure the repository's Actions permissions allow `GITHUB_TOKEN` to publish packages.
-
-Example: create the Docker Hub secrets in your repository settings, then run a push to `main` and the workflow will build and push images when configured.
-
-If you prefer to push manually from your machine, build and tag images locally:
-
-```bash
-docker build -f server/Dockerfile -t yourusername/hireready-backend:latest ./
-docker push yourusername/hireready-backend:latest
-```
-
 ## 🚀 Deployment
 
 ### Production Checklist
@@ -397,30 +364,7 @@ docker push yourusername/hireready-backend:latest
 3. **Database** — use a managed MongoDB Atlas cluster or self-hosted replica set with authentication enabled.
 4. **HTTPS** — terminate TLS at a reverse proxy (nginx, Caddy) or load balancer.
 5. **Build client** — run `npm run build` in `client/` and serve the `dist/` folder via a CDN or static host.
-6. **Run server** — use a process manager (`pm2`, `systemd`) or container orchestrator (Docker Compose, Kubernetes) for the backend.
-
-### Example Docker Compose (production)
-
-```yaml
-services:
-  mongo:
-    image: mongo:7
-    volumes:
-      - mongo_data:/data/db
-  backend:
-    build: ./server
-    env_file: ./server/.env
-    depends_on:
-      - mongo
-    ports:
-      - "5000:5000"
-  frontend:
-    build: ./client
-    ports:
-      - "80:80"
-volumes:
-  mongo_data:
-```
+6. **Run server** — use a process manager (`pm2`, `systemd`) for the backend.
 
 ## 📈 Monitoring & Alerting
 
