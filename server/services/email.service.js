@@ -4,12 +4,16 @@
  * ===========================================
  * 
  * Handles sending emails for password reset, verification, etc.
- * Uses Brevo (formerly Sendinblue) HTTP API — works on Render free tier
- * where SMTP ports are blocked. Free: 300 emails/day to ANY recipient.
- * 
- * Required env var: BREVO_API_KEY
- * Optional env var: EMAIL_FROM (defaults to your SMTP_USER / Gmail)
+ * Primary transport: Brevo HTTP API.
+ * Fallback transport: SMTP via nodemailer (for providers like Gmail/SendGrid).
+ *
+ * Supported env vars:
+ * - BREVO_API_KEY
+ * - EMAIL_FROM
+ * - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
  */
+
+const nodemailer = require('nodemailer');
 
 // Sender — use the Gmail that's already verified, or override with EMAIL_FROM
 const FROM_EMAIL = process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@hireready.app';
@@ -19,41 +23,77 @@ const FROM_NAME  = 'HireReady';
  * Generic send email helper via Brevo REST API
  */
 const sendEmail = async ({ to, subject, html, text }) => {
-  if (!process.env.BREVO_API_KEY) {
-    console.log('📧 BREVO_API_KEY not set. Email would be sent to:', to, '| Subject:', subject);
+  const hasBrevo = Boolean(process.env.BREVO_API_KEY);
+  const hasSmtp = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+
+  if (!hasBrevo && !hasSmtp) {
+    console.log('📧 Email service not configured. Set BREVO_API_KEY or SMTP_* vars. Email would be sent to:', to, '| Subject:', subject);
     return { success: false, message: 'Email service not configured' };
   }
 
-  try {
-    const body = {
-      sender: { name: FROM_NAME, email: FROM_EMAIL },
-      to: [{ email: to }],
-      subject,
-      htmlContent: html,
-    };
-    if (text) body.textContent = text;
+  if (hasBrevo) {
+    try {
+      const body = {
+        sender: { name: FROM_NAME, email: FROM_EMAIL },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      };
+      if (text) body.textContent = text;
 
-    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': process.env.BREVO_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('❌ Brevo API error:', data.message || JSON.stringify(data));
+        if (!hasSmtp) {
+          return { success: false, message: data.message || 'Brevo API error' };
+        }
+      } else {
+        console.log('✅ Email sent via Brevo to:', to, '| MessageId:', data.messageId);
+        return { success: true, message: 'Email sent successfully', id: data.messageId };
+      }
+    } catch (error) {
+      console.error('❌ Error sending via Brevo:', error.message);
+      if (!hasSmtp) {
+        return { success: false, message: error.message };
+      }
+    }
+  }
+
+  try {
+    const smtpPort = Number(process.env.SMTP_PORT || 587);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
-      body: JSON.stringify(body),
     });
 
-    const data = await res.json();
+    const info = await transporter.sendMail({
+      from: `${FROM_NAME} <${FROM_EMAIL}>`,
+      to,
+      subject,
+      html,
+      text,
+    });
 
-    if (!res.ok) {
-      console.error('❌ Brevo API error:', data.message || JSON.stringify(data));
-      return { success: false, message: data.message || 'Brevo API error' };
-    }
-
-    console.log('✅ Email sent to:', to, '| MessageId:', data.messageId);
-    return { success: true, message: 'Email sent successfully', id: data.messageId };
+    console.log('✅ Email sent via SMTP to:', to, '| MessageId:', info.messageId);
+    return { success: true, message: 'Email sent successfully', id: info.messageId };
   } catch (error) {
-    console.error('❌ Error sending email:', error.message);
+    console.error('❌ Error sending via SMTP:', error.message);
     return { success: false, message: error.message };
   }
 };

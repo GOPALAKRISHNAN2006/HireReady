@@ -376,7 +376,7 @@ const seedDatabase = async () => {
 
     console.log('\n✅ Database seeding completed successfully!')
     console.log('\n📝 Login Credentials:')
-    console.log('   Admin:     hireready007@gmail.com / HireReady@2006')
+    console.log('   Admin:     hireready007@gmail.com / Hireready@12345')
     console.log('   Admin:     admin@interviewportal.com / Admin@123456')
     console.log('   Moderator: moderator@interviewportal.com / Mod@123456')
     console.log('   User:      john@example.com / User@123456')

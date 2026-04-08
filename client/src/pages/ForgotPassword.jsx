@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [resetUrl, setResetUrl] = useState('')
 
   const validateEmail = () => {
     if (!email) {
@@ -39,12 +40,14 @@ const ForgotPassword = () => {
       const response = await api.post('/auth/forgot-password', { email })
       
       if (response.data.success) {
+        setResetUrl(response.data.resetUrl || '')
         setIsSubmitted(true)
         toast.success('Password reset instructions sent!')
       }
     } catch (err) {
       // For security, we show a generic success message even on failure
       // The backend already handles this, but we add frontend fallback
+      setResetUrl('')
       setIsSubmitted(true)
     } finally {
       setIsLoading(false)
@@ -76,12 +79,25 @@ const ForgotPassword = () => {
           <p className="text-sm text-slate-400 dark:text-slate-500 mb-8">
             Didn't receive the email? Check your spam folder or try again.
           </p>
+
+          {resetUrl && (
+            <div className="mb-8 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 text-left">
+              <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mb-2">Development reset link</p>
+              <a
+                href={resetUrl}
+                className="break-all text-sm text-emerald-700 dark:text-emerald-300 underline underline-offset-4"
+              >
+                {resetUrl}
+              </a>
+            </div>
+          )}
           
           <div className="space-y-4">
             <Button
               onClick={() => {
                 setIsSubmitted(false)
                 setEmail('')
+                setResetUrl('')
               }}
               variant="outline"
               fullWidth

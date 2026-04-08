@@ -525,6 +525,18 @@ const MaterialContent = () => {
     if (material) localStorage.setItem(`material-progress-${id}`, JSON.stringify({ completedSections, currentSection }))
   }, [completedSections, currentSection, id, material])
 
+  useEffect(() => {
+    const progress = material ? Math.round((completedSections.length / material.sections.length) * 100) : 0
+    try {
+      const saved = localStorage.getItem('study-materials-progress')
+      const progressMap = saved ? JSON.parse(saved) : {}
+      const nextProgress = { ...progressMap, [Number(id)]: progress }
+      localStorage.setItem('study-materials-progress', JSON.stringify(nextProgress))
+    } catch {
+      localStorage.setItem('study-materials-progress', JSON.stringify({ [Number(id)]: progress }))
+    }
+  }, [completedSections, id, material])
+
   // ─── Not found ────────────────────────
   if (!material) {
     return (
@@ -562,7 +574,13 @@ const MaterialContent = () => {
   const handleQuizSubmit = () => {
     setQuizSubmitted(true)
     const s = calculateQuizScore()
-    s >= 70 ? toast.success(`Great job! You scored ${s}%`) : toast.error(`You scored ${s}%. Review the material and try again.`)
+    if (s >= 70) {
+      const completedProgress = { ...(JSON.parse(localStorage.getItem('study-materials-progress') || '{}')), [Number(id)]: 100 }
+      localStorage.setItem('study-materials-progress', JSON.stringify(completedProgress))
+      toast.success(`Great job! You scored ${s}%`)
+    } else {
+      toast.error(`You scored ${s}%. Review the material and try again.`)
+    }
   }
 
   return (

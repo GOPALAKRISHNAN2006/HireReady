@@ -59,6 +59,10 @@ const StudyMaterials = () => {
     localStorage.setItem('study-materials-progress', JSON.stringify(updated))
   }
 
+  const startPractice = () => {
+    navigate('/mock-lab')
+  }
+
   const categories = [
     { id: 'all', label: 'All Topics', icon: BookOpen, color: 'from-slate-500 to-slate-600' },
     { id: 'dsa', label: 'DSA', icon: Code, color: 'from-blue-500 to-indigo-600' },
@@ -437,12 +441,7 @@ const StudyMaterials = () => {
                   </Button>
                   <Button 
                     size="sm" className="flex-1"
-                    onClick={() => {
-                      if (material.category === 'behavioral') navigate('/gd')
-                      else if (material.category === 'system-design') navigate('/interview/setup', { state: { category: 'system-design' } })
-                      else if (material.category === 'dsa') navigate('/aptitude')
-                      else navigate('/interview/setup', { state: { category: material.category } })
-                    }}
+                    onClick={startPractice}
                   >
                     <Zap className="w-4 h-4 mr-1.5" />
                     Practice
