@@ -71,7 +71,7 @@ const server = http.createServer(app);
 // Initialize Socket.io for real-time features
 const io = socketIo(server, {
   cors: {
-    origin: (process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(u => u.trim()),
+    origin: (process.env.FRONTEND_URL || 'https://hireready-1-0hvc.onrender.com').split(',').map(u => u.trim()),
     methods: ['GET', 'POST'],
     credentials: true
   }
