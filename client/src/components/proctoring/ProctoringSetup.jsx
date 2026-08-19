@@ -209,7 +209,8 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       // Keep screen stream for proctoring
       onReady({ screenStream: screenStreamRef.current });
     }
-  }, [countdown, onReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countdown]);
 
   // Cleanup on unmount
   useEffect(() => {
