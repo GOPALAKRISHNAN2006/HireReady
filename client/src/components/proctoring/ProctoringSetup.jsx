@@ -2,7 +2,7 @@
  * ===========================================
  * Proctoring Setup Component
  * ===========================================
- * 
+ *
  * Displays permissions setup and system check
  * before starting a proctored session.
  */
@@ -20,7 +20,7 @@ import {
   AlertTriangle,
   Maximize,
   RefreshCw,
-  ScreenShare
+  ScreenShare,
 } from 'lucide-react';
 
 const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
@@ -33,7 +33,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
   const [countdown, setCountdown] = useState(null);
   const [error, setError] = useState(null);
   const [cameraReady, setCameraReady] = useState(false);
-  
+
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const screenStreamRef = useRef(null);
@@ -46,7 +46,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       description: 'Allow camera access for face verification',
       icon: Camera,
       status: cameraPermission,
-      required: true
+      required: true,
     },
     {
       id: 'microphone',
@@ -54,7 +54,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       description: 'Allow microphone for audio monitoring',
       icon: Mic,
       status: micPermission,
-      required: config.audioMonitoringEnabled ?? true
+      required: config.audioMonitoringEnabled ?? true,
     },
     {
       id: 'screen',
@@ -62,7 +62,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       description: 'Share your screen for monitoring',
       icon: ScreenShare,
       status: screenPermission,
-      required: config.screenMonitoringEnabled ?? true
+      required: config.screenMonitoringEnabled ?? true,
     },
     {
       id: 'fullscreen',
@@ -70,8 +70,8 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       description: 'Session will run in fullscreen mode',
       icon: Maximize,
       status: fullscreenReady,
-      required: config.fullscreenRequired ?? true
-    }
+      required: config.fullscreenRequired ?? true,
+    },
   ];
 
   // Request camera and microphone
@@ -83,14 +83,14 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: 640, height: 480 },
-        audio: config.audioMonitoringEnabled ?? true
+        audio: config.audioMonitoringEnabled ?? true,
       });
 
       streamRef.current = stream;
       setCameraPermission('granted');
       setMicPermission('granted');
       setCameraReady(true);
-      
+
       // Move to screen sharing step if enabled
       if (config.screenMonitoringEnabled !== false) {
         setStep(1);
@@ -102,7 +102,9 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       console.error('Permission error:', err);
       setCameraPermission('denied');
       setMicPermission('denied');
-      setError('Camera and microphone access is required for proctored sessions. Please allow access and try again.');
+      setError(
+        'Camera and microphone access is required for proctored sessions. Please allow access and try again.'
+      );
     }
   };
 
@@ -115,9 +117,9 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       // Use minimal constraints for maximum browser compatibility
       const displayMediaOptions = {
         video: {
-          cursor: 'always'
+          cursor: 'always',
         },
-        audio: false
+        audio: false,
       };
 
       // Add preferred constraints only if supported (Chrome 107+)
@@ -137,13 +139,13 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
 
       screenStreamRef.current = screenStream;
       setScreenPermission('granted');
-      
+
       // Handle screen share stop
       screenStream.getVideoTracks()[0].onended = () => {
         setScreenPermission('denied');
         setError('Screen sharing was stopped. Please share your screen to continue.');
       };
-      
+
       setStep(2);
     } catch (err) {
       console.error('Screen share error:', err);
@@ -195,9 +197,9 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
   // Countdown effect
   useEffect(() => {
     if (countdown === null) return;
-    
+
     if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      const timer = setTimeout(() => setCountdown(prev => prev - 1), 1000);
       return () => clearTimeout(timer);
     } else {
       // Clean up preview stream (actual monitoring will create new stream)
@@ -285,21 +287,31 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                   <div
                     key={req.id}
                     className={`flex items-center gap-4 p-4 rounded-lg border ${
-                      req.status === 'granted' ? 'border-green-500/30 bg-green-500/5' :
-                      req.status === 'denied' ? 'border-red-500/30 bg-red-500/5' :
-                      'border-slate-700 bg-slate-800'
+                      req.status === 'granted'
+                        ? 'border-green-500/30 bg-green-500/5'
+                        : req.status === 'denied'
+                          ? 'border-red-500/30 bg-red-500/5'
+                          : 'border-slate-700 bg-slate-800'
                     }`}
                   >
-                    <div className={`p-3 rounded-lg ${
-                      req.status === 'granted' ? 'bg-green-500/20' :
-                      req.status === 'denied' ? 'bg-red-500/20' :
-                      'bg-slate-700'
-                    }`}>
-                      <req.icon className={`w-6 h-6 ${
-                        req.status === 'granted' ? 'text-green-400' :
-                        req.status === 'denied' ? 'text-red-400' :
-                        'text-slate-400'
-                      }`} />
+                    <div
+                      className={`p-3 rounded-lg ${
+                        req.status === 'granted'
+                          ? 'bg-green-500/20'
+                          : req.status === 'denied'
+                            ? 'bg-red-500/20'
+                            : 'bg-slate-700'
+                      }`}
+                    >
+                      <req.icon
+                        className={`w-6 h-6 ${
+                          req.status === 'granted'
+                            ? 'text-green-400'
+                            : req.status === 'denied'
+                              ? 'text-red-400'
+                              : 'text-slate-400'
+                        }`}
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-white">{req.title}</h3>
@@ -349,11 +361,11 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
                   <ScreenShare className="w-8 h-8 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">
-                  Share Your Screen
-                </h3>
+                <h3 className="text-lg font-medium text-white mb-2">Share Your Screen</h3>
                 <p className="text-slate-400 max-w-md mx-auto">
-                  Screen sharing is required to monitor your activity during the session. Please share your <strong className="text-white">entire screen</strong> (not just a window).
+                  Screen sharing is required to monitor your activity during the session. Please
+                  share your <strong className="text-white">entire screen</strong> (not just a
+                  window).
                 </p>
               </div>
 
@@ -408,11 +420,10 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
                   <Maximize className="w-8 h-8 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">
-                  Enable Fullscreen Mode
-                </h3>
+                <h3 className="text-lg font-medium text-white mb-2">Enable Fullscreen Mode</h3>
                 <p className="text-slate-400 max-w-md mx-auto">
-                  This session requires fullscreen mode to prevent distraction and ensure exam integrity.
+                  This session requires fullscreen mode to prevent distraction and ensure exam
+                  integrity.
                 </p>
               </div>
 
@@ -447,12 +458,8 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
           {step === 3 && (
             <div className="space-y-6">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-medium text-white mb-2">
-                  Face Enrollment
-                </h3>
-                <p className="text-slate-400">
-                  Position your face in the center of the frame
-                </p>
+                <h3 className="text-lg font-medium text-white mb-2">Face Enrollment</h3>
+                <p className="text-slate-400">Position your face in the center of the frame</p>
               </div>
 
               <div className="relative w-full max-w-md mx-auto aspect-video bg-slate-800 rounded-lg overflow-hidden">
@@ -464,7 +471,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                   className="w-full h-full object-cover mirror"
                   style={{ transform: 'scaleX(-1)' }}
                 />
-                
+
                 {/* No camera fallback */}
                 {!cameraReady && (
                   <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
@@ -474,12 +481,12 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                     </div>
                   </div>
                 )}
-                
+
                 {/* Face guide overlay */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="w-40 h-52 border-2 border-dashed border-blue-400 rounded-full opacity-70" />
                 </div>
-                
+
                 {/* Camera active indicator */}
                 {cameraReady && (
                   <div className="absolute top-3 left-3 flex items-center gap-2 px-2 py-1 bg-green-500/20 rounded-md">
@@ -514,11 +521,10 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
                       <CheckCircle2 className="w-8 h-8 text-green-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-white mb-2">
-                      All Set!
-                    </h3>
+                    <h3 className="text-lg font-medium text-white mb-2">All Set!</h3>
                     <p className="text-slate-400 max-w-md mx-auto">
-                      You're ready to begin your proctored session. Please ensure you remain visible throughout the session.
+                      You're ready to begin your proctored session. Please ensure you remain visible
+                      throughout the session.
                     </p>
                   </div>
 
@@ -565,9 +571,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
                 <div
                   key={s}
                   className={`w-2 h-2 rounded-full ${
-                    s < step ? 'bg-green-400' :
-                    s === step ? 'bg-blue-400' :
-                    'bg-slate-600'
+                    s < step ? 'bg-green-400' : s === step ? 'bg-blue-400' : 'bg-slate-600'
                   }`}
                 />
               ))}

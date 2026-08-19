@@ -20,36 +20,36 @@ import {
   FileText,
   ThumbsUp,
   ThumbsDown,
-  Minus
+  Minus,
 } from 'lucide-react';
 
 const CATEGORIES = {
-  'general': 'General',
-  'dsa': 'DSA',
-  'web': 'Web Development',
+  general: 'General',
+  dsa: 'DSA',
+  web: 'Web Development',
   'web-development': 'Web Development',
-  'ml': 'Machine Learning',
+  ml: 'Machine Learning',
   'machine-learning': 'Machine Learning',
   'system-design': 'System Design',
-  'behavioral': 'Behavioral',
-  'database': 'Database',
-  'devops': 'DevOps',
-  'mobile': 'Mobile',
-  'mixed': 'Mixed',
+  behavioral: 'Behavioral',
+  database: 'Database',
+  devops: 'DevOps',
+  mobile: 'Mobile',
+  mixed: 'Mixed',
 };
 
 const STATUS_STYLES = {
-  'completed': 'bg-green-100 text-green-600 border border-green-300',
+  completed: 'bg-green-100 text-green-600 border border-green-300',
   'in-progress': 'bg-yellow-100 text-yellow-600 border border-yellow-300',
-  'pending': 'bg-blue-100 text-blue-600 border border-blue-300',
-  'scheduled': 'bg-blue-100 text-blue-600 border border-blue-300',
-  'cancelled': 'bg-red-100 text-red-600 border border-red-300',
+  pending: 'bg-blue-100 text-blue-600 border border-blue-300',
+  scheduled: 'bg-blue-100 text-blue-600 border border-blue-300',
+  cancelled: 'bg-red-100 text-red-600 border border-red-300',
 };
 
 const DIFFICULTY_STYLES = {
-  'easy': 'bg-green-100 text-green-600',
-  'medium': 'bg-yellow-100 text-yellow-600',
-  'hard': 'bg-red-100 text-red-600',
+  easy: 'bg-green-100 text-green-600',
+  medium: 'bg-yellow-100 text-yellow-600',
+  hard: 'bg-red-100 text-red-600',
 };
 
 export default function AdminInterviewDetails() {
@@ -57,7 +57,11 @@ export default function AdminInterviewDetails() {
   const navigate = useNavigate();
 
   // Fetch interview details
-  const { data: interviewData, isLoading, error } = useQuery({
+  const {
+    data: interviewData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['admin-interview-detail', interviewId],
     queryFn: async () => {
       const response = await api.get(`/admin/interviews/${interviewId}`);
@@ -67,7 +71,7 @@ export default function AdminInterviewDetails() {
     enabled: !!interviewId,
   });
 
-  const formatDate = (date) => {
+  const formatDate = date => {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -90,21 +94,21 @@ export default function AdminInterviewDetails() {
     return `${hours}h ${mins}m`;
   };
 
-  const getScoreColor = (score) => {
+  const getScoreColor = score => {
     if (score >= 80) return 'text-green-600';
     if (score >= 60) return 'text-yellow-600';
     if (score >= 40) return 'text-orange-500';
     return 'text-red-600';
   };
 
-  const getScoreBgColor = (score) => {
+  const getScoreBgColor = score => {
     if (score >= 80) return 'bg-green-100';
     if (score >= 60) return 'bg-yellow-100';
     if (score >= 40) return 'bg-orange-100';
     return 'bg-red-100';
   };
 
-  const getScoreIcon = (score) => {
+  const getScoreIcon = score => {
     if (score >= 70) return <ThumbsUp className="w-4 h-4 text-green-600" />;
     if (score >= 40) return <Minus className="w-4 h-4 text-yellow-600" />;
     return <ThumbsDown className="w-4 h-4 text-red-600" />;
@@ -144,7 +148,9 @@ export default function AdminInterviewDetails() {
             <div className="p-12 text-center">
               <XCircle className="w-16 h-16 mx-auto text-red-400 mb-4" />
               <h2 className="text-xl font-bold text-slate-900 mb-2">Interview Not Found</h2>
-              <p className="text-slate-500">The interview you're looking for doesn't exist or has been deleted.</p>
+              <p className="text-slate-500">
+                The interview you're looking for doesn't exist or has been deleted.
+              </p>
             </div>
           </Card>
         </div>
@@ -156,9 +162,10 @@ export default function AdminInterviewDetails() {
   const user = interview?.user || {};
   const responses = interview?.responses || [];
   const answeredQuestions = responses.filter(r => r?.answer).length;
-  const avgScore = responses.length > 0
-    ? Math.round(responses.reduce((acc, r) => acc + (r?.score || 0), 0) / responses.length)
-    : 0;
+  const avgScore =
+    responses.length > 0
+      ? Math.round(responses.reduce((acc, r) => acc + (r?.score || 0), 0) / responses.length)
+      : 0;
 
   // Debug log
   console.log('Interview Data:', interview);
@@ -190,10 +197,12 @@ export default function AdminInterviewDetails() {
                 </div>
                 <div className="text-white">
                   <h1 className="text-2xl font-bold">
-                    {CATEGORIES[interview?.category] || interview?.category || 'Interview'} Interview
+                    {CATEGORIES[interview?.category] || interview?.category || 'Interview'}{' '}
+                    Interview
                   </h1>
                   <p className="text-white/80 mt-1">
-                    {interview?.totalQuestions || 0} Questions • {interview?.difficulty || 'N/A'} difficulty
+                    {interview?.totalQuestions || 0} Questions • {interview?.difficulty || 'N/A'}{' '}
+                    difficulty
                   </p>
                 </div>
               </div>
@@ -246,7 +255,8 @@ export default function AdminInterviewDetails() {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">
-                      {user?.firstName?.[0]}{user?.lastName?.[0]}
+                      {user?.firstName?.[0]}
+                      {user?.lastName?.[0]}
                     </span>
                   </div>
                   <div>
@@ -334,14 +344,21 @@ export default function AdminInterviewDetails() {
                           {response.question?.category || 'General'}
                         </Badge>
                         {response.question?.difficulty && (
-                          <Badge className={DIFFICULTY_STYLES[response.question.difficulty] || 'bg-slate-100 text-xs'}>
+                          <Badge
+                            className={
+                              DIFFICULTY_STYLES[response.question.difficulty] ||
+                              'bg-slate-100 text-xs'
+                            }
+                          >
                             {response.question.difficulty}
                           </Badge>
                         )}
                       </div>
                     </div>
                     {response.score !== undefined && (
-                      <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${getScoreBgColor(response.score)}`}>
+                      <div
+                        className={`flex items-center gap-2 px-3 py-1 rounded-full ${getScoreBgColor(response.score)}`}
+                      >
                         {getScoreIcon(response.score)}
                         <span className={`font-bold ${getScoreColor(response.score)}`}>
                           {Math.round(response.score)}%
@@ -362,7 +379,9 @@ export default function AdminInterviewDetails() {
                     <div className="bg-slate-50 rounded-lg p-4 mb-4">
                       <div className="flex items-center gap-2 mb-2">
                         <User className="w-4 h-4 text-slate-500" />
-                        <span className="text-slate-600 text-sm font-medium">Candidate's Answer</span>
+                        <span className="text-slate-600 text-sm font-medium">
+                          Candidate's Answer
+                        </span>
                       </div>
                       <p className="text-slate-800">{response.answer}</p>
                     </div>
@@ -373,15 +392,45 @@ export default function AdminInterviewDetails() {
                   )}
 
                   {/* AI Feedback */}
-                  {response.feedback && (
+                  {response.feedback && typeof response.feedback === 'object' ? (
                     <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <Award className="w-4 h-4 text-indigo-600" />
                         <span className="text-indigo-700 text-sm font-medium">AI Feedback</span>
                       </div>
-                      <p className="text-slate-700 text-sm">{response.feedback}</p>
+                      {/* Render feedback details if available */}
+                      {response.feedback.strengths && (
+                        <div className="mb-2">
+                          <strong>Strengths:</strong>
+                          <ul className="list-disc list-inside ml-4">
+                            {response.feedback.strengths.map((s, i) => (
+                              <li key={i}>{s}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {response.feedback.improvements && (
+                        <div className="mb-2">
+                          <strong>Improvements:</strong>
+                          <ul className="list-disc list-inside ml-4">
+                            {response.feedback.improvements.map((imp, i) => (
+                              <li key={i}>{imp}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {/* Fallback: show raw JSON if unknown shape */}
+                      {!response.feedback.strengths && !response.feedback.improvements && (
+                        <pre className="text-xs whitespace-pre-wrap bg-white p-2 rounded">
+                          {JSON.stringify(response.feedback, null, 2)}
+                        </pre>
+                      )}
                     </div>
-                  )}
+                  ) : response.feedback ? (
+                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                      <p className="text-slate-700 text-sm">{String(response.feedback)}</p>
+                    </div>
+                  ) : null}
 
                   {/* Time Taken */}
                   {response.timeTaken && (
