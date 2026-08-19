@@ -101,6 +101,7 @@ jobs:
   # Docker build & optional push
   # ─────────────────────────────────────────────────────────
   docker:
+    if: false
     runs-on: ubuntu-latest
     needs: [backend, frontend]
     steps:

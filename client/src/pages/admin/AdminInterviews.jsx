@@ -285,12 +285,15 @@ function InterviewDetailsModal({ interview, onClose }) {
                                 )}
                               </div>
                             </div>
-                            {response.score !== undefined && (
+                            {(response.score !== undefined ||
+                              response.evaluation?.overallScore !== undefined) && (
                               <div
-                                className={`flex items-center gap-2 px-3 py-1 rounded-full ${getScoreBg(response.score)}`}
+                                className={`flex items-center gap-2 px-3 py-1 rounded-full ${getScoreBg(response.score ?? response.evaluation?.overallScore)}`}
                               >
-                                <span className={`font-bold ${getScoreColor(response.score)}`}>
-                                  {Math.round(response.score)}%
+                                <span
+                                  className={`font-bold ${getScoreColor(response.score ?? response.evaluation?.overallScore)}`}
+                                >
+                                  {Math.round(response.score ?? response.evaluation?.overallScore)}%
                                 </span>
                               </div>
                             )}
@@ -323,7 +326,8 @@ function InterviewDetailsModal({ interview, onClose }) {
                               </div>
                             )}
 
-                            {response.feedback && (
+                            {(response.feedback?.detailedFeedback ||
+                              (typeof response.feedback === 'string' ? response.feedback : '')) && (
                               <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/30 rounded-lg p-4">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Award className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -332,7 +336,9 @@ function InterviewDetailsModal({ interview, onClose }) {
                                   </span>
                                 </div>
                                 <p className="text-slate-700 dark:text-slate-300 text-sm">
-                                  {response.feedback}
+                                  {typeof response.feedback === 'string'
+                                    ? response.feedback
+                                    : response.feedback.detailedFeedback}
                                 </p>
                               </div>
                             )}
@@ -351,14 +357,15 @@ function InterviewDetailsModal({ interview, onClose }) {
                 </div>
 
                 {/* Overall Feedback */}
-                {interviewDetail?.overallFeedback && (
+                {(interviewDetail?.overallFeedback ||
+                  interviewDetail?.insights?.overallFeedback) && (
                   <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
                       <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                       Overall Performance Feedback
                     </h3>
                     <p className="text-slate-700 dark:text-slate-300">
-                      {interviewDetail.overallFeedback}
+                      {interviewDetail.overallFeedback || interviewDetail.insights.overallFeedback}
                     </p>
                   </div>
                 )}

@@ -2,7 +2,7 @@
  * ===========================================
  * useProctoring Hook
  * ===========================================
- * 
+ *
  * Custom React hook for real-time proctoring monitoring.
  * Handles camera, screen, and audio detection.
  */
@@ -18,7 +18,7 @@ const VIOLATION_SEVERITY = {
   head_movement: 'low',
   posture_shift: 'low',
   suspicious_gaze: 'low',
-  
+
   // Medium severity
   fullscreen_exit: 'medium',
   no_face_detected: 'medium',
@@ -27,7 +27,7 @@ const VIOLATION_SEVERITY = {
   restricted_website: 'medium',
   mouth_movement: 'medium',
   unexplained_silence: 'medium',
-  
+
   // High severity
   multiple_faces: 'high',
   face_mismatch: 'high',
@@ -36,7 +36,7 @@ const VIOLATION_SEVERITY = {
   phone_detected: 'high',
   remote_desktop: 'high',
   virtual_machine: 'high',
-  screen_share_detected: 'high'
+  screen_share_detected: 'high',
 };
 
 // Violation descriptions
@@ -68,7 +68,7 @@ const VIOLATION_DESCRIPTIONS = {
   phone_detected: 'Phone/mobile device detected',
   external_material: 'External material detected',
   muted_with_movement: 'Microphone muted with visible lip movement',
-  unexplained_silence: 'Unexplained silence during speaking task'
+  unexplained_silence: 'Unexplained silence during speaking task',
 };
 
 const useProctoring = (options = {}) => {
@@ -79,7 +79,7 @@ const useProctoring = (options = {}) => {
     onViolation = () => {},
     onWarning = () => {},
     onSessionEnd = () => {},
-    strictMode = false
+    strictMode = false,
   } = options;
 
   // State
@@ -93,7 +93,7 @@ const useProctoring = (options = {}) => {
     lowViolations: 0,
     mediumViolations: 0,
     highViolations: 0,
-    warningsIssued: 0
+    warningsIssued: 0,
   });
   const [cameraStatus, setCameraStatus] = useState('initializing');
   const [screenStatus, setScreenStatus] = useState('initializing');
@@ -115,75 +115,81 @@ const useProctoring = (options = {}) => {
   const gazeHistoryRef = useRef([]);
 
   // Log a violation (must be defined before setScreenStream which depends on it)
-  const logViolation = useCallback(async (type, additionalData = {}) => {
-    if (!proctoringSessionId || !isActive) return;
+  const logViolation = useCallback(
+    async (type, additionalData = {}) => {
+      if (!proctoringSessionId || !isActive) return;
 
-    const severity = VIOLATION_SEVERITY[type] || 'low';
-    const description = VIOLATION_DESCRIPTIONS[type] || type;
+      const severity = VIOLATION_SEVERITY[type] || 'low';
+      const description = VIOLATION_DESCRIPTIONS[type] || type;
 
-    try {
-      const response = await proctoringApi.logViolation(proctoringSessionId, {
-        type,
-        severity,
-        description,
-        evidence: additionalData.evidence || null
-      });
+      try {
+        const response = await proctoringApi.logViolation(proctoringSessionId, {
+          type,
+          severity,
+          description,
+          evidence: additionalData.evidence || null,
+        });
 
-      if (response.data.success) {
-        const data = response.data.data;
-        
-        // Update local state
-        setRiskScore(data.riskScore);
-        setRiskLevel(data.riskLevel);
-        setStats(data.stats);
-        setViolations(prev => [...prev, data.violation]);
+        if (response.data.success) {
+          const data = response.data.data;
 
-        // Handle warning message
-        if (data.warningMessage) {
-          setWarningMessage(data.warningMessage);
-          onWarning(data.warningMessage, severity);
-          
-          // Show toast for warnings
-          if (severity === 'high') {
-            toast.error(data.warningMessage, { duration: 5000 });
-          } else if (severity === 'medium') {
-            toast(data.warningMessage, { icon: '⚠️', duration: 4000 });
+          // Update local state
+          setRiskScore(data.riskScore);
+          setRiskLevel(data.riskLevel);
+          setStats(data.stats);
+          setViolations(prev => [...prev, data.violation]);
+
+          // Handle warning message
+          if (data.warningMessage) {
+            setWarningMessage(data.warningMessage);
+            onWarning(data.warningMessage, severity);
+
+            // Show toast for warnings
+            if (severity === 'high') {
+              toast.error(data.warningMessage, { duration: 5000 });
+            } else if (severity === 'medium') {
+              toast(data.warningMessage, { icon: '⚠️', duration: 4000 });
+            }
+
+            // Clear warning after delay
+            setTimeout(() => setWarningMessage(null), 5000);
           }
-          
-          // Clear warning after delay
-          setTimeout(() => setWarningMessage(null), 5000);
+
+          // Callback
+          onViolation(data.violation, data);
+
+          return data;
         }
-
-        // Callback
-        onViolation(data.violation, data);
-
-        return data;
+      } catch (error) {
+        console.error('Failed to log violation:', error);
       }
-    } catch (error) {
-      console.error('Failed to log violation:', error);
-    }
-  }, [proctoringSessionId, isActive, onViolation, onWarning]);
+    },
+    [proctoringSessionId, isActive, onViolation, onWarning]
+  );
 
   // Set screen stream from proctoring setup
-  const setScreenStream = useCallback((stream) => {
-    screenStreamRef.current = stream;
-    setScreenStatus('active');
-    
-    // Monitor screen share stop — log violation when screen share ends
-    if (stream) {
-      const videoTrack = stream.getVideoTracks()[0];
-      if (videoTrack) {
-        videoTrack.onended = () => {
-          setScreenStatus('stopped');
-          // Log the violation to server (logViolation requires session to be active)
-          if (proctoringSessionId && isActive) {
-            logViolation('screen_share_detected');
-          }
-          toast.error('Screen sharing was stopped! This is a violation.', { duration: 6000 });
-        };
+  const setScreenStream = useCallback(
+    stream => {
+      screenStreamRef.current = stream;
+      setScreenStatus('active');
+
+      // Monitor screen share stop — log violation when screen share ends
+      if (stream) {
+        const videoTrack = stream.getVideoTracks()[0];
+        if (videoTrack) {
+          videoTrack.onended = () => {
+            setScreenStatus('stopped');
+            // Log the violation to server (logViolation requires session to be active)
+            if (proctoringSessionId && isActive) {
+              logViolation('screen_share_detected');
+            }
+            toast.error('Screen sharing was stopped! This is a violation.', { duration: 6000 });
+          };
+        }
       }
-    }
-  }, [proctoringSessionId, isActive, logViolation]);
+    },
+    [proctoringSessionId, isActive, logViolation]
+  );
 
   // Start proctoring session
   const startSession = useCallback(async () => {
@@ -194,11 +200,11 @@ const useProctoring = (options = {}) => {
       } catch (clearError) {
         console.log('No sessions to clear or clear failed:', clearError.message);
       }
-      
+
       const deviceInfo = {
         browser: navigator.userAgent,
         os: navigator.platform,
-        screenResolution: `${window.screen.width}x${window.screen.height}`
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
       };
 
       const response = await proctoringApi.startSessionForced({
@@ -209,9 +215,9 @@ const useProctoring = (options = {}) => {
           screenMonitoringEnabled: config.screenMonitoringEnabled ?? true,
           audioMonitoringEnabled: config.audioMonitoringEnabled ?? true,
           fullscreenRequired: config.fullscreenRequired ?? true,
-          strictMode
+          strictMode,
         },
-        deviceInfo
+        deviceInfo,
       });
 
       if (response.data.success) {
@@ -222,7 +228,7 @@ const useProctoring = (options = {}) => {
       }
     } catch (error) {
       console.error('Failed to start proctoring session:', error);
-      
+
       // Show user-friendly message
       const errorMessage = error.response?.data?.message || 'Failed to start proctoring session';
       toast.error(errorMessage);
@@ -235,7 +241,7 @@ const useProctoring = (options = {}) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: 640, height: 480 },
-        audio: config.audioMonitoringEnabled ?? true
+        audio: config.audioMonitoringEnabled ?? true,
       });
 
       streamRef.current = stream;
@@ -254,7 +260,7 @@ const useProctoring = (options = {}) => {
         const source = audioContext.createMediaStreamSource(stream);
         source.connect(analyser);
         analyser.fftSize = 256;
-        
+
         audioContextRef.current = audioContext;
         analyserRef.current = analyser;
         setAudioStatus('active');
@@ -276,9 +282,24 @@ const useProctoring = (options = {}) => {
       const h = canvas.height;
       // Scan the peripheral regions (sides) where a phone is typically held
       const regions = [
-        { startX: 0, endX: Math.floor(w * 0.2), startY: Math.floor(h * 0.2), endY: Math.floor(h * 0.8) },  // left side
-        { startX: Math.floor(w * 0.8), endX: w, startY: Math.floor(h * 0.2), endY: Math.floor(h * 0.8) },  // right side
-        { startX: Math.floor(w * 0.2), endX: Math.floor(w * 0.8), startY: Math.floor(h * 0.7), endY: h },  // bottom
+        {
+          startX: 0,
+          endX: Math.floor(w * 0.2),
+          startY: Math.floor(h * 0.2),
+          endY: Math.floor(h * 0.8),
+        }, // left side
+        {
+          startX: Math.floor(w * 0.8),
+          endX: w,
+          startY: Math.floor(h * 0.2),
+          endY: Math.floor(h * 0.8),
+        }, // right side
+        {
+          startX: Math.floor(w * 0.2),
+          endX: Math.floor(w * 0.8),
+          startY: Math.floor(h * 0.7),
+          endY: h,
+        }, // bottom
       ];
 
       const imageData = ctx.getImageData(0, 0, w, h);
@@ -293,7 +314,9 @@ const useProctoring = (options = {}) => {
         for (let y = region.startY; y < region.endY; y += 3) {
           for (let x = region.startX; x < region.endX; x += 3) {
             const i = (y * w + x) * 4;
-            const r = data[i], g = data[i + 1], b = data[i + 2];
+            const r = data[i],
+              g = data[i + 1],
+              b = data[i + 2];
             totalSampled++;
 
             // Detect bright screen-like glow (phone screen on)
@@ -304,7 +327,8 @@ const useProctoring = (options = {}) => {
             // Simple edge detection via neighbor difference
             if (x + 3 < region.endX && y + 3 < region.endY) {
               const ni = ((y + 3) * w + (x + 3)) * 4;
-              const diff = Math.abs(r - data[ni]) + Math.abs(g - data[ni + 1]) + Math.abs(b - data[ni + 2]);
+              const diff =
+                Math.abs(r - data[ni]) + Math.abs(g - data[ni + 1]) + Math.abs(b - data[ni + 2]);
               if (diff > 100) edgeCount++;
             }
           }
@@ -337,7 +361,13 @@ const useProctoring = (options = {}) => {
 
     // Ensure video is playing
     if (video.readyState !== video.HAVE_ENOUGH_DATA) {
-      return { detected: false, faceCount: 0, confidence: 0, gazeDirection: 'unknown', phoneDetected: false };
+      return {
+        detected: false,
+        faceCount: 0,
+        confidence: 0,
+        gazeDirection: 'unknown',
+        phoneDetected: false,
+      };
     }
 
     canvas.width = video.videoWidth || 640;
@@ -351,7 +381,7 @@ const useProctoring = (options = {}) => {
     try {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-      
+
       // Simple skin tone detection for face presence
       // This is a basic heuristic - production should use ML models
       let skinPixelCount = 0;
@@ -359,54 +389,61 @@ const useProctoring = (options = {}) => {
         startX: Math.floor(canvas.width * 0.25),
         endX: Math.floor(canvas.width * 0.75),
         startY: Math.floor(canvas.height * 0.1),
-        endY: Math.floor(canvas.height * 0.8)
+        endY: Math.floor(canvas.height * 0.8),
       };
-      
+
       for (let y = centerRegion.startY; y < centerRegion.endY; y += 4) {
         for (let x = centerRegion.startX; x < centerRegion.endX; x += 4) {
           const i = (y * canvas.width + x) * 4;
           const r = data[i];
           const g = data[i + 1];
           const b = data[i + 2];
-          
+
           // Improved skin tone detection heuristic (works better for various skin tones and lighting)
           // Using multiple detection methods for better coverage
-          const isSkinTone = (
+          const isSkinTone =
             // Method 1: RGB-based detection (traditional)
-            (r > 50 && g > 30 && b > 15 &&
-             r > g && r > b &&
-             Math.abs(r - g) < 120 &&
-             r - b > 10) ||
+            (r > 50 && g > 30 && b > 15 && r > g && r > b && Math.abs(r - g) < 120 && r - b > 10) ||
             // Method 2: Normalized RGB for different lighting
-            (r > 60 && g > 40 && b > 20 &&
-             (r + g + b) > 150 &&
-             (r + g + b) < 700 &&
-             r >= g && g >= b * 0.8)
-          );
-          
+            (r > 60 &&
+              g > 40 &&
+              b > 20 &&
+              r + g + b > 150 &&
+              r + g + b < 700 &&
+              r >= g &&
+              g >= b * 0.8);
+
           if (isSkinTone) skinPixelCount++;
         }
       }
-      
+
       // Calculate face presence based on skin pixel ratio
-      const totalPixels = ((centerRegion.endX - centerRegion.startX) / 4) * ((centerRegion.endY - centerRegion.startY) / 4);
+      const totalPixels =
+        ((centerRegion.endX - centerRegion.startX) / 4) *
+        ((centerRegion.endY - centerRegion.startY) / 4);
       const skinRatio = skinPixelCount / totalPixels;
-      
+
       // Face detected if sufficient skin pixels in center region
       // Lowered threshold to reduce false negatives across different skin tones and lighting
       const detected = skinRatio > 0.04 && skinRatio < 0.8;
       const confidence = Math.min(skinRatio * 2.5, 1);
-      
+
       return {
         detected,
         faceCount: detected ? 1 : 0,
         confidence,
         gazeDirection: detected ? 'center' : 'unknown',
-        phoneDetected
+        phoneDetected,
       };
     } catch (error) {
       console.error('Face detection error:', error);
-      return { detected: true, faceCount: 1, confidence: 0.8, gazeDirection: 'center', phoneDetected: false };
+      return {
+        detected: true,
+        faceCount: 1,
+        confidence: 0.8,
+        gazeDirection: 'center',
+        phoneDetected: false,
+      };
     }
   }, [detectPhoneInFrame]);
 
@@ -416,7 +453,7 @@ const useProctoring = (options = {}) => {
   // Run face detection loop
   const runFaceDetection = useCallback(() => {
     const detection = detectFace();
-    
+
     if (!detection) return;
 
     setFaceDetected(detection.detected);
@@ -424,7 +461,8 @@ const useProctoring = (options = {}) => {
     // No face detected - increased threshold to reduce false positives
     if (!detection.detected) {
       consecutiveNoFaceRef.current++;
-      if (consecutiveNoFaceRef.current >= 15) { // Increased from 5 to 15 consecutive misses
+      if (consecutiveNoFaceRef.current >= 15) {
+        // Increased from 5 to 15 consecutive misses
         logViolation('no_face_detected');
         consecutiveNoFaceRef.current = 0;
       }
@@ -443,7 +481,10 @@ const useProctoring = (options = {}) => {
       // Require 3 consecutive detections to confirm (reduce false positives)
       if (consecutivePhoneRef.current >= 3) {
         logViolation('phone_detected');
-        toast.error('Phone or secondary device detected! This is a violation.', { duration: 5000, id: 'phone-detected' });
+        toast.error('Phone or secondary device detected! This is a violation.', {
+          duration: 5000,
+          id: 'phone-detected',
+        });
         consecutivePhoneRef.current = 0;
       }
     } else {
@@ -452,12 +493,14 @@ const useProctoring = (options = {}) => {
 
     // Gaze detection
     gazeHistoryRef.current.push(detection.gazeDirection);
-    if (gazeHistoryRef.current.length > 15) { // Increased window
+    if (gazeHistoryRef.current.length > 15) {
+      // Increased window
       gazeHistoryRef.current.shift();
-      
+
       // Check for consistent off-screen gaze - require more evidence
       const offScreenCount = gazeHistoryRef.current.filter(g => g !== 'center').length;
-      if (offScreenCount >= 12 && strictMode) { // Increased threshold
+      if (offScreenCount >= 12 && strictMode) {
+        // Increased threshold
         logViolation('suspicious_gaze');
         gazeHistoryRef.current = [];
       }
@@ -470,9 +513,9 @@ const useProctoring = (options = {}) => {
 
     const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
     analyserRef.current.getByteFrequencyData(dataArray);
-    
+
     const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
-    
+
     // Detect background voice (high audio when candidate shouldn't be speaking)
     // This is simplified - in production, use proper voice activity detection
     if (average > 50) {
@@ -505,11 +548,14 @@ const useProctoring = (options = {}) => {
   }, [isActive, logViolation]);
 
   // Monitor copy-paste
-  const handleCopyPaste = useCallback((e) => {
-    if (isActive && (e.type === 'copy' || e.type === 'paste')) {
-      logViolation('copy_paste');
-    }
-  }, [isActive, logViolation]);
+  const handleCopyPaste = useCallback(
+    e => {
+      if (isActive && (e.type === 'copy' || e.type === 'paste')) {
+        logViolation('copy_paste');
+      }
+    },
+    [isActive, logViolation]
+  );
 
   // Request fullscreen
   const requestFullscreen = useCallback(async () => {
@@ -568,7 +614,7 @@ const useProctoring = (options = {}) => {
   // Get proctoring report
   const getReport = useCallback(async () => {
     if (!proctoringSessionId) return null;
-    
+
     try {
       const response = await proctoringApi.getReport(proctoringSessionId);
       return response.data.data;
@@ -598,12 +644,19 @@ const useProctoring = (options = {}) => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       document.removeEventListener('copy', handleCopyPaste);
       document.removeEventListener('paste', handleCopyPaste);
-      
+
       if (detectionIntervalRef.current) {
         clearInterval(detectionIntervalRef.current);
       }
     };
-  }, [isActive, handleFullscreenChange, handleVisibilityChange, handleCopyPaste, runFaceDetection, detectAudio]);
+  }, [
+    isActive,
+    handleFullscreenChange,
+    handleVisibilityChange,
+    handleCopyPaste,
+    runFaceDetection,
+    detectAudio,
+  ]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -619,6 +672,19 @@ const useProctoring = (options = {}) => {
       }
     };
   }, []);
+
+  // Ensure video stream is attached when the video element mounts
+  useEffect(() => {
+    if (
+      isActive &&
+      videoRef.current &&
+      streamRef.current &&
+      videoRef.current.srcObject !== streamRef.current
+    ) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(e => console.error('Video play error:', e));
+    }
+  });
 
   return {
     // Session management
@@ -652,7 +718,7 @@ const useProctoring = (options = {}) => {
     canvasRef,
 
     // Camera control
-    initializeCamera
+    initializeCamera,
   };
 };
 
