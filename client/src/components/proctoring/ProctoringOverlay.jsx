@@ -2,7 +2,7 @@
  * ===========================================
  * Proctoring Overlay Component
  * ===========================================
- * 
+ *
  * Displays real-time proctoring status, camera feed,
  * risk indicators, and warning alerts during sessions.
  */
@@ -26,7 +26,7 @@ import {
   X,
   Maximize,
   User,
-  Users
+  Users,
 } from 'lucide-react';
 
 const ProctoringOverlay = ({
@@ -44,7 +44,7 @@ const ProctoringOverlay = ({
   warningMessage,
   onRequestFullscreen,
   minimized = false,
-  onToggleMinimize
+  onToggleMinimize,
 }) => {
   const [showViolations, setShowViolations] = useState(false);
   const [recentViolations, setRecentViolations] = useState([]);
@@ -54,7 +54,7 @@ const ProctoringOverlay = ({
     if (violations.length > 0) {
       const latest = violations[violations.length - 1];
       setRecentViolations(prev => [...prev, { ...latest, id: Date.now() }]);
-      
+
       // Remove after 3 seconds
       setTimeout(() => {
         setRecentViolations(prev => prev.filter(v => v.id !== latest.id));
@@ -71,7 +71,8 @@ const ProctoringOverlay = ({
 
   const getRiskBgColor = () => {
     if (riskLevel === 'clean' || riskScore < 20) return 'bg-green-500/10 border-green-500/30';
-    if (riskLevel === 'review_recommended' || riskScore < 50) return 'bg-yellow-500/10 border-yellow-500/30';
+    if (riskLevel === 'review_recommended' || riskScore < 50)
+      return 'bg-yellow-500/10 border-yellow-500/30';
     return 'bg-red-500/10 border-red-500/30';
   };
 
@@ -89,13 +90,17 @@ const ProctoringOverlay = ({
   const StatusIndicator = ({ active, icon: Icon, offIcon: OffIcon, label, status }) => {
     const isOk = status === 'active';
     const isDenied = status === 'denied';
-    
+
     return (
-      <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${
-        isOk ? 'bg-green-500/10 text-green-400' :
-        isDenied ? 'bg-red-500/10 text-red-400' :
-        'bg-slate-500/10 text-slate-400'
-      }`}>
+      <div
+        className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${
+          isOk
+            ? 'bg-green-500/10 text-green-400'
+            : isDenied
+              ? 'bg-red-500/10 text-red-400'
+              : 'bg-slate-500/10 text-slate-400'
+        }`}
+      >
         {isOk ? <Icon className="w-3.5 h-3.5" /> : <OffIcon className="w-3.5 h-3.5" />}
         <span className="text-xs font-medium">{label}</span>
       </div>
@@ -107,44 +112,47 @@ const ProctoringOverlay = ({
   // Minimized view
   if (minimized) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="fixed bottom-4 right-4 z-50"
-      >
-        <button
-          onClick={onToggleMinimize}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-lg border ${getRiskBgColor()}`}
+      <>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="fixed bottom-4 right-4 z-50"
         >
-          {getShieldIcon()}
-          <span className={`text-sm font-medium ${getRiskColor()}`}>
-            Proctoring Active
-          </span>
-          {riskScore > 0 && (
-            <span className={`text-xs px-2 py-0.5 rounded-full ${getRiskColor()} bg-current/10`}>
-              Risk: {riskScore}
-            </span>
-          )}
-          <Maximize className="w-4 h-4 text-slate-400" />
-        </button>
+          <button
+            onClick={onToggleMinimize}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-lg border ${getRiskBgColor()}`}
+          >
+            {getShieldIcon()}
+            <span className={`text-sm font-medium ${getRiskColor()}`}>Proctoring Active</span>
+            {riskScore > 0 && (
+              <span className={`text-xs px-2 py-0.5 rounded-full ${getRiskColor()} bg-current/10`}>
+                Risk: {riskScore}
+              </span>
+            )}
+            <Maximize className="w-4 h-4 text-slate-400" />
+          </button>
 
-        {/* Warning popup in minimized mode */}
-        <AnimatePresence>
-          {warningMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute bottom-full right-0 mb-2 p-3 bg-red-500/90 text-white rounded-lg shadow-lg max-w-xs"
-            >
-              <div className="flex items-start gap-2">
-                <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-                <p className="text-sm">{warningMessage}</p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+          {/* Warning popup in minimized mode */}
+          <AnimatePresence>
+            {warningMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute bottom-full right-0 mb-2 p-3 bg-red-500/90 text-white rounded-lg shadow-lg max-w-xs"
+              >
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                  <p className="text-sm">{warningMessage}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Hidden video element for ongoing detection */}
+        <video ref={videoRef} autoPlay muted playsInline className="hidden" />
+      </>
     );
   }
 
@@ -181,11 +189,13 @@ const ProctoringOverlay = ({
               playsInline
               className="w-full h-full object-cover"
             />
-            
+
             {/* Face detection indicator */}
-            <div className={`absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 rounded-md ${
-              faceDetected ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-            }`}>
+            <div
+              className={`absolute top-2 left-2 flex items-center gap-1.5 px-2 py-1 rounded-md ${
+                faceDetected ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+              }`}
+            >
               {faceDetected ? <User className="w-3 h-3" /> : <Users className="w-3 h-3" />}
               <span className="text-xs">{faceDetected ? 'Face OK' : 'No Face'}</span>
             </div>
@@ -220,17 +230,16 @@ const ProctoringOverlay = ({
               offIcon={MonitorOff}
               label="Screen"
             />
-            <StatusIndicator
-              status={audioStatus}
-              icon={Mic}
-              offIcon={MicOff}
-              label="Audio"
-            />
-            <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${
-              isFullscreen ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'
-            }`}>
+            <StatusIndicator status={audioStatus} icon={Mic} offIcon={MicOff} label="Audio" />
+            <div
+              className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${
+                isFullscreen ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'
+              }`}
+            >
               {isFullscreen ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-              <span className="text-xs font-medium">{isFullscreen ? 'Fullscreen' : 'Windowed'}</span>
+              <span className="text-xs font-medium">
+                {isFullscreen ? 'Fullscreen' : 'Windowed'}
+              </span>
             </div>
           </div>
         </div>
@@ -247,9 +256,7 @@ const ProctoringOverlay = ({
                 initial={{ width: 0 }}
                 animate={{ width: `${riskScore}%` }}
                 className={`h-full rounded-full ${
-                  riskScore < 20 ? 'bg-green-500' :
-                  riskScore < 50 ? 'bg-yellow-500' :
-                  'bg-red-500'
+                  riskScore < 20 ? 'bg-green-500' : riskScore < 50 ? 'bg-yellow-500' : 'bg-red-500'
                 }`}
               />
             </div>
@@ -279,12 +286,10 @@ const ProctoringOverlay = ({
                   {stats.mediumViolations} Med
                 </span>
               )}
-              <span className="text-xs text-slate-500">
-                Total: {stats.totalViolations}
-              </span>
+              <span className="text-xs text-slate-500">Total: {stats.totalViolations}</span>
             </div>
           </button>
-          
+
           <AnimatePresence>
             {showViolations && violations.length > 0 && (
               <motion.div
@@ -297,9 +302,11 @@ const ProctoringOverlay = ({
                   <div
                     key={i}
                     className={`p-2 rounded text-xs ${
-                      v.severity === 'high' ? 'bg-red-500/10 text-red-400' :
-                      v.severity === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
-                      'bg-slate-700 text-slate-400'
+                      v.severity === 'high'
+                        ? 'bg-red-500/10 text-red-400'
+                        : v.severity === 'medium'
+                          ? 'bg-yellow-500/10 text-yellow-400'
+                          : 'bg-slate-700 text-slate-400'
                     }`}
                   >
                     <div className="flex items-center gap-1">
@@ -336,9 +343,11 @@ const ProctoringOverlay = ({
             exit={{ opacity: 0, y: -20 }}
             className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-lg"
           >
-            <div className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
-              riskLevel === 'high_suspicion' ? 'bg-red-500' : 'bg-yellow-500'
-            } text-white`}>
+            <div
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
+                riskLevel === 'high_suspicion' ? 'bg-red-500' : 'bg-yellow-500'
+              } text-white`}
+            >
               <AlertTriangle className="w-5 h-5 flex-shrink-0" />
               <p className="text-sm font-medium">{warningMessage}</p>
             </div>
@@ -356,9 +365,11 @@ const ProctoringOverlay = ({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg ${
-                v.severity === 'high' ? 'bg-red-500/90' :
-                v.severity === 'medium' ? 'bg-yellow-500/90' :
-                'bg-slate-600/90'
+                v.severity === 'high'
+                  ? 'bg-red-500/90'
+                  : v.severity === 'medium'
+                    ? 'bg-yellow-500/90'
+                    : 'bg-slate-600/90'
               } text-white`}
             >
               <AlertCircle className="w-4 h-4" />

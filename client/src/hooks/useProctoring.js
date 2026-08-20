@@ -372,7 +372,7 @@ const useProctoring = (options = {}) => {
 
     canvas.width = video.videoWidth || 640;
     canvas.height = video.videoHeight || 480;
-    ctx.drawImage(video, 0, 0);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Check for phone/secondary device in peripheral regions
     const phoneDetected = detectPhoneInFrame(ctx, canvas);
@@ -401,17 +401,13 @@ const useProctoring = (options = {}) => {
 
           // Improved skin tone detection heuristic (works better for various skin tones and lighting)
           // Using multiple detection methods for better coverage
+          // Improved skin tone detection heuristic (works better for various skin tones and lighting)
+          // Simplified to be much more forgiving to prevent "No Face" false positives
           const isSkinTone =
-            // Method 1: RGB-based detection (traditional)
-            (r > 50 && g > 30 && b > 15 && r > g && r > b && Math.abs(r - g) < 120 && r - b > 10) ||
-            // Method 2: Normalized RGB for different lighting
-            (r > 60 &&
-              g > 40 &&
-              b > 20 &&
-              r + g + b > 150 &&
-              r + g + b < 700 &&
-              r >= g &&
-              g >= b * 0.8);
+            // Method 1: Extremely relaxed RGB
+            (r > 40 && g > 20 && b > 10 && r >= g && r >= b) ||
+            // Method 2: High brightness/contrast indicator
+            (r + g + b > 100 && r + g + b < 750 && r >= g * 0.9);
 
           if (isSkinTone) skinPixelCount++;
         }
@@ -424,9 +420,9 @@ const useProctoring = (options = {}) => {
       const skinRatio = skinPixelCount / totalPixels;
 
       // Face detected if sufficient skin pixels in center region
-      // Lowered threshold to reduce false negatives across different skin tones and lighting
-      const detected = skinRatio > 0.04 && skinRatio < 0.8;
-      const confidence = Math.min(skinRatio * 2.5, 1);
+      // Lowered threshold significantly (to 1.5%) to reduce false negatives
+      const detected = skinRatio > 0.015 && skinRatio < 0.9;
+      const confidence = Math.min(skinRatio * 3, 1);
 
       return {
         detected,

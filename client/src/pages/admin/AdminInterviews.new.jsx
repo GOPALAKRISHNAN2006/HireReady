@@ -2,7 +2,7 @@
  * ===========================================
  * Enhanced Admin Interviews Page
  * ===========================================
- * 
+ *
  * Comprehensive interview management page featuring:
  * - Interview list with filtering and search
  * - Detailed interview view with responses
@@ -11,15 +11,15 @@
  * - Pagination and responsive design
  */
 
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { Card, Button, Badge, Modal } from '../../components/ui'
-import { LoadingCard } from '../../components/ui/Spinner'
-import { adminInterviews } from '../../services/adminApi'
-import { 
-  Video, 
-  Search, 
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { Card, Button, Badge, Modal } from '../../components/ui';
+import { LoadingCard } from '../../components/ui/Spinner';
+import { adminInterviews } from '../../services/adminApi';
+import {
+  Video,
+  Search,
   Eye,
   Trash2,
   Download,
@@ -35,8 +35,8 @@ import {
   CheckCircle,
   XCircle,
   BarChart3,
-  Filter
-} from 'lucide-react'
+  Filter,
+} from 'lucide-react';
 
 // Status options
 const STATUS_OPTIONS = [
@@ -44,8 +44,8 @@ const STATUS_OPTIONS = [
   { value: 'completed', label: 'Completed' },
   { value: 'in-progress', label: 'In Progress' },
   { value: 'pending', label: 'Pending' },
-  { value: 'cancelled', label: 'Cancelled' }
-]
+  { value: 'cancelled', label: 'Cancelled' },
+];
 
 // Category options
 const CATEGORY_OPTIONS = [
@@ -56,138 +56,139 @@ const CATEGORY_OPTIONS = [
   { value: 'system-design', label: 'System Design' },
   { value: 'behavioral', label: 'Behavioral' },
   { value: 'database', label: 'Database' },
-  { value: 'devops', label: 'DevOps' }
-]
+  { value: 'devops', label: 'DevOps' },
+];
 
 const AdminInterviews = () => {
-  const queryClient = useQueryClient()
-  
+  const queryClient = useQueryClient();
+
   // State
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [statusFilter, setStatusFilter] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState('')
-  const [dateFilter, setDateFilter] = useState('')
-  const [showViewModal, setShowViewModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [selectedInterview, setSelectedInterview] = useState(null)
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState(null);
 
   // Fetch interviews
   const { data, isLoading } = useQuery({
     queryKey: ['admin', 'interviews', page, search, statusFilter, categoryFilter, dateFilter],
-    queryFn: () => adminInterviews.getAll({
-      page,
-      limit: 15,
-      search,
-      status: statusFilter,
-      category: categoryFilter,
-      date: dateFilter
-    }),
-  })
+    queryFn: () =>
+      adminInterviews.getAll({
+        page,
+        limit: 15,
+        search,
+        status: statusFilter,
+        category: categoryFilter,
+        date: dateFilter,
+      }),
+  });
 
   // Fetch stats
   const { data: statsData } = useQuery({
     queryKey: ['admin', 'interviews', 'stats'],
     queryFn: adminInterviews.getStats,
-  })
+  });
 
   // Fetch single interview for detail view
   const { data: interviewDetail, isLoading: isLoadingDetail } = useQuery({
     queryKey: ['admin', 'interview', selectedInterview?._id],
     queryFn: () => adminInterviews.getById(selectedInterview._id),
     enabled: !!selectedInterview?._id && showViewModal,
-  })
+  });
 
   // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: (id) => adminInterviews.delete(id),
+    mutationFn: id => adminInterviews.delete(id),
     onSuccess: () => {
-      toast.success('Interview deleted')
-      queryClient.invalidateQueries(['admin', 'interviews'])
-      setShowDeleteModal(false)
-      setSelectedInterview(null)
+      toast.success('Interview deleted');
+      queryClient.invalidateQueries(['admin', 'interviews']);
+      setShowDeleteModal(false);
+      setSelectedInterview(null);
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete interview')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to delete interview');
     },
-  })
+  });
 
   // Export mutation
   const exportMutation = useMutation({
-    mutationFn: (format) => adminInterviews.export(format, {
-      status: statusFilter,
-      category: categoryFilter,
-      date: dateFilter
-    }),
+    mutationFn: format =>
+      adminInterviews.export(format, {
+        status: statusFilter,
+        category: categoryFilter,
+        date: dateFilter,
+      }),
     onSuccess: (data, format) => {
       // Create download link
-      const blob = new Blob(
-        [format === 'json' ? JSON.stringify(data.data, null, 2) : data.data],
-        { type: format === 'json' ? 'application/json' : 'text/csv' }
-      )
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `interviews_export_${new Date().toISOString().split('T')[0]}.${format}`
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      a.remove()
-      toast.success(`Exported as ${format.toUpperCase()}`)
+      const blob = new Blob([format === 'json' ? JSON.stringify(data.data, null, 2) : data.data], {
+        type: format === 'json' ? 'application/json' : 'text/csv',
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `interviews_export_${new Date().toISOString().split('T')[0]}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+      toast.success(`Exported as ${format.toUpperCase()}`);
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Export failed')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Export failed');
     },
-  })
+  });
 
-  const interviews = data?.data?.interviews || []
-  const pagination = data?.data?.pagination || { page: 1, pages: 1, total: 0 }
-  const stats = statsData?.data || {}
-  const detail = interviewDetail?.data?.interview || null
+  const interviews = data?.data?.interviews || [];
+  const pagination = data?.data?.pagination || { page: 1, pages: 1, total: 0 };
+  const stats = statsData?.data || {};
+  const detail = interviewDetail?.data?.interview || null;
 
   // Format date
-  const formatDate = (date) => {
-    if (!date) return 'N/A'
+  const formatDate = date => {
+    if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+      minute: '2-digit',
+    });
+  };
 
   // Format duration
-  const formatDuration = (minutes) => {
-    if (!minutes) return 'N/A'
-    if (minutes < 60) return `${minutes} min`
-    return `${Math.floor(minutes / 60)}h ${minutes % 60}m`
-  }
+  const formatDuration = minutes => {
+    if (!minutes) return 'N/A';
+    if (minutes < 60) return `${minutes} min`;
+    return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+  };
 
   // Get status color
-  const getStatusColor = (status) => {
+  const getStatusColor = status => {
     const colors = {
       completed: 'success',
       'in-progress': 'warning',
       pending: 'secondary',
-      cancelled: 'danger'
-    }
-    return colors[status] || 'secondary'
-  }
+      cancelled: 'danger',
+    };
+    return colors[status] || 'secondary';
+  };
 
   // Get score color
-  const getScoreColor = (score) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-yellow-600'
-    if (score >= 40) return 'text-orange-600'
-    return 'text-red-600'
-  }
+  const getScoreColor = score => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    if (score >= 40) return 'text-orange-600';
+    return 'text-red-600';
+  };
 
   // Handle view
-  const handleView = (interview) => {
-    setSelectedInterview(interview)
-    setShowViewModal(true)
-  }
+  const handleView = interview => {
+    setSelectedInterview(interview);
+    setShowViewModal(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -198,16 +199,16 @@ const AdminInterviews = () => {
           <p className="text-slate-600">View and manage mock interview sessions</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button 
-            variant="secondary" 
+          <Button
+            variant="secondary"
             icon={Download}
             onClick={() => exportMutation.mutate('csv')}
             disabled={exportMutation.isPending}
           >
             Export CSV
           </Button>
-          <Button 
-            variant="secondary" 
+          <Button
+            variant="secondary"
             icon={FileText}
             onClick={() => exportMutation.mutate('json')}
             disabled={exportMutation.isPending}
@@ -267,39 +268,43 @@ const AdminInterviews = () => {
               type="text"
               placeholder="Search by user name or email..."
               value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setPage(1)
+              onChange={e => {
+                setSearch(e.target.value);
+                setPage(1);
               }}
               className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
-          
+
           {/* Status Filter */}
           <select
             value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value)
-              setPage(1)
+            onChange={e => {
+              setStatusFilter(e.target.value);
+              setPage(1);
             }}
             className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[150px]"
           >
             {STATUS_OPTIONS.map(status => (
-              <option key={status.value} value={status.value}>{status.label}</option>
+              <option key={status.value} value={status.value}>
+                {status.label}
+              </option>
             ))}
           </select>
-          
+
           {/* Category Filter */}
           <select
             value={categoryFilter}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value)
-              setPage(1)
+            onChange={e => {
+              setCategoryFilter(e.target.value);
+              setPage(1);
             }}
             className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[180px]"
           >
             {CATEGORY_OPTIONS.map(cat => (
-              <option key={cat.value} value={cat.value}>{cat.label}</option>
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
             ))}
           </select>
 
@@ -307,9 +312,9 @@ const AdminInterviews = () => {
           <input
             type="date"
             value={dateFilter}
-            onChange={(e) => {
-              setDateFilter(e.target.value)
-              setPage(1)
+            onChange={e => {
+              setDateFilter(e.target.value);
+              setPage(1);
             }}
             className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
           />
@@ -342,8 +347,8 @@ const AdminInterviews = () => {
             </div>
 
             <div className="divide-y divide-slate-200">
-              {interviews.map((interview) => (
-                <div 
+              {interviews.map(interview => (
+                <div
                   key={interview._id}
                   className="p-4 lg:px-6 hover:bg-slate-50 transition-colors"
                 >
@@ -383,7 +388,9 @@ const AdminInterviews = () => {
 
                     {/* Score */}
                     <div className="col-span-1">
-                      <span className={`text-lg font-bold ${getScoreColor(interview.overallScore)}`}>
+                      <span
+                        className={`text-lg font-bold ${getScoreColor(interview.overallScore)}`}
+                      >
                         {interview.overallScore || 0}%
                       </span>
                     </div>
@@ -406,8 +413,8 @@ const AdminInterviews = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setSelectedInterview(interview)
-                          setShowDeleteModal(true)
+                          setSelectedInterview(interview);
+                          setShowDeleteModal(true);
                         }}
                         className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Delete"
@@ -462,8 +469,8 @@ const AdminInterviews = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setSelectedInterview(interview)
-                          setShowDeleteModal(true)
+                          setSelectedInterview(interview);
+                          setShowDeleteModal(true);
                         }}
                         className="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg"
                       >
@@ -478,7 +485,8 @@ const AdminInterviews = () => {
             {/* Pagination */}
             <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
               <p className="text-sm text-slate-500">
-                Showing {((page - 1) * 15) + 1} to {Math.min(page * 15, pagination.total)} of {pagination.total}
+                Showing {(page - 1) * 15 + 1} to {Math.min(page * 15, pagination.total)} of{' '}
+                {pagination.total}
               </p>
               <div className="flex items-center space-x-2">
                 <button
@@ -508,8 +516,8 @@ const AdminInterviews = () => {
       <Modal
         isOpen={showViewModal}
         onClose={() => {
-          setShowViewModal(false)
-          setSelectedInterview(null)
+          setShowViewModal(false);
+          setSelectedInterview(null);
         }}
         title="Interview Details"
         size="2xl"
@@ -524,7 +532,9 @@ const AdminInterviews = () => {
                 <User className="w-6 h-6 text-indigo-600" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium text-slate-900">{detail.user?.name || 'Unknown User'}</h3>
+                <h3 className="font-medium text-slate-900">
+                  {detail.user?.name || 'Unknown User'}
+                </h3>
                 <p className="text-sm text-slate-500">{detail.user?.email || 'No email'}</p>
               </div>
               <div className="text-right">
@@ -572,7 +582,7 @@ const AdminInterviews = () => {
                         <span className="font-medium">{detail.feedback.technicalAccuracy}%</span>
                       </div>
                       <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-blue-500 rounded-full"
                           style={{ width: `${detail.feedback.technicalAccuracy}%` }}
                         />
@@ -586,7 +596,7 @@ const AdminInterviews = () => {
                         <span className="font-medium">{detail.feedback.communication}%</span>
                       </div>
                       <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-green-500 rounded-full"
                           style={{ width: `${detail.feedback.communication}%` }}
                         />
@@ -600,7 +610,7 @@ const AdminInterviews = () => {
                         <span className="font-medium">{detail.feedback.problemSolving}%</span>
                       </div>
                       <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-purple-500 rounded-full"
                           style={{ width: `${detail.feedback.problemSolving}%` }}
                         />
@@ -633,7 +643,10 @@ const AdminInterviews = () => {
                       </p>
                       {response.feedback && (
                         <p className="text-sm text-blue-600 mt-2 italic">
-                          Feedback: {response.feedback}
+                          Feedback:{' '}
+                          {typeof response.feedback === 'string'
+                            ? response.feedback
+                            : response.feedback.detailedFeedback}
                         </p>
                       )}
                     </div>
@@ -704,8 +717,8 @@ const AdminInterviews = () => {
       <Modal
         isOpen={showDeleteModal}
         onClose={() => {
-          setShowDeleteModal(false)
-          setSelectedInterview(null)
+          setShowDeleteModal(false);
+          setSelectedInterview(null);
         }}
         title="Delete Interview"
         size="sm"
@@ -720,21 +733,27 @@ const AdminInterviews = () => {
               </p>
             </div>
           </div>
-          
+
           {selectedInterview && (
             <div className="text-sm text-slate-600">
-              <p><strong>User:</strong> {selectedInterview.user?.name || 'Unknown'}</p>
-              <p><strong>Date:</strong> {formatDate(selectedInterview.createdAt)}</p>
-              <p><strong>Score:</strong> {selectedInterview.overallScore || 0}%</p>
+              <p>
+                <strong>User:</strong> {selectedInterview.user?.name || 'Unknown'}
+              </p>
+              <p>
+                <strong>Date:</strong> {formatDate(selectedInterview.createdAt)}
+              </p>
+              <p>
+                <strong>Score:</strong> {selectedInterview.overallScore || 0}%
+              </p>
             </div>
           )}
-          
+
           <div className="flex justify-end space-x-3">
             <Button
               variant="secondary"
               onClick={() => {
-                setShowDeleteModal(false)
-                setSelectedInterview(null)
+                setShowDeleteModal(false);
+                setSelectedInterview(null);
               }}
             >
               Cancel
@@ -750,7 +769,7 @@ const AdminInterviews = () => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default AdminInterviews
+export default AdminInterviews;
