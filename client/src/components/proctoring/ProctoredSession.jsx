@@ -186,7 +186,7 @@ const ProctoredSession = ({
       />
 
       {/* Hidden canvas for face detection */}
-      <canvas ref={proctoring.canvasRef} className="hidden" />
+      <canvas ref={proctoring.canvasRef} className="fixed -top-full -left-full w-1 h-1 opacity-0 pointer-events-none" />
 
       {/* Proctoring report modal */}
       {showReport && finalReport && (

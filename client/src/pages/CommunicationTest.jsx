@@ -8,9 +8,10 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { Card, Button, Badge } from '../components/ui';
+import { ProctoredSession } from '../components/proctoring';
 import communicationApi from '../services/communicationApi';
 import toast from 'react-hot-toast';
 import {
@@ -83,6 +84,10 @@ const COMMUNICATION_QUESTIONS = [
 
 const CommunicationTest = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const proctoringEnabled = searchParams.get('proctored') !== 'false';
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -499,7 +504,18 @@ const CommunicationTest = () => {
   }
 
   return (
-    <div className="space-y-6 animate-slide-up">
+    <ProctoredSession
+      sessionType="communication_test"
+      sessionId={Date.now().toString()}
+      enabled={proctoringEnabled}
+      config={{
+        cameraEnabled: true,
+        screenMonitoringEnabled: false,
+        audioMonitoringEnabled: false,
+        fullscreenRequired: false,
+      }}
+    >
+      <div className="space-y-6 animate-slide-up">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -708,7 +724,8 @@ const CommunicationTest = () => {
           </button>
         ))}
       </div>
-    </div>
+      </div>
+    </ProctoredSession>
   );
 };
 

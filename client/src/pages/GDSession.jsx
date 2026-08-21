@@ -556,7 +556,7 @@ const GDSession = () => {
       config={{
         cameraEnabled: true,
         screenMonitoringEnabled: false,
-        audioMonitoringEnabled: true,
+        audioMonitoringEnabled: false,
         fullscreenRequired: false,
       }}
     >

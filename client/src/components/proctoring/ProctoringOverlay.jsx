@@ -151,7 +151,7 @@ const ProctoringOverlay = ({
         </motion.div>
 
         {/* Hidden video element for ongoing detection */}
-        <video ref={videoRef} autoPlay muted playsInline className="hidden" />
+        <video ref={videoRef} autoPlay muted playsInline className="fixed -top-full -left-full w-1 h-1 opacity-0 pointer-events-none" />
       </>
     );
   }
