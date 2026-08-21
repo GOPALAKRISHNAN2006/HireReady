@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MessageSquare, Plus, Edit2, Trash2, Save, ChevronLeft, ChevronRight, ThumbsUp, ThumbsDown, Filter } from 'lucide-react';
+import {
+  MessageSquare,
+  Plus,
+  Edit2,
+  Trash2,
+  Save,
+  ChevronLeft,
+  ChevronRight,
+  ThumbsUp,
+  ThumbsDown,
+  Filter,
+} from 'lucide-react';
 import api from '../../services/api';
 import { Card, Button, Input, Spinner, Modal, Badge } from '../../components/ui';
 
@@ -49,7 +60,7 @@ export default function AdminGDTopics() {
 
   // Create mutation
   const createMutation = useMutation({
-    mutationFn: (data) => api.post('/admin/gd-topics', data),
+    mutationFn: data => api.post('/admin/gd-topics', data),
     onSuccess: () => {
       queryClient.invalidateQueries(['admin-gd-topics']);
       closeModal();
@@ -67,7 +78,7 @@ export default function AdminGDTopics() {
 
   // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: (id) => api.delete(`/admin/gd-topics/${id}`),
+    mutationFn: id => api.delete(`/admin/gd-topics/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries(['admin-gd-topics']);
     },
@@ -111,7 +122,7 @@ export default function AdminGDTopics() {
     setFormData({ ...formData, [field]: newArr });
   };
 
-  const addArrayItem = (field) => {
+  const addArrayItem = field => {
     setFormData({ ...formData, [field]: [...formData[field], ''] });
   };
 
@@ -122,9 +133,9 @@ export default function AdminGDTopics() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    
+
     const submitData = {
       ...formData,
       keyPoints: formData.keyPoints.filter(p => p.trim()),
@@ -139,13 +150,13 @@ export default function AdminGDTopics() {
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     if (confirm('Are you sure you want to delete this topic?')) {
       deleteMutation.mutate(id);
     }
   };
 
-  const getDifficultyColor = (difficulty) => {
+  const getDifficultyColor = difficulty => {
     const d = DIFFICULTIES.find(d => d.value === difficulty);
     return d?.color || 'gray';
   };
@@ -155,12 +166,14 @@ export default function AdminGDTopics() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">GD Topics</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+            GD Topics
+          </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-1">Manage group discussion topics</p>
         </div>
         <button
           onClick={() => openModal()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-violet-700 transition-all"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md hover:from-primary-700 hover:to-primary-700 transition-all"
         >
           <Plus className="w-4 h-4" />
           Add Topic
@@ -173,22 +186,26 @@ export default function AdminGDTopics() {
           <Filter className="w-4 h-4 text-slate-400" />
           <select
             value={filters.category}
-            onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+            onChange={e => setFilters({ ...filters, category: e.target.value })}
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
           >
             <option value="">All Categories</option>
             {CATEGORIES.map(cat => (
-              <option key={cat.value} value={cat.value}>{cat.label}</option>
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
             ))}
           </select>
           <select
             value={filters.difficulty}
-            onChange={(e) => setFilters({ ...filters, difficulty: e.target.value })}
-            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+            onChange={e => setFilters({ ...filters, difficulty: e.target.value })}
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
           >
             <option value="">All Difficulties</option>
             {DIFFICULTIES.map(d => (
-              <option key={d.value} value={d.value}>{d.label}</option>
+              <option key={d.value} value={d.value}>
+                {d.label}
+              </option>
             ))}
           </select>
         </div>
@@ -202,31 +219,42 @@ export default function AdminGDTopics() {
       ) : (
         <>
           <div className="space-y-3">
-            {data?.topics?.map((topic) => (
-              <div key={topic._id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all p-5 group">
+            {data?.topics?.map(topic => (
+              <div
+                key={topic._id}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all p-5 group"
+              >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                        topic.difficulty === 'easy' ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30' :
-                        topic.difficulty === 'hard' ? 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800/30' :
-                        'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30'
-                      }`}>
+                      <span
+                        className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${
+                          topic.difficulty === 'easy'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30'
+                            : topic.difficulty === 'hard'
+                              ? 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800/30'
+                              : 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30'
+                        }`}
+                      >
                         {topic.difficulty}
                       </span>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800/30">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:border-primary-800/30">
                         {CATEGORIES.find(c => c.value === topic.category)?.label || topic.category}
                       </span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">{topic.title}</h3>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+                      {topic.title}
+                    </h3>
                     {topic.description && (
-                      <p className="text-slate-500 dark:text-slate-400 text-sm">{topic.description}</p>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm">
+                        {topic.description}
+                      </p>
                     )}
                   </div>
                   <div className="flex gap-1 ml-4 opacity-60 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openModal(topic)}
-                      className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+                      className="p-2 text-slate-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -242,10 +270,15 @@ export default function AdminGDTopics() {
                 {/* Key Points */}
                 {topic.keyPoints?.length > 0 && (
                   <div className="mt-3">
-                    <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Key Points</h4>
+                    <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">
+                      Key Points
+                    </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {topic.keyPoints.map((point, i) => (
-                        <span key={i} className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs text-slate-600 dark:text-slate-400">
+                        <span
+                          key={i}
+                          className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs text-slate-600 dark:text-slate-400"
+                        >
                           {point}
                         </span>
                       ))}
@@ -259,11 +292,15 @@ export default function AdminGDTopics() {
                     <div className="p-3.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30">
                       <div className="flex items-center gap-2 mb-2">
                         <ThumbsUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                        <h4 className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">For Arguments</h4>
+                        <h4 className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                          For Arguments
+                        </h4>
                       </div>
                       <ul className="space-y-1">
                         {topic.forArguments.map((arg, i) => (
-                          <li key={i} className="text-xs text-slate-600 dark:text-slate-400">• {arg}</li>
+                          <li key={i} className="text-xs text-slate-600 dark:text-slate-400">
+                            • {arg}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -272,11 +309,15 @@ export default function AdminGDTopics() {
                     <div className="p-3.5 bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-100 dark:border-rose-800/30">
                       <div className="flex items-center gap-2 mb-2">
                         <ThumbsDown className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-                        <h4 className="text-xs font-semibold text-rose-700 dark:text-rose-400">Against Arguments</h4>
+                        <h4 className="text-xs font-semibold text-rose-700 dark:text-rose-400">
+                          Against Arguments
+                        </h4>
                       </div>
                       <ul className="space-y-1">
                         {topic.againstArguments.map((arg, i) => (
-                          <li key={i} className="text-xs text-slate-600 dark:text-slate-400">• {arg}</li>
+                          <li key={i} className="text-xs text-slate-600 dark:text-slate-400">
+                            • {arg}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -312,24 +353,33 @@ export default function AdminGDTopics() {
       )}
 
       {/* Add/Edit Modal */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} title={editingTopic ? 'Edit Topic' : 'Add New Topic'} size="2xl">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={editingTopic ? 'Edit Topic' : 'Add New Topic'}
+        size="2xl"
+      >
         <form onSubmit={handleSubmit} className="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Title *</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Title *
+            </label>
             <Input
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={e => setFormData({ ...formData, title: e.target.value })}
               placeholder="Enter topic title"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Description
+            </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all resize-none"
+              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all resize-none"
               rows={3}
               placeholder="Brief description of the topic"
             />
@@ -337,26 +387,34 @@ export default function AdminGDTopics() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Category
+              </label>
               <select
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+                onChange={e => setFormData({ ...formData, category: e.target.value })}
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
               >
                 {CATEGORIES.map(cat => (
-                  <option key={cat.value} value={cat.value}>{cat.label}</option>
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Difficulty</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Difficulty
+              </label>
               <select
                 value={formData.difficulty}
-                onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+                onChange={e => setFormData({ ...formData, difficulty: e.target.value })}
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
               >
                 {DIFFICULTIES.map(d => (
-                  <option key={d.value} value={d.value}>{d.label}</option>
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -364,13 +422,15 @@ export default function AdminGDTopics() {
 
           {/* Key Points */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Key Points</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Key Points
+            </label>
             <div className="space-y-2">
               {formData.keyPoints.map((point, i) => (
                 <div key={i} className="flex gap-2">
                   <Input
                     value={point}
-                    onChange={(e) => handleArrayChange('keyPoints', i, e.target.value)}
+                    onChange={e => handleArrayChange('keyPoints', i, e.target.value)}
                     placeholder="Key point"
                     className="flex-1"
                   />
@@ -386,7 +446,7 @@ export default function AdminGDTopics() {
               <button
                 type="button"
                 onClick={() => addArrayItem('keyPoints')}
-                className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium"
+                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 + Add Key Point
               </button>
@@ -403,7 +463,7 @@ export default function AdminGDTopics() {
                 <div key={i} className="flex gap-2">
                   <Input
                     value={arg}
-                    onChange={(e) => handleArrayChange('forArguments', i, e.target.value)}
+                    onChange={e => handleArrayChange('forArguments', i, e.target.value)}
                     placeholder="Supporting argument"
                     className="flex-1"
                   />
@@ -436,7 +496,7 @@ export default function AdminGDTopics() {
                 <div key={i} className="flex gap-2">
                   <Input
                     value={arg}
-                    onChange={(e) => handleArrayChange('againstArguments', i, e.target.value)}
+                    onChange={e => handleArrayChange('againstArguments', i, e.target.value)}
                     placeholder="Opposing argument"
                     className="flex-1"
                   />
@@ -463,10 +523,7 @@ export default function AdminGDTopics() {
             <Button type="button" variant="secondary" onClick={closeModal}>
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={createMutation.isPending || updateMutation.isPending}
-            >
+            <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
               <Save className="w-4 h-4 mr-2" />
               {editingTopic ? 'Update' : 'Create'}
             </Button>

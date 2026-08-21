@@ -1,40 +1,40 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import api from '../services/api'
-import { Button, Card, Badge } from '../components/ui'
-import { LoadingCard } from '../components/ui/Spinner'
-import { 
-  ArrowLeft, 
-  Trophy, 
-  Calendar, 
-  Clock, 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import api from '../services/api';
+import { Button, Card, Badge } from '../components/ui';
+import { LoadingCard } from '../components/ui/Spinner';
+import {
+  ArrowLeft,
+  Trophy,
+  Calendar,
+  Clock,
   Target,
   TrendingUp,
   Filter,
   ChevronLeft,
-  ChevronRight
-} from 'lucide-react'
+  ChevronRight,
+} from 'lucide-react';
 
 const AptitudeHistory = () => {
-  const navigate = useNavigate()
-  const [page, setPage] = useState(1)
-  const [category, setCategory] = useState('all')
-  const limit = 10
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [category, setCategory] = useState('all');
+  const limit = 10;
 
   // Fetch test history
   const { data, isLoading } = useQuery({
     queryKey: ['aptitude-history', page, category],
     queryFn: async () => {
-      const params = new URLSearchParams({ page, limit })
-      if (category !== 'all') params.append('category', category)
-      const response = await api.get(`/aptitude/history?${params}`)
-      return response.data.data
+      const params = new URLSearchParams({ page, limit });
+      if (category !== 'all') params.append('category', category);
+      const response = await api.get(`/aptitude/history?${params}`);
+      return response.data.data;
     },
-  })
+  });
 
-  const tests = data?.tests || []
-  const pagination = data?.pagination || { page: 1, pages: 1, total: 0 }
+  const tests = data?.tests || [];
+  const pagination = data?.pagination || { page: 1, pages: 1, total: 0 };
 
   const categories = [
     { id: 'all', name: 'All Categories' },
@@ -43,39 +43,38 @@ const AptitudeHistory = () => {
     { id: 'verbal', name: 'Verbal' },
     { id: 'data-interpretation', name: 'Data Interpretation' },
     { id: 'general-knowledge', name: 'General Knowledge' },
-  ]
+  ];
 
-  const getGradeColor = (percentage) => {
-    if (percentage >= 80) return 'bg-green-100 dark:bg-green-900/30 text-green-700'
-    if (percentage >= 60) return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700'
-    if (percentage >= 40) return 'bg-orange-100 text-orange-700'
-    return 'bg-red-100 dark:bg-red-900/30 text-red-700'
-  }
+  const getGradeColor = percentage => {
+    if (percentage >= 80) return 'bg-green-100 dark:bg-green-900/30 text-green-700';
+    if (percentage >= 60) return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700';
+    if (percentage >= 40) return 'bg-orange-100 text-orange-700';
+    return 'bg-red-100 dark:bg-red-900/30 text-red-700';
+  };
 
-  const getGrade = (percentage) => {
-    if (percentage >= 90) return 'A+'
-    if (percentage >= 80) return 'A'
-    if (percentage >= 70) return 'B'
-    if (percentage >= 60) return 'C'
-    if (percentage >= 50) return 'D'
-    return 'F'
-  }
+  const getGrade = percentage => {
+    if (percentage >= 90) return 'A+';
+    if (percentage >= 80) return 'A';
+    if (percentage >= 70) return 'B';
+    if (percentage >= 60) return 'C';
+    if (percentage >= 50) return 'D';
+    return 'F';
+  };
 
-  const formatTime = (seconds) => {
-    if (!seconds) return '-'
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}m ${secs}s`
-  }
+  const formatTime = seconds => {
+    if (!seconds) return '-';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
+  };
 
   // Calculate stats
-  const totalTests = pagination.total
-  const avgScore = tests.length > 0 
-    ? Math.round(tests.reduce((acc, t) => acc + t.percentage, 0) / tests.length)
-    : 0
-  const bestScore = tests.length > 0 
-    ? Math.max(...tests.map(t => t.percentage))
-    : 0
+  const totalTests = pagination.total;
+  const avgScore =
+    tests.length > 0
+      ? Math.round(tests.reduce((acc, t) => acc + t.percentage, 0) / tests.length)
+      : 0;
+  const bestScore = tests.length > 0 ? Math.max(...tests.map(t => t.percentage)) : 0;
 
   if (isLoading) {
     return (
@@ -84,7 +83,7 @@ const AptitudeHistory = () => {
         <LoadingCard />
         <LoadingCard />
       </div>
-    )
+    );
   }
 
   return (
@@ -107,8 +106,8 @@ const AptitudeHistory = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
-              <Target className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+              <Target className="w-6 h-6 text-primary-600" />
             </div>
             <div>
               <p className="text-sm text-slate-500 dark:text-slate-400">Total Tests</p>
@@ -144,18 +143,20 @@ const AptitudeHistory = () => {
       <Card className="p-4">
         <div className="flex items-center gap-4">
           <Filter className="w-5 h-5 text-slate-500 dark:text-slate-400" />
-          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Filter by category:</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            Filter by category:
+          </span>
           <div className="flex flex-wrap gap-2">
             {categories.map(cat => (
               <button
                 key={cat.id}
                 onClick={() => {
-                  setCategory(cat.id)
-                  setPage(1)
+                  setCategory(cat.id);
+                  setPage(1);
                 }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   category === cat.id
-                    ? 'bg-indigo-500 text-white'
+                    ? 'bg-primary-500 text-white'
                     : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
                 }`}
               >
@@ -170,23 +171,25 @@ const AptitudeHistory = () => {
       {tests.length === 0 ? (
         <Card className="p-12 text-center">
           <Trophy className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No tests found</h3>
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
+            No tests found
+          </h3>
           <p className="text-slate-500 dark:text-slate-400 mb-6">
-            {category !== 'all' 
+            {category !== 'all'
               ? `You haven't completed any ${category} tests yet.`
               : "You haven't completed any aptitude tests yet."}
           </p>
-          <Button onClick={() => navigate('/aptitude')}>
-            Take a Test
-          </Button>
+          <Button onClick={() => navigate('/aptitude')}>Take a Test</Button>
         </Card>
       ) : (
         <div className="space-y-4">
-          {tests.map((test) => (
+          {tests.map(test => (
             <Card key={test._id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${getGradeColor(test.percentage)}`}>
+                  <div
+                    className={`w-14 h-14 rounded-xl flex items-center justify-center ${getGradeColor(test.percentage)}`}
+                  >
                     <span className="text-xl font-bold">{getGrade(test.percentage)}</span>
                   </div>
                   <div>
@@ -205,18 +208,22 @@ const AptitudeHistory = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-6">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">{test.percentage}%</p>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                      {test.percentage}%
+                    </p>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
                       {test.correctAnswers}/{test.totalQuestions} correct
                     </p>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => navigate(`/aptitude/result/${test._id}`, { state: { result: test } })}
+                    onClick={() =>
+                      navigate(`/aptitude/result/${test._id}`, { state: { result: test } })
+                    }
                   >
                     View Details
                   </Button>
@@ -230,11 +237,7 @@ const AptitudeHistory = () => {
       {/* Pagination */}
       {pagination.pages > 1 && (
         <div className="flex items-center justify-center gap-4">
-          <Button
-            variant="outline"
-            disabled={page === 1}
-            onClick={() => setPage(p => p - 1)}
-          >
+          <Button variant="outline" disabled={page === 1} onClick={() => setPage(p => p - 1)}>
             <ChevronLeft className="w-4 h-4 mr-1" />
             Previous
           </Button>
@@ -252,7 +255,7 @@ const AptitudeHistory = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default AptitudeHistory
+export default AptitudeHistory;

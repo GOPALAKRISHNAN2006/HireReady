@@ -2,7 +2,7 @@
  * ===========================================
  * Communication Stats Component
  * ===========================================
- * 
+ *
  * Dashboard widget showing communication statistics
  * and improvement trends over time.
  */
@@ -10,15 +10,15 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { 
-  TrendingUp, 
-  TrendingDown, 
+import {
+  TrendingUp,
+  TrendingDown,
   Minus,
   Mic,
   MessageSquare,
   Volume2,
   BookOpen,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import communicationApi from '../../services/communicationApi';
 import { CommunicationScoreCard } from './';
@@ -28,7 +28,7 @@ const subscoreIcons = {
   clarity: MessageSquare,
   grammar: BookOpen,
   pronunciation: Mic,
-  tone: Sparkles
+  tone: Sparkles,
 };
 
 const subscoreLabels = {
@@ -36,11 +36,15 @@ const subscoreLabels = {
   clarity: 'Clarity & Structure',
   grammar: 'Grammar & Vocabulary',
   pronunciation: 'Pronunciation',
-  tone: 'Tone & Confidence'
+  tone: 'Tone & Confidence',
 };
 
 const CommunicationStats = ({ className = '' }) => {
-  const { data: stats, isLoading, error } = useQuery({
+  const {
+    data: stats,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['communication', 'stats'],
     queryFn: communicationApi.getStats,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -76,16 +80,17 @@ const CommunicationStats = ({ className = '' }) => {
     );
   }
 
-  const { averages, trends, totalAssessments, recentScores, improvementAreas, strengthAreas } = stats;
+  const { averages, trends, totalAssessments, recentScores, improvementAreas, strengthAreas } =
+    stats;
 
-  const getScoreLevel = (score) => {
+  const getScoreLevel = score => {
     if (score >= 9) return 'Excellent';
     if (score >= 7) return 'Strong';
     if (score >= 4) return 'Average';
     return 'Needs Improvement';
   };
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = trend => {
     if (trend > 0.2) return <TrendingUp className="w-4 h-4 text-green-500" />;
     if (trend < -0.2) return <TrendingDown className="w-4 h-4 text-red-500" />;
     return <Minus className="w-4 h-4 text-slate-400" />;
@@ -101,18 +106,16 @@ const CommunicationStats = ({ className = '' }) => {
       <div className="p-5 border-b border-slate-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Mic className="w-5 h-5 text-purple-600" />
+            <Mic className="w-5 h-5 text-primary-600" />
             <h3 className="font-semibold text-slate-900">Communication Skills</h3>
           </div>
-          <span className="text-xs text-slate-500">
-            {totalAssessments} assessments
-          </span>
+          <span className="text-xs text-slate-500">{totalAssessments} assessments</span>
         </div>
       </div>
 
       {/* Main Score */}
-      <div className="p-5 flex flex-col items-center bg-gradient-to-b from-purple-50/50 to-white">
-        <CommunicationScoreCard 
+      <div className="p-5 flex flex-col items-center bg-gradient-to-b from-primary-50/50 to-white">
+        <CommunicationScoreCard
           score={averages?.overall || 0}
           scoreLevel={getScoreLevel(averages?.overall || 0)}
           size="medium"
@@ -123,15 +126,13 @@ const CommunicationStats = ({ className = '' }) => {
 
       {/* Subscore Breakdown with Trends */}
       <div className="p-5 border-t border-slate-100">
-        <h4 className="text-sm font-medium text-slate-700 mb-4">
-          Skills Breakdown & Trends
-        </h4>
+        <h4 className="text-sm font-medium text-slate-700 mb-4">Skills Breakdown & Trends</h4>
         <div className="space-y-3">
           {Object.entries(subscoreLabels).map(([key, label]) => {
             const Icon = subscoreIcons[key];
             const score = averages?.[key] || 0;
             const trend = trends?.[key] || 0;
-            
+
             return (
               <div key={key} className="flex items-center gap-3">
                 <Icon className="w-4 h-4 text-slate-400 flex-shrink-0" />
@@ -151,8 +152,7 @@ const CommunicationStats = ({ className = '' }) => {
                       animate={{ width: `${(score / 10) * 100}%` }}
                       transition={{ delay: 0.2, duration: 0.6 }}
                       className={`h-full rounded-full ${
-                        score >= 7 ? 'bg-green-500' :
-                        score >= 4 ? 'bg-amber-500' : 'bg-red-500'
+                        score >= 7 ? 'bg-green-500' : score >= 4 ? 'bg-amber-500' : 'bg-red-500'
                       }`}
                     />
                   </div>
@@ -166,9 +166,7 @@ const CommunicationStats = ({ className = '' }) => {
       {/* Improvement Areas */}
       {improvementAreas?.length > 0 && (
         <div className="p-5 border-t border-slate-100 bg-amber-50/50">
-          <h4 className="text-sm font-medium text-amber-700 mb-2">
-            Focus Areas
-          </h4>
+          <h4 className="text-sm font-medium text-amber-700 mb-2">Focus Areas</h4>
           <ul className="space-y-1">
             {improvementAreas.slice(0, 2).map((area, index) => (
               <li key={index} className="text-xs text-amber-600 flex items-start gap-1.5">
@@ -183,9 +181,7 @@ const CommunicationStats = ({ className = '' }) => {
       {/* Strength Areas */}
       {strengthAreas?.length > 0 && (
         <div className="p-5 border-t border-slate-100 bg-green-50/50">
-          <h4 className="text-sm font-medium text-green-700 mb-2">
-            Your Strengths
-          </h4>
+          <h4 className="text-sm font-medium text-green-700 mb-2">Your Strengths</h4>
           <ul className="space-y-1">
             {strengthAreas.slice(0, 2).map((area, index) => (
               <li key={index} className="text-xs text-green-600 flex items-start gap-1.5">

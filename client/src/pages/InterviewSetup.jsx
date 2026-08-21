@@ -1,14 +1,14 @@
-import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { useInterviewStore } from '../store/interviewStore'
-import { Card, Button, Badge } from '../components/ui'
-import api from '../services/api'
-import { 
-  PlayCircle, 
-  Clock, 
-  Target, 
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useInterviewStore } from '../store/interviewStore';
+import { Card, Button, Badge } from '../components/ui';
+import api from '../services/api';
+import {
+  PlayCircle,
+  Clock,
+  Target,
   Zap,
   Brain,
   Code,
@@ -23,52 +23,118 @@ import {
   Timer,
   ArrowRight,
   Shield,
-  Lightbulb
-} from 'lucide-react'
+  Lightbulb,
+} from 'lucide-react';
 
 const InterviewSetup = () => {
-  const navigate = useNavigate()
-  const { setSettings, settings, startInterview } = useInterviewStore()
-  const [currentStep, setCurrentStep] = useState(0)
-  
+  const navigate = useNavigate();
+  const { setSettings, settings, startInterview } = useInterviewStore();
+  const [currentStep, setCurrentStep] = useState(0);
+
   const [localSettings, setLocalSettings] = useState({
     category: settings.category,
     difficulty: settings.difficulty,
     questionCount: settings.questionCount,
     timeLimit: settings.timeLimit,
     type: settings.type,
-  })
+  });
 
   const categories = [
-    { id: 'general', name: 'General', icon: Target, description: 'Mixed questions across all topics', emoji: '🎯', gradient: 'from-blue-500 to-cyan-500' },
-    { id: 'dsa', name: 'DSA', icon: Code, description: 'Data Structures & Algorithms', emoji: '💻', gradient: 'from-purple-500 to-violet-500' },
-    { id: 'web-development', name: 'Web Dev', icon: Server, description: 'Frontend, Backend, Full-stack', emoji: '🌐', gradient: 'from-emerald-500 to-teal-500' },
-    { id: 'behavioral', name: 'Behavioral', icon: Users, description: 'Soft skills & situational questions', emoji: '🤝', gradient: 'from-pink-500 to-rose-500' },
-    { id: 'system-design', name: 'System Design', icon: Database, description: 'Architecture & scalability', emoji: '🏗️', gradient: 'from-orange-500 to-amber-500' },
-    { id: 'machine-learning', name: 'ML/AI', icon: Brain, description: 'Machine Learning & AI concepts', emoji: '🧠', gradient: 'from-indigo-500 to-blue-500' },
-  ]
+    {
+      id: 'general',
+      name: 'General',
+      icon: Target,
+      description: 'Mixed questions across all topics',
+      emoji: '🎯',
+      gradient: 'from-blue-500 to-cyan-500',
+    },
+    {
+      id: 'dsa',
+      name: 'DSA',
+      icon: Code,
+      description: 'Data Structures & Algorithms',
+      emoji: '💻',
+      gradient: 'from-primary-500 to-primary-500',
+    },
+    {
+      id: 'web-development',
+      name: 'Web Dev',
+      icon: Server,
+      description: 'Frontend, Backend, Full-stack',
+      emoji: '🌐',
+      gradient: 'from-emerald-500 to-teal-500',
+    },
+    {
+      id: 'behavioral',
+      name: 'Behavioral',
+      icon: Users,
+      description: 'Soft skills & situational questions',
+      emoji: '🤝',
+      gradient: 'from-pink-500 to-rose-500',
+    },
+    {
+      id: 'system-design',
+      name: 'System Design',
+      icon: Database,
+      description: 'Architecture & scalability',
+      emoji: '🏗️',
+      gradient: 'from-orange-500 to-amber-500',
+    },
+    {
+      id: 'machine-learning',
+      name: 'ML/AI',
+      icon: Brain,
+      description: 'Machine Learning & AI concepts',
+      emoji: '🧠',
+      gradient: 'from-primary-500 to-blue-500',
+    },
+  ];
 
   const difficulties = [
-    { id: 'easy', name: 'Easy', color: 'success', description: 'Great for beginners', emoji: '🌱', gradient: 'from-green-400 to-emerald-500', tip: 'Perfect warm-up! Build confidence with foundational questions.' },
-    { id: 'medium', name: 'Medium', color: 'warning', description: 'Intermediate level', emoji: '⚡', gradient: 'from-yellow-400 to-orange-500', tip: 'Challenge yourself with industry-standard interview questions.' },
-    { id: 'hard', name: 'Hard', color: 'danger', description: 'Advanced challenges', emoji: '🔥', gradient: 'from-red-400 to-rose-600', tip: 'FAANG-level questions to push your limits.' },
-  ]
+    {
+      id: 'easy',
+      name: 'Easy',
+      color: 'success',
+      description: 'Great for beginners',
+      emoji: '🌱',
+      gradient: 'from-green-400 to-emerald-500',
+      tip: 'Perfect warm-up! Build confidence with foundational questions.',
+    },
+    {
+      id: 'medium',
+      name: 'Medium',
+      color: 'warning',
+      description: 'Intermediate level',
+      emoji: '⚡',
+      gradient: 'from-yellow-400 to-orange-500',
+      tip: 'Challenge yourself with industry-standard interview questions.',
+    },
+    {
+      id: 'hard',
+      name: 'Hard',
+      color: 'danger',
+      description: 'Advanced challenges',
+      emoji: '🔥',
+      gradient: 'from-red-400 to-rose-600',
+      tip: 'FAANG-level questions to push your limits.',
+    },
+  ];
 
-  const questionCounts = [5, 10, 15, 20]
+  const questionCounts = [5, 10, 15, 20];
   const timeLimits = [
     { value: null, label: 'No Limit', icon: '♾️' },
     { value: 15, label: '15 min', icon: '⚡' },
     { value: 30, label: '30 min', icon: '⏱️' },
     { value: 45, label: '45 min', icon: '🕐' },
     { value: 60, label: '60 min', icon: '🕕' },
-  ]
+  ];
 
   // Estimated time calculation
   const estimatedTime = useMemo(() => {
-    const baseTime = { easy: 2, medium: 3, hard: 5 }
-    const mins = (baseTime[localSettings.difficulty] || 3) * localSettings.questionCount
-    return mins
-  }, [localSettings.difficulty, localSettings.questionCount])
+    const baseTime = { easy: 2, medium: 3, hard: 5 };
+    const mins = (baseTime[localSettings.difficulty] || 3) * localSettings.questionCount;
+    return mins;
+  }, [localSettings.difficulty, localSettings.questionCount]);
 
   // Steps configuration
   const steps = [
@@ -76,44 +142,44 @@ const InterviewSetup = () => {
     { title: 'Difficulty', icon: Zap, description: 'Challenge level' },
     { title: 'Settings', icon: Timer, description: 'Questions & time' },
     { title: 'Review', icon: CheckCircle, description: 'Confirm & start' },
-  ]
+  ];
 
   // Create interview mutation
   const createInterviewMutation = useMutation({
-    mutationFn: async (settings) => {
+    mutationFn: async settings => {
       const payload = {
         category: settings.category,
         difficulty: settings.difficulty,
         totalQuestions: settings.questionCount,
         type: settings.type || 'practice',
-        timeLimitMinutes: settings.timeLimit || undefined
-      }
-      const response = await api.post('/interviews', payload)
-      return response.data
+        timeLimitMinutes: settings.timeLimit || undefined,
+      };
+      const response = await api.post('/interviews', payload);
+      return response.data;
     },
-    onSuccess: (data) => {
-      setSettings(localSettings)
-      const interview = data.data?.interview || data.interview
-      startInterview(interview)
-      toast.success('Interview started!')
-      navigate(`/interview/${interview._id || interview.id}`)
+    onSuccess: data => {
+      setSettings(localSettings);
+      const interview = data.data?.interview || data.interview;
+      startInterview(interview);
+      toast.success('Interview started!');
+      navigate(`/interview/${interview._id || interview.id}`);
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to start interview')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to start interview');
     },
-  })
+  });
 
   const handleStartInterview = () => {
-    createInterviewMutation.mutate(localSettings)
-  }
+    createInterviewMutation.mutate(localSettings);
+  };
 
-  const selectedCategory = categories.find(c => c.id === localSettings.category)
-  const selectedDifficulty = difficulties.find(d => d.id === localSettings.difficulty)
+  const selectedCategory = categories.find(c => c.id === localSettings.category);
+  const selectedDifficulty = difficulties.find(d => d.id === localSettings.difficulty);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header with gradient */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 rounded-3xl p-8 text-white">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 rounded-3xl p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative text-center">
@@ -122,7 +188,9 @@ const InterviewSetup = () => {
             Interview Setup
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Configure Your Session</h1>
-          <p className="text-purple-100 max-w-lg mx-auto">Customize every detail of your practice interview for the perfect experience</p>
+          <p className="text-primary-100 max-w-lg mx-auto">
+            Customize every detail of your practice interview for the perfect experience
+          </p>
         </div>
       </div>
 
@@ -134,13 +202,15 @@ const InterviewSetup = () => {
               onClick={() => setCurrentStep(index)}
               className={`flex items-center gap-3 transition-all ${index <= currentStep ? 'opacity-100' : 'opacity-50'}`}
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                index < currentStep 
-                  ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' 
-                  : index === currentStep 
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-110' 
-                    : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
-              }`}>
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  index < currentStep
+                    ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+                    : index === currentStep
+                      ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30 scale-110'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                }`}
+              >
                 {index < currentStep ? (
                   <CheckCircle className="w-5 h-5" />
                 ) : (
@@ -148,14 +218,20 @@ const InterviewSetup = () => {
                 )}
               </div>
               <div className="hidden md:block text-left">
-                <p className={`text-sm font-semibold ${index <= currentStep ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>{step.title}</p>
+                <p
+                  className={`text-sm font-semibold ${index <= currentStep ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}
+                >
+                  {step.title}
+                </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{step.description}</p>
               </div>
             </button>
             {index < steps.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-4 rounded transition-all duration-500 ${
-                index < currentStep ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'
-              }`} />
+              <div
+                className={`flex-1 h-0.5 mx-4 rounded transition-all duration-500 ${
+                  index < currentStep ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'
+                }`}
+              />
             )}
           </div>
         ))}
@@ -168,7 +244,7 @@ const InterviewSetup = () => {
           <Card className="animate-slide-up">
             <Card.Header>
               <Card.Title className="flex items-center gap-2 text-xl">
-                <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-500 rounded-lg flex items-center justify-center">
                   <Target className="w-4 h-4 text-white" />
                 </div>
                 Choose Your Category
@@ -177,28 +253,32 @@ const InterviewSetup = () => {
             </Card.Header>
             <Card.Content>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {categories.map((category) => (
+                {categories.map(category => (
                   <button
                     key={category.id}
                     onClick={() => {
-                      setLocalSettings(prev => ({ ...prev, category: category.id }))
+                      setLocalSettings(prev => ({ ...prev, category: category.id }));
                     }}
                     className={`group relative p-5 rounded-2xl border-2 text-left transition-all duration-300 hover:-translate-y-1 ${
                       localSettings.category === category.id
-                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 shadow-lg shadow-indigo-500/20'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-lg shadow-primary-500/20'
                         : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md'
                     }`}
                   >
                     {localSettings.category === category.id && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-5 h-5 text-indigo-500" />
+                        <CheckCircle className="w-5 h-5 text-primary-500" />
                       </div>
                     )}
-                    <div className={`w-12 h-12 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-lg`}>
+                    <div
+                      className={`w-12 h-12 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-lg`}
+                    >
                       <span className="text-xl">{category.emoji}</span>
                     </div>
                     <h3 className="font-bold text-slate-900 dark:text-white">{category.name}</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{category.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      {category.description}
+                    </p>
                   </button>
                 ))}
               </div>
@@ -220,33 +300,37 @@ const InterviewSetup = () => {
             </Card.Header>
             <Card.Content>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {difficulties.map((difficulty) => (
+                {difficulties.map(difficulty => (
                   <button
                     key={difficulty.id}
                     onClick={() => {
-                      setLocalSettings(prev => ({ ...prev, difficulty: difficulty.id }))
+                      setLocalSettings(prev => ({ ...prev, difficulty: difficulty.id }));
                     }}
                     className={`group relative p-6 rounded-2xl border-2 text-center transition-all duration-300 hover:-translate-y-1 ${
                       localSettings.difficulty === difficulty.id
-                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 shadow-lg shadow-indigo-500/20'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-lg shadow-primary-500/20'
                         : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md'
                     }`}
                   >
                     {localSettings.difficulty === difficulty.id && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-5 h-5 text-indigo-500" />
+                        <CheckCircle className="w-5 h-5 text-primary-500" />
                       </div>
                     )}
-                    <div className={`w-16 h-16 bg-gradient-to-br ${difficulty.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-br ${difficulty.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg`}
+                    >
                       <span className="text-2xl">{difficulty.emoji}</span>
                     </div>
                     <Badge variant={difficulty.color} size="lg" className="mb-2">
                       {difficulty.name}
                     </Badge>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{difficulty.description}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                      {difficulty.description}
+                    </p>
                     {localSettings.difficulty === difficulty.id && (
-                      <div className="mt-3 p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                        <p className="text-xs text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-1">
+                      <div className="mt-3 p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+                        <p className="text-xs text-primary-700 dark:text-primary-300 flex items-center justify-center gap-1">
                           <Lightbulb className="w-3 h-3" />
                           {difficulty.tip}
                         </p>
@@ -265,7 +349,7 @@ const InterviewSetup = () => {
             <Card>
               <Card.Header>
                 <Card.Title className="flex items-center gap-2 text-xl">
-                  <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-500 rounded-lg flex items-center justify-center">
                     <MessageSquare className="w-4 h-4 text-white" />
                   </div>
                   Number of Questions
@@ -273,13 +357,13 @@ const InterviewSetup = () => {
               </Card.Header>
               <Card.Content>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {questionCounts.map((count) => (
+                  {questionCounts.map(count => (
                     <button
                       key={count}
                       onClick={() => setLocalSettings(prev => ({ ...prev, questionCount: count }))}
                       className={`relative py-5 rounded-2xl font-bold text-xl transition-all duration-300 hover:-translate-y-1 ${
                         localSettings.questionCount === count
-                          ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30'
+                          ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30'
                           : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 hover:shadow-md'
                       }`}
                     >
@@ -302,7 +386,7 @@ const InterviewSetup = () => {
               </Card.Header>
               <Card.Content>
                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-                  {timeLimits.map((time) => (
+                  {timeLimits.map(time => (
                     <button
                       key={time.label}
                       onClick={() => setLocalSettings(prev => ({ ...prev, timeLimit: time.value }))}
@@ -327,12 +411,20 @@ const InterviewSetup = () => {
                   <Timer className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <p className="text-sm font-medium text-amber-700 dark:text-amber-300">Estimated Session Time</p>
-                  <p className="text-2xl font-bold text-slate-900 dark:text-white">{estimatedTime} minutes</p>
+                  <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
+                    Estimated Session Time
+                  </p>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                    {estimatedTime} minutes
+                  </p>
                 </div>
                 <div className="sm:ml-auto sm:text-right mt-2 sm:mt-0">
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Based on {localSettings.questionCount} {localSettings.difficulty} questions</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">~{Math.round(estimatedTime / localSettings.questionCount)} min per question</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Based on {localSettings.questionCount} {localSettings.difficulty} questions
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    ~{Math.round(estimatedTime / localSettings.questionCount)} min per question
+                  </p>
                 </div>
               </div>
             </Card>
@@ -345,59 +437,78 @@ const InterviewSetup = () => {
             {/* Session Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Card className="text-center">
-                <div className={`w-14 h-14 bg-gradient-to-br ${selectedCategory?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${selectedCategory?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}
+                >
                   <span className="text-2xl">{selectedCategory?.emoji}</span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Category</p>
                 <p className="font-bold text-slate-900 dark:text-white">{selectedCategory?.name}</p>
               </Card>
               <Card className="text-center">
-                <div className={`w-14 h-14 bg-gradient-to-br ${selectedDifficulty?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${selectedDifficulty?.gradient || 'from-slate-400 to-slate-500'} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}
+                >
                   <span className="text-2xl">{selectedDifficulty?.emoji}</span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Difficulty</p>
-                <p className="font-bold text-slate-900 dark:text-white">{selectedDifficulty?.name}</p>
+                <p className="font-bold text-slate-900 dark:text-white">
+                  {selectedDifficulty?.name}
+                </p>
               </Card>
               <Card className="text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Questions</p>
-                <p className="font-bold text-slate-900 dark:text-white">{localSettings.questionCount}</p>
+                <p className="font-bold text-slate-900 dark:text-white">
+                  {localSettings.questionCount}
+                </p>
               </Card>
               <Card className="text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
                   <Clock className="w-6 h-6 text-white" />
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Time Limit</p>
-                <p className="font-bold text-slate-900 dark:text-white">{localSettings.timeLimit ? `${localSettings.timeLimit} min` : 'No limit'}</p>
+                <p className="font-bold text-slate-900 dark:text-white">
+                  {localSettings.timeLimit ? `${localSettings.timeLimit} min` : 'No limit'}
+                </p>
               </Card>
             </div>
 
             {/* Pro Tips */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+            <Card className="bg-gradient-to-r from-blue-50 to-primary-50 dark:from-blue-900/20 dark:to-primary-900/20 border-blue-200 dark:border-blue-800">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-primary-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white mb-1">Quick Tips Before You Start</h3>
+                  <h3 className="font-bold text-slate-900 dark:text-white mb-1">
+                    Quick Tips Before You Start
+                  </h3>
                   <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
                     <li>• Find a quiet place with no distractions</li>
                     <li>• Speak clearly and structure your answers using the STAR method</li>
                     <li>• Take your time to think before answering each question</li>
-                    <li>• Estimated session time: <strong className="text-slate-900 dark:text-white">{estimatedTime} minutes</strong></li>
+                    <li>
+                      • Estimated session time:{' '}
+                      <strong className="text-slate-900 dark:text-white">
+                        {estimatedTime} minutes
+                      </strong>
+                    </li>
                   </ul>
                 </div>
               </div>
             </Card>
 
             {/* Start Button */}
-            <Card className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white border-0 shadow-2xl">
+            <Card className="bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 text-white border-0 shadow-2xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <h3 className="text-2xl font-bold mb-1">Ready to Begin? 🚀</h3>
-                  <p className="text-white/80">Your session is configured. Click start when you're ready!</p>
+                  <p className="text-white/80">
+                    Your session is configured. Click start when you're ready!
+                  </p>
                 </div>
                 <Button
                   variant="secondary"
@@ -426,14 +537,18 @@ const InterviewSetup = () => {
         >
           Previous
         </Button>
-        
+
         <div className="flex gap-2">
           {steps.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentStep(i)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                i === currentStep ? 'bg-indigo-600 w-8' : i < currentStep ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'
+                i === currentStep
+                  ? 'bg-primary-600 w-8'
+                  : i < currentStep
+                    ? 'bg-emerald-500'
+                    : 'bg-slate-300 dark:bg-slate-600'
               }`}
             />
           ))}
@@ -450,14 +565,14 @@ const InterviewSetup = () => {
           <Button
             onClick={handleStartInterview}
             isLoading={createInterviewMutation.isPending}
-            className="shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600"
+            className="shadow-lg bg-gradient-to-r from-primary-600 to-primary-600"
           >
             Start <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InterviewSetup
+export default InterviewSetup;

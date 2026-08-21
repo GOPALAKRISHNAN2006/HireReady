@@ -1,83 +1,91 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import api from '../services/api'
-import { Button, Card, Input, Spinner } from '../components/ui'
-import { Save, ArrowLeft, Plus, Trash2, Download } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { Button, Card, Input, Spinner } from '../components/ui';
+import { Save, ArrowLeft, Plus, Trash2, Download } from 'lucide-react';
 
 const ResumeEditor = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const [resume, setResume] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [activeSection, setActiveSection] = useState('personal')
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [resume, setResume] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [activeSection, setActiveSection] = useState('personal');
 
   useEffect(() => {
-    fetchResume()
-  }, [id])
+    fetchResume();
+  }, [id]);
 
   const fetchResume = async () => {
     try {
-      const response = await api.get(`/resumes/${id}`)
-      setResume(response.data.data)
+      const response = await api.get(`/resumes/${id}`);
+      setResume(response.data.data);
     } catch (error) {
-      console.error('Error fetching resume:', error)
-      navigate('/resume')
+      console.error('Error fetching resume:', error);
+      navigate('/resume');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const saveResume = async () => {
-    setSaving(true)
+    setSaving(true);
     try {
-      await api.put(`/resumes/${id}`, resume)
+      await api.put(`/resumes/${id}`, resume);
     } catch (error) {
-      console.error('Error saving resume:', error)
+      console.error('Error saving resume:', error);
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const updateField = (section, field, value) => {
     setResume(prev => ({
       ...prev,
-      [section]: { ...prev[section], [field]: value }
-    }))
-  }
+      [section]: { ...prev[section], [field]: value },
+    }));
+  };
 
-  const addItem = (section) => {
-    const newItem = section === 'education' 
-      ? { institution: '', degree: '', field: '', startDate: '', endDate: '', current: false }
-      : section === 'experience'
-      ? { company: '', position: '', location: '', startDate: '', endDate: '', current: false, description: '', achievements: [] }
-      : section === 'projects'
-      ? { name: '', description: '', technologies: [], link: '' }
-      : section === 'skills'
-      ? { category: '', items: [] }
-      : { name: '', issuer: '', date: '' }
+  const addItem = section => {
+    const newItem =
+      section === 'education'
+        ? { institution: '', degree: '', field: '', startDate: '', endDate: '', current: false }
+        : section === 'experience'
+          ? {
+              company: '',
+              position: '',
+              location: '',
+              startDate: '',
+              endDate: '',
+              current: false,
+              description: '',
+              achievements: [],
+            }
+          : section === 'projects'
+            ? { name: '', description: '', technologies: [], link: '' }
+            : section === 'skills'
+              ? { category: '', items: [] }
+              : { name: '', issuer: '', date: '' };
 
     setResume(prev => ({
       ...prev,
-      [section]: [...(prev[section] || []), newItem]
-    }))
-  }
+      [section]: [...(prev[section] || []), newItem],
+    }));
+  };
 
   const removeItem = (section, index) => {
     setResume(prev => ({
       ...prev,
-      [section]: prev[section].filter((_, i) => i !== index)
-    }))
-  }
+      [section]: prev[section].filter((_, i) => i !== index),
+    }));
+  };
 
   const updateItem = (section, index, field, value) => {
     setResume(prev => ({
       ...prev,
-      [section]: prev[section].map((item, i) => 
-        i === index ? { ...item, [field]: value } : item
-      )
-    }))
-  }
+      [section]: prev[section].map((item, i) => (i === index ? { ...item, [field]: value } : item)),
+    }));
+  };
 
   const exportToPDF = () => {
     // Create a printable version of the resume
@@ -123,17 +131,25 @@ const ResumeEditor = () => {
           ${resume.personalInfo?.linkedin ? `<p class="contact"><span>LinkedIn: ${resume.personalInfo.linkedin}</span></p>` : ''}
         </div>
 
-        ${resume.personalInfo?.summary ? `
+        ${
+          resume.personalInfo?.summary
+            ? `
           <div class="section">
             <h2>Professional Summary</h2>
             <p class="summary">${resume.personalInfo.summary}</p>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${resume.experience?.length ? `
+        ${
+          resume.experience?.length
+            ? `
           <div class="section">
             <h2>Experience</h2>
-            ${resume.experience.map(exp => `
+            ${resume.experience
+              .map(
+                exp => `
               <div class="item">
                 <div class="item-header">
                   <h3>${exp.position || 'Position'} at ${exp.company || 'Company'}</h3>
@@ -141,20 +157,32 @@ const ResumeEditor = () => {
                 </div>
                 ${exp.location ? `<p class="description">${exp.location}</p>` : ''}
                 ${exp.description ? `<p class="description">${exp.description}</p>` : ''}
-                ${exp.achievements?.length ? `
+                ${
+                  exp.achievements?.length
+                    ? `
                   <ul>
                     ${exp.achievements.map(a => `<li>${a}</li>`).join('')}
                   </ul>
-                ` : ''}
+                `
+                    : ''
+                }
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${resume.education?.length ? `
+        ${
+          resume.education?.length
+            ? `
           <div class="section">
             <h2>Education</h2>
-            ${resume.education.map(edu => `
+            ${resume.education
+              .map(
+                edu => `
               <div class="item">
                 <div class="item-header">
                   <h3>${edu.degree || 'Degree'} in ${edu.field || 'Field'}</h3>
@@ -162,46 +190,74 @@ const ResumeEditor = () => {
                 </div>
                 <p class="company">${edu.institution || 'Institution'}</p>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${resume.skills?.length ? `
+        ${
+          resume.skills?.length
+            ? `
           <div class="section">
             <h2>Skills</h2>
-            ${resume.skills.map(skillGroup => `
+            ${resume.skills
+              .map(
+                skillGroup => `
               <div style="margin-bottom: 10px;">
                 ${skillGroup.category ? `<strong>${skillGroup.category}:</strong>` : ''}
                 <div class="skills">
                   ${(skillGroup.items || []).map(skill => `<span class="skill">${skill}</span>`).join('')}
                 </div>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${resume.projects?.length ? `
+        ${
+          resume.projects?.length
+            ? `
           <div class="section">
             <h2>Projects</h2>
-            ${resume.projects.map(project => `
+            ${resume.projects
+              .map(
+                project => `
               <div class="item">
                 <h3>${project.name || 'Project Name'}</h3>
                 ${project.description ? `<p class="description">${project.description}</p>` : ''}
-                ${project.technologies?.length ? `
+                ${
+                  project.technologies?.length
+                    ? `
                   <div class="skills" style="margin-top: 5px;">
                     ${project.technologies.map(tech => `<span class="skill">${tech}</span>`).join('')}
                   </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 ${project.link ? `<p style="font-size: 13px; color: #4f46e5;">${project.link}</p>` : ''}
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${resume.certifications?.length ? `
+        ${
+          resume.certifications?.length
+            ? `
           <div class="section">
             <h2>Certifications</h2>
-            ${resume.certifications.map(cert => `
+            ${resume.certifications
+              .map(
+                cert => `
               <div class="item">
                 <div class="item-header">
                   <h3>${cert.name || 'Certification'}</h3>
@@ -209,9 +265,13 @@ const ResumeEditor = () => {
                 </div>
                 ${cert.issuer ? `<p class="company">${cert.issuer}</p>` : ''}
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </body>
       </html>
     `;
@@ -220,22 +280,22 @@ const ResumeEditor = () => {
     printWindow.document.write(printContent);
     printWindow.document.close();
     printWindow.focus();
-    
+
     // Wait for content to load then print
     setTimeout(() => {
       printWindow.print();
     }, 250);
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Spinner size="lg" />
       </div>
-    )
+    );
   }
 
-  if (!resume) return null
+  if (!resume) return null;
 
   const sections = [
     { id: 'personal', label: 'Personal Info' },
@@ -244,7 +304,7 @@ const ResumeEditor = () => {
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
     { id: 'certifications', label: 'Certifications' },
-  ]
+  ];
 
   return (
     <div className="space-y-6 animate-in">
@@ -258,8 +318,8 @@ const ResumeEditor = () => {
             <input
               type="text"
               value={resume.title}
-              onChange={(e) => setResume({ ...resume, title: e.target.value })}
-              className="text-2xl font-bold text-slate-900 dark:text-white border-none outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 dark:bg-transparent"
+              onChange={e => setResume({ ...resume, title: e.target.value })}
+              className="text-2xl font-bold text-slate-900 dark:text-white border-none outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 dark:bg-transparent"
             />
           </div>
         </div>
@@ -281,13 +341,13 @@ const ResumeEditor = () => {
           <Card className="p-4 sticky top-4">
             <h3 className="font-semibold mb-4">Sections</h3>
             <nav className="space-y-1">
-              {sections.map((section) => (
+              {sections.map(section => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
                   className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
                     activeSection === section.id
-                      ? 'bg-indigo-50 text-indigo-700 font-medium'
+                      ? 'bg-primary-50 text-primary-700 font-medium'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                   }`}
                 >
@@ -308,47 +368,49 @@ const ResumeEditor = () => {
                   <Input
                     label="Full Name"
                     value={resume.personalInfo?.fullName || ''}
-                    onChange={(e) => updateField('personalInfo', 'fullName', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'fullName', e.target.value)}
                   />
                   <Input
                     label="Email"
                     type="email"
                     value={resume.personalInfo?.email || ''}
-                    onChange={(e) => updateField('personalInfo', 'email', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'email', e.target.value)}
                   />
                   <Input
                     label="Phone"
                     value={resume.personalInfo?.phone || ''}
-                    onChange={(e) => updateField('personalInfo', 'phone', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'phone', e.target.value)}
                   />
                   <Input
                     label="Location"
                     value={resume.personalInfo?.location || ''}
-                    onChange={(e) => updateField('personalInfo', 'location', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'location', e.target.value)}
                   />
                   <Input
                     label="LinkedIn URL"
                     value={resume.personalInfo?.linkedin || ''}
-                    onChange={(e) => updateField('personalInfo', 'linkedin', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'linkedin', e.target.value)}
                   />
                   <Input
                     label="GitHub URL"
                     value={resume.personalInfo?.github || ''}
-                    onChange={(e) => updateField('personalInfo', 'github', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'github', e.target.value)}
                   />
                   <Input
                     label="Portfolio URL"
                     value={resume.personalInfo?.portfolio || ''}
-                    onChange={(e) => updateField('personalInfo', 'portfolio', e.target.value)}
+                    onChange={e => updateField('personalInfo', 'portfolio', e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Summary</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Summary
+                  </label>
                   <textarea
                     rows={4}
                     value={resume.personalInfo?.summary || ''}
-                    onChange={(e) => updateField('personalInfo', 'summary', e.target.value)}
-                    className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
+                    onChange={e => updateField('personalInfo', 'summary', e.target.value)}
+                    className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-slate-700 dark:text-white"
                     placeholder="Brief professional summary..."
                   />
                 </div>
@@ -365,9 +427,17 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.education || []).map((edu, index) => (
-                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
+                  <div
+                    key={index}
+                    className="p-4 border dark:border-slate-700 rounded-lg space-y-3"
+                  >
                     <div className="flex justify-end">
-                      <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('education', index)}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500"
+                        onClick={() => removeItem('education', index)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -375,22 +445,24 @@ const ResumeEditor = () => {
                       <Input
                         label="Institution"
                         value={edu.institution}
-                        onChange={(e) => updateItem('education', index, 'institution', e.target.value)}
+                        onChange={e =>
+                          updateItem('education', index, 'institution', e.target.value)
+                        }
                       />
                       <Input
                         label="Degree"
                         value={edu.degree}
-                        onChange={(e) => updateItem('education', index, 'degree', e.target.value)}
+                        onChange={e => updateItem('education', index, 'degree', e.target.value)}
                       />
                       <Input
                         label="Field of Study"
                         value={edu.field}
-                        onChange={(e) => updateItem('education', index, 'field', e.target.value)}
+                        onChange={e => updateItem('education', index, 'field', e.target.value)}
                       />
                       <Input
                         label="GPA"
                         value={edu.gpa}
-                        onChange={(e) => updateItem('education', index, 'gpa', e.target.value)}
+                        onChange={e => updateItem('education', index, 'gpa', e.target.value)}
                       />
                     </div>
                   </div>
@@ -408,9 +480,17 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.experience || []).map((exp, index) => (
-                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
+                  <div
+                    key={index}
+                    className="p-4 border dark:border-slate-700 rounded-lg space-y-3"
+                  >
                     <div className="flex justify-end">
-                      <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('experience', index)}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500"
+                        onClick={() => removeItem('experience', index)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -418,26 +498,30 @@ const ResumeEditor = () => {
                       <Input
                         label="Company"
                         value={exp.company}
-                        onChange={(e) => updateItem('experience', index, 'company', e.target.value)}
+                        onChange={e => updateItem('experience', index, 'company', e.target.value)}
                       />
                       <Input
                         label="Position"
                         value={exp.position}
-                        onChange={(e) => updateItem('experience', index, 'position', e.target.value)}
+                        onChange={e => updateItem('experience', index, 'position', e.target.value)}
                       />
                       <Input
                         label="Location"
                         value={exp.location}
-                        onChange={(e) => updateItem('experience', index, 'location', e.target.value)}
+                        onChange={e => updateItem('experience', index, 'location', e.target.value)}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        Description
+                      </label>
                       <textarea
                         rows={3}
                         value={exp.description}
-                        onChange={(e) => updateItem('experience', index, 'description', e.target.value)}
-                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
+                        onChange={e =>
+                          updateItem('experience', index, 'description', e.target.value)
+                        }
+                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-slate-700 dark:text-white"
                       />
                     </div>
                   </div>
@@ -455,16 +539,24 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.skills || []).map((skill, index) => (
-                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
+                  <div
+                    key={index}
+                    className="p-4 border dark:border-slate-700 rounded-lg space-y-3"
+                  >
                     <div className="flex justify-between items-start">
                       <Input
                         label="Category"
                         placeholder="e.g., Programming Languages"
                         value={skill.category}
-                        onChange={(e) => updateItem('skills', index, 'category', e.target.value)}
+                        onChange={e => updateItem('skills', index, 'category', e.target.value)}
                         className="flex-1 mr-2"
                       />
-                      <Button size="sm" variant="ghost" className="text-red-500 mt-6" onClick={() => removeItem('skills', index)}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500 mt-6"
+                        onClick={() => removeItem('skills', index)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -472,7 +564,14 @@ const ResumeEditor = () => {
                       label="Skills (comma-separated)"
                       placeholder="JavaScript, Python, React"
                       value={(skill.items || []).join(', ')}
-                      onChange={(e) => updateItem('skills', index, 'items', e.target.value.split(',').map(s => s.trim()))}
+                      onChange={e =>
+                        updateItem(
+                          'skills',
+                          index,
+                          'items',
+                          e.target.value.split(',').map(s => s.trim())
+                        )
+                      }
                     />
                   </div>
                 ))}
@@ -489,9 +588,17 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.projects || []).map((project, index) => (
-                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
+                  <div
+                    key={index}
+                    className="p-4 border dark:border-slate-700 rounded-lg space-y-3"
+                  >
                     <div className="flex justify-end">
-                      <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('projects', index)}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500"
+                        onClick={() => removeItem('projects', index)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -499,27 +606,36 @@ const ResumeEditor = () => {
                       <Input
                         label="Project Name"
                         value={project.name}
-                        onChange={(e) => updateItem('projects', index, 'name', e.target.value)}
+                        onChange={e => updateItem('projects', index, 'name', e.target.value)}
                       />
                       <Input
                         label="Link"
                         value={project.link}
-                        onChange={(e) => updateItem('projects', index, 'link', e.target.value)}
+                        onChange={e => updateItem('projects', index, 'link', e.target.value)}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        Description
+                      </label>
                       <textarea
                         rows={2}
                         value={project.description}
-                        onChange={(e) => updateItem('projects', index, 'description', e.target.value)}
-                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
+                        onChange={e => updateItem('projects', index, 'description', e.target.value)}
+                        className="w-full px-4 py-2 border dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-slate-700 dark:text-white"
                       />
                     </div>
                     <Input
                       label="Technologies (comma-separated)"
                       value={(project.technologies || []).join(', ')}
-                      onChange={(e) => updateItem('projects', index, 'technologies', e.target.value.split(',').map(s => s.trim()))}
+                      onChange={e =>
+                        updateItem(
+                          'projects',
+                          index,
+                          'technologies',
+                          e.target.value.split(',').map(s => s.trim())
+                        )
+                      }
                     />
                   </div>
                 ))}
@@ -536,9 +652,17 @@ const ResumeEditor = () => {
                   </Button>
                 </div>
                 {(resume.certifications || []).map((cert, index) => (
-                  <div key={index} className="p-4 border dark:border-slate-700 rounded-lg space-y-3">
+                  <div
+                    key={index}
+                    className="p-4 border dark:border-slate-700 rounded-lg space-y-3"
+                  >
                     <div className="flex justify-end">
-                      <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem('certifications', index)}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500"
+                        onClick={() => removeItem('certifications', index)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -546,17 +670,19 @@ const ResumeEditor = () => {
                       <Input
                         label="Certification Name"
                         value={cert.name}
-                        onChange={(e) => updateItem('certifications', index, 'name', e.target.value)}
+                        onChange={e => updateItem('certifications', index, 'name', e.target.value)}
                       />
                       <Input
                         label="Issuer"
                         value={cert.issuer}
-                        onChange={(e) => updateItem('certifications', index, 'issuer', e.target.value)}
+                        onChange={e =>
+                          updateItem('certifications', index, 'issuer', e.target.value)
+                        }
                       />
                       <Input
                         label="Link"
                         value={cert.link}
-                        onChange={(e) => updateItem('certifications', index, 'link', e.target.value)}
+                        onChange={e => updateItem('certifications', index, 'link', e.target.value)}
                       />
                     </div>
                   </div>
@@ -567,7 +693,7 @@ const ResumeEditor = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ResumeEditor
+export default ResumeEditor;

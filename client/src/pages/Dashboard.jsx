@@ -1,16 +1,16 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { useAuthStore } from '../store/authStore'
-import { Card, Button, Badge } from '../components/ui'
-import { LoadingCard } from '../components/ui/Spinner'
-import api from '../services/api'
-import { challengeApi, skillsApi } from '../services/featureApi'
-import { 
-  PlayCircle, 
-  BarChart3, 
-  TrendingUp, 
-  Clock, 
+import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useAuthStore } from '../store/authStore';
+import { Card, Button, Badge } from '../components/ui';
+import { LoadingCard } from '../components/ui/Spinner';
+import api from '../services/api';
+import { challengeApi, skillsApi } from '../services/featureApi';
+import {
+  PlayCircle,
+  BarChart3,
+  TrendingUp,
+  Clock,
   Target,
   Award,
   ChevronRight,
@@ -32,109 +32,155 @@ import {
   Sun,
   Moon,
   Sunrise,
-  Coffee
-} from 'lucide-react'
+  Coffee,
+} from 'lucide-react';
 
 const Dashboard = () => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const [checklist, setChecklist] = useState(() => {
-    const saved = localStorage.getItem('interview-checklist')
-    return saved ? JSON.parse(saved) : [
-      { id: 1, text: 'Review common interview questions', done: false },
-      { id: 2, text: 'Practice STAR method responses', done: false },
-      { id: 3, text: 'Research target company', done: false },
-      { id: 4, text: 'Prepare 3 questions to ask interviewer', done: false },
-      { id: 5, text: 'Do a mock interview practice', done: false },
-    ]
-  })
-  const [newCheckItem, setNewCheckItem] = useState('')
+    const saved = localStorage.getItem('interview-checklist');
+    return saved
+      ? JSON.parse(saved)
+      : [
+          { id: 1, text: 'Review common interview questions', done: false },
+          { id: 2, text: 'Practice STAR method responses', done: false },
+          { id: 3, text: 'Research target company', done: false },
+          { id: 4, text: 'Prepare 3 questions to ask interviewer', done: false },
+          { id: 5, text: 'Do a mock interview practice', done: false },
+        ];
+  });
+  const [newCheckItem, setNewCheckItem] = useState('');
 
   // Save checklist to localStorage
   useEffect(() => {
-    localStorage.setItem('interview-checklist', JSON.stringify(checklist))
-  }, [checklist])
+    localStorage.setItem('interview-checklist', JSON.stringify(checklist));
+  }, [checklist]);
 
-  const toggleCheckItem = (id) => {
-    setChecklist(prev => prev.map(item => item.id === id ? { ...item, done: !item.done } : item))
-  }
+  const toggleCheckItem = id => {
+    setChecklist(prev => prev.map(item => (item.id === id ? { ...item, done: !item.done } : item)));
+  };
 
   const addCheckItem = () => {
-    if (!newCheckItem.trim()) return
-    setChecklist(prev => [...prev, { id: Date.now(), text: newCheckItem.trim(), done: false }])
-    setNewCheckItem('')
-  }
+    if (!newCheckItem.trim()) return;
+    setChecklist(prev => [...prev, { id: Date.now(), text: newCheckItem.trim(), done: false }]);
+    setNewCheckItem('');
+  };
 
-  const removeCheckItem = (id) => {
-    setChecklist(prev => prev.filter(item => item.id !== id))
-  }
+  const removeCheckItem = id => {
+    setChecklist(prev => prev.filter(item => item.id !== id));
+  };
 
   // Time-of-day greeting
   const greeting = useMemo(() => {
-    const hour = new Date().getHours()
-    if (hour < 6) return { text: 'Good Night', emoji: '🌙', icon: Moon, color: 'from-indigo-600 via-purple-600 to-blue-700' }
-    if (hour < 12) return { text: 'Good Morning', emoji: '☀️', icon: Sunrise, color: 'from-amber-500 via-orange-500 to-yellow-500' }
-    if (hour < 17) return { text: 'Good Afternoon', emoji: '🌤️', icon: Sun, color: 'from-blue-500 via-cyan-500 to-teal-500' }
-    if (hour < 21) return { text: 'Good Evening', emoji: '🌅', icon: Coffee, color: 'from-purple-600 via-pink-600 to-rose-500' }
-    return { text: 'Good Night', emoji: '🌙', icon: Moon, color: 'from-indigo-600 via-purple-600 to-blue-700' }
-  }, [])
+    const hour = new Date().getHours();
+    if (hour < 6)
+      return {
+        text: 'Good Night',
+        emoji: '🌙',
+        icon: Moon,
+        color: 'from-primary-600 via-primary-600 to-blue-700',
+      };
+    if (hour < 12)
+      return {
+        text: 'Good Morning',
+        emoji: '☀️',
+        icon: Sunrise,
+        color: 'from-amber-500 via-orange-500 to-yellow-500',
+      };
+    if (hour < 17)
+      return {
+        text: 'Good Afternoon',
+        emoji: '🌤️',
+        icon: Sun,
+        color: 'from-blue-500 via-cyan-500 to-teal-500',
+      };
+    if (hour < 21)
+      return {
+        text: 'Good Evening',
+        emoji: '🌅',
+        icon: Coffee,
+        color: 'from-primary-600 via-pink-600 to-rose-500',
+      };
+    return {
+      text: 'Good Night',
+      emoji: '🌙',
+      icon: Moon,
+      color: 'from-primary-600 via-primary-600 to-blue-700',
+    };
+  }, []);
 
   // Motivational quotes
   const dailyQuote = useMemo(() => {
     const quotes = [
-      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-      { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-      { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-      { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-      { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-      { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
-      { text: "Your limitation—it's only your imagination.", author: "Unknown" },
-      { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
-      { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
-      { text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair" },
-    ]
-    const dayIndex = Math.floor(Date.now() / 86400000) % quotes.length
-    return quotes[dayIndex]
-  }, [])
+      { text: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' },
+      {
+        text: 'Success is not final, failure is not fatal: it is the courage to continue that counts.',
+        author: 'Winston Churchill',
+      },
+      { text: "Believe you can and you're halfway there.", author: 'Theodore Roosevelt' },
+      {
+        text: 'The future belongs to those who believe in the beauty of their dreams.',
+        author: 'Eleanor Roosevelt',
+      },
+      {
+        text: 'It does not matter how slowly you go as long as you do not stop.',
+        author: 'Confucius',
+      },
+      {
+        text: 'The best time to plant a tree was 20 years ago. The second best time is now.',
+        author: 'Chinese Proverb',
+      },
+      { text: "Your limitation—it's only your imagination.", author: 'Unknown' },
+      { text: "Hard work beats talent when talent doesn't work hard.", author: 'Tim Notke' },
+      { text: "Don't watch the clock; do what it does. Keep going.", author: 'Sam Levenson' },
+      {
+        text: "Everything you've ever wanted is on the other side of fear.",
+        author: 'George Addair',
+      },
+    ];
+    const dayIndex = Math.floor(Date.now() / 86400000) % quotes.length;
+    return quotes[dayIndex];
+  }, []);
 
   // Fetch dashboard summary from analytics
   const { data: summaryData, isLoading: summaryLoading } = useQuery({
     queryKey: ['analytics', 'summary'],
     queryFn: async () => {
-      const response = await api.get('/analytics/summary')
-      return response.data.data
+      const response = await api.get('/analytics/summary');
+      return response.data.data;
     },
-  })
+  });
 
   // Fetch user streak data
   const { data: streakData } = useQuery({
     queryKey: ['challenges', 'streak'],
     queryFn: async () => {
       try {
-        const response = await challengeApi.getStreak()
-        return response.data.data
+        const response = await challengeApi.getStreak();
+        return response.data.data;
       } catch (e) {
-        return null
+        return null;
       }
     },
-  })
+  });
 
   // Fetch skill radar data
   const { data: skillData } = useQuery({
     queryKey: ['skills', 'summary'],
     queryFn: async () => {
       try {
-        const response = await skillsApi.getSkills()
-        return response.data.data
+        const response = await skillsApi.getSkills();
+        return response.data.data;
       } catch (e) {
-        return null
+        return null;
       }
     },
-  })
+  });
 
   // Extract data from summary
-  const stats = summaryData?.stats || {}
-  const recentInterviews = summaryData?.recentInterviews || []
-  const achievements = summaryData?.achievements || []
+  const stats = summaryData?.stats || {};
+  const recentInterviews = summaryData?.recentInterviews || [];
+  const achievements = summaryData?.achievements || [];
 
   const statCards = [
     {
@@ -155,8 +201,8 @@ const Dashboard = () => {
       title: 'Practice Time',
       value: `${Math.round((stats.totalPracticeTime || 0) / 60)} hrs`,
       icon: Clock,
-      gradient: 'from-purple-500 to-violet-500',
-      shadow: 'shadow-purple-500/30',
+      gradient: 'from-primary-500 to-primary-500',
+      shadow: 'shadow-primary-500/30',
     },
     {
       title: 'Current Streak',
@@ -165,51 +211,63 @@ const Dashboard = () => {
       gradient: 'from-orange-500 to-amber-500',
       shadow: 'shadow-orange-500/30',
     },
-  ]
+  ];
 
-  const getCategoryColor = (category) => {
+  const getCategoryColor = category => {
     const colors = {
       technical: 'primary',
       behavioral: 'success',
       dsa: 'warning',
       'system-design': 'purple',
       'web-development': 'info',
-    }
-    return colors[category] || 'default'
-  }
+    };
+    return colors[category] || 'default';
+  };
 
-  const getScoreColor = (score) => {
-    if (score >= 80) return 'text-emerald-600'
-    if (score >= 60) return 'text-amber-600'
-    return 'text-rose-600'
-  }
+  const getScoreColor = score => {
+    if (score >= 80) return 'text-emerald-600';
+    if (score >= 60) return 'text-amber-600';
+    return 'text-rose-600';
+  };
 
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Welcome Section — Dynamic Time-of-Day */}
-      <div className={`relative overflow-hidden bg-gradient-to-r ${greeting.color} rounded-3xl p-5 md:p-8 text-white shadow-2xl`}>
+      <div
+        className={`relative overflow-hidden bg-gradient-to-r ${greeting.color} rounded-3xl p-5 md:p-8 text-white shadow-2xl`}
+      >
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="absolute top-4 right-4 opacity-10">
           <greeting.icon className="w-32 h-32" />
         </div>
-        
+
         <div className="relative flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
             <div className="inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
               <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+              })}
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-3">
-              {greeting.text}, {user?.firstName || user?.name?.split(' ')[0] || 'User'}! {greeting.emoji}
+              {greeting.text}, {user?.firstName || user?.name?.split(' ')[0] || 'User'}!{' '}
+              {greeting.emoji}
             </h1>
             <p className="text-white/80 text-lg max-w-lg">
               Ready to continue your interview preparation? Let's make today count!
             </p>
           </div>
           <Link to="/interview/setup" className="mt-6 md:mt-0">
-            <Button variant="secondary" size="lg" icon={PlayCircle} className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
+            <Button
+              variant="secondary"
+              size="lg"
+              icon={PlayCircle}
+              className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+            >
               Start New Interview
             </Button>
           </Link>
@@ -220,13 +278,19 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => (
           <Card key={index} hover className="group relative overflow-hidden">
-            <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+            />
             <div className="flex items-center space-x-4">
-              <div className={`w-14 h-14 bg-gradient-to-br ${stat.gradient} rounded-2xl flex items-center justify-center shadow-lg ${stat.shadow} group-hover:scale-110 transition-transform duration-300`}>
+              <div
+                className={`w-14 h-14 bg-gradient-to-br ${stat.gradient} rounded-2xl flex items-center justify-center shadow-lg ${stat.shadow} group-hover:scale-110 transition-transform duration-300`}
+              >
                 <stat.icon className="w-7 h-7 text-white" />
               </div>
               <div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{stat.title}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                  {stat.title}
+                </p>
                 <p className="text-3xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
               </div>
             </div>
@@ -236,52 +300,88 @@ const Dashboard = () => {
 
       {/* Suggested Next Action */}
       {(() => {
-        const totalInterviews = stats.totalInterviews || 0
-        const avgScore = stats.averageScore || 0
-        const streak = stats.currentStreak || 0
-        let suggestion = { text: 'Start your first mock interview', link: '/interview/setup', icon: PlayCircle, color: 'from-blue-500 to-cyan-500' }
+        const totalInterviews = stats.totalInterviews || 0;
+        const avgScore = stats.averageScore || 0;
+        const streak = stats.currentStreak || 0;
+        let suggestion = {
+          text: 'Start your first mock interview',
+          link: '/interview/setup',
+          icon: PlayCircle,
+          color: 'from-blue-500 to-cyan-500',
+        };
         if (totalInterviews === 0) {
-          suggestion = { text: 'Take your first mock interview to get started!', link: '/interview/setup', icon: PlayCircle, color: 'from-blue-500 to-cyan-500' }
+          suggestion = {
+            text: 'Take your first mock interview to get started!',
+            link: '/interview/setup',
+            icon: PlayCircle,
+            color: 'from-blue-500 to-cyan-500',
+          };
         } else if (streak === 0) {
-          suggestion = { text: 'Complete today\'s daily challenge to start a streak', link: '/daily-challenge', icon: Flame, color: 'from-orange-500 to-amber-500' }
+          suggestion = {
+            text: "Complete today's daily challenge to start a streak",
+            link: '/daily-challenge',
+            icon: Flame,
+            color: 'from-orange-500 to-amber-500',
+          };
         } else if (avgScore < 60) {
-          suggestion = { text: 'Practice more — review your weak areas in Skill Radar', link: '/skills', icon: Target, color: 'from-red-500 to-rose-500' }
+          suggestion = {
+            text: 'Practice more — review your weak areas in Skill Radar',
+            link: '/skills',
+            icon: Target,
+            color: 'from-red-500 to-rose-500',
+          };
         } else if (avgScore < 80) {
-          suggestion = { text: 'Good progress! Try a harder interview category', link: '/interview/setup', icon: TrendingUp, color: 'from-purple-500 to-violet-500' }
+          suggestion = {
+            text: 'Good progress! Try a harder interview category',
+            link: '/interview/setup',
+            icon: TrendingUp,
+            color: 'from-primary-500 to-primary-500',
+          };
         } else {
-          suggestion = { text: 'You\'re doing great! Share tips in the Community Hub', link: '/community', icon: Star, color: 'from-amber-500 to-yellow-500' }
+          suggestion = {
+            text: "You're doing great! Share tips in the Community Hub",
+            link: '/community',
+            icon: Star,
+            color: 'from-amber-500 to-yellow-500',
+          };
         }
         return (
           <Link to={suggestion.link}>
-            <Card hover className="group relative overflow-hidden border-l-4 border-l-indigo-500">
+            <Card hover className="group relative overflow-hidden border-l-4 border-l-primary-500">
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 bg-gradient-to-br ${suggestion.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`w-12 h-12 bg-gradient-to-br ${suggestion.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}
+                >
                   <suggestion.icon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider mb-1">Suggested Next Action</p>
+                  <p className="text-xs text-primary-600 dark:text-primary-400 font-semibold uppercase tracking-wider mb-1">
+                    Suggested Next Action
+                  </p>
                   <p className="font-medium text-slate-900 dark:text-white">{suggestion.text}</p>
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" />
               </div>
             </Card>
           </Link>
-        )
+        );
       })()}
 
       {/* Motivational Quote + Preparation Checklist Row */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Quote of the Day */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 border-l-4 border-l-indigo-500">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-800 border-l-4 border-l-primary-500">
           <div className="absolute top-4 right-4 opacity-5">
             <Quote className="w-24 h-24" />
           </div>
           <div className="relative">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-500 rounded-lg flex items-center justify-center">
                 <Quote className="w-4 h-4 text-white" />
               </div>
-              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Quote of the Day</span>
+              <span className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider">
+                Quote of the Day
+              </span>
             </div>
             <blockquote className="text-lg font-medium text-slate-800 dark:text-slate-200 leading-relaxed mb-3 italic">
               "{dailyQuote.text}"
@@ -308,9 +408,11 @@ const Dashboard = () => {
           <Card.Content>
             {/* Progress bar */}
             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${(checklist.filter(i => i.done).length / checklist.length) * 100}%` }}
+                style={{
+                  width: `${(checklist.filter(i => i.done).length / checklist.length) * 100}%`,
+                }}
               />
             </div>
             <div className="space-y-2">
@@ -319,8 +421,8 @@ const Dashboard = () => {
                   key={item.id}
                   onClick={() => toggleCheckItem(item.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 ${
-                    item.done 
-                      ? 'bg-emerald-50 dark:bg-emerald-900/20 line-through text-slate-400 dark:text-slate-500' 
+                    item.done
+                      ? 'bg-emerald-50 dark:bg-emerald-900/20 line-through text-slate-400 dark:text-slate-500'
                       : 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
@@ -342,18 +444,18 @@ const Dashboard = () => {
             )}
             {/* Add custom checklist item */}
             <div className="mt-3 flex gap-2">
-              <input 
+              <input
                 type="text"
                 value={newCheckItem}
-                onChange={(e) => setNewCheckItem(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addCheckItem()}
+                onChange={e => setNewCheckItem(e.target.value)}
+                onKeyPress={e => e.key === 'Enter' && addCheckItem()}
                 placeholder="Add a task..."
-                className="flex-1 px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <button
                 onClick={addCheckItem}
                 disabled={!newCheckItem.trim()}
-                className="px-3 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                className="px-3 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
               >
                 +
               </button>
@@ -369,7 +471,10 @@ const Dashboard = () => {
             <Card.Header>
               <div className="flex items-center justify-between">
                 <Card.Title>Recent Interviews</Card.Title>
-                <Link to="/analytics" className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center">
+                <Link
+                  to="/analytics"
+                  className="text-sm text-primary-600 hover:text-primary-700 flex items-center"
+                >
                   View All <ChevronRight className="w-4 h-4 ml-1" />
                 </Link>
               </div>
@@ -379,15 +484,15 @@ const Dashboard = () => {
                 <LoadingCard message="Loading interviews..." />
               ) : recentInterviews?.length > 0 ? (
                 <div className="space-y-4">
-                  {recentInterviews.map((interview) => (
+                  {recentInterviews.map(interview => (
                     <Link
                       key={interview._id}
                       to={`/interview/${interview._id}/result`}
                       className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
-                          <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                        <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                          <Target className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                         </div>
                         <div>
                           <h4 className="font-medium text-slate-900 dark:text-white">
@@ -438,12 +543,14 @@ const Dashboard = () => {
                 <span className="font-semibold">Daily Challenge</span>
               </div>
               <h3 className="text-lg font-bold mb-2">
-                {streakData?.currentStreak > 0 ? `${streakData.currentStreak} Day Streak!` : 'Start Your Streak'}
+                {streakData?.currentStreak > 0
+                  ? `${streakData.currentStreak} Day Streak!`
+                  : 'Start Your Streak'}
               </h3>
               <p className="text-white/80 text-sm mb-4">
-                {streakData?.currentStreak > 0 
-                  ? 'Keep going! Complete today\'s challenge.'
-                  : 'Complete today\'s challenge to start your streak!'}
+                {streakData?.currentStreak > 0
+                  ? "Keep going! Complete today's challenge."
+                  : "Complete today's challenge to start your streak!"}
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -467,12 +574,14 @@ const Dashboard = () => {
             <Card.Content className="space-y-3">
               <Link
                 to="/lab"
-                className="flex items-center space-x-3 p-3 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl hover:from-purple-100 hover:to-indigo-100 dark:hover:from-purple-900/30 dark:hover:to-indigo-900/30 transition-all group"
+                className="flex items-center space-x-3 p-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-primary-900/20 dark:to-primary-900/20 rounded-xl hover:from-primary-100 hover:to-primary-100 dark:hover:from-primary-900/30 dark:hover:to-primary-900/30 transition-all group"
               >
-                <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-500 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
                   <Beaker className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Interview Lab</span>
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">
+                  Interview Lab
+                </span>
                 <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -482,7 +591,9 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/30">
                   <Radar className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Skill Radar</span>
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">
+                  Skill Radar
+                </span>
                 <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -492,7 +603,9 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/30">
                   <Map className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Career Roadmap</span>
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">
+                  Career Roadmap
+                </span>
                 <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -502,7 +615,9 @@ const Dashboard = () => {
                 <div className="w-9 h-9 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center shadow-lg shadow-pink-500/30">
                   <Users className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">Community Hub</span>
+                <span className="font-medium text-slate-700 dark:text-slate-200 flex-1">
+                  Community Hub
+                </span>
                 <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Card.Content>
@@ -515,14 +630,19 @@ const Dashboard = () => {
                 <Flame className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-amber-600 dark:text-amber-400 font-medium">Current Streak</p>
+                <p className="text-sm text-amber-600 dark:text-amber-400 font-medium">
+                  Current Streak
+                </p>
                 <p className="text-2xl font-bold text-slate-900 dark:text-white">
-                  {streakData?.currentStreak || stats.currentStreak || 0} Days {(streakData?.currentStreak || stats.currentStreak || 0) > 0 && '🔥'}
+                  {streakData?.currentStreak || stats.currentStreak || 0} Days{' '}
+                  {(streakData?.currentStreak || stats.currentStreak || 0) > 0 && '🔥'}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-sm text-slate-500 dark:text-slate-400">Best Streak</p>
-                <p className="font-bold text-slate-700 dark:text-slate-200">{streakData?.longestStreak || stats.longestStreak || 0} Days</p>
+                <p className="font-bold text-slate-700 dark:text-slate-200">
+                  {streakData?.longestStreak || stats.longestStreak || 0} Days
+                </p>
               </div>
             </div>
           </Card>
@@ -532,49 +652,64 @@ const Dashboard = () => {
       {/* Feature Cards Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link to="/tips" className="group">
-          <Card hover className="h-full bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border-amber-100 dark:border-amber-800">
+          <Card
+            hover
+            className="h-full bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border-amber-100 dark:border-amber-800"
+          >
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
                 <Lightbulb className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 dark:text-white mb-1">Interview Tips</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Expert advice to ace your next interview</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Expert advice to ace your next interview
+                </p>
               </div>
             </div>
           </Card>
         </Link>
 
         <Link to="/leaderboard" className="group">
-          <Card hover className="h-full bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 border-purple-100 dark:border-purple-800">
+          <Card
+            hover
+            className="h-full bg-gradient-to-br from-primary-50 to-primary-50 dark:from-primary-900/20 dark:to-primary-900/20 border-primary-100 dark:border-primary-800"
+          >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform">
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 dark:text-white mb-1">Leaderboard</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Compete with others and climb the ranks</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Compete with others and climb the ranks
+                </p>
               </div>
             </div>
           </Card>
         </Link>
 
         <Link to="/achievements" className="group">
-          <Card hover className="h-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-100 dark:border-green-800">
+          <Card
+            hover
+            className="h-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-100 dark:border-green-800"
+          >
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 dark:text-white mb-1">Achievements</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Track your progress and earn badges</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Track your progress and earn badges
+                </p>
               </div>
             </div>
           </Card>
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

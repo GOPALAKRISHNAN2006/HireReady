@@ -78,11 +78,14 @@ router.post('/start', protect, asyncHandler(async (req, res) => {
     user: req.user._id,
     category,
     totalQuestions: questions.length,
-    responses: questions.map(q => ({
-      question: q._id,
-      questionText: q.question,
-      options: q.options
-    })),
+    responses: questions.map(q => {
+      const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+      return {
+        question: q._id,
+        questionText: q.question,
+        options: shuffledOptions
+      };
+    }),
     status: 'in-progress',
     startedAt: new Date()
   });

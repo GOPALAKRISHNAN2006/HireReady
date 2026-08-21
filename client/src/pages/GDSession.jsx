@@ -269,7 +269,7 @@ const GDSession = () => {
 
   const getParticipantColor = name => {
     const colors = {
-      Priya: 'bg-purple-100 text-purple-700 ring-purple-500',
+      Priya: 'bg-primary-100 text-primary-700 ring-primary-500',
       Rahul: 'bg-blue-100 text-blue-700 ring-blue-500',
       Ananya: 'bg-pink-100 text-pink-700 ring-pink-500',
       Vikram: 'bg-orange-100 text-orange-700 ring-orange-500',
@@ -293,7 +293,7 @@ const GDSession = () => {
             Group Discussion in Progress
             <button
               onClick={() => setTtsEnabled(!ttsEnabled)}
-              className={`p-1 rounded-full ${ttsEnabled ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 bg-slate-100'}`}
+              className={`p-1 rounded-full ${ttsEnabled ? 'text-primary-600 bg-primary-50' : 'text-slate-400 bg-slate-100'}`}
               title={ttsEnabled ? 'Mute AI Voices' : 'Unmute AI Voices'}
             >
               {ttsEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -326,12 +326,12 @@ const GDSession = () => {
             {/* User Avatar */}
             <div className="flex flex-col items-center gap-2 transition-all">
               <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold bg-indigo-500 shadow-md transition-all duration-300 ${isListening ? 'ring-4 ring-indigo-400 shadow-indigo-500/50 scale-110' : ''}`}
+                className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold bg-primary-500 shadow-md transition-all duration-300 ${isListening ? 'ring-4 ring-primary-400 shadow-primary-500/50 scale-110' : ''}`}
               >
                 Y
               </div>
               <span
-                className={`text-sm font-medium ${isListening ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'}`}
+                className={`text-sm font-medium ${isListening ? 'text-primary-600 dark:text-primary-400' : 'text-slate-600 dark:text-slate-400'}`}
               >
                 You
               </span>
@@ -374,8 +374,8 @@ const GDSession = () => {
 
                 {msg.type === 'user' && (
                   <div className="flex justify-end mb-2">
-                    <div className="max-w-[75%] bg-indigo-600 text-white rounded-2xl rounded-tr-sm px-5 py-3 shadow-sm">
-                      <p className="text-xs font-medium text-indigo-100 mb-1">You</p>
+                    <div className="max-w-[75%] bg-primary-600 text-white rounded-2xl rounded-tr-sm px-5 py-3 shadow-sm">
+                      <p className="text-xs font-medium text-primary-100 mb-1">You</p>
                       <p className="leading-relaxed">{msg.content}</p>
                     </div>
                   </div>
@@ -425,7 +425,7 @@ const GDSession = () => {
                 className={`p-3 rounded-full flex-shrink-0 transition-colors shadow-sm ${
                   isListening
                     ? 'bg-rose-100 text-rose-600 hover:bg-rose-200 ring-2 ring-rose-500 ring-offset-2 dark:ring-offset-slate-900 animate-pulse'
-                    : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'
+                    : 'bg-primary-100 text-primary-600 hover:bg-primary-200'
                 }`}
                 title={isListening ? 'Stop Listening' : 'Start Voice Input'}
               >
@@ -449,8 +449,8 @@ const GDSession = () => {
                   }
                   disabled={!sessionActive}
                   rows={2}
-                  className={`w-full px-4 py-3 border dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-800 dark:text-white resize-none shadow-sm transition-colors ${
-                    isListening ? 'border-indigo-300 bg-indigo-50/50 dark:bg-indigo-900/10' : ''
+                  className={`w-full px-4 py-3 border dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-slate-800 dark:text-white resize-none shadow-sm transition-colors ${
+                    isListening ? 'border-primary-300 bg-primary-50/50 dark:bg-primary-900/10' : ''
                   }`}
                 />
               </div>
@@ -464,7 +464,7 @@ const GDSession = () => {
               </Button>
             </div>
             {isListening && (
-              <p className="text-xs text-indigo-600 mt-2 text-center animate-pulse">
+              <p className="text-xs text-primary-600 mt-2 text-center animate-pulse">
                 Listening to your microphone...
               </p>
             )}
@@ -488,11 +488,11 @@ const GDSession = () => {
               {sessionData.aiParticipants.map((p, idx) => (
                 <div
                   key={idx}
-                  className={`flex items-center justify-between p-2 rounded-lg transition-colors ${speakingParticipant === p.name ? 'bg-indigo-50 dark:bg-indigo-900/20' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}
+                  className={`flex items-center justify-between p-2 rounded-lg transition-colors ${speakingParticipant === p.name ? 'bg-primary-50 dark:bg-primary-900/20' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-2.5 h-2.5 rounded-full ${speakingParticipant === p.name ? 'bg-indigo-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600'}`}
+                      className={`w-2.5 h-2.5 rounded-full ${speakingParticipant === p.name ? 'bg-primary-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600'}`}
                     ></div>
                     <span className="text-sm font-medium">{p.name}</span>
                   </div>
@@ -511,8 +511,8 @@ const GDSession = () => {
             <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-3">
               {sessionData.topic.keyPoints?.map((point, idx) => (
                 <li key={idx} className="flex items-start gap-3">
-                  <div className="mt-1 bg-indigo-100 dark:bg-indigo-900/30 p-1 rounded">
-                    <MessageCircle className="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+                  <div className="mt-1 bg-primary-100 dark:bg-primary-900/30 p-1 rounded">
+                    <MessageCircle className="w-3 h-3 text-primary-600 dark:text-primary-400 flex-shrink-0" />
                   </div>
                   <span className="leading-relaxed">{point}</span>
                 </li>
@@ -520,25 +520,25 @@ const GDSession = () => {
             </ul>
           </Card>
 
-          <Card className="p-5 bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border-indigo-100 dark:border-indigo-800/30 shadow-sm">
-            <h3 className="font-semibold text-sm text-indigo-800 dark:text-indigo-300 mb-3">
+          <Card className="p-5 bg-gradient-to-br from-primary-50 to-primary-50 dark:from-primary-900/20 dark:to-primary-900/20 border-primary-100 dark:border-primary-800/30 shadow-sm">
+            <h3 className="font-semibold text-sm text-primary-800 dark:text-primary-300 mb-3">
               Discussion Tips
             </h3>
-            <ul className="text-xs text-indigo-700/80 dark:text-indigo-300/80 space-y-2">
+            <ul className="text-xs text-primary-700/80 dark:text-primary-300/80 space-y-2">
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Be respectful of
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-400"></span> Be respectful of
                 others' views
               </li>
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Support your points
-                with examples
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-400"></span> Support your
+                points with examples
               </li>
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Build on others'
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-400"></span> Build on others'
                 ideas
               </li>
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Keep your
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-400"></span> Keep your
                 microphone clear
               </li>
             </ul>

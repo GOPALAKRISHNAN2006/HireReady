@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { Card, Button, Badge, Modal, Input } from '../../components/ui'
-import { LoadingCard } from '../../components/ui/Spinner'
-import api from '../../services/api'
-import { 
-  FileQuestion, 
-  Search, 
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { Card, Button, Badge, Modal, Input } from '../../components/ui';
+import { LoadingCard } from '../../components/ui/Spinner';
+import api from '../../services/api';
+import {
+  FileQuestion,
+  Search,
   Plus,
   Edit2,
   Trash2,
@@ -17,17 +17,17 @@ import {
   Filter,
   Sparkles,
   Tag,
-  ChevronRight
-} from 'lucide-react'
+  ChevronRight,
+} from 'lucide-react';
 
 const AdminQuestions = () => {
-  const queryClient = useQueryClient()
-  const [search, setSearch] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState('')
-  const [selectedQuestion, setSelectedQuestion] = useState(null)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  
+  const queryClient = useQueryClient();
+  const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [formData, setFormData] = useState({
     text: '',
     category: 'dsa',
@@ -35,42 +35,45 @@ const AdminQuestions = () => {
     expectedAnswer: '',
     hints: '',
     tags: '',
-  })
+  });
 
   // Fetch questions
   const { data, isLoading } = useQuery({
     queryKey: ['admin', 'questions', search, categoryFilter],
     queryFn: async () => {
-      const params = new URLSearchParams()
-      if (search) params.append('search', search)
-      if (categoryFilter) params.append('category', categoryFilter)
-      params.append('includeUnapproved', 'true') // Include all questions for admin
-      
-      const response = await api.get(`/admin/questions?${params.toString()}`)
-      return response.data?.data || response.data
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (categoryFilter) params.append('category', categoryFilter);
+      params.append('includeUnapproved', 'true'); // Include all questions for admin
+
+      const response = await api.get(`/admin/questions?${params.toString()}`);
+      return response.data?.data || response.data;
     },
-  })
+  });
 
   // Create question mutation
   const createQuestionMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async data => {
       const response = await api.post('/questions', {
         ...data,
         hints: data.hints.split('\n').filter(h => h.trim()),
-        tags: data.tags.split(',').map(t => t.trim()).filter(Boolean),
-      })
-      return response.data
+        tags: data.tags
+          .split(',')
+          .map(t => t.trim())
+          .filter(Boolean),
+      });
+      return response.data;
     },
     onSuccess: () => {
-      toast.success('Question created')
-      queryClient.invalidateQueries(['admin', 'questions'])
-      setShowAddModal(false)
-      resetForm()
+      toast.success('Question created');
+      queryClient.invalidateQueries(['admin', 'questions']);
+      setShowAddModal(false);
+      resetForm();
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create question')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to create question');
     },
-  })
+  });
 
   // Update question mutation
   const updateQuestionMutation = useMutation({
@@ -78,46 +81,49 @@ const AdminQuestions = () => {
       const response = await api.put(`/questions/${id}`, {
         ...data,
         hints: data.hints.split('\n').filter(h => h.trim()),
-        tags: data.tags.split(',').map(t => t.trim()).filter(Boolean),
-      })
-      return response.data
+        tags: data.tags
+          .split(',')
+          .map(t => t.trim())
+          .filter(Boolean),
+      });
+      return response.data;
     },
     onSuccess: () => {
-      toast.success('Question updated')
-      queryClient.invalidateQueries(['admin', 'questions'])
-      setShowAddModal(false)
-      setSelectedQuestion(null)
-      resetForm()
+      toast.success('Question updated');
+      queryClient.invalidateQueries(['admin', 'questions']);
+      setShowAddModal(false);
+      setSelectedQuestion(null);
+      resetForm();
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update question')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to update question');
     },
-  })
+  });
 
   // Delete question mutation
   const deleteQuestionMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await api.delete(`/questions/${id}`)
-      return response.data
+    mutationFn: async id => {
+      const response = await api.delete(`/questions/${id}`);
+      return response.data;
     },
     onSuccess: () => {
-      toast.success('Question deleted')
-      queryClient.invalidateQueries(['admin', 'questions'])
-      setShowDeleteModal(false)
-      setSelectedQuestion(null)
+      toast.success('Question deleted');
+      queryClient.invalidateQueries(['admin', 'questions']);
+      setShowDeleteModal(false);
+      setSelectedQuestion(null);
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete question')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to delete question');
     },
-  })
+  });
 
   // Generate AI question mutation
   const generateQuestionMutation = useMutation({
-    mutationFn: async (params) => {
-      const response = await api.post('/ai/generate-question', params)
-      return response.data
+    mutationFn: async params => {
+      const response = await api.post('/ai/generate-question', params);
+      return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       setFormData({
         text: data.question.text,
         category: data.question.category,
@@ -125,13 +131,13 @@ const AdminQuestions = () => {
         expectedAnswer: data.question.expectedAnswer || '',
         hints: (data.question.hints || []).join('\n'),
         tags: (data.question.tags || []).join(', '),
-      })
-      toast.success('Question generated by AI')
+      });
+      toast.success('Question generated by AI');
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to generate question')
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to generate question');
     },
-  })
+  });
 
   const resetForm = () => {
     setFormData({
@@ -141,11 +147,11 @@ const AdminQuestions = () => {
       expectedAnswer: '',
       hints: '',
       tags: '',
-    })
-  }
+    });
+  };
 
-  const handleEdit = (question) => {
-    setSelectedQuestion(question)
+  const handleEdit = question => {
+    setSelectedQuestion(question);
     setFormData({
       text: question.text,
       category: question.category,
@@ -153,18 +159,18 @@ const AdminQuestions = () => {
       expectedAnswer: question.expectedAnswer || '',
       hints: (question.hints || []).join('\n'),
       tags: (question.tags || []).join(', '),
-    })
-    setShowAddModal(true)
-  }
+    });
+    setShowAddModal(true);
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = e => {
+    e.preventDefault();
     if (selectedQuestion) {
-      updateQuestionMutation.mutate({ id: selectedQuestion._id, data: formData })
+      updateQuestionMutation.mutate({ id: selectedQuestion._id, data: formData });
     } else {
-      createQuestionMutation.mutate(formData)
+      createQuestionMutation.mutate(formData);
     }
-  }
+  };
 
   const categories = [
     { id: '', name: 'All Categories' },
@@ -176,28 +182,36 @@ const AdminQuestions = () => {
     { id: 'ml', name: 'Machine Learning' },
     { id: 'devops', name: 'DevOps' },
     { id: 'mobile', name: 'Mobile Development' },
-  ]
+  ];
 
-  const getDifficultyColor = (difficulty) => {
-    const colors = { 
-      easy: 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30', 
-      medium: 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30', 
-      hard: 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800/30' 
-    }
-    return colors[difficulty] || 'bg-slate-50 text-slate-600 border-slate-200'
-  }
+  const getDifficultyColor = difficulty => {
+    const colors = {
+      easy: 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30',
+      medium:
+        'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/30',
+      hard: 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800/30',
+    };
+    return colors[difficulty] || 'bg-slate-50 text-slate-600 border-slate-200';
+  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Manage Questions</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Create, edit, and manage interview questions</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+            Manage Questions
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">
+            Create, edit, and manage interview questions
+          </p>
         </div>
         <button
-          onClick={() => { resetForm(); setShowAddModal(true); }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-violet-700 transition-all"
+          onClick={() => {
+            resetForm();
+            setShowAddModal(true);
+          }}
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md hover:from-primary-700 hover:to-primary-700 transition-all"
         >
           <Plus className="w-4 h-4" />
           Add Question
@@ -213,19 +227,21 @@ const AdminQuestions = () => {
               type="text"
               placeholder="Search questions..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
             />
           </div>
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-slate-400" />
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+              onChange={e => setCategoryFilter(e.target.value)}
+              className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
             >
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
               ))}
             </select>
           </div>
@@ -239,19 +255,24 @@ const AdminQuestions = () => {
             <LoadingCard message="Loading questions..." />
           </div>
         ) : data?.questions?.length > 0 ? (
-          data.questions.map((question) => (
-            <div key={question._id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-all p-5 group">
+          data.questions.map(question => (
+            <div
+              key={question._id}
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-all p-5 group"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${getDifficultyColor(question.difficulty)}`}>
+                    <span
+                      className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${getDifficultyColor(question.difficulty)}`}
+                    >
                       {question.difficulty}
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800/30">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:border-primary-800/30">
                       {question.category}
                     </span>
                     {question.isAIGenerated && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-violet-50 text-violet-700 border border-violet-100 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/30">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:border-primary-800/30">
                         <Sparkles className="w-3 h-3" />
                         AI Generated
                       </span>
@@ -274,7 +295,10 @@ const AdminQuestions = () => {
                     <div className="flex flex-wrap items-center gap-1.5">
                       <Tag className="w-3 h-3 text-slate-400" />
                       {question.tags.map((tag, index) => (
-                        <span key={index} className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                        <span
+                          key={index}
+                          className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md"
+                        >
                           {tag}
                         </span>
                       ))}
@@ -284,15 +308,15 @@ const AdminQuestions = () => {
                 <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0">
                   <button
                     onClick={() => handleEdit(question)}
-                    className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+                    className="p-2 text-slate-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                     title="Edit"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => {
-                      setSelectedQuestion(question)
-                      setShowDeleteModal(true)
+                      setSelectedQuestion(question);
+                      setShowDeleteModal(true);
                     }}
                     className="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors"
                     title="Delete"
@@ -306,11 +330,15 @@ const AdminQuestions = () => {
         ) : (
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm text-center py-16">
             <FileQuestion className="w-14 h-14 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Questions Found</h3>
-            <p className="text-slate-500 dark:text-slate-400 mb-6">Start by adding some questions</p>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+              No Questions Found
+            </h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">
+              Start by adding some questions
+            </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all"
             >
               <Plus className="w-4 h-4" />
               Add Question
@@ -323,9 +351,9 @@ const AdminQuestions = () => {
       <Modal
         isOpen={showAddModal}
         onClose={() => {
-          setShowAddModal(false)
-          setSelectedQuestion(null)
-          resetForm()
+          setShowAddModal(false);
+          setSelectedQuestion(null);
+          resetForm();
         }}
         title={selectedQuestion ? 'Edit Question' : 'Add New Question'}
         size="lg"
@@ -335,49 +363,61 @@ const AdminQuestions = () => {
           {!selectedQuestion && (
             <button
               type="button"
-              onClick={() => generateQuestionMutation.mutate({
-                category: formData.category,
-                difficulty: formData.difficulty,
-              })}
+              onClick={() =>
+                generateQuestionMutation.mutate({
+                  category: formData.category,
+                  difficulty: formData.difficulty,
+                })
+              }
               disabled={generateQuestionMutation.isPending}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20 border-2 border-dashed border-violet-200 dark:border-violet-800/40 rounded-xl text-violet-700 dark:text-violet-400 font-semibold hover:border-violet-300 dark:hover:border-violet-700 transition-all disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-50 to-primary-50 dark:from-primary-900/20 dark:to-primary-900/20 border-2 border-dashed border-primary-200 dark:border-primary-800/40 rounded-xl text-primary-700 dark:text-primary-400 font-semibold hover:border-primary-300 dark:hover:border-primary-700 transition-all disabled:opacity-50"
             >
-              <Brain className={`w-5 h-5 ${generateQuestionMutation.isPending ? 'animate-pulse' : ''}`} />
+              <Brain
+                className={`w-5 h-5 ${generateQuestionMutation.isPending ? 'animate-pulse' : ''}`}
+              />
               {generateQuestionMutation.isPending ? 'Generating...' : 'Generate with AI'}
             </button>
           )}
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Question Text</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Question Text
+            </label>
             <textarea
               value={formData.text}
-              onChange={(e) => setFormData(prev => ({ ...prev, text: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, text: e.target.value }))}
               rows={3}
               required
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter the question..."
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Category
+              </label>
               <select
                 value={formData.category}
-                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+                onChange={e => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
               >
-                {categories.slice(1).map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                {categories.slice(1).map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Difficulty</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                Difficulty
+              </label>
               <select
                 value={formData.difficulty}
-                onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value }))}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 cursor-pointer transition-all"
+                onChange={e => setFormData(prev => ({ ...prev, difficulty: e.target.value }))}
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
               >
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
@@ -387,47 +427,57 @@ const AdminQuestions = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Expected Answer</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Expected Answer
+            </label>
             <textarea
               value={formData.expectedAnswer}
-              onChange={(e) => setFormData(prev => ({ ...prev, expectedAnswer: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, expectedAnswer: e.target.value }))}
               rows={3}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter the expected answer..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Hints (one per line)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Hints (one per line)
+            </label>
             <textarea
               value={formData.hints}
-              onChange={(e) => setFormData(prev => ({ ...prev, hints: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, hints: e.target.value }))}
               rows={2}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all resize-none"
               placeholder="Enter hints, one per line..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tags (comma separated)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Tags (comma separated)
+            </label>
             <input
               type="text"
               value={formData.tags}
-              onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
+              onChange={e => setFormData(prev => ({ ...prev, tags: e.target.value }))}
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
               placeholder="e.g., arrays, sorting, recursion"
             />
           </div>
 
           <Modal.Footer>
-            <Button type="button" variant="secondary" onClick={() => {
-              setShowAddModal(false)
-              setSelectedQuestion(null)
-              resetForm()
-            }}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                setShowAddModal(false);
+                setSelectedQuestion(null);
+                resetForm();
+              }}
+            >
               Cancel
             </Button>
-            <Button 
+            <Button
               type="submit"
               isLoading={createQuestionMutation.isPending || updateQuestionMutation.isPending}
             >
@@ -441,8 +491,8 @@ const AdminQuestions = () => {
       <Modal
         isOpen={showDeleteModal}
         onClose={() => {
-          setShowDeleteModal(false)
-          setSelectedQuestion(null)
+          setShowDeleteModal(false);
+          setSelectedQuestion(null);
         }}
         title="Delete Question"
       >
@@ -456,8 +506,8 @@ const AdminQuestions = () => {
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
-          <Button 
-            variant="danger" 
+          <Button
+            variant="danger"
             onClick={() => deleteQuestionMutation.mutate(selectedQuestion._id)}
             isLoading={deleteQuestionMutation.isPending}
           >
@@ -466,7 +516,7 @@ const AdminQuestions = () => {
         </Modal.Footer>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default AdminQuestions
+export default AdminQuestions;

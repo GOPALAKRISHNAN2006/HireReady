@@ -144,7 +144,7 @@ const PracticeHistory = () => {
   return (
     <div className="space-y-8">
       {/* Gradient Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 p-8 text-white">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-600 via-fuchsia-600 to-primary-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
@@ -168,7 +168,7 @@ const PracticeHistory = () => {
               placeholder="Search by category..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
             />
           </div>
 
@@ -176,7 +176,7 @@ const PracticeHistory = () => {
           <select
             value={filter}
             onChange={(e) => { setFilter(e.target.value); setPage(1) }}
-            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
             <option value="all">All Status</option>
             <option value="completed">Completed</option>
@@ -188,7 +188,7 @@ const PracticeHistory = () => {
           <select
             value={dateRange}
             onChange={(e) => { setDateRange(e.target.value); setPage(1) }}
-            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
             <option value="all">All Time</option>
             <option value="today">Today</option>

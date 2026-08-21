@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Card, Button, Badge } from '../components/ui'
-import { 
-  Building2, 
-  Search, 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, Button, Badge } from '../components/ui';
+import {
+  Building2,
+  Search,
   Star,
   MapPin,
   Users,
@@ -14,14 +14,14 @@ import {
   TrendingUp,
   Clock,
   Target,
-  Filter
-} from 'lucide-react'
+  Filter,
+} from 'lucide-react';
 
 const CompanyPrep = () => {
-  const navigate = useNavigate()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedIndustry, setSelectedIndustry] = useState('all')
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all')
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedIndustry, setSelectedIndustry] = useState('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
   const industries = [
     { id: 'all', label: 'All Industries' },
@@ -30,7 +30,7 @@ const CompanyPrep = () => {
     { id: 'consulting', label: 'Consulting' },
     { id: 'ecommerce', label: 'E-commerce' },
     { id: 'healthcare', label: 'Healthcare' },
-  ]
+  ];
 
   const companies = [
     {
@@ -47,7 +47,11 @@ const CompanyPrep = () => {
       avgSalary: '$180K - $350K',
       interviewRounds: 5,
       timeToHire: '4-6 weeks',
-      tips: ['Focus on problem-solving approach', 'Practice on whiteboard', 'Prepare for behavioral (Googleyness)'],
+      tips: [
+        'Focus on problem-solving approach',
+        'Practice on whiteboard',
+        'Prepare for behavioral (Googleyness)',
+      ],
       questionsCount: 250,
     },
     {
@@ -64,7 +68,11 @@ const CompanyPrep = () => {
       avgSalary: '$160K - $320K',
       interviewRounds: 5,
       timeToHire: '3-5 weeks',
-      tips: ['Master the 16 Leadership Principles', 'Use STAR method for behavioral', 'Practice system design at scale'],
+      tips: [
+        'Master the 16 Leadership Principles',
+        'Use STAR method for behavioral',
+        'Practice system design at scale',
+      ],
       questionsCount: 320,
     },
     {
@@ -98,7 +106,11 @@ const CompanyPrep = () => {
       avgSalary: '$170K - $340K',
       interviewRounds: 4,
       timeToHire: '4-6 weeks',
-      tips: ['Speed is important - practice timed coding', 'Focus on optimal solutions', 'Prepare for product sense questions'],
+      tips: [
+        'Speed is important - practice timed coding',
+        'Focus on optimal solutions',
+        'Prepare for product sense questions',
+      ],
       questionsCount: 200,
     },
     {
@@ -115,7 +127,11 @@ const CompanyPrep = () => {
       avgSalary: '$165K - $330K',
       interviewRounds: 5,
       timeToHire: '4-8 weeks',
-      tips: ['Know your domain well', 'Demonstrate attention to detail', 'Show passion for products'],
+      tips: [
+        'Know your domain well',
+        'Demonstrate attention to detail',
+        'Show passion for products',
+      ],
       questionsCount: 180,
     },
     {
@@ -132,7 +148,11 @@ const CompanyPrep = () => {
       avgSalary: '$200K - $400K',
       interviewRounds: 4,
       timeToHire: '3-5 weeks',
-      tips: ['Understand Netflix culture deck', 'Prepare for high bar discussions', 'Show independence'],
+      tips: [
+        'Understand Netflix culture deck',
+        'Prepare for high bar discussions',
+        'Show independence',
+      ],
       questionsCount: 120,
     },
     {
@@ -169,25 +189,27 @@ const CompanyPrep = () => {
       tips: ['Understand banking operations', 'Prepare SQL questions', 'Show teamwork skills'],
       questionsCount: 140,
     },
-  ]
+  ];
 
-  const getDifficultyColor = (difficulty) => {
+  const getDifficultyColor = difficulty => {
     const colors = {
       easy: 'bg-green-100 dark:bg-green-900/30 text-green-700',
       medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700',
       hard: 'bg-red-100 dark:bg-red-900/30 text-red-700',
-    }
-    return colors[difficulty] || colors.medium
-  }
+    };
+    return colors[difficulty] || colors.medium;
+  };
 
   const filteredCompanies = companies.filter(company => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      company.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesIndustry = selectedIndustry === 'all' || company.industry === selectedIndustry
-    const matchesDifficulty = selectedDifficulty === 'all' || company.difficulty === selectedDifficulty
-    return matchesSearch && matchesIndustry && matchesDifficulty
-  })
+      company.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesIndustry = selectedIndustry === 'all' || company.industry === selectedIndustry;
+    const matchesDifficulty =
+      selectedDifficulty === 'all' || company.difficulty === selectedDifficulty;
+    return matchesSearch && matchesIndustry && matchesDifficulty;
+  });
 
   return (
     <div className="space-y-8">
@@ -201,7 +223,9 @@ const CompanyPrep = () => {
             Interview Prep
           </div>
           <h1 className="text-3xl font-bold mb-2">Company Preparation</h1>
-          <p className="text-white/70 max-w-lg">Research companies and prepare for specific interviews</p>
+          <p className="text-white/70 max-w-lg">
+            Research companies and prepare for specific interviews
+          </p>
         </div>
       </div>
 
@@ -213,24 +237,26 @@ const CompanyPrep = () => {
             type="text"
             placeholder="Search companies..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
           />
         </div>
         <div className="flex gap-2">
           <select
             value={selectedIndustry}
-            onChange={(e) => setSelectedIndustry(e.target.value)}
-            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
+            onChange={e => setSelectedIndustry(e.target.value)}
+            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
           >
             {industries.map(ind => (
-              <option key={ind.id} value={ind.id}>{ind.label}</option>
+              <option key={ind.id} value={ind.id}>
+                {ind.label}
+              </option>
             ))}
           </select>
           <select
             value={selectedDifficulty}
-            onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
+            onChange={e => setSelectedDifficulty(e.target.value)}
+            className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 appearance-none bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer"
           >
             <option value="all">All Difficulties</option>
             <option value="easy">Easy</option>
@@ -264,14 +290,14 @@ const CompanyPrep = () => {
             </div>
           </div>
         </Card>
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+        <Card className="bg-gradient-to-br from-primary-50 to-primary-100 border-primary-200">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
               <Target className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-purple-700">15</p>
-              <p className="text-sm text-purple-600">Industries</p>
+              <p className="text-2xl font-bold text-primary-700">15</p>
+              <p className="text-sm text-primary-600">Industries</p>
             </div>
           </div>
         </Card>
@@ -290,22 +316,22 @@ const CompanyPrep = () => {
 
       {/* Companies Grid */}
       <div className="grid md:grid-cols-2 gap-6">
-        {filteredCompanies.map((company) => (
-          <Card 
-            key={company.id} 
+        {filteredCompanies.map(company => (
+          <Card
+            key={company.id}
             className="hover:shadow-xl transition-all duration-300 group cursor-pointer"
             onClick={() => navigate(`/company/${company.id}`)}
           >
             <div className="flex items-start gap-4">
               {/* Logo */}
               <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                <img 
-                  src={company.logo} 
+                <img
+                  src={company.logo}
                   alt={company.name}
                   className="w-10 h-10 object-contain"
-                  onError={(e) => {
-                    e.target.onerror = null
-                    e.target.src = `https://ui-avatars.com/api/?name=${company.name}&background=6366f1&color=fff`
+                  onError={e => {
+                    e.target.onerror = null;
+                    e.target.src = `https://ui-avatars.com/api/?name=${company.name}&background=6366f1&color=fff`;
                   }}
                 />
               </div>
@@ -314,7 +340,7 @@ const CompanyPrep = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors">
                       {company.name}
                     </h3>
                     <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -325,17 +351,24 @@ const CompanyPrep = () => {
                       <span>{company.employees}</span>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-lg text-xs font-medium ${getDifficultyColor(company.difficulty)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-lg text-xs font-medium ${getDifficultyColor(company.difficulty)}`}
+                  >
                     {company.difficulty.charAt(0).toUpperCase() + company.difficulty.slice(1)}
                   </span>
                 </div>
 
-                <p className="text-slate-600 dark:text-slate-400 text-sm mb-3 line-clamp-2">{company.description}</p>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-3 line-clamp-2">
+                  {company.description}
+                </p>
 
                 {/* Interview Types */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {company.interviewTypes.map((type, index) => (
-                    <span key={index} className="px-2 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-medium">
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-primary-50 text-primary-600 rounded-lg text-xs font-medium"
+                    >
                       {type}
                     </span>
                   ))}
@@ -357,7 +390,7 @@ const CompanyPrep = () => {
                       <span>{company.interviewRounds} rounds</span>
                     </span>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </div>
@@ -370,13 +403,17 @@ const CompanyPrep = () => {
         <Card>
           <div className="text-center py-12">
             <Building2 className="w-12 h-12 mx-auto text-slate-300 mb-3" />
-            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">No companies found</h3>
-            <p className="text-slate-500 dark:text-slate-400">Try adjusting your search or filters</p>
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
+              No companies found
+            </h3>
+            <p className="text-slate-500 dark:text-slate-400">
+              Try adjusting your search or filters
+            </p>
           </div>
         </Card>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CompanyPrep
+export default CompanyPrep;

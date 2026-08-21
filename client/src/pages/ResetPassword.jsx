@@ -1,73 +1,75 @@
-import { useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { Button, Input } from '../components/ui'
-import { Lock, ArrowLeft, Brain, CheckCircle, XCircle } from 'lucide-react'
-import toast from 'react-hot-toast'
-import api from '../services/api'
+import { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Button, Input } from '../components/ui';
+import { Lock, ArrowLeft, Brain, CheckCircle, XCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
+import api from '../services/api';
 
 const ResetPassword = () => {
-  const { token } = useParams()
-  const navigate = useNavigate()
-  
+  const { token } = useParams();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [isError, setIsError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [errors, setErrors] = useState({})
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    const newErrors = {}
-    
+    const newErrors = {};
+
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters'
+      newErrors.password = 'Password must be at least 8 characters';
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number'
+      newErrors.password = 'Password must contain uppercase, lowercase, and number';
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match'
+      newErrors.confirmPassword = 'Passwords do not match';
     }
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }))
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
-  }
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
+  const handleSubmit = async e => {
+    e.preventDefault();
 
-    setIsLoading(true)
+    if (!validateForm()) return;
+
+    setIsLoading(true);
     try {
       const response = await api.put(`/auth/reset-password/${token}`, {
-        password: formData.password
-      })
-      
+        password: formData.password,
+      });
+
       if (response.data.success) {
-        setIsSuccess(true)
-        toast.success('Password reset successful!')
+        setIsSuccess(true);
+        toast.success('Password reset successful!');
       }
     } catch (err) {
-      setIsError(true)
-      setErrorMessage(err.response?.data?.message || 'Failed to reset password. The link may have expired.')
+      setIsError(true);
+      setErrorMessage(
+        err.response?.data?.message || 'Failed to reset password. The link may have expired.'
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Success State
   if (isSuccess) {
@@ -76,10 +78,12 @@ const ResetPassword = () => {
         {/* Logo for mobile */}
         <div className="lg:hidden mb-8 text-center">
           <Link to="/" className="inline-flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
               <Brain className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">HireReady</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+              HireReady
+            </span>
           </Link>
         </div>
 
@@ -87,11 +91,13 @@ const ResetPassword = () => {
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Password reset successful!</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">
+            Password reset successful!
+          </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-8">
             Your password has been changed. You can now sign in with your new password.
           </p>
-          
+
           <Link to="/login">
             <Button fullWidth size="lg">
               Sign in
@@ -99,7 +105,7 @@ const ResetPassword = () => {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   // Error State
@@ -109,10 +115,12 @@ const ResetPassword = () => {
         {/* Logo for mobile */}
         <div className="lg:hidden mb-8 text-center">
           <Link to="/" className="inline-flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
               <Brain className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+              HireReady
+            </span>
           </Link>
         </div>
 
@@ -120,18 +128,18 @@ const ResetPassword = () => {
           <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Reset link expired</h1>
-          <p className="text-slate-500 dark:text-slate-400 mb-8">
-            {errorMessage}
-          </p>
-          
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">
+            Reset link expired
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-8">{errorMessage}</p>
+
           <div className="space-y-4">
             <Link to="/forgot-password">
               <Button fullWidth size="lg">
                 Request new reset link
               </Button>
             </Link>
-            
+
             <Link to="/login">
               <Button variant="ghost" fullWidth>
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -141,7 +149,7 @@ const ResetPassword = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -149,16 +157,20 @@ const ResetPassword = () => {
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
             <Brain className="w-7 h-7 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            HireReady
+          </span>
         </Link>
       </div>
 
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Set new password</h1>
-        <p className="text-slate-500 dark:text-slate-400 text-lg">Your new password must be different from previous passwords</p>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">
+          Your new password must be different from previous passwords
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -188,41 +200,45 @@ const ResetPassword = () => {
 
         {/* Password requirements hint */}
         <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password must contain:</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Password must contain:
+          </p>
           <ul className="text-sm text-slate-500 dark:text-slate-400 space-y-1">
-            <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-600' : ''}`}>
+            <li
+              className={`flex items-center ${formData.password.length >= 8 ? 'text-green-600' : ''}`}
+            >
               <span className="w-4 h-4 mr-2">{formData.password.length >= 8 ? '✓' : '○'}</span>
               At least 8 characters
             </li>
-            <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-600' : ''}`}>
+            <li
+              className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-600' : ''}`}
+            >
               <span className="w-4 h-4 mr-2">{/[A-Z]/.test(formData.password) ? '✓' : '○'}</span>
               One uppercase letter
             </li>
-            <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-600' : ''}`}>
+            <li
+              className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-600' : ''}`}
+            >
               <span className="w-4 h-4 mr-2">{/[a-z]/.test(formData.password) ? '✓' : '○'}</span>
               One lowercase letter
             </li>
-            <li className={`flex items-center ${/\d/.test(formData.password) ? 'text-green-600' : ''}`}>
+            <li
+              className={`flex items-center ${/\d/.test(formData.password) ? 'text-green-600' : ''}`}
+            >
               <span className="w-4 h-4 mr-2">{/\d/.test(formData.password) ? '✓' : '○'}</span>
               One number
             </li>
           </ul>
         </div>
 
-        <Button
-          type="submit"
-          fullWidth
-          size="lg"
-          isLoading={isLoading}
-          className="mt-2"
-        >
+        <Button type="submit" fullWidth size="lg" isLoading={isLoading} className="mt-2">
           Reset Password
         </Button>
       </form>
 
       <div className="mt-8 text-center">
-        <Link 
-          to="/login" 
+        <Link
+          to="/login"
           className="inline-flex items-center text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -230,7 +246,7 @@ const ResetPassword = () => {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ResetPassword
+export default ResetPassword;

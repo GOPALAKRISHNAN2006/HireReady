@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Card, Button, Badge } from '../components/ui'
-import { 
-  Building2, 
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Card, Button, Badge } from '../components/ui';
+import {
+  Building2,
   ArrowLeft,
   Star,
   MapPin,
@@ -23,13 +23,13 @@ import {
   TrendingUp,
   Code2,
   MessageSquare,
-  Layers
-} from 'lucide-react'
+  Layers,
+} from 'lucide-react';
 
 const CompanyDetail = () => {
-  const { companyId } = useParams()
-  const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('overview')
+  const { companyId } = useParams();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
 
   // Company data (would come from API in production)
   const companies = {
@@ -43,7 +43,8 @@ const CompanyDetail = () => {
       location: 'Mountain View, CA',
       employees: '150,000+',
       website: 'https://careers.google.com',
-      description: 'Google is a multinational technology company specializing in Internet-related services and products, including online advertising technologies, search engine, cloud computing, software, and hardware.',
+      description:
+        'Google is a multinational technology company specializing in Internet-related services and products, including online advertising technologies, search engine, cloud computing, software, and hardware.',
       culture: 'Innovation-focused, flat hierarchy, emphasis on data-driven decisions',
       avgSalary: '$180K - $350K',
       interviewRounds: 5,
@@ -88,7 +89,8 @@ const CompanyDetail = () => {
       location: 'Seattle, WA',
       employees: '1.5M+',
       website: 'https://amazon.jobs',
-      description: 'Amazon is a multinational technology company focusing on e-commerce, cloud computing (AWS), digital streaming, and artificial intelligence.',
+      description:
+        'Amazon is a multinational technology company focusing on e-commerce, cloud computing (AWS), digital streaming, and artificial intelligence.',
       culture: 'Customer obsession, ownership mentality, bias for action',
       avgSalary: '$160K - $320K',
       interviewRounds: 5,
@@ -105,7 +107,12 @@ const CompanyDetail = () => {
       topQuestions: [
         { id: 1, title: 'Design Amazon Product Page', type: 'System Design', difficulty: 'Medium' },
         { id: 2, title: 'Two Sum / Three Sum', type: 'DSA', difficulty: 'Easy' },
-        { id: 3, title: 'Tell me about Customer Obsession', type: 'Leadership Principles', difficulty: 'Medium' },
+        {
+          id: 3,
+          title: 'Tell me about Customer Obsession',
+          type: 'Leadership Principles',
+          difficulty: 'Medium',
+        },
         { id: 4, title: 'Design Distributed Cache', type: 'System Design', difficulty: 'Hard' },
         { id: 5, title: 'Word Ladder Problem', type: 'DSA', difficulty: 'Medium' },
       ],
@@ -133,7 +140,8 @@ const CompanyDetail = () => {
       location: 'Redmond, WA',
       employees: '220,000+',
       website: 'https://careers.microsoft.com',
-      description: 'Microsoft is a technology corporation that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, and related services.',
+      description:
+        'Microsoft is a technology corporation that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, and related services.',
       culture: 'Growth mindset, learn-it-all culture, diversity and inclusion',
       avgSalary: '$150K - $300K',
       interviewRounds: 4,
@@ -175,7 +183,8 @@ const CompanyDetail = () => {
       location: 'Menlo Park, CA',
       employees: '80,000+',
       website: 'https://metacareers.com',
-      description: 'Meta is a technology conglomerate that owns Facebook, Instagram, WhatsApp, and is investing heavily in the metaverse and VR technologies.',
+      description:
+        'Meta is a technology conglomerate that owns Facebook, Instagram, WhatsApp, and is investing heavily in the metaverse and VR technologies.',
       culture: 'Move fast, be bold, focus on impact',
       avgSalary: '$170K - $340K',
       interviewRounds: 4,
@@ -217,7 +226,8 @@ const CompanyDetail = () => {
       location: 'Cupertino, CA',
       employees: '160,000+',
       website: 'https://www.apple.com/careers',
-      description: 'Apple designs, develops, and sells consumer electronics, computer software, and online services known for innovation and premium quality.',
+      description:
+        'Apple designs, develops, and sells consumer electronics, computer software, and online services known for innovation and premium quality.',
       culture: 'Attention to detail, secrecy, perfection over speed',
       avgSalary: '$165K - $330K',
       interviewRounds: 5,
@@ -260,7 +270,8 @@ const CompanyDetail = () => {
       location: 'Los Gatos, CA',
       employees: '12,000+',
       website: 'https://jobs.netflix.com',
-      description: 'Netflix is a streaming entertainment service offering a wide variety of TV shows, movies, and documentaries.',
+      description:
+        'Netflix is a streaming entertainment service offering a wide variety of TV shows, movies, and documentaries.',
       culture: 'Freedom and responsibility, high performance, candor',
       avgSalary: '$200K - $400K',
       interviewRounds: 4,
@@ -274,7 +285,12 @@ const CompanyDetail = () => {
         { step: 4, name: 'Offer', duration: '1 week' },
       ],
       topQuestions: [
-        { id: 1, title: 'Design Netflix Recommendation', type: 'System Design', difficulty: 'Hard' },
+        {
+          id: 1,
+          title: 'Design Netflix Recommendation',
+          type: 'System Design',
+          difficulty: 'Hard',
+        },
         { id: 2, title: 'Video Streaming Architecture', type: 'System Design', difficulty: 'Hard' },
         { id: 3, title: 'Describe a difficult decision', type: 'Behavioral', difficulty: 'Medium' },
       ],
@@ -301,7 +317,8 @@ const CompanyDetail = () => {
       location: 'New York, NY',
       employees: '45,000+',
       website: 'https://www.goldmansachs.com/careers',
-      description: 'Goldman Sachs is a leading global investment banking, securities and investment management firm.',
+      description:
+        'Goldman Sachs is a leading global investment banking, securities and investment management firm.',
       culture: 'Excellence, client focus, teamwork, integrity',
       avgSalary: '$120K - $250K',
       interviewRounds: 4,
@@ -342,7 +359,8 @@ const CompanyDetail = () => {
       location: 'New York, NY',
       employees: '270,000+',
       website: 'https://careers.jpmorgan.com',
-      description: 'JPMorgan Chase is one of the oldest financial institutions in the United States, offering investment banking, asset management, and more.',
+      description:
+        'JPMorgan Chase is one of the oldest financial institutions in the United States, offering investment banking, asset management, and more.',
       culture: 'Client-first, integrity, excellence',
       avgSalary: '$100K - $220K',
       interviewRounds: 3,
@@ -372,19 +390,23 @@ const CompanyDetail = () => {
         'Demonstrate problem-solving with data',
       ],
     },
-  }
+  };
 
-  const company = companies[companyId]
+  const company = companies[companyId];
 
   if (!company) {
     return (
       <div className="text-center py-20">
         <Building2 className="w-16 h-16 mx-auto text-slate-300 mb-4" />
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Company Not Found</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-6">The company you're looking for doesn't exist.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          Company Not Found
+        </h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-6">
+          The company you're looking for doesn't exist.
+        </p>
         <Button onClick={() => navigate('/company-prep')}>Back to Companies</Button>
       </div>
-    )
+    );
   }
 
   const tabs = [
@@ -393,42 +415,42 @@ const CompanyDetail = () => {
     { id: 'questions', label: 'Top Questions', icon: MessageSquare },
     { id: 'resources', label: 'Study Resources', icon: BookOpen },
     { id: 'tips', label: 'Tips & Tricks', icon: Lightbulb },
-  ]
+  ];
 
-  const getDifficultyColor = (difficulty) => {
+  const getDifficultyColor = difficulty => {
     const colors = {
       Easy: 'bg-green-100 dark:bg-green-900/30 text-green-700',
       Medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700',
       Hard: 'bg-red-100 dark:bg-red-900/30 text-red-700',
-    }
-    return colors[difficulty] || colors.Medium
-  }
+    };
+    return colors[difficulty] || colors.Medium;
+  };
 
   return (
     <div className="space-y-6">
       {/* Back Button */}
       <button
         onClick={() => navigate('/company-prep')}
-        className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 transition-colors"
+        className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-primary-600 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
         <span>Back to Companies</span>
       </button>
 
       {/* Company Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-primary-600 to-primary-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-        
+
         <div className="relative flex items-start gap-6">
           <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-            <img 
-              src={company.logo} 
+            <img
+              src={company.logo}
               alt={company.name}
               className="w-12 h-12 object-contain"
-              onError={(e) => {
-                e.target.onerror = null
-                e.target.src = `https://ui-avatars.com/api/?name=${company.name}&background=6366f1&color=fff&size=96`
+              onError={e => {
+                e.target.onerror = null;
+                e.target.src = `https://ui-avatars.com/api/?name=${company.name}&background=6366f1&color=fff&size=96`;
               }}
             />
           </div>
@@ -453,7 +475,7 @@ const CompanyDetail = () => {
                 <Star className="w-4 h-4 fill-current" />
                 {company.rating} rating
               </span>
-              <a 
+              <a
                 href={company.website}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -477,10 +499,12 @@ const CompanyDetail = () => {
         <Card className="text-center">
           <Layers className="w-8 h-8 mx-auto text-blue-500 mb-2" />
           <p className="text-sm text-slate-500 dark:text-slate-400">Interview Rounds</p>
-          <p className="font-bold text-slate-900 dark:text-white">{company.interviewRounds} Rounds</p>
+          <p className="font-bold text-slate-900 dark:text-white">
+            {company.interviewRounds} Rounds
+          </p>
         </Card>
         <Card className="text-center">
-          <Clock className="w-8 h-8 mx-auto text-purple-500 mb-2" />
+          <Clock className="w-8 h-8 mx-auto text-primary-500 mb-2" />
           <p className="text-sm text-slate-500 dark:text-slate-400">Time to Hire</p>
           <p className="font-bold text-slate-900 dark:text-white">{company.timeToHire}</p>
         </Card>
@@ -492,19 +516,21 @@ const CompanyDetail = () => {
         <Card className="text-center">
           <Target className="w-8 h-8 mx-auto text-red-500 mb-2" />
           <p className="text-sm text-slate-500 dark:text-slate-400">Interview Types</p>
-          <p className="font-bold text-slate-900 dark:text-white">{company.interviewTypes.length} Types</p>
+          <p className="font-bold text-slate-900 dark:text-white">
+            {company.interviewTypes.length} Types
+          </p>
         </Card>
       </div>
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-700 pb-4">
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
               activeTab === tab.id
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
                 : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
             }`}
           >
@@ -527,7 +553,9 @@ const CompanyDetail = () => {
                 <p className="text-slate-600 dark:text-slate-400">{company.culture}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {company.interviewTypes.map((type, index) => (
-                    <Badge key={index} variant="primary">{type}</Badge>
+                    <Badge key={index} variant="primary">
+                      {type}
+                    </Badge>
                   ))}
                 </div>
               </Card.Content>
@@ -541,19 +569,27 @@ const CompanyDetail = () => {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-600 dark:text-slate-400">Company-specific interview questions</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Company-specific interview questions
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-600 dark:text-slate-400">Real interview experiences from candidates</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Real interview experiences from candidates
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-600 dark:text-slate-400">AI-powered mock interviews</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      AI-powered mock interviews
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-600 dark:text-slate-400">Detailed performance analytics</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      Detailed performance analytics
+                    </span>
                   </li>
                 </ul>
               </Card.Content>
@@ -570,13 +606,17 @@ const CompanyDetail = () => {
                     <button
                       key={index}
                       onClick={() => navigate('/interview/setup')}
-                      className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-indigo-500 hover:shadow-lg transition-all group text-left"
+                      className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary-500 hover:shadow-lg transition-all group text-left"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600">{type}</span>
-                        <Play className="w-5 h-5 text-slate-400 group-hover:text-indigo-600" />
+                        <span className="font-semibold text-slate-900 dark:text-white group-hover:text-primary-600">
+                          {type}
+                        </span>
+                        <Play className="w-5 h-5 text-slate-400 group-hover:text-primary-600" />
                       </div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Practice {type} interviews</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        Practice {type} interviews
+                      </p>
                     </button>
                   ))}
                 </div>
@@ -597,11 +637,11 @@ const CompanyDetail = () => {
                 {company.hiringProcess.map((step, index) => (
                   <div key={step.step} className="flex gap-4">
                     <div className="flex flex-col items-center">
-                      <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">
+                      <div className="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold">
                         {step.step}
                       </div>
                       {index < company.hiringProcess.length - 1 && (
-                        <div className="w-0.5 h-full bg-indigo-200 my-2" />
+                        <div className="w-0.5 h-full bg-primary-200 my-2" />
                       )}
                     </div>
                     <div className="flex-1 pb-6">
@@ -627,17 +667,21 @@ const CompanyDetail = () => {
             </Card.Header>
             <Card.Content padding="none">
               <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                {company.topQuestions.map((question) => (
-                  <div 
+                {company.topQuestions.map(question => (
+                  <div
                     key={question.id}
                     className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer"
                     onClick={() => navigate('/interview/setup')}
                   >
                     <div className="flex-1">
-                      <h3 className="font-medium text-slate-900 dark:text-white">{question.title}</h3>
+                      <h3 className="font-medium text-slate-900 dark:text-white">
+                        {question.title}
+                      </h3>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="secondary">{question.type}</Badge>
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${getDifficultyColor(question.difficulty)}`}>
+                        <span
+                          className={`text-xs px-2 py-0.5 rounded-full ${getDifficultyColor(question.difficulty)}`}
+                        >
                           {question.difficulty}
                         </span>
                       </div>
@@ -661,16 +705,16 @@ const CompanyDetail = () => {
             {company.studyMaterials.map((material, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
-                    <material.icon className="w-6 h-6 text-indigo-600" />
+                  <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                    <material.icon className="w-6 h-6 text-primary-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                    <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-primary-600 transition-colors">
                       {material.title}
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">{material.type}</p>
                   </div>
-                  <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-indigo-600" />
+                  <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-primary-600" />
                 </div>
               </Card>
             ))}
@@ -687,7 +731,10 @@ const CompanyDetail = () => {
             <Card.Content>
               <div className="space-y-4">
                 {company.tips.map((tip, index) => (
-                  <div key={index} className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl border border-amber-200">
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl border border-amber-200"
+                  >
                     <Lightbulb className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                     <p className="text-slate-700 dark:text-slate-300">{tip}</p>
                   </div>
@@ -703,7 +750,7 @@ const CompanyDetail = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CompanyDetail
+export default CompanyDetail;

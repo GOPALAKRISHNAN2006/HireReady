@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] transition-colors duration-300">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 py-16 px-4">
+      <div className="bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center text-white">
           <div className="inline-flex items-center px-4 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-sm">
             <Shield className="w-4 h-4 mr-2" />
@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <Link to="/" className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8 group">
+        <Link to="/" className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors mb-8 group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-medium">Back to Home</span>
         </Link>
@@ -83,7 +83,7 @@ const PrivacyPolicy = () => {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">7. Contact</h2>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
               If you have any questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:hireready007@gmail.com" className="text-indigo-600 dark:text-indigo-400 hover:underline">hireready007@gmail.com</a>.
+              <a href="mailto:hireready007@gmail.com" className="text-primary-600 dark:text-primary-400 hover:underline">hireready007@gmail.com</a>.
             </p>
           </section>
         </div>

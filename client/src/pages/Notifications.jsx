@@ -29,8 +29,8 @@ const notificationMeta = {
   achievement: { icon: Trophy, color: 'bg-yellow-500' },
   result:      { icon: Star, color: 'bg-green-500' },
   reminder:    { icon: Calendar, color: 'bg-blue-500' },
-  system:      { icon: Info, color: 'bg-indigo-500' },
-  milestone:   { icon: Target, color: 'bg-purple-500' },
+  system:      { icon: Info, color: 'bg-primary-500' },
+  milestone:   { icon: Target, color: 'bg-primary-500' },
   improvement: { icon: TrendingUp, color: 'bg-emerald-500' },
   promo:       { icon: Gift, color: 'bg-pink-500' },
   alert:       { icon: AlertCircle, color: 'bg-red-500' },
@@ -38,7 +38,7 @@ const notificationMeta = {
   info:        { icon: Info, color: 'bg-blue-500' },
   warning:     { icon: AlertCircle, color: 'bg-amber-500' },
   error:       { icon: AlertCircle, color: 'bg-red-500' },
-  interview:   { icon: Target, color: 'bg-indigo-500' },
+  interview:   { icon: Target, color: 'bg-primary-500' },
 }
 
 const getNotificationIcon = (type) => notificationMeta[type]?.icon || Bell
@@ -222,7 +222,7 @@ const Notifications = () => {
             onClick={() => setActiveFilter(filter.id)}
             className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${
               activeFilter === filter.id
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
                 : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
             }`}
           >
@@ -261,7 +261,7 @@ const Notifications = () => {
                   <div 
                     key={notification.id || notification._id}
                     className={`p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${
-                      !notification.read ? 'bg-indigo-50/50 dark:bg-indigo-900/10' : ''
+                      !notification.read ? 'bg-primary-50/50 dark:bg-primary-900/10' : ''
                     }`}
                   >
                     <div className="flex items-start space-x-4">
@@ -279,7 +279,7 @@ const Notifications = () => {
                                 {notification.title}
                               </h3>
                               {!notification.read && (
-                                <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                                <span className="w-2 h-2 bg-primary-500 rounded-full"></span>
                               )}
                             </div>
                             <p className="text-slate-600 dark:text-slate-400 mt-1">{notification.message}</p>
@@ -295,7 +295,7 @@ const Notifications = () => {
                         {!notification.read && (
                           <button
                             onClick={() => markAsRead(notification.id || notification._id)}
-                            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                             title="Mark as read"
                           >
                             <Check className="w-4 h-4" />

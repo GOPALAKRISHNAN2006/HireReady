@@ -226,11 +226,11 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Gradient Hero Banner */}
-      <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 rounded-3xl overflow-hidden">
+      <div className="relative bg-gradient-to-r from-primary-600 via-primary-600 to-primary-700 rounded-3xl overflow-hidden">
         {/* Decorative blur circles */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-400/20 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4" />
-        <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-indigo-300/10 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-400/20 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-primary-300/10 rounded-full blur-2xl" />
 
         <div className="relative px-8 pt-10 pb-20">
           <div className="flex items-center gap-2">
@@ -244,7 +244,7 @@ const Profile = () => {
       {/* Avatar + Info overlapping the banner */}
       <div className="relative -mt-16 ml-8 flex items-end gap-5">
         <div className="relative flex-shrink-0">
-          <div className="w-28 h-28 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white dark:ring-slate-900 shadow-lg">
+          <div className="w-28 h-28 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white dark:ring-slate-900 shadow-lg">
             {resolvedUser?.avatar && resolvedUser.avatar !== 'default-avatar.png' && resolvedUser.avatar.startsWith('http') ? (
               <img 
                 src={resolvedUser.avatar} 
@@ -253,11 +253,11 @@ const Profile = () => {
                 onError={(e) => {
                   e.target.onerror = null
                   e.target.style.display = 'none'
-                  e.target.parentElement.innerHTML = `<span class="text-4xl font-bold text-indigo-600">${resolvedUser?.firstName?.charAt(0)?.toUpperCase() || 'U'}</span>`
+                  e.target.parentElement.innerHTML = `<span class="text-4xl font-bold text-primary-600">${resolvedUser?.firstName?.charAt(0)?.toUpperCase() || 'U'}</span>`
                 }}
               />
             ) : (
-              <span className="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="text-4xl font-bold text-primary-600 dark:text-primary-400">
                 {resolvedUser?.firstName?.charAt(0)?.toUpperCase() || 'U'}
               </span>
             )}
@@ -272,7 +272,7 @@ const Profile = () => {
           <button 
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="absolute bottom-1 right-1 w-9 h-9 bg-indigo-600 rounded-full flex items-center justify-center text-white hover:bg-indigo-700 transition-colors disabled:opacity-50 ring-2 ring-white dark:ring-slate-900 shadow-md"
+            className="absolute bottom-1 right-1 w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white hover:bg-primary-700 transition-colors disabled:opacity-50 ring-2 ring-white dark:ring-slate-900 shadow-md"
           >
             {uploading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -299,7 +299,7 @@ const Profile = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center justify-center gap-2 flex-none sm:flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-sm font-medium transition-all ${
                 activeTab === tab.id
-                  ? 'bg-white dark:bg-slate-700 shadow-sm font-semibold text-indigo-600 dark:text-indigo-400'
+                  ? 'bg-white dark:bg-slate-700 shadow-sm font-semibold text-primary-600 dark:text-primary-400'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
@@ -395,7 +395,7 @@ const Profile = () => {
                   value={formData.bio}
                   onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
                   rows={4}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                   placeholder="Tell us about yourself..."
                 />
               </div>
@@ -407,13 +407,13 @@ const Profile = () => {
                   {skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm"
                     >
                       {skill}
                       <button
                         type="button"
                         onClick={() => setSkills(skills.filter((_, i) => i !== index))}
-                        className="text-indigo-500 hover:text-indigo-700 dark:hover:text-indigo-200"
+                        className="text-primary-500 hover:text-primary-700 dark:hover:text-primary-200"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -435,7 +435,7 @@ const Profile = () => {
                       }
                     }}
                     placeholder="Type a skill and press Enter..."
-                    className="flex-1 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm transition-colors"
+                    className="flex-1 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm transition-colors"
                   />
                   <Button
                     type="button"
@@ -545,7 +545,7 @@ const Profile = () => {
                   <button
                     onClick={() => settingsStore.updateSetting(item.key, !settingsStore[item.key])}
                     className={`relative w-11 h-6 rounded-full transition-colors ${
-                      settingsStore[item.key] ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-600'
+                      settingsStore[item.key] ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-600'
                     }`}
                   >
                     <div className={`absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full shadow transition-transform ${
@@ -563,8 +563,8 @@ const Profile = () => {
         <Card>
           <Card.Header>
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-purple-500/10 dark:bg-purple-500/20 rounded-xl flex items-center justify-center">
-                <Palette className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              <div className="w-9 h-9 bg-primary-500/10 dark:bg-primary-500/20 rounded-xl flex items-center justify-center">
+                <Palette className="w-5 h-5 text-primary-600 dark:text-primary-400" />
               </div>
               <div>
                 <Card.Title>Preferences</Card.Title>
@@ -583,7 +583,7 @@ const Profile = () => {
                       onClick={() => settingsStore.updateSetting('defaultDifficulty', level)}
                       className={`px-4 py-2 rounded-xl font-medium capitalize transition-colors ${
                         settingsStore.defaultDifficulty === level
-                          ? 'bg-indigo-600 text-white shadow-sm'
+                          ? 'bg-primary-600 text-white shadow-sm'
                           : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                       }`}
                     >
@@ -633,19 +633,19 @@ const Profile = () => {
                 <div className="flex gap-3">
                   <button 
                     onClick={() => settingsStore.setTheme('light')}
-                    className={`w-12 h-12 bg-white border-2 ${settingsStore.theme === 'light' ? 'border-indigo-500' : 'border-slate-200'} rounded-xl flex items-center justify-center transition-colors`}
+                    className={`w-12 h-12 bg-white border-2 ${settingsStore.theme === 'light' ? 'border-primary-500' : 'border-slate-200'} rounded-xl flex items-center justify-center transition-colors`}
                   >
                     ☀️
                   </button>
                   <button 
                     onClick={() => settingsStore.setTheme('dark')}
-                    className={`w-12 h-12 bg-slate-800 border-2 ${settingsStore.theme === 'dark' ? 'border-indigo-500' : 'border-transparent'} rounded-xl flex items-center justify-center transition-colors`}
+                    className={`w-12 h-12 bg-slate-800 border-2 ${settingsStore.theme === 'dark' ? 'border-primary-500' : 'border-transparent'} rounded-xl flex items-center justify-center transition-colors`}
                   >
                     🌙
                   </button>
                   <button 
                     onClick={() => settingsStore.setTheme('system')}
-                    className={`w-12 h-12 bg-gradient-to-r from-white to-slate-800 border-2 ${settingsStore.theme === 'system' ? 'border-indigo-500' : 'border-transparent'} rounded-xl flex items-center justify-center transition-colors`}
+                    className={`w-12 h-12 bg-gradient-to-r from-white to-slate-800 border-2 ${settingsStore.theme === 'system' ? 'border-primary-500' : 'border-transparent'} rounded-xl flex items-center justify-center transition-colors`}
                   >
                     🔄
                   </button>

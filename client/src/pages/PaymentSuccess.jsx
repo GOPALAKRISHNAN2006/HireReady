@@ -47,7 +47,7 @@ const PaymentSuccess = () => {
         {/* Plan details */}
         <Card className="p-6 space-y-4">
           <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-700">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-pink-500 flex items-center justify-center">
               <Crown className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -67,7 +67,7 @@ const PaymentSuccess = () => {
               </p>
               {features.map((f, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                  <Sparkles className="w-4 h-4 text-primary-500 flex-shrink-0" />
                   <span className="text-sm text-slate-700 dark:text-slate-300">{f}</span>
                 </div>
               ))}
@@ -86,7 +86,7 @@ const PaymentSuccess = () => {
           </Button>
           <Button
             onClick={() => navigate('/interview/setup')}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+            className="w-full bg-gradient-to-r from-primary-600 to-pink-600 hover:from-primary-700 hover:to-pink-700 text-white"
           >
             Start Interview <ArrowRight className="w-4 h-4 ml-1" />
           </Button>

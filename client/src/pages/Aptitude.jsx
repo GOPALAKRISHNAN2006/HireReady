@@ -1,74 +1,74 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import api from '../services/api'
-import { Button, Card, Spinner, Badge } from '../components/ui'
-import { Brain, Calculator, BookOpen, BarChart, Globe, Play, History, Trophy } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { Button, Card, Spinner, Badge } from '../components/ui';
+import { Brain, Calculator, BookOpen, BarChart, Globe, Play, History, Trophy } from 'lucide-react';
 
 const Aptitude = () => {
-  const navigate = useNavigate()
-  const [categories, setCategories] = useState([])
-  const [history, setHistory] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [selectedDifficulty, setSelectedDifficulty] = useState('medium')
-  const [questionCount, setQuestionCount] = useState(10)
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState('medium');
+  const [questionCount, setQuestionCount] = useState(10);
 
   const icons = {
-    'quantitative': Calculator,
-    'logical': Brain,
-    'verbal': BookOpen,
+    quantitative: Calculator,
+    logical: Brain,
+    verbal: BookOpen,
     'data-interpretation': BarChart,
-    'general-knowledge': Globe
-  }
+    'general-knowledge': Globe,
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
       const [catRes, histRes] = await Promise.all([
         api.get('/aptitude/categories'),
-        api.get('/aptitude/history?limit=5')
-      ])
-      setCategories(catRes.data.data || [])
-      setHistory(histRes.data.data?.tests || [])
+        api.get('/aptitude/history?limit=5'),
+      ]);
+      setCategories(catRes.data.data || []);
+      setHistory(histRes.data.data?.tests || []);
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching data:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const startTest = async () => {
-    if (!selectedCategory) return
+    if (!selectedCategory) return;
     try {
       const response = await api.post('/aptitude/start', {
         category: selectedCategory,
         difficulty: selectedDifficulty,
-        totalQuestions: questionCount
-      })
+        totalQuestions: questionCount,
+      });
       navigate(`/aptitude/test/${response.data.data.testId}`, {
-        state: { testData: response.data.data }
-      })
+        state: { testData: response.data.data },
+      });
     } catch (error) {
-      console.error('Error starting test:', error)
-      alert(error.response?.data?.message || 'Failed to start test')
+      console.error('Error starting test:', error);
+      alert(error.response?.data?.message || 'Failed to start test');
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Spinner size="lg" />
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-8 animate-in">
       {/* Gradient Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-violet-600 via-purple-600 to-violet-600 p-8 text-white">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
         <div className="relative">
@@ -77,36 +77,44 @@ const Aptitude = () => {
             Test Your Skills
           </div>
           <h1 className="text-3xl font-bold mb-2">Aptitude Tests</h1>
-          <p className="text-white/70 max-w-lg">Practice aptitude questions to sharpen your problem-solving skills</p>
+          <p className="text-white/70 max-w-lg">
+            Practice aptitude questions to sharpen your problem-solving skills
+          </p>
         </div>
       </div>
 
       {/* Category Selection */}
       <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {categories.map((cat) => {
-          const IconComponent = icons[cat.id] || Brain
+        {categories.map(cat => {
+          const IconComponent = icons[cat.id] || Brain;
           return (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={`p-4 rounded-xl border-2 transition-all ${
                 selectedCategory === cat.id
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300'
+                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-primary-300'
               }`}
             >
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 ${
-                selectedCategory === cat.id ? 'bg-indigo-500' : 'bg-slate-100 dark:bg-slate-700'
-              }`}>
-                <IconComponent className={`w-6 h-6 ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600 dark:text-slate-300'}`} />
+              <div
+                className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 ${
+                  selectedCategory === cat.id ? 'bg-primary-500' : 'bg-slate-100 dark:bg-slate-700'
+                }`}
+              >
+                <IconComponent
+                  className={`w-6 h-6 ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600 dark:text-slate-300'}`}
+                />
               </div>
               <h3 className="font-medium text-sm text-center dark:text-white">{cat.name}</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-1">{cat.questionCount} questions</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-1">
+                {cat.questionCount} questions
+              </p>
               <Badge variant="secondary" className="mt-2 mx-auto block w-fit text-xs">
                 {cat.testsCompleted} completed
               </Badge>
             </button>
-          )
+          );
         })}
       </div>
 
@@ -116,16 +124,18 @@ const Aptitude = () => {
           <h2 className="text-lg font-semibold mb-4 dark:text-white">Configure Your Test</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Difficulty</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                Difficulty
+              </label>
               <div className="flex gap-2">
-                {['easy', 'medium', 'hard'].map((d) => (
+                {['easy', 'medium', 'hard'].map(d => (
                   <button
                     key={d}
                     onClick={() => setSelectedDifficulty(d)}
                     className={`flex-1 py-2 rounded-lg border capitalize ${
                       selectedDifficulty === d
-                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:text-slate-300'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:text-slate-300'
                     }`}
                   >
                     {d}
@@ -134,16 +144,18 @@ const Aptitude = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Number of Questions</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                Number of Questions
+              </label>
               <div className="flex gap-2">
-                {[5, 10, 15, 20].map((n) => (
+                {[5, 10, 15, 20].map(n => (
                   <button
                     key={n}
                     onClick={() => setQuestionCount(n)}
                     className={`flex-1 py-2 rounded-lg border ${
                       questionCount === n
-                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:text-slate-300'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:text-slate-300'
                     }`}
                   >
                     {n}
@@ -176,15 +188,30 @@ const Aptitude = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {history.map((test) => (
-              <div key={test._id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+            {history.map(test => (
+              <div
+                key={test._id}
+                className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
+              >
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    test.percentage >= 70 ? 'bg-green-100' : test.percentage >= 50 ? 'bg-yellow-100' : 'bg-red-100'
-                  }`}>
-                    <Trophy className={`w-5 h-5 ${
-                      test.percentage >= 70 ? 'text-green-600' : test.percentage >= 50 ? 'text-yellow-600' : 'text-red-600'
-                    }`} />
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                      test.percentage >= 70
+                        ? 'bg-green-100'
+                        : test.percentage >= 50
+                          ? 'bg-yellow-100'
+                          : 'bg-red-100'
+                    }`}
+                  >
+                    <Trophy
+                      className={`w-5 h-5 ${
+                        test.percentage >= 70
+                          ? 'text-green-600'
+                          : test.percentage >= 50
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                      }`}
+                    />
                   </div>
                   <div>
                     <p className="font-medium capitalize dark:text-white">{test.category}</p>
@@ -205,7 +232,7 @@ const Aptitude = () => {
         )}
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Aptitude
+export default Aptitude;

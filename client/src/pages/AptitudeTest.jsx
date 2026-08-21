@@ -1,34 +1,34 @@
-import { useState, useEffect } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
-import api from '../services/api'
-import { Button, Card, Spinner, Badge } from '../components/ui'
-import { ProctoredSession } from '../components/proctoring'
-import { Clock, ArrowRight, CheckCircle, XCircle } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { Button, Card, Spinner, Badge } from '../components/ui';
+import { ProctoredSession } from '../components/proctoring';
+import { Clock, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 
 const AptitudeTest = () => {
-  const { testId } = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
-  
+  const { testId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   // Check if proctoring is enabled
-  const searchParams = new URLSearchParams(location.search)
-  const proctoringEnabled = searchParams.get('proctored') !== 'false'
-  
-  const [testData, setTestData] = useState(location.state?.testData || null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedOption, setSelectedOption] = useState(null)
-  const [answers, setAnswers] = useState({})
-  const [showResult, setShowResult] = useState(false)
-  const [lastResult, setLastResult] = useState(null)
-  const [submitting, setSubmitting] = useState(false)
-  const [timeElapsed, setTimeElapsed] = useState(0)
+  const searchParams = new URLSearchParams(location.search);
+  const proctoringEnabled = searchParams.get('proctored') !== 'false';
+
+  const [testData, setTestData] = useState(location.state?.testData || null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [showResult, setShowResult] = useState(false);
+  const [lastResult, setLastResult] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeElapsed(prev => prev + 1)
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+      setTimeElapsed(prev => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   if (!testData) {
     return (
@@ -38,68 +38,68 @@ const AptitudeTest = () => {
           <Button onClick={() => navigate('/aptitude')}>Go Back</Button>
         </div>
       </div>
-    )
+    );
   }
 
-  const currentQuestion = testData.questions[currentIndex]
-  const totalQuestions = testData.totalQuestions
+  const currentQuestion = testData.questions[currentIndex];
+  const totalQuestions = testData.totalQuestions;
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+  const formatTime = seconds => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const submitAnswer = async () => {
-    if (selectedOption === null) return
-    setSubmitting(true)
+    if (selectedOption === null) return;
+    setSubmitting(true);
 
     try {
       const response = await api.post(`/aptitude/${testId}/submit-answer`, {
         questionIndex: currentIndex,
         selectedOption,
-        timeTaken: timeElapsed
-      })
+        timeTaken: timeElapsed,
+      });
 
       setAnswers(prev => ({
         ...prev,
         [currentIndex]: {
           selected: selectedOption,
           isCorrect: response.data.data.isCorrect,
-          correctAnswer: response.data.data.correctAnswer
-        }
-      }))
+          correctAnswer: response.data.data.correctAnswer,
+        },
+      }));
 
-      setLastResult(response.data.data)
-      setShowResult(true)
+      setLastResult(response.data.data);
+      setShowResult(true);
     } catch (error) {
-      console.error('Error submitting answer:', error)
+      console.error('Error submitting answer:', error);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const nextQuestion = () => {
-    setShowResult(false)
-    setSelectedOption(null)
-    setLastResult(null)
-    
+    setShowResult(false);
+    setSelectedOption(null);
+    setLastResult(null);
+
     if (currentIndex < totalQuestions - 1) {
-      setCurrentIndex(currentIndex + 1)
-      setTimeElapsed(0)
+      setCurrentIndex(currentIndex + 1);
+      setTimeElapsed(0);
     } else {
-      completeTest()
+      completeTest();
     }
-  }
+  };
 
   const completeTest = async () => {
     try {
-      const response = await api.post(`/aptitude/${testId}/complete`)
-      navigate('/aptitude/result', { state: { result: response.data.data } })
+      const response = await api.post(`/aptitude/${testId}/complete`);
+      navigate('/aptitude/result', { state: { result: response.data.data } });
     } catch (error) {
-      console.error('Error completing test:', error)
+      console.error('Error completing test:', error);
     }
-  }
+  };
 
   const TestContent = (
     <div className="max-w-3xl mx-auto space-y-6 animate-in">
@@ -120,8 +120,8 @@ const AptitudeTest = () => {
 
       {/* Progress Bar */}
       <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-        <div 
-          className="bg-indigo-500 h-2 rounded-full transition-all"
+        <div
+          className="bg-primary-500 h-2 rounded-full transition-all"
           style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
         />
       </div>
@@ -134,16 +134,16 @@ const AptitudeTest = () => {
 
         <div className="space-y-3">
           {currentQuestion.options.map((option, index) => {
-            let optionClass = 'border-slate-200 dark:border-slate-700 hover:border-indigo-300'
-            
+            let optionClass = 'border-slate-200 dark:border-slate-700 hover:border-primary-300';
+
             if (showResult) {
               if (index === lastResult.correctAnswer) {
-                optionClass = 'border-green-500 bg-green-50'
+                optionClass = 'border-green-500 bg-green-50';
               } else if (index === selectedOption && !lastResult.isCorrect) {
-                optionClass = 'border-red-500 bg-red-50'
+                optionClass = 'border-red-500 bg-red-50';
               }
             } else if (selectedOption === index) {
-              optionClass = 'border-indigo-500 bg-indigo-50'
+              optionClass = 'border-primary-500 bg-primary-50';
             }
 
             return (
@@ -168,13 +168,15 @@ const AptitudeTest = () => {
                   )}
                 </div>
               </button>
-            )
+            );
           })}
         </div>
 
         {/* Result Feedback */}
         {showResult && (
-          <div className={`mt-6 p-4 rounded-lg ${lastResult.isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+          <div
+            className={`mt-6 p-4 rounded-lg ${lastResult.isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}
+          >
             <div className="flex items-center gap-2">
               {lastResult.isCorrect ? (
                 <>
@@ -194,8 +196,8 @@ const AptitudeTest = () => {
         {/* Actions */}
         <div className="mt-6 flex justify-end gap-3">
           {!showResult ? (
-            <Button 
-              onClick={submitAnswer} 
+            <Button
+              onClick={submitAnswer}
               disabled={selectedOption === null}
               isLoading={submitting}
             >
@@ -225,12 +227,12 @@ const AptitudeTest = () => {
               key={idx}
               className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
                 idx === currentIndex
-                  ? 'bg-indigo-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : answers[idx]
-                  ? answers[idx].isCorrect
-                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700'
-                    : 'bg-red-100 dark:bg-red-900/30 text-red-700'
-                  : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+                    ? answers[idx].isCorrect
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700'
+                      : 'bg-red-100 dark:bg-red-900/30 text-red-700'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
               }`}
             >
               {idx + 1}
@@ -239,7 +241,7 @@ const AptitudeTest = () => {
         </div>
       </Card>
     </div>
-  )
+  );
 
   return (
     <ProctoredSession
@@ -250,13 +252,13 @@ const AptitudeTest = () => {
         cameraEnabled: true,
         screenMonitoringEnabled: true,
         audioMonitoringEnabled: false,
-        fullscreenRequired: true
+        fullscreenRequired: true,
       }}
       strictMode={true}
     >
       {TestContent}
     </ProctoredSession>
-  )
-}
+  );
+};
 
-export default AptitudeTest
+export default AptitudeTest;

@@ -51,11 +51,11 @@
 
   /* Custom selection color */
   ::selection {
-    @apply bg-indigo-500/30 text-indigo-900;
+    @apply bg-primary-500/30 text-primary-900;
   }
   
   html.dark ::selection {
-    @apply bg-indigo-500/50 text-indigo-100;
+    @apply bg-primary-500/50 text-primary-100;
   }
 }
 
@@ -69,10 +69,10 @@
   }
   
   .btn-primary {
-    @apply btn bg-gradient-to-r from-indigo-600 to-violet-500 text-white 
-           hover:from-indigo-700 hover:to-violet-600 
-           focus:ring-indigo-500 shadow-lg shadow-indigo-500/30
-           hover:shadow-xl hover:shadow-indigo-500/40;
+    @apply btn bg-gradient-to-r from-primary-600 to-primary-500 text-white 
+           hover:from-primary-700 hover:to-primary-600 
+           focus:ring-primary-500 shadow-lg shadow-primary-500/30
+           hover:shadow-xl hover:shadow-primary-500/40;
   }
   
   .btn-secondary {
@@ -93,14 +93,14 @@
   }
   
   .btn-outline {
-    @apply btn border-2 border-indigo-500 text-indigo-600 bg-transparent
-           hover:bg-indigo-600 hover:text-white hover:border-indigo-600 
-           focus:ring-indigo-500;
+    @apply btn border-2 border-primary-500 text-primary-600 bg-transparent
+           hover:bg-primary-600 hover:text-white hover:border-primary-600 
+           focus:ring-primary-500;
   }
   
   .input {
     @apply w-full px-4 py-3 border border-slate-200 rounded-xl 
-           focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500
+           focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500
            placeholder:text-slate-400 transition-all duration-300
            bg-white text-slate-900;
   }
@@ -143,7 +143,7 @@
   }
   
   .badge-primary {
-    @apply badge bg-indigo-100/80 text-indigo-700 border border-indigo-200/50;
+    @apply badge bg-primary-100/80 text-primary-700 border border-primary-200/50;
   }
   
   .badge-success {
@@ -163,7 +163,7 @@
   }
 
   .badge-purple {
-    @apply badge bg-purple-100/80 text-purple-700 border border-purple-200/50;
+    @apply badge bg-primary-100/80 text-primary-700 border border-primary-200/50;
   }
   
   .score-excellent {
@@ -184,7 +184,7 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 
+    @apply bg-gradient-to-r from-primary-600 via-primary-600 to-pink-500 
            bg-clip-text text-transparent;
   }
 
@@ -251,7 +251,7 @@
   }
   
   .gradient-primary {
-    @apply bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-500;
+    @apply bg-gradient-to-r from-primary-600 via-primary-500 to-primary-500;
   }
   
   .gradient-success {
@@ -259,7 +259,7 @@
   }
 
   .gradient-purple {
-    @apply bg-gradient-to-r from-purple-600 via-violet-500 to-indigo-500;
+    @apply bg-gradient-to-r from-primary-600 via-primary-500 to-primary-500;
   }
 
   .gradient-orange {
@@ -453,7 +453,7 @@
 }
 
 .progress-fill {
-  @apply h-full bg-indigo-500 transition-all duration-500 ease-out;
+  @apply h-full bg-primary-500 transition-all duration-500 ease-out;
 }
 
 /* Score circle styles */
@@ -517,7 +517,7 @@
 
 /* Text gradient effect */
 .text-gradient-primary {
-  @apply bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent;
 }
 
 .text-gradient-rainbow {
@@ -644,14 +644,14 @@
 
 /* ===============================================
    PREMIUM DARK MODE THEME
-   A refined, modern dark theme with deep navy tones,
+   A refined, modern dark theme with warm brown/orange tones,
    subtle gradients, and ambient glow effects.
    =============================================== */
 
 /* === Base Background & Body === */
 html.dark body {
-  background: #0b1120;
-  color: #e2e8f0;
+  background: #140802; /* dark-950 */
+  color: #f5e3d3; /* dark-200 */
 }
 
 html.dark {
@@ -661,80 +661,80 @@ html.dark {
 /* === Surface Colors (Cards, Panels) === */
 html.dark .card,
 html.dark .bg-white {
-  background-color: #111827 !important;
-  border-color: rgba(99, 102, 241, 0.08) !important;
+  background-color: #241006 !important; /* dark-900 */
+  border-color: rgba(245, 158, 11, 0.08) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
 }
 
 html.dark .bg-white\/80 {
-  background-color: rgba(17, 24, 39, 0.85) !important;
+  background-color: rgba(36, 16, 6, 0.85) !important;
   backdrop-filter: blur(20px) !important;
 }
 
 html.dark .bg-white\/60 {
-  background-color: rgba(17, 24, 39, 0.7) !important;
+  background-color: rgba(36, 16, 6, 0.7) !important;
 }
 
 html.dark .bg-white\/90 {
-  background-color: rgba(17, 24, 39, 0.92) !important;
+  background-color: rgba(36, 16, 6, 0.92) !important;
 }
 
 html.dark .bg-slate-50 {
-  background-color: #0b1120 !important;
+  background-color: #140802 !important; /* dark-950 */
 }
 
 html.dark .bg-slate-100 {
-  background-color: #131c31 !important;
+  background-color: #241006 !important; /* dark-900 */
 }
 
 html.dark .bg-slate-100\/80 {
-  background-color: rgba(19, 28, 49, 0.8) !important;
+  background-color: rgba(36, 16, 6, 0.8) !important;
 }
 
 html.dark .bg-slate-200 {
-  background-color: #1a2540 !important;
+  background-color: #36180a !important; /* dark-850 */
 }
 
 /* === Text Colors === */
 html.dark .text-slate-900 {
-  color: #f1f5f9 !important;
+  color: #fffbf7 !important; /* dark-50 */
 }
 
 html.dark .text-slate-800 {
-  color: #e2e8f0 !important;
+  color: #fcf3eb !important; /* dark-100 */
 }
 
 html.dark .text-slate-700 {
-  color: #cbd5e1 !important;
+  color: #f5e3d3 !important; /* dark-200 */
 }
 
 html.dark .text-slate-600 {
-  color: #94a3b8 !important;
+  color: #ebcfb7 !important; /* dark-300 */
 }
 
 html.dark .text-slate-500 {
-  color: #64748b !important;
+  color: #dfb496 !important; /* dark-400 */
 }
 
 html.dark .text-slate-400 {
-  color: #64748b !important;
+  color: #cc9673 !important; /* dark-500 */
 }
 
 /* === Border Colors === */
 html.dark .border-slate-200 {
-  border-color: rgba(99, 102, 241, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.15) !important;
 }
 
 html.dark .border-slate-100 {
-  border-color: rgba(99, 102, 241, 0.06) !important;
+  border-color: rgba(245, 158, 11, 0.08) !important;
 }
 
 html.dark .border-slate-100\/50 {
-  border-color: rgba(99, 102, 241, 0.05) !important;
+  border-color: rgba(245, 158, 11, 0.05) !important;
 }
 
 html.dark .border-slate-300 {
-  border-color: rgba(99, 102, 241, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
 }
 
 /* === Inputs & Form Elements === */
@@ -742,9 +742,9 @@ html.dark .input,
 html.dark input,
 html.dark textarea,
 html.dark select {
-  background-color: #0f172a !important;
-  border-color: rgba(99, 102, 241, 0.15) !important;
-  color: #e2e8f0 !important;
+  background-color: #1a0a03 !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
+  color: #f5e3d3 !important;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -752,14 +752,14 @@ html.dark .input:focus,
 html.dark input:focus,
 html.dark textarea:focus,
 html.dark select:focus {
-  border-color: rgba(99, 102, 241, 0.4) !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 html.dark .input::placeholder,
 html.dark input::placeholder,
 html.dark textarea::placeholder {
-  color: #475569 !important;
+  color: #b0734f !important;
 }
 
 /* === Shadows (Elevated Dark Surfaces) === */
@@ -781,21 +781,21 @@ html.dark .shadow-slate-200\/50 {
 
 /* === Scrollbar (Premium Dark) === */
 html.dark ::-webkit-scrollbar-track {
-  background: #0b1120;
+  background: #140802;
 }
 
 html.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.2));
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.2));
   border-radius: 10px;
 }
 
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.35));
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.5), rgba(217, 119, 6, 0.35));
 }
 
 /* === Hover States === */
 html.dark .hover\:bg-slate-50:hover {
-  background-color: rgba(99, 102, 241, 0.08) !important;
+  background-color: rgba(245, 158, 11, 0.08) !important;
 }
 
 html.dark .hover\:bg-slate-100:hover {
@@ -1012,18 +1012,18 @@ html.dark .to-emerald-50 {
   --tw-gradient-to: rgba(16, 185, 129, 0.06) !important;
 }
 
-html.dark .from-indigo-50,
-html.dark .from-indigo-50 {
+html.dark .from-primary-50,
+html.dark .from-primary-50 {
   --tw-gradient-from: rgba(99, 102, 241, 0.08) !important;
 }
 
-html.dark .to-violet-50,
-html.dark .to-indigo-50 {
+html.dark .to-primary-50,
+html.dark .to-primary-50 {
   --tw-gradient-to: rgba(99, 102, 241, 0.06) !important;
 }
 
-html.dark .from-purple-50,
-html.dark .to-purple-50 {
+html.dark .from-primary-50,
+html.dark .to-primary-50 {
   --tw-gradient-from: rgba(139, 92, 246, 0.08) !important;
 }
 
@@ -1112,16 +1112,16 @@ html.dark .bg-orange-100 {
   background-color: rgba(245, 158, 11, 0.12) !important;
 }
 
-html.dark .bg-purple-50,
-html.dark .bg-violet-50,
-html.dark .bg-indigo-50 {
+html.dark .bg-primary-50,
+html.dark .bg-primary-50,
+html.dark .bg-primary-50 {
   background-color: rgba(139, 92, 246, 0.08) !important;
 }
 
-html.dark .bg-purple-100,
-html.dark .bg-violet-100,
-html.dark .bg-indigo-100,
-html.dark .bg-indigo-100 {
+html.dark .bg-primary-100,
+html.dark .bg-primary-100,
+html.dark .bg-primary-100,
+html.dark .bg-primary-100 {
   background-color: rgba(99, 102, 241, 0.12) !important;
 }
 
@@ -1155,9 +1155,9 @@ html.dark .border-orange-200 {
   border-color: rgba(245, 158, 11, 0.2) !important;
 }
 
-html.dark .border-purple-200,
-html.dark .border-indigo-200,
-html.dark .border-indigo-200 {
+html.dark .border-primary-200,
+html.dark .border-primary-200,
+html.dark .border-primary-200 {
   border-color: rgba(99, 102, 241, 0.2) !important;
 }
 
@@ -1198,12 +1198,12 @@ html.dark .text-yellow-800 {
   color: #fbbf24 !important;
 }
 
-html.dark .text-purple-700,
-html.dark .text-violet-700 {
+html.dark .text-primary-700,
+html.dark .text-primary-700 {
   color: #c4b5fd !important;
 }
 
-html.dark .text-indigo-700 {
+html.dark .text-primary-700 {
   color: #a5b4fc !important;
 }
 

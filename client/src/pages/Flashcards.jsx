@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Card, Button, Badge } from '../components/ui'
-import toast from 'react-hot-toast'
+import { useState, useEffect } from 'react';
+import { Card, Button, Badge } from '../components/ui';
+import toast from 'react-hot-toast';
 import {
   Layers,
   Plus,
@@ -23,8 +23,8 @@ import {
   Trophy,
   Target,
   Clock,
-  ArrowLeft
-} from 'lucide-react'
+  ArrowLeft,
+} from 'lucide-react';
 
 const DEFAULT_DECKS = [
   {
@@ -33,159 +33,266 @@ const DEFAULT_DECKS = [
     icon: 'Code2',
     color: 'from-green-500 to-emerald-500',
     cards: [
-      { id: 1, front: 'What is the time complexity of binary search?', back: 'O(log n) - It halves the search space with each comparison.', mastered: false },
-      { id: 2, front: 'What is a Hash Map?', back: 'A data structure that maps keys to values using a hash function. Average O(1) for insert, delete, lookup.', mastered: false },
-      { id: 3, front: 'Difference between BFS and DFS?', back: 'BFS: Level by level, uses Queue, good for shortest path.\nDFS: Depth first, uses Stack/recursion, good for cycle detection.', mastered: false },
-      { id: 4, front: 'What is Dynamic Programming?', back: 'Solving complex problems by breaking them into overlapping subproblems. Key: optimal substructure + overlapping subproblems. Techniques: memoization (top-down), tabulation (bottom-up).', mastered: false },
-      { id: 5, front: 'Two Pointer Technique', back: 'Use two pointers to iterate through a sorted array/string. Common patterns: opposite ends (two sum), slow/fast (linked list cycle), sliding window.', mastered: false },
-      { id: 6, front: 'What is a Stack vs Queue?', back: 'Stack: LIFO (Last In First Out) - push/pop from top.\nQueue: FIFO (First In First Out) - enqueue at rear, dequeue from front.', mastered: false },
-      { id: 7, front: 'What is a Binary Search Tree (BST)?', back: 'A tree where left child < parent < right child.\n\nOperations: Search, Insert, Delete — all O(log n) avg, O(n) worst.\nBalanced BSTs (AVL, Red-Black) guarantee O(log n).', mastered: false },
-    ]
+      {
+        id: 1,
+        front: 'What is the time complexity of binary search?',
+        back: 'O(log n) - It halves the search space with each comparison.',
+        mastered: false,
+      },
+      {
+        id: 2,
+        front: 'What is a Hash Map?',
+        back: 'A data structure that maps keys to values using a hash function. Average O(1) for insert, delete, lookup.',
+        mastered: false,
+      },
+      {
+        id: 3,
+        front: 'Difference between BFS and DFS?',
+        back: 'BFS: Level by level, uses Queue, good for shortest path.\nDFS: Depth first, uses Stack/recursion, good for cycle detection.',
+        mastered: false,
+      },
+      {
+        id: 4,
+        front: 'What is Dynamic Programming?',
+        back: 'Solving complex problems by breaking them into overlapping subproblems. Key: optimal substructure + overlapping subproblems. Techniques: memoization (top-down), tabulation (bottom-up).',
+        mastered: false,
+      },
+      {
+        id: 5,
+        front: 'Two Pointer Technique',
+        back: 'Use two pointers to iterate through a sorted array/string. Common patterns: opposite ends (two sum), slow/fast (linked list cycle), sliding window.',
+        mastered: false,
+      },
+      {
+        id: 6,
+        front: 'What is a Stack vs Queue?',
+        back: 'Stack: LIFO (Last In First Out) - push/pop from top.\nQueue: FIFO (First In First Out) - enqueue at rear, dequeue from front.',
+        mastered: false,
+      },
+      {
+        id: 7,
+        front: 'What is a Binary Search Tree (BST)?',
+        back: 'A tree where left child < parent < right child.\n\nOperations: Search, Insert, Delete — all O(log n) avg, O(n) worst.\nBalanced BSTs (AVL, Red-Black) guarantee O(log n).',
+        mastered: false,
+      },
+    ],
   },
   {
     id: 'behavioral',
     name: 'Behavioral Questions',
     icon: 'Brain',
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-primary-500 to-pink-500',
     cards: [
-      { id: 1, front: 'Tell me about yourself', back: 'Structure: Present → Past → Future.\n\n1. Current role/situation\n2. Key experiences that led here\n3. Why this role/company excites you\n\nKeep it 1-2 minutes. Be concise and relevant.', mastered: false },
-      { id: 2, front: 'What is the STAR method?', back: 'Situation: Set the context\nTask: Describe your responsibility\nAction: Explain what YOU did\nResult: Share the outcome (quantify!)\n\nAlways prepare 5-6 STAR stories.', mastered: false },
-      { id: 3, front: 'Describe a time you handled conflict', back: 'Use STAR. Focus on:\n- Professional approach\n- Active listening\n- Finding common ground\n- Positive outcome\n\nNever blame others. Show emotional intelligence.', mastered: false },
-      { id: 4, front: 'Why do you want to work here?', back: 'Research the company! Mention:\n- Specific products/projects\n- Company culture/values\n- Growth opportunities\n- How your skills align\n\nBe genuine and specific.', mastered: false },
-      { id: 5, front: 'Where do you see yourself in 5 years?', back: 'Show ambition + alignment with company:\n- Growth in the role\n- Developing specific skills\n- Taking on more responsibility\n- Contributing to team/company goals\n\nDon\'t say "in your chair!"', mastered: false },
-    ]
+      {
+        id: 1,
+        front: 'Tell me about yourself',
+        back: 'Structure: Present → Past → Future.\n\n1. Current role/situation\n2. Key experiences that led here\n3. Why this role/company excites you\n\nKeep it 1-2 minutes. Be concise and relevant.',
+        mastered: false,
+      },
+      {
+        id: 2,
+        front: 'What is the STAR method?',
+        back: 'Situation: Set the context\nTask: Describe your responsibility\nAction: Explain what YOU did\nResult: Share the outcome (quantify!)\n\nAlways prepare 5-6 STAR stories.',
+        mastered: false,
+      },
+      {
+        id: 3,
+        front: 'Describe a time you handled conflict',
+        back: 'Use STAR. Focus on:\n- Professional approach\n- Active listening\n- Finding common ground\n- Positive outcome\n\nNever blame others. Show emotional intelligence.',
+        mastered: false,
+      },
+      {
+        id: 4,
+        front: 'Why do you want to work here?',
+        back: 'Research the company! Mention:\n- Specific products/projects\n- Company culture/values\n- Growth opportunities\n- How your skills align\n\nBe genuine and specific.',
+        mastered: false,
+      },
+      {
+        id: 5,
+        front: 'Where do you see yourself in 5 years?',
+        back: 'Show ambition + alignment with company:\n- Growth in the role\n- Developing specific skills\n- Taking on more responsibility\n- Contributing to team/company goals\n\nDon\'t say "in your chair!"',
+        mastered: false,
+      },
+    ],
   },
   {
     id: 'system-design',
     name: 'System Design',
     icon: 'Building2',
-    color: 'from-blue-500 to-indigo-500',
+    color: 'from-blue-500 to-primary-500',
     cards: [
-      { id: 1, front: 'System Design Interview Framework', back: '1. Clarify requirements (5 min)\n2. Estimate scale (2 min)\n3. Define API (3 min)\n4. High-level design (10 min)\n5. Deep dive components (15 min)\n6. Address bottlenecks (5 min)', mastered: false },
-      { id: 2, front: 'What is a Load Balancer?', back: 'Distributes incoming traffic across multiple servers.\n\nAlgorithms: Round Robin, Least Connections, IP Hash.\nTypes: L4 (transport) vs L7 (application).\nExamples: Nginx, AWS ELB, HAProxy.', mastered: false },
-      { id: 3, front: 'CAP Theorem', back: 'Consistency: All nodes see same data\nAvailability: Every request gets a response\nPartition Tolerance: System works despite network failures\n\nYou can only guarantee 2 of 3. Choose CP or AP based on needs.', mastered: false },
-      { id: 4, front: 'Horizontal vs Vertical Scaling', back: 'Vertical: Add more power (CPU, RAM) to one machine. Simple but has limits.\n\nHorizontal: Add more machines. More complex but infinitely scalable. Needs load balancing.', mastered: false },
-      { id: 5, front: 'What is Caching?', back: 'Store frequently accessed data in fast storage.\n\nPatterns: Cache-aside, Write-through, Write-behind.\nTools: Redis, Memcached.\nEviction: LRU, LFU, TTL.\n\nConsider: cache invalidation, thundering herd.', mastered: false },
-    ]
+      {
+        id: 1,
+        front: 'System Design Interview Framework',
+        back: '1. Clarify requirements (5 min)\n2. Estimate scale (2 min)\n3. Define API (3 min)\n4. High-level design (10 min)\n5. Deep dive components (15 min)\n6. Address bottlenecks (5 min)',
+        mastered: false,
+      },
+      {
+        id: 2,
+        front: 'What is a Load Balancer?',
+        back: 'Distributes incoming traffic across multiple servers.\n\nAlgorithms: Round Robin, Least Connections, IP Hash.\nTypes: L4 (transport) vs L7 (application).\nExamples: Nginx, AWS ELB, HAProxy.',
+        mastered: false,
+      },
+      {
+        id: 3,
+        front: 'CAP Theorem',
+        back: 'Consistency: All nodes see same data\nAvailability: Every request gets a response\nPartition Tolerance: System works despite network failures\n\nYou can only guarantee 2 of 3. Choose CP or AP based on needs.',
+        mastered: false,
+      },
+      {
+        id: 4,
+        front: 'Horizontal vs Vertical Scaling',
+        back: 'Vertical: Add more power (CPU, RAM) to one machine. Simple but has limits.\n\nHorizontal: Add more machines. More complex but infinitely scalable. Needs load balancing.',
+        mastered: false,
+      },
+      {
+        id: 5,
+        front: 'What is Caching?',
+        back: 'Store frequently accessed data in fast storage.\n\nPatterns: Cache-aside, Write-through, Write-behind.\nTools: Redis, Memcached.\nEviction: LRU, LFU, TTL.\n\nConsider: cache invalidation, thundering herd.',
+        mastered: false,
+      },
+    ],
   },
-]
+];
 
-const ICON_MAP = { Code2, Brain, Building2, HelpCircle, BookOpen, Layers }
+const ICON_MAP = { Code2, Brain, Building2, HelpCircle, BookOpen, Layers };
 
 const Flashcards = () => {
   const [decks, setDecks] = useState(() => {
     try {
-      const saved = localStorage.getItem('hireready-flashcards')
-      return saved ? JSON.parse(saved) : DEFAULT_DECKS
-    } catch { return DEFAULT_DECKS }
-  })
-  const [activeDeckId, setActiveDeckId] = useState(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isFlipped, setIsFlipped] = useState(false)
-  const [isCreatingDeck, setIsCreatingDeck] = useState(false)
-  const [isAddingCard, setIsAddingCard] = useState(false)
-  const [newDeck, setNewDeck] = useState({ name: '', icon: 'Layers', color: 'from-indigo-500 to-purple-500' })
-  const [newCard, setNewCard] = useState({ front: '', back: '' })
-  const [studyMode, setStudyMode] = useState(false)
-  const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 })
+      const saved = localStorage.getItem('hireready-flashcards');
+      return saved ? JSON.parse(saved) : DEFAULT_DECKS;
+    } catch {
+      return DEFAULT_DECKS;
+    }
+  });
+  const [activeDeckId, setActiveDeckId] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isCreatingDeck, setIsCreatingDeck] = useState(false);
+  const [isAddingCard, setIsAddingCard] = useState(false);
+  const [newDeck, setNewDeck] = useState({
+    name: '',
+    icon: 'Layers',
+    color: 'from-primary-500 to-primary-500',
+  });
+  const [newCard, setNewCard] = useState({ front: '', back: '' });
+  const [studyMode, setStudyMode] = useState(false);
+  const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 });
 
   useEffect(() => {
-    localStorage.setItem('hireready-flashcards', JSON.stringify(decks))
-  }, [decks])
+    localStorage.setItem('hireready-flashcards', JSON.stringify(decks));
+  }, [decks]);
 
-  const activeDeck = decks.find(d => d.id === activeDeckId)
-  const activeCards = activeDeck?.cards || []
-  const currentCard = activeCards[currentIndex]
+  const activeDeck = decks.find(d => d.id === activeDeckId);
+  const activeCards = activeDeck?.cards || [];
+  const currentCard = activeCards[currentIndex];
 
   const nextCard = () => {
-    setIsFlipped(false)
+    setIsFlipped(false);
     setTimeout(() => {
-      setCurrentIndex(prev => (prev + 1) % activeCards.length)
-    }, 150)
-  }
+      setCurrentIndex(prev => (prev + 1) % activeCards.length);
+    }, 150);
+  };
 
   const prevCard = () => {
-    setIsFlipped(false)
+    setIsFlipped(false);
     setTimeout(() => {
-      setCurrentIndex(prev => (prev - 1 + activeCards.length) % activeCards.length)
-    }, 150)
-  }
+      setCurrentIndex(prev => (prev - 1 + activeCards.length) % activeCards.length);
+    }, 150);
+  };
 
   const shuffleDeck = () => {
-    if (!activeDeck) return
-    const shuffled = [...activeDeck.cards].sort(() => Math.random() - 0.5)
-    setDecks(prev => prev.map(d => d.id === activeDeckId ? { ...d, cards: shuffled } : d))
-    setCurrentIndex(0)
-    setIsFlipped(false)
-    toast.success('Deck shuffled!')
-  }
+    if (!activeDeck) return;
+    const shuffled = [...activeDeck.cards].sort(() => Math.random() - 0.5);
+    setDecks(prev => prev.map(d => (d.id === activeDeckId ? { ...d, cards: shuffled } : d)));
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    toast.success('Deck shuffled!');
+  };
 
-  const toggleMastered = (cardId) => {
-    setDecks(prev => prev.map(d => {
-      if (d.id !== activeDeckId) return d
-      return { ...d, cards: d.cards.map(c => c.id === cardId ? { ...c, mastered: !c.mastered } : c) }
-    }))
-  }
+  const toggleMastered = cardId => {
+    setDecks(prev =>
+      prev.map(d => {
+        if (d.id !== activeDeckId) return d;
+        return {
+          ...d,
+          cards: d.cards.map(c => (c.id === cardId ? { ...c, mastered: !c.mastered } : c)),
+        };
+      })
+    );
+  };
 
   const markKnow = () => {
     if (currentCard) {
-      if (!currentCard.mastered) toggleMastered(currentCard.id)
-      setSessionStats(prev => ({ ...prev, correct: prev.correct + 1 }))
+      if (!currentCard.mastered) toggleMastered(currentCard.id);
+      setSessionStats(prev => ({ ...prev, correct: prev.correct + 1 }));
     }
-    nextCard()
-  }
+    nextCard();
+  };
 
   const markDontKnow = () => {
-    if (currentCard?.mastered) toggleMastered(currentCard.id)
-    setSessionStats(prev => ({ ...prev, incorrect: prev.incorrect + 1 }))
-    nextCard()
-  }
+    if (currentCard?.mastered) toggleMastered(currentCard.id);
+    setSessionStats(prev => ({ ...prev, incorrect: prev.incorrect + 1 }));
+    nextCard();
+  };
 
   const createDeck = () => {
-    if (!newDeck.name.trim()) { toast.error('Enter a deck name'); return }
+    if (!newDeck.name.trim()) {
+      toast.error('Enter a deck name');
+      return;
+    }
     const deck = {
       id: `custom-${Date.now()}`,
       name: newDeck.name,
       icon: newDeck.icon,
       color: newDeck.color,
       cards: [],
-    }
-    setDecks(prev => [...prev, deck])
-    setNewDeck({ name: '', icon: 'Layers', color: 'from-indigo-500 to-purple-500' })
-    setIsCreatingDeck(false)
-    toast.success('Deck created!')
-  }
+    };
+    setDecks(prev => [...prev, deck]);
+    setNewDeck({ name: '', icon: 'Layers', color: 'from-primary-500 to-primary-500' });
+    setIsCreatingDeck(false);
+    toast.success('Deck created!');
+  };
 
   const addCard = () => {
-    if (!newCard.front.trim() || !newCard.back.trim()) { toast.error('Fill in both sides'); return }
-    const card = { id: Date.now(), front: newCard.front, back: newCard.back, mastered: false }
-    setDecks(prev => prev.map(d => d.id === activeDeckId ? { ...d, cards: [...d.cards, card] } : d))
-    setNewCard({ front: '', back: '' })
-    setIsAddingCard(false)
-    toast.success('Card added!')
-  }
+    if (!newCard.front.trim() || !newCard.back.trim()) {
+      toast.error('Fill in both sides');
+      return;
+    }
+    const card = { id: Date.now(), front: newCard.front, back: newCard.back, mastered: false };
+    setDecks(prev =>
+      prev.map(d => (d.id === activeDeckId ? { ...d, cards: [...d.cards, card] } : d))
+    );
+    setNewCard({ front: '', back: '' });
+    setIsAddingCard(false);
+    toast.success('Card added!');
+  };
 
-  const deleteCard = (cardId) => {
-    setDecks(prev => prev.map(d => {
-      if (d.id !== activeDeckId) return d
-      return { ...d, cards: d.cards.filter(c => c.id !== cardId) }
-    }))
-    if (currentIndex >= activeCards.length - 1) setCurrentIndex(Math.max(0, activeCards.length - 2))
-    toast.success('Card deleted')
-  }
+  const deleteCard = cardId => {
+    setDecks(prev =>
+      prev.map(d => {
+        if (d.id !== activeDeckId) return d;
+        return { ...d, cards: d.cards.filter(c => c.id !== cardId) };
+      })
+    );
+    if (currentIndex >= activeCards.length - 1)
+      setCurrentIndex(Math.max(0, activeCards.length - 2));
+    toast.success('Card deleted');
+  };
 
-  const deleteDeck = (deckId) => {
-    setDecks(prev => prev.filter(d => d.id !== deckId))
-    if (activeDeckId === deckId) setActiveDeckId(null)
-    toast.success('Deck deleted')
-  }
+  const deleteDeck = deckId => {
+    setDecks(prev => prev.filter(d => d.id !== deckId));
+    if (activeDeckId === deckId) setActiveDeckId(null);
+    toast.success('Deck deleted');
+  };
 
   const startStudy = () => {
-    setStudyMode(true)
-    setSessionStats({ correct: 0, incorrect: 0 })
-    setCurrentIndex(0)
-    setIsFlipped(false)
-  }
+    setStudyMode(true);
+    setSessionStats({ correct: 0, incorrect: 0 });
+    setCurrentIndex(0);
+    setIsFlipped(false);
+  };
 
   // Deck Selection View
   if (!activeDeckId) {
@@ -201,28 +308,36 @@ const Flashcards = () => {
               Quick Review
             </div>
             <h1 className="text-3xl font-bold mb-2">Flashcards</h1>
-            <p className="text-white/70 max-w-lg">Quick-fire revision with interactive flashcards</p>
+            <p className="text-white/70 max-w-lg">
+              Quick-fire revision with interactive flashcards
+            </p>
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={() => setIsCreatingDeck(true)} icon={Plus}>New Deck</Button>
+          <Button onClick={() => setIsCreatingDeck(true)} icon={Plus}>
+            New Deck
+          </Button>
         </div>
 
         {isCreatingDeck && (
           <Card>
             <Card.Content className="p-6">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Create New Deck</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+                Create New Deck
+              </h3>
               <div className="space-y-4">
                 <input
                   value={newDeck.name}
-                  onChange={(e) => setNewDeck(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={e => setNewDeck(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Deck name..."
-                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500"
                   autoFocus
                 />
                 <div className="flex gap-3 justify-end">
-                  <Button variant="outline" onClick={() => setIsCreatingDeck(false)}>Cancel</Button>
+                  <Button variant="outline" onClick={() => setIsCreatingDeck(false)}>
+                    Cancel
+                  </Button>
                   <Button onClick={createDeck}>Create Deck</Button>
                 </div>
               </div>
@@ -232,40 +347,60 @@ const Flashcards = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {decks.map(deck => {
-            const IconComp = ICON_MAP[deck.icon] || Layers
-            const masteredCount = deck.cards.filter(c => c.mastered).length
-            const progress = deck.cards.length > 0 ? Math.round((masteredCount / deck.cards.length) * 100) : 0
+            const IconComp = ICON_MAP[deck.icon] || Layers;
+            const masteredCount = deck.cards.filter(c => c.mastered).length;
+            const progress =
+              deck.cards.length > 0 ? Math.round((masteredCount / deck.cards.length) * 100) : 0;
             return (
               <div
                 key={deck.id}
-                onClick={() => { setActiveDeckId(deck.id); setCurrentIndex(0); setIsFlipped(false); setStudyMode(false) }}
+                onClick={() => {
+                  setActiveDeckId(deck.id);
+                  setCurrentIndex(0);
+                  setIsFlipped(false);
+                  setStudyMode(false);
+                }}
                 className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/50 p-6 hover:shadow-xl transition-all cursor-pointer group relative"
               >
                 {deck.id.startsWith('custom-') && (
                   <button
-                    onClick={(e) => { e.stopPropagation(); deleteDeck(deck.id) }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      deleteDeck(deck.id);
+                    }}
                     className="absolute top-3 right-3 p-1.5 opacity-0 group-hover:opacity-100 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-all"
                   >
                     <Trash2 className="w-4 h-4 text-slate-400 hover:text-red-500" />
                   </button>
                 )}
-                <div className={`w-14 h-14 bg-gradient-to-br ${deck.color} rounded-xl flex items-center justify-center mb-4`}>
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${deck.color} rounded-xl flex items-center justify-center mb-4`}
+                >
                   <IconComp className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{deck.name}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{deck.cards.length} cards</p>
-                
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                  {deck.name}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                  {deck.cards.length} cards
+                </p>
+
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500 dark:text-slate-400">Mastered</span>
-                    <span className="font-medium text-slate-700 dark:text-slate-300">{masteredCount}/{deck.cards.length}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">
+                      {masteredCount}/{deck.cards.length}
+                    </span>
                   </div>
                   <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
+                    <div
+                      className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all"
+                      style={{ width: `${progress}%` }}
+                    />
                   </div>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
 
@@ -276,27 +411,32 @@ const Flashcards = () => {
             <p className="text-xs text-slate-500 dark:text-slate-400">Total Decks</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
-            <p className="text-2xl font-bold text-indigo-500">{decks.reduce((a, d) => a + d.cards.length, 0)}</p>
+            <p className="text-2xl font-bold text-primary-500">
+              {decks.reduce((a, d) => a + d.cards.length, 0)}
+            </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">Total Cards</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
-            <p className="text-2xl font-bold text-green-500">{decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}</p>
+            <p className="text-2xl font-bold text-green-500">
+              {decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}
+            </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">Mastered</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 text-center">
             <p className="text-2xl font-bold text-orange-500">
-              {decks.reduce((a, d) => a + d.cards.length, 0) - decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}
+              {decks.reduce((a, d) => a + d.cards.length, 0) -
+                decks.reduce((a, d) => a + d.cards.filter(c => c.mastered).length, 0)}
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">To Review</p>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Card Study View
-  const totalStudied = sessionStats.correct + sessionStats.incorrect
-  const sessionComplete = studyMode && totalStudied >= activeCards.length && activeCards.length > 0
+  const totalStudied = sessionStats.correct + sessionStats.incorrect;
+  const sessionComplete = studyMode && totalStudied >= activeCards.length && activeCards.length > 0;
 
   return (
     <div className="space-y-6">
@@ -304,21 +444,34 @@ const Flashcards = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => { setActiveDeckId(null); setStudyMode(false) }}
+            onClick={() => {
+              setActiveDeckId(null);
+              setStudyMode(false);
+            }}
             className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{activeDeck?.name}</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{activeCards.length} cards · {activeCards.filter(c => c.mastered).length} mastered</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              {activeDeck?.name}
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {activeCards.length} cards · {activeCards.filter(c => c.mastered).length} mastered
+            </p>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setIsAddingCard(true)} icon={Plus}>Add Card</Button>
-          <Button variant="outline" size="sm" onClick={shuffleDeck} icon={Shuffle}>Shuffle</Button>
+          <Button variant="outline" size="sm" onClick={() => setIsAddingCard(true)} icon={Plus}>
+            Add Card
+          </Button>
+          <Button variant="outline" size="sm" onClick={shuffleDeck} icon={Shuffle}>
+            Shuffle
+          </Button>
           {!studyMode && activeCards.length > 0 && (
-            <Button size="sm" onClick={startStudy} icon={Zap}>Study Mode</Button>
+            <Button size="sm" onClick={startStudy} icon={Zap}>
+              Study Mode
+            </Button>
           )}
         </div>
       </div>
@@ -330,29 +483,37 @@ const Flashcards = () => {
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add New Card</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">Front (Question)</label>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">
+                  Front (Question)
+                </label>
                 <textarea
                   value={newCard.front}
-                  onChange={(e) => setNewCard(prev => ({ ...prev, front: e.target.value }))}
+                  onChange={e => setNewCard(prev => ({ ...prev, front: e.target.value }))}
                   rows={4}
                   placeholder="Enter the question..."
-                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">Back (Answer)</label>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 block">
+                  Back (Answer)
+                </label>
                 <textarea
                   value={newCard.back}
-                  onChange={(e) => setNewCard(prev => ({ ...prev, back: e.target.value }))}
+                  onChange={e => setNewCard(prev => ({ ...prev, back: e.target.value }))}
                   rows={4}
                   placeholder="Enter the answer..."
-                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
             </div>
             <div className="flex gap-3 justify-end mt-4">
-              <Button variant="outline" onClick={() => setIsAddingCard(false)}>Cancel</Button>
-              <Button onClick={addCard} icon={Save}>Add Card</Button>
+              <Button variant="outline" onClick={() => setIsAddingCard(false)}>
+                Cancel
+              </Button>
+              <Button onClick={addCard} icon={Save}>
+                Add Card
+              </Button>
             </div>
           </Card.Content>
         </Card>
@@ -364,7 +525,9 @@ const Flashcards = () => {
           <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Trophy className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Study Session Complete!</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Study Session Complete!
+          </h2>
           <p className="text-slate-500 dark:text-slate-400 mb-6">Great job reviewing this deck.</p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="text-center">
@@ -376,15 +539,25 @@ const Flashcards = () => {
               <p className="text-sm text-slate-500">Review Again</p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold text-indigo-500">
+              <p className="text-3xl font-bold text-primary-500">
                 {totalStudied > 0 ? Math.round((sessionStats.correct / totalStudied) * 100) : 0}%
               </p>
               <p className="text-sm text-slate-500">Accuracy</p>
             </div>
           </div>
           <div className="flex justify-center gap-3">
-            <Button variant="outline" onClick={() => { setActiveDeckId(null); setStudyMode(false) }}>Back to Decks</Button>
-            <Button onClick={startStudy} icon={RotateCcw}>Study Again</Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setActiveDeckId(null);
+                setStudyMode(false);
+              }}
+            >
+              Back to Decks
+            </Button>
+            <Button onClick={startStudy} icon={RotateCcw}>
+              Study Again
+            </Button>
           </div>
         </div>
       ) : activeCards.length > 0 ? (
@@ -393,9 +566,14 @@ const Flashcards = () => {
           {studyMode && (
             <div className="flex items-center gap-4">
               <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all" style={{ width: `${(totalStudied / activeCards.length) * 100}%` }} />
+                <div
+                  className="h-full bg-gradient-to-r from-primary-500 to-primary-500 rounded-full transition-all"
+                  style={{ width: `${(totalStudied / activeCards.length) * 100}%` }}
+                />
               </div>
-              <span className="text-sm text-slate-500">{totalStudied}/{activeCards.length}</span>
+              <span className="text-sm text-slate-500">
+                {totalStudied}/{activeCards.length}
+              </span>
             </div>
           )}
 
@@ -418,21 +596,27 @@ const Flashcards = () => {
                   className="absolute inset-0 bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-200 dark:border-slate-700 p-8 flex flex-col items-center justify-center shadow-lg"
                   style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                 >
-                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center mb-4">
-                    <HelpCircle className="w-6 h-6 text-indigo-500" />
+                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mb-4">
+                    <HelpCircle className="w-6 h-6 text-primary-500" />
                   </div>
                   <p className="text-xl font-semibold text-slate-900 dark:text-white text-center leading-relaxed whitespace-pre-wrap">
                     {currentCard?.front}
                   </p>
                   <p className="text-sm text-slate-400 mt-6">Click to flip</p>
                   {currentCard?.mastered && (
-                    <Badge variant="success" className="mt-3">✓ Mastered</Badge>
+                    <Badge variant="success" className="mt-3">
+                      ✓ Mastered
+                    </Badge>
                   )}
                 </div>
                 {/* Back */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl border-2 border-indigo-200 dark:border-indigo-700/50 p-8 flex flex-col items-center justify-center shadow-lg"
-                  style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  className="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl border-2 border-primary-200 dark:border-primary-700/50 p-8 flex flex-col items-center justify-center shadow-lg"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                  }}
                 >
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
                     <Check className="w-6 h-6 text-green-500" />
@@ -468,7 +652,10 @@ const Flashcards = () => {
             {/* Navigation */}
             {!studyMode && (
               <div className="flex items-center justify-between mt-6">
-                <button onClick={prevCard} className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                <button
+                  onClick={prevCard}
+                  className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                >
                   <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                 </button>
                 <div className="flex items-center gap-4">
@@ -488,7 +675,10 @@ const Flashcards = () => {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-                <button onClick={nextCard} className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                <button
+                  onClick={nextCard}
+                  className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                >
                   <ChevronRight className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                 </button>
               </div>
@@ -500,13 +690,19 @@ const Flashcards = () => {
           <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Layers className="w-10 h-10 text-slate-400" />
           </div>
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No cards in this deck</h3>
-          <p className="text-slate-500 dark:text-slate-400 mb-4">Add some flashcards to start studying</p>
-          <Button onClick={() => setIsAddingCard(true)} icon={Plus}>Add First Card</Button>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            No cards in this deck
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 mb-4">
+            Add some flashcards to start studying
+          </p>
+          <Button onClick={() => setIsAddingCard(true)} icon={Plus}>
+            Add First Card
+          </Button>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Flashcards
+export default Flashcards;

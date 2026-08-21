@@ -2,22 +2,22 @@
  * ===========================================
  * Communication Skills Test Page
  * ===========================================
- * 
+ *
  * Interactive assessment for testing communication skills
  * with speech-to-text and AI evaluation.
  */
 
-import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import { Card, Button, Badge } from '../components/ui'
-import communicationApi from '../services/communicationApi'
-import toast from 'react-hot-toast'
-import { 
-  Mic, 
-  MicOff, 
-  Play, 
-  Pause, 
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { Card, Button, Badge } from '../components/ui';
+import communicationApi from '../services/communicationApi';
+import toast from 'react-hot-toast';
+import {
+  Mic,
+  MicOff,
+  Play,
+  Pause,
   RotateCcw,
   Send,
   ArrowLeft,
@@ -33,8 +33,8 @@ import {
   Award,
   Timer,
   ChevronRight,
-  Brain
-} from 'lucide-react'
+  Brain,
+} from 'lucide-react';
 
 // Sample communication test questions
 const COMMUNICATION_QUESTIONS = [
@@ -43,235 +43,241 @@ const COMMUNICATION_QUESTIONS = [
     category: 'Introduction',
     question: 'Tell me about yourself and your professional background.',
     timeLimit: 120,
-    tips: ['Structure: Present → Past → Future', 'Keep it under 2 minutes', 'Focus on relevant experience']
+    tips: [
+      'Structure: Present → Past → Future',
+      'Keep it under 2 minutes',
+      'Focus on relevant experience',
+    ],
   },
   {
     id: 2,
     category: 'Behavioral',
-    question: 'Describe a challenging project you worked on. What was your role and how did you handle it?',
+    question:
+      'Describe a challenging project you worked on. What was your role and how did you handle it?',
     timeLimit: 180,
-    tips: ['Use the STAR method', 'Be specific about your actions', 'Quantify results if possible']
+    tips: ['Use the STAR method', 'Be specific about your actions', 'Quantify results if possible'],
   },
   {
     id: 3,
     category: 'Technical Communication',
     question: 'Explain a complex technical concept to someone non-technical.',
     timeLimit: 150,
-    tips: ['Use analogies and examples', 'Avoid jargon', 'Check for understanding']
+    tips: ['Use analogies and examples', 'Avoid jargon', 'Check for understanding'],
   },
   {
     id: 4,
     category: 'Problem Solving',
-    question: 'Tell me about a time when you had to make a difficult decision with limited information.',
+    question:
+      'Tell me about a time when you had to make a difficult decision with limited information.',
     timeLimit: 180,
-    tips: ['Explain your thought process', 'Show leadership', 'Discuss the outcome']
+    tips: ['Explain your thought process', 'Show leadership', 'Discuss the outcome'],
   },
   {
     id: 5,
     category: 'Teamwork',
     question: 'How do you handle disagreements with team members?',
     timeLimit: 120,
-    tips: ['Show emotional intelligence', 'Give specific examples', 'Focus on resolution']
-  }
-]
+    tips: ['Show emotional intelligence', 'Give specific examples', 'Focus on resolution'],
+  },
+];
 
 const CommunicationTest = () => {
-  const navigate = useNavigate()
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [isRecording, setIsRecording] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [transcript, setTranscript] = useState('')
-  const [responses, setResponses] = useState({})
-  const [testCompleted, setTestCompleted] = useState(false)
-  const [results, setResults] = useState(null)
-  const [showTips, setShowTips] = useState(true)
-  
-  const mediaRecorderRef = useRef(null)
-  const recognitionRef = useRef(null)
-  const timerRef = useRef(null)
+  const navigate = useNavigate();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [transcript, setTranscript] = useState('');
+  const [responses, setResponses] = useState({});
+  const [testCompleted, setTestCompleted] = useState(false);
+  const [results, setResults] = useState(null);
+  const [showTips, setShowTips] = useState(true);
 
-  const currentQuestion = COMMUNICATION_QUESTIONS[currentQuestionIndex]
-  const progress = ((currentQuestionIndex + 1) / COMMUNICATION_QUESTIONS.length) * 100
+  const mediaRecorderRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const timerRef = useRef(null);
+
+  const currentQuestion = COMMUNICATION_QUESTIONS[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / COMMUNICATION_QUESTIONS.length) * 100;
 
   // Timer effect
   useEffect(() => {
     if (isRecording && !isPaused) {
       timerRef.current = setInterval(() => {
-        setTimeElapsed(prev => prev + 1)
-      }, 1000)
+        setTimeElapsed(prev => prev + 1);
+      }, 1000);
     }
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
-  }, [isRecording, isPaused])
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isRecording, isPaused]);
 
   // Initialize speech recognition
   useEffect(() => {
     const initSpeechRecognition = () => {
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-        const recognition = new SpeechRecognition()
-        recognition.continuous = true
-        recognition.interimResults = true
-        recognition.lang = 'en-US'
-        recognition.maxAlternatives = 1
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        recognition.maxAlternatives = 1;
 
-        recognition.onresult = (event) => {
-          let interimTranscript = ''
-          let finalTranscript = ''
+        recognition.onresult = event => {
+          let interimTranscript = '';
+          let finalTranscript = '';
 
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcriptPart = event.results[i][0].transcript
+            const transcriptPart = event.results[i][0].transcript;
             if (event.results[i].isFinal) {
-              finalTranscript += transcriptPart + ' '
+              finalTranscript += transcriptPart + ' ';
             } else {
-              interimTranscript += transcriptPart
+              interimTranscript += transcriptPart;
             }
           }
 
           if (finalTranscript) {
-            setTranscript(prev => prev + finalTranscript)
+            setTranscript(prev => prev + finalTranscript);
           }
-        }
+        };
 
-        recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error)
+        recognition.onerror = event => {
+          console.error('Speech recognition error:', event.error);
           if (event.error === 'no-speech') {
             // Auto-restart if no speech detected
             if (isRecording && !isPaused) {
               try {
-                recognition.start()
+                recognition.start();
               } catch (e) {
-                console.log('Recognition restart failed:', e)
+                console.log('Recognition restart failed:', e);
               }
             }
           } else if (event.error === 'aborted') {
             // Ignore aborted errors (normal when stopping)
           } else if (event.error === 'network') {
-            toast.error('Network error. Please check your connection.')
+            toast.error('Network error. Please check your connection.');
           } else if (event.error === 'not-allowed') {
-            toast.error('Microphone access denied. Please allow microphone access.')
+            toast.error('Microphone access denied. Please allow microphone access.');
           }
-        }
+        };
 
         recognition.onend = () => {
           // Auto-restart if still recording
           if (isRecording && !isPaused) {
             try {
-              recognition.start()
+              recognition.start();
             } catch (e) {
-              console.log('Recognition restart on end failed:', e)
+              console.log('Recognition restart on end failed:', e);
             }
           }
-        }
+        };
 
-        recognitionRef.current = recognition
+        recognitionRef.current = recognition;
       } else {
-        toast.error('Speech recognition not supported in this browser. Please use Chrome.')
+        toast.error('Speech recognition not supported in this browser. Please use Chrome.');
       }
-    }
+    };
 
-    initSpeechRecognition()
+    initSpeechRecognition();
 
     return () => {
       if (recognitionRef.current) {
         try {
-          recognitionRef.current.stop()
+          recognitionRef.current.stop();
         } catch (e) {
-          console.log('Recognition stop failed:', e)
+          console.log('Recognition stop failed:', e);
         }
       }
-    }
-  }, [isRecording, isPaused])
+    };
+  }, [isRecording, isPaused]);
 
   // Submit assessment mutation
   const submitMutation = useMutation({
-    mutationFn: async (data) => {
-      const response = await communicationApi.batchAssess(data)
-      return response.data
+    mutationFn: async data => {
+      const response = await communicationApi.batchAssess(data);
+      return response.data;
     },
-    onSuccess: (data) => {
-      setResults(data.data)
-      setTestCompleted(true)
-      toast.success('Assessment complete!')
+    onSuccess: data => {
+      setResults(data.data);
+      setTestCompleted(true);
+      toast.success('Assessment complete!');
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to submit assessment')
-    }
-  })
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to submit assessment');
+    },
+  });
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+  const formatTime = seconds => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const startRecording = async () => {
     // Request microphone permission first
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      stream.getTracks().forEach(track => track.stop()) // Release immediately, we just need permission
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => track.stop()); // Release immediately, we just need permission
     } catch (err) {
-      toast.error('Microphone access required. Please allow microphone access and try again.')
-      return
+      toast.error('Microphone access required. Please allow microphone access and try again.');
+      return;
     }
 
-    setIsRecording(true)
-    setIsPaused(false)
-    setTranscript('')
-    setTimeElapsed(0)
-    
+    setIsRecording(true);
+    setIsPaused(false);
+    setTranscript('');
+    setTimeElapsed(0);
+
     if (recognitionRef.current) {
       try {
-        recognitionRef.current.start()
-        toast.success('Recording started. Speak clearly!')
+        recognitionRef.current.start();
+        toast.success('Recording started. Speak clearly!');
       } catch (err) {
-        console.error('Failed to start recognition:', err)
-        toast.error('Failed to start recording. Please try again.')
-        setIsRecording(false)
+        console.error('Failed to start recognition:', err);
+        toast.error('Failed to start recording. Please try again.');
+        setIsRecording(false);
       }
     } else {
-      toast.error('Speech recognition not available. Please use Chrome browser.')
-      setIsRecording(false)
+      toast.error('Speech recognition not available. Please use Chrome browser.');
+      setIsRecording(false);
     }
-  }
+  };
 
   const stopRecording = () => {
-    setIsRecording(false)
-    setIsPaused(false)
-    
+    setIsRecording(false);
+    setIsPaused(false);
+
     if (recognitionRef.current) {
       try {
-        recognitionRef.current.stop()
+        recognitionRef.current.stop();
       } catch (e) {
-        console.log('Stop error:', e)
+        console.log('Stop error:', e);
       }
     }
-    
+
     if (timerRef.current) {
-      clearInterval(timerRef.current)
+      clearInterval(timerRef.current);
     }
-  }
+  };
 
   const pauseRecording = () => {
-    setIsPaused(true)
+    setIsPaused(true);
     if (recognitionRef.current) {
-      recognitionRef.current.stop()
+      recognitionRef.current.stop();
     }
-  }
+  };
 
   const resumeRecording = () => {
-    setIsPaused(false)
+    setIsPaused(false);
     if (recognitionRef.current) {
-      recognitionRef.current.start()
+      recognitionRef.current.start();
     }
-  }
+  };
 
   const saveResponse = () => {
     if (!transcript.trim()) {
-      toast.error('Please record your answer first')
-      return
+      toast.error('Please record your answer first');
+      return;
     }
 
     setResponses(prev => ({
@@ -281,20 +287,20 @@ const CommunicationTest = () => {
         questionText: currentQuestion.question,
         transcript: transcript.trim(),
         timeSpent: timeElapsed,
-        category: currentQuestion.category
-      }
-    }))
+        category: currentQuestion.category,
+      },
+    }));
 
-    stopRecording()
-    toast.success('Response saved!')
+    stopRecording();
+    toast.success('Response saved!');
 
     // Move to next question or submit
     if (currentQuestionIndex < COMMUNICATION_QUESTIONS.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
-      setTranscript('')
-      setTimeElapsed(0)
+      setCurrentQuestionIndex(prev => prev + 1);
+      setTranscript('');
+      setTimeElapsed(0);
     }
-  }
+  };
 
   const handleSubmitTest = () => {
     // Save current response if exists
@@ -306,56 +312,58 @@ const CommunicationTest = () => {
           questionText: currentQuestion.question,
           transcript: transcript.trim(),
           timeSpent: timeElapsed,
-          category: currentQuestion.category
-        }
-      }))
+          category: currentQuestion.category,
+        },
+      }));
     }
 
     const allResponses = Object.values({
       ...responses,
-      ...(transcript.trim() && !responses[currentQuestion.id] ? {
-        [currentQuestion.id]: {
-          questionId: currentQuestion.id,
-          questionText: currentQuestion.question,
-          transcript: transcript.trim(),
-          timeSpent: timeElapsed,
-          category: currentQuestion.category
-        }
-      } : {})
-    })
+      ...(transcript.trim() && !responses[currentQuestion.id]
+        ? {
+            [currentQuestion.id]: {
+              questionId: currentQuestion.id,
+              questionText: currentQuestion.question,
+              transcript: transcript.trim(),
+              timeSpent: timeElapsed,
+              category: currentQuestion.category,
+            },
+          }
+        : {}),
+    });
 
     if (allResponses.length === 0) {
-      toast.error('Please answer at least one question')
-      return
+      toast.error('Please answer at least one question');
+      return;
     }
 
     submitMutation.mutate({
       responses: allResponses,
-      assessmentType: 'communication_test'
-    })
-  }
+      assessmentType: 'communication_test',
+    });
+  };
 
   const skipQuestion = () => {
     if (currentQuestionIndex < COMMUNICATION_QUESTIONS.length - 1) {
-      stopRecording()
-      setCurrentQuestionIndex(prev => prev + 1)
-      setTranscript('')
-      setTimeElapsed(0)
+      stopRecording();
+      setCurrentQuestionIndex(prev => prev + 1);
+      setTranscript('');
+      setTimeElapsed(0);
     }
-  }
+  };
 
-  const getScoreColor = (score) => {
-    if (score >= 8) return 'text-green-600'
-    if (score >= 6) return 'text-amber-600'
-    return 'text-red-600'
-  }
+  const getScoreColor = score => {
+    if (score >= 8) return 'text-green-600';
+    if (score >= 6) return 'text-amber-600';
+    return 'text-red-600';
+  };
 
-  const getScoreLabel = (score) => {
-    if (score >= 9) return 'Excellent'
-    if (score >= 7) return 'Good'
-    if (score >= 5) return 'Average'
-    return 'Needs Improvement'
-  }
+  const getScoreLabel = score => {
+    if (score >= 9) return 'Excellent';
+    if (score >= 7) return 'Good';
+    if (score >= 5) return 'Average';
+    return 'Needs Improvement';
+  };
 
   // Results view
   if (testCompleted && results) {
@@ -366,26 +374,37 @@ const CommunicationTest = () => {
           <div className="absolute inset-0">
             <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           </div>
-          
+
           <div className="relative text-center">
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Award className="w-10 h-10" />
             </div>
             <h1 className="text-4xl font-bold mb-2">Assessment Complete!</h1>
-            <p className="text-emerald-100 text-lg">
-              Here's your communication skills evaluation
-            </p>
+            <p className="text-emerald-100 text-lg">Here's your communication skills evaluation</p>
           </div>
         </div>
 
         {/* Overall Score */}
         <Card className="p-8 text-center">
-          <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">Overall Score</h2>
-          <div className={`text-7xl font-bold mb-2 ${getScoreColor(results.summary?.averageScore || 0)}`}>
+          <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-4">
+            Overall Score
+          </h2>
+          <div
+            className={`text-7xl font-bold mb-2 ${getScoreColor(results.summary?.averageScore || 0)}`}
+          >
             {(results.summary?.averageScore || 0).toFixed(1)}
           </div>
           <div className="text-2xl text-slate-500 dark:text-slate-400">out of 10</div>
-          <Badge className="mt-4" variant={results.summary?.averageScore >= 7 ? 'success' : results.summary?.averageScore >= 5 ? 'warning' : 'danger'}>
+          <Badge
+            className="mt-4"
+            variant={
+              results.summary?.averageScore >= 7
+                ? 'success'
+                : results.summary?.averageScore >= 5
+                  ? 'warning'
+                  : 'danger'
+            }
+          >
             {getScoreLabel(results.summary?.averageScore || 0)}
           </Badge>
         </Card>
@@ -397,16 +416,20 @@ const CommunicationTest = () => {
           </Card.Header>
           <Card.Content>
             <div className="grid md:grid-cols-3 gap-6">
-              {results.summary?.averageSubscores && Object.entries(results.summary.averageSubscores).map(([key, value]) => (
-                <div key={key} className="text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                  <div className={`text-3xl font-bold mb-1 ${getScoreColor(value)}`}>
-                    {value.toFixed(1)}
+              {results.summary?.averageSubscores &&
+                Object.entries(results.summary.averageSubscores).map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="text-center p-4 bg-slate-50 dark:bg-slate-800 rounded-xl"
+                  >
+                    <div className={`text-3xl font-bold mb-1 ${getScoreColor(value)}`}>
+                      {value.toFixed(1)}
+                    </div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 capitalize">
+                      {key.replace(/_/g, ' ')}
+                    </div>
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400 capitalize">
-                    {key.replace(/_/g, ' ')}
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </Card.Content>
         </Card>
@@ -457,20 +480,22 @@ const CommunicationTest = () => {
           <Button variant="outline" onClick={() => navigate('/communication')}>
             View All Assessments
           </Button>
-          <Button onClick={() => {
-            setTestCompleted(false)
-            setResults(null)
-            setResponses({})
-            setCurrentQuestionIndex(0)
-            setTranscript('')
-            setTimeElapsed(0)
-          }}>
+          <Button
+            onClick={() => {
+              setTestCompleted(false);
+              setResults(null);
+              setResponses({});
+              setCurrentQuestionIndex(0);
+              setTranscript('');
+              setTimeElapsed(0);
+            }}
+          >
             <RotateCcw className="w-4 h-4 mr-2" />
             Take Another Test
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -483,19 +508,23 @@ const CommunicationTest = () => {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Communication Skills Test</h1>
-            <p className="text-slate-500 dark:text-slate-400">Question {currentQuestionIndex + 1} of {COMMUNICATION_QUESTIONS.length}</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Communication Skills Test
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400">
+              Question {currentQuestionIndex + 1} of {COMMUNICATION_QUESTIONS.length}
+            </p>
           </div>
         </div>
-        
+
         {/* Progress */}
         <div className="flex items-center gap-4">
           <div className="text-sm text-slate-500 dark:text-slate-400">
             {Object.keys(responses).length} answered
           </div>
           <div className="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-violet-500 to-purple-500 transition-all duration-300"
+            <div
+              className="h-full bg-gradient-to-r from-primary-500 to-primary-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -504,23 +533,25 @@ const CommunicationTest = () => {
 
       {/* Question Card */}
       <Card className="overflow-hidden">
-        <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-4 text-white">
+        <div className="bg-gradient-to-r from-primary-500 to-primary-500 p-4 text-white">
           <div className="flex items-center justify-between">
             <Badge variant="outline" className="border-white/50 text-white bg-white/10">
               {currentQuestion.category}
             </Badge>
             <div className="flex items-center gap-2">
               <Timer className="w-4 h-4" />
-              <span className="text-sm">Suggested time: {Math.floor(currentQuestion.timeLimit / 60)} min</span>
+              <span className="text-sm">
+                Suggested time: {Math.floor(currentQuestion.timeLimit / 60)} min
+              </span>
             </div>
           </div>
         </div>
-        
+
         <div className="p-6">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
             {currentQuestion.question}
           </h2>
-          
+
           {/* Tips */}
           {showTips && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
@@ -538,16 +569,18 @@ const CommunicationTest = () => {
               </ul>
             </div>
           )}
-          
+
           {/* Recording Section */}
           <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                  isRecording 
-                    ? 'bg-red-100 text-red-600 animate-pulse' 
-                    : 'bg-slate-200 text-slate-500'
-                }`}>
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                    isRecording
+                      ? 'bg-red-100 text-red-600 animate-pulse'
+                      : 'bg-slate-200 text-slate-500'
+                  }`}
+                >
                   {isRecording ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
                 </div>
                 <div>
@@ -559,7 +592,7 @@ const CommunicationTest = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 {!isRecording ? (
                   <Button onClick={startRecording} icon={Play}>
@@ -583,18 +616,20 @@ const CommunicationTest = () => {
                 )}
               </div>
             </div>
-            
+
             {/* Transcript Display */}
             <div className="min-h-[150px] p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
               {transcript ? (
-                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{transcript}</p>
+                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                  {transcript}
+                </p>
               ) : (
                 <p className="text-slate-400 italic">
                   Your speech will appear here as you speak...
                 </p>
               )}
             </div>
-            
+
             {/* Word count */}
             <div className="mt-2 text-sm text-slate-500 dark:text-slate-400 text-right">
               {transcript.split(/\s+/).filter(w => w).length} words
@@ -605,14 +640,14 @@ const CommunicationTest = () => {
 
       {/* Navigation */}
       <div className="flex items-center justify-between">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           onClick={() => {
-            stopRecording()
-            setCurrentQuestionIndex(prev => Math.max(0, prev - 1))
-            const prevResponse = responses[COMMUNICATION_QUESTIONS[currentQuestionIndex - 1]?.id]
-            setTranscript(prevResponse?.transcript || '')
-            setTimeElapsed(prevResponse?.timeSpent || 0)
+            stopRecording();
+            setCurrentQuestionIndex(prev => Math.max(0, prev - 1));
+            const prevResponse = responses[COMMUNICATION_QUESTIONS[currentQuestionIndex - 1]?.id];
+            setTranscript(prevResponse?.transcript || '');
+            setTimeElapsed(prevResponse?.timeSpent || 0);
           }}
           disabled={currentQuestionIndex === 0}
         >
@@ -624,16 +659,16 @@ const CommunicationTest = () => {
           <Button variant="outline" onClick={skipQuestion}>
             Skip
           </Button>
-          
+
           {transcript.trim() && (
             <Button onClick={saveResponse}>
               Save Response
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           )}
-          
+
           {currentQuestionIndex === COMMUNICATION_QUESTIONS.length - 1 && (
-            <Button 
+            <Button
               onClick={handleSubmitTest}
               disabled={submitMutation.isPending}
               className="bg-gradient-to-r from-emerald-500 to-teal-500"
@@ -651,15 +686,15 @@ const CommunicationTest = () => {
           <button
             key={index}
             onClick={() => {
-              stopRecording()
-              setCurrentQuestionIndex(index)
-              const response = responses[COMMUNICATION_QUESTIONS[index].id]
-              setTranscript(response?.transcript || '')
-              setTimeElapsed(response?.timeSpent || 0)
+              stopRecording();
+              setCurrentQuestionIndex(index);
+              const response = responses[COMMUNICATION_QUESTIONS[index].id];
+              setTranscript(response?.transcript || '');
+              setTimeElapsed(response?.timeSpent || 0);
             }}
             className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
               index === currentQuestionIndex
-                ? 'bg-violet-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : responses[COMMUNICATION_QUESTIONS[index].id]
                   ? 'bg-green-100 dark:bg-green-900/30 text-green-700 border-2 border-green-500'
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200'
@@ -674,7 +709,7 @@ const CommunicationTest = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CommunicationTest
+export default CommunicationTest;

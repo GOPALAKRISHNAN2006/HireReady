@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Card, Button, Badge } from '../components/ui'
-import { LoadingCard } from '../components/ui/Spinner'
-import { tipsApi } from '../services/featureApi'
-import toast from 'react-hot-toast'
-import { 
-  Lightbulb, 
-  Star, 
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Card, Button, Badge } from '../components/ui';
+import { LoadingCard } from '../components/ui/Spinner';
+import { tipsApi } from '../services/featureApi';
+import toast from 'react-hot-toast';
+import {
+  Lightbulb,
+  Star,
   BookmarkPlus,
   ChevronRight,
   ChevronDown,
@@ -27,14 +27,14 @@ import {
   Eye,
   Heart,
   Filter,
-  Search
-} from 'lucide-react'
+  Search,
+} from 'lucide-react';
 
 const InterviewTips = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [expandedTip, setExpandedTip] = useState(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const queryClient = useQueryClient()
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [expandedTip, setExpandedTip] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const queryClient = useQueryClient();
 
   const categories = [
     { id: 'all', name: 'All Tips', icon: Sparkles },
@@ -43,96 +43,100 @@ const InterviewTips = () => {
     { id: 'communication', name: 'Communication', icon: Mic },
     { id: 'preparation', name: 'Preparation', icon: Target },
     { id: 'general', name: 'General', icon: Brain },
-  ]
+  ];
 
   // Fetch tips
   const { data: tipsData, isLoading: tipsLoading } = useQuery({
     queryKey: ['tips', selectedCategory],
     queryFn: async () => {
       try {
-        const params = { limit: 20 }
-        if (selectedCategory !== 'all') params.category = selectedCategory
-        const response = await tipsApi.getTips(params)
-        return response.data.data
+        const params = { limit: 20 };
+        if (selectedCategory !== 'all') params.category = selectedCategory;
+        const response = await tipsApi.getTips(params);
+        return response.data.data;
       } catch (e) {
-        return { tips: [] }
+        return { tips: [] };
       }
     },
-  })
+  });
 
   // Fetch featured tips
   const { data: featuredData } = useQuery({
     queryKey: ['tips', 'featured'],
     queryFn: async () => {
       try {
-        const response = await tipsApi.getFeatured({ limit: 3 })
-        return response.data.data.tips
+        const response = await tipsApi.getFeatured({ limit: 3 });
+        return response.data.data.tips;
       } catch (e) {
-        return []
+        return [];
       }
     },
-  })
+  });
 
   // Fetch categories
   const { data: categoriesData } = useQuery({
     queryKey: ['tips', 'categories'],
     queryFn: async () => {
       try {
-        const response = await tipsApi.getCategories()
-        return response.data.data.categories
+        const response = await tipsApi.getCategories();
+        return response.data.data.categories;
       } catch (e) {
-        return []
+        return [];
       }
     },
-  })
+  });
 
   // Like mutation
   const likeMutation = useMutation({
-    mutationFn: (id) => tipsApi.likeTip(id),
+    mutationFn: id => tipsApi.likeTip(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['tips'])
-      toast.success('Updated!')
-    }
-  })
+      queryClient.invalidateQueries(['tips']);
+      toast.success('Updated!');
+    },
+  });
 
   // Bookmark mutation
   const bookmarkMutation = useMutation({
-    mutationFn: (id) => tipsApi.bookmarkTip(id),
+    mutationFn: id => tipsApi.bookmarkTip(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['tips'])
-      toast.success('Bookmark updated!')
-    }
-  })
+      queryClient.invalidateQueries(['tips']);
+      toast.success('Bookmark updated!');
+    },
+  });
 
   // Map API tips to display format
-  const mapTipToDisplay = (tip) => ({
+  const mapTipToDisplay = tip => ({
     ...tip,
     id: tip._id,
     likes: tip.likeCount || tip.likes?.length || 0,
     saves: tip.bookmarkCount || tip.bookmarks?.length || 0,
     author: tip.authorName || 'HireReady Team',
-  })
+  });
 
   // Use only API data
-  const tips = tipsData?.tips?.map(mapTipToDisplay) || []
+  const tips = tipsData?.tips?.map(mapTipToDisplay) || [];
 
   const filteredTips = tips.filter(tip => {
-    const matchesCategory = selectedCategory === 'all' || tip.category === selectedCategory
-    const matchesSearch = tip.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         tip.summary?.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+    const matchesCategory = selectedCategory === 'all' || tip.category === selectedCategory;
+    const matchesSearch =
+      tip.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tip.summary?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
-  const getDifficultyColor = (difficulty) => {
+  const getDifficultyColor = difficulty => {
     switch (difficulty) {
-      case 'Essential': return 'danger'
-      case 'Important': return 'warning'
-      default: return 'default'
+      case 'Essential':
+        return 'danger';
+      case 'Important':
+        return 'warning';
+      default:
+        return 'default';
     }
-  }
+  };
 
-  const featuredTips = featuredData?.map(mapTipToDisplay) || tips.slice(0, 3)
-  const featuredTip = featuredTips[0] || null
+  const featuredTips = featuredData?.map(mapTipToDisplay) || tips.slice(0, 3);
+  const featuredTip = featuredTips[0] || null;
 
   // Loading state
   if (tipsLoading) {
@@ -140,11 +144,15 @@ const InterviewTips = () => {
       <div className="space-y-6">
         <LoadingCard />
         <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2"><LoadingCard /></div>
-          <div><LoadingCard /></div>
+          <div className="lg:col-span-2">
+            <LoadingCard />
+          </div>
+          <div>
+            <LoadingCard />
+          </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -154,7 +162,7 @@ const InterviewTips = () => {
         <div className="absolute inset-0">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-          
+
           {/* Floating light bulbs */}
           <div className="absolute top-10 right-20 opacity-30">
             <Lightbulb className="w-12 h-12 animate-float text-yellow-200" />
@@ -195,19 +203,19 @@ const InterviewTips = () => {
             type="text"
             placeholder="Search tips..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {categories.map((cat) => (
+          {categories.map(cat => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-indigo-300 dark:hover:border-indigo-700'
+                  ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
+                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-primary-300 dark:hover:border-primary-700'
               }`}
             >
               <cat.icon className="w-4 h-4" />
@@ -227,9 +235,13 @@ const InterviewTips = () => {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="warning">Featured</Badge>
-                <Badge variant={getDifficultyColor(featuredTip.difficulty)}>{featuredTip.difficulty}</Badge>
+                <Badge variant={getDifficultyColor(featuredTip.difficulty)}>
+                  {featuredTip.difficulty}
+                </Badge>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{featuredTip.title}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                {featuredTip.title}
+              </h3>
               <p className="text-slate-600 dark:text-slate-300 mb-4">{featuredTip.content}</p>
               <div className="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400">
                 <span className="flex items-center gap-1">
@@ -238,7 +250,9 @@ const InterviewTips = () => {
                 <span className="flex items-center gap-1">
                   <BookmarkPlus className="w-4 h-4" /> {featuredTip.saves.toLocaleString()}
                 </span>
-                <span className="text-amber-600 dark:text-amber-400 font-medium">By {featuredTip.author}</span>
+                <span className="text-amber-600 dark:text-amber-400 font-medium">
+                  By {featuredTip.author}
+                </span>
               </div>
             </div>
           </div>
@@ -248,30 +262,36 @@ const InterviewTips = () => {
       {/* Tips Grid */}
       {filteredTips.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-6">
-          {filteredTips.map((tip) => (
-            <Card 
-              key={tip.id} 
-              hover 
+          {filteredTips.map(tip => (
+            <Card
+              key={tip.id}
+              hover
               className={`cursor-pointer transition-all duration-300 ${
-                expandedTip === tip.id ? 'ring-2 ring-indigo-500' : ''
+                expandedTip === tip.id ? 'ring-2 ring-primary-500' : ''
               }`}
               onClick={() => setExpandedTip(expandedTip === tip.id ? null : tip.id)}
             >
               <div className="flex items-start gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  tip.category === 'technical' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
-                  tip.category === 'behavioral' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' :
-                  tip.category === 'communication' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' :
-                  tip.category === 'preparation' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' :
-                  'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400'
-                }`}>
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    tip.category === 'technical'
+                      ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                      : tip.category === 'behavioral'
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                        : tip.category === 'communication'
+                          ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
+                          : tip.category === 'preparation'
+                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
+                            : 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400'
+                  }`}
+                >
                   {tip.category === 'technical' && <Code2 className="w-6 h-6" />}
                   {tip.category === 'behavioral' && <Users className="w-6 h-6" />}
                   {tip.category === 'communication' && <Mic className="w-6 h-6" />}
                   {tip.category === 'preparation' && <Target className="w-6 h-6" />}
                   {tip.category === 'mindset' && <Brain className="w-6 h-6" />}
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant={getDifficultyColor(tip.difficulty)} size="sm">
@@ -287,8 +307,11 @@ const InterviewTips = () => {
                       <p className="text-slate-600 dark:text-slate-300 mb-4">{tip.content}</p>
                       {tip.tags && tip.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {tip.tags.map((tag) => (
-                            <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-lg">
+                          {tip.tags.map(tag => (
+                            <span
+                              key={tag}
+                              className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-lg"
+                            >
                               #{tag}
                             </span>
                           ))}
@@ -306,9 +329,11 @@ const InterviewTips = () => {
                         <BookmarkPlus className="w-3.5 h-3.5" /> {tip.saves || 0}
                       </span>
                     </div>
-                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${
-                      expandedTip === tip.id ? 'rotate-180' : ''
-                    }`} />
+                    <ChevronDown
+                      className={`w-5 h-5 text-slate-400 transition-transform ${
+                        expandedTip === tip.id ? 'rotate-180' : ''
+                      }`}
+                    />
                   </div>
                 </div>
               </div>
@@ -319,9 +344,13 @@ const InterviewTips = () => {
         <Card>
           <div className="text-center py-12">
             <Lightbulb className="w-12 h-12 text-slate-400 dark:text-slate-500 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Tips Available</h3>
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
+              No Tips Available
+            </h3>
             <p className="text-slate-600 dark:text-slate-400">
-              {searchQuery ? 'Try adjusting your search query' : 'Check back later for new interview tips!'}
+              {searchQuery
+                ? 'Try adjusting your search query'
+                : 'Check back later for new interview tips!'}
             </p>
           </div>
         </Card>
@@ -329,14 +358,16 @@ const InterviewTips = () => {
 
       {/* Quick Actions */}
       <div className="grid md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-100 dark:border-blue-800 group hover:shadow-lg transition-all">
+        <Card className="bg-gradient-to-br from-blue-50 to-primary-50 dark:from-blue-900/20 dark:to-primary-900/20 border-blue-100 dark:border-blue-800 group hover:shadow-lg transition-all">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-primary-500 rounded-xl flex items-center justify-center shadow-lg">
               <Video className="w-6 h-6 text-white" />
             </div>
             <div>
               <h4 className="font-bold text-slate-900 dark:text-white">Video Tutorials</h4>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Watch expert demonstrations</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Watch expert demonstrations
+              </p>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400 ml-auto group-hover:translate-x-1 transition-transform" />
           </div>
@@ -355,9 +386,9 @@ const InterviewTips = () => {
           </div>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-100 dark:border-purple-800 group hover:shadow-lg transition-all">
+        <Card className="bg-gradient-to-br from-primary-50 to-pink-50 dark:from-primary-900/20 dark:to-pink-900/20 border-primary-100 dark:border-primary-800 group hover:shadow-lg transition-all">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
               <MessageCircle className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -369,7 +400,7 @@ const InterviewTips = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InterviewTips
+export default InterviewTips;

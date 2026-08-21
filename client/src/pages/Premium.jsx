@@ -79,7 +79,7 @@ const plans = [
     priceMonthly: 49,
     priceYearly: 490,
     icon: Crown,
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-primary-500 to-pink-500',
     popular: true,
     features: [
       { text: 'Unlimited Mock Interviews', included: true },
@@ -201,12 +201,12 @@ const Premium = () => {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center space-y-6 animate-scale-in">
-          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
+          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
             <CreditCard className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Processing Payment...</h2>
           <p className="text-slate-500 dark:text-slate-400">Please wait while we activate your premium plan</p>
-          <Loader2 className="w-8 h-8 mx-auto text-purple-500 animate-spin" />
+          <Loader2 className="w-8 h-8 mx-auto text-primary-500 animate-spin" />
         </div>
       </div>
     )
@@ -246,12 +246,12 @@ const Premium = () => {
                     onClick={() => setSelectedPayment(method.id)}
                     className={`p-4 rounded-xl border-2 transition-all text-left ${
                       selectedPayment === method.id
-                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 ring-1 ring-purple-500/30'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 ring-1 ring-primary-500/30'
                         : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
-                    <MIcon className={`w-6 h-6 mb-2 ${selectedPayment === method.id ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
-                    <p className={`font-semibold text-sm ${selectedPayment === method.id ? 'text-purple-700 dark:text-purple-300' : 'text-slate-700 dark:text-slate-300'}`}>
+                    <MIcon className={`w-6 h-6 mb-2 ${selectedPayment === method.id ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400'}`} />
+                    <p className={`font-semibold text-sm ${selectedPayment === method.id ? 'text-primary-700 dark:text-primary-300' : 'text-slate-700 dark:text-slate-300'}`}>
                       {method.name}
                     </p>
                     <p className="text-xs text-slate-400 mt-0.5">{method.description}</p>
@@ -274,7 +274,7 @@ const Premium = () => {
                       const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()
                       setCardDetails({ ...cardDetails, number: v })
                     }}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                   />
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -290,7 +290,7 @@ const Premium = () => {
                         if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2)
                         setCardDetails({ ...cardDetails, expiry: v })
                       }}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="col-span-1">
@@ -301,7 +301,7 @@ const Premium = () => {
                       maxLength={4}
                       value={cardDetails.cvv}
                       onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value.replace(/\D/g, '') })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="col-span-1">
@@ -311,7 +311,7 @@ const Premium = () => {
                       placeholder="John Doe"
                       value={cardDetails.name}
                       onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                     />
                   </div>
                 </div>
@@ -325,7 +325,7 @@ const Premium = () => {
                 <input
                   type="text"
                   placeholder="yourname@upi"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
               </Card>
             )}
@@ -334,7 +334,7 @@ const Premium = () => {
             {selectedPayment === 'netbanking' && (
               <Card className="p-6">
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Select Bank</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                <select className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
                   <option value="">Choose your bank</option>
                   <option>State Bank of India</option>
                   <option>HDFC Bank</option>
@@ -395,7 +395,7 @@ const Premium = () => {
                 </div>
                 <div className="border-t border-slate-100 dark:border-slate-700 pt-3 flex justify-between">
                   <span className="font-bold text-slate-900 dark:text-white">Total</span>
-                  <span className="font-bold text-2xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  <span className="font-bold text-2xl bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
                     ${price}
                   </span>
                 </div>
@@ -404,7 +404,7 @@ const Premium = () => {
               <Button
                 onClick={handleActivate}
                 disabled={activateMutation.isPending}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-purple-500/30"
+                className="w-full bg-gradient-to-r from-primary-600 to-pink-600 hover:from-primary-700 hover:to-pink-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-primary-500/30"
               >
                 {activateMutation.isPending ? (
                   <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</>
@@ -427,9 +427,9 @@ const Premium = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-3xl p-8 text-white shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary-900 via-primary-900 to-slate-900 rounded-3xl p-8 text-white shadow-2xl">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
         </div>
         <div className="relative">
@@ -438,7 +438,7 @@ const Premium = () => {
             Premium Plans
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-2">Unlock Your Full Potential</h1>
-          <p className="text-purple-200 text-lg max-w-2xl">
+          <p className="text-primary-200 text-lg max-w-2xl">
             Get unlimited access to AI-powered interviews, advanced analytics, career roadmaps, and much more.
           </p>
 
@@ -465,7 +465,7 @@ const Premium = () => {
         </span>
         <button
           onClick={() => setInterval(interval === 'monthly' ? 'yearly' : 'monthly')}
-          className={`relative w-14 h-7 rounded-full transition-colors ${interval === 'yearly' ? 'bg-purple-600' : 'bg-slate-300 dark:bg-slate-600'}`}
+          className={`relative w-14 h-7 rounded-full transition-colors ${interval === 'yearly' ? 'bg-primary-600' : 'bg-slate-300 dark:bg-slate-600'}`}
         >
           <span className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform shadow-md ${interval === 'yearly' ? 'translate-x-8' : 'translate-x-1'}`} />
         </button>
@@ -486,12 +486,12 @@ const Premium = () => {
             <Card
               key={plan.id}
               className={`relative p-6 flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-                plan.popular ? 'ring-2 ring-purple-500 dark:ring-purple-400 shadow-purple-500/20 shadow-lg' : ''
+                plan.popular ? 'ring-2 ring-primary-500 dark:ring-primary-400 shadow-primary-500/20 shadow-lg' : ''
               } ${isCurrent ? 'ring-2 ring-green-500' : ''}`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
+                  <span className="bg-gradient-to-r from-primary-600 to-pink-600 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
                     MOST POPULAR
                   </span>
                 </div>
@@ -540,7 +540,7 @@ const Premium = () => {
                 onClick={() => handleSelectPlan(plan.id)}
                 disabled={isCurrent || plan.id === 'free'}
                 variant={plan.popular ? 'default' : 'outline'}
-                className={`w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25' : ''}`}
+                className={`w-full ${plan.popular ? 'bg-gradient-to-r from-primary-600 to-pink-600 hover:from-primary-700 hover:to-pink-700 text-white shadow-lg shadow-primary-500/25' : ''}`}
               >
                 {isCurrent ? (
                   'Current Plan'
@@ -564,7 +564,7 @@ const Premium = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Brain, title: 'AI Feedback', desc: 'Get detailed AI-powered analysis on every answer', color: 'text-purple-500' },
+            { icon: Brain, title: 'AI Feedback', desc: 'Get detailed AI-powered analysis on every answer', color: 'text-primary-500' },
             { icon: FileText, title: 'Resume Analysis', desc: 'Advanced ATS scoring and optimization tips', color: 'text-blue-500' },
             { icon: BarChart3, title: 'Advanced Analytics', desc: 'Deep insights into your performance trends', color: 'text-emerald-500' },
             { icon: Headphones, title: '1-on-1 Mentorship', desc: 'Personal sessions with industry experts', color: 'text-orange-500' },

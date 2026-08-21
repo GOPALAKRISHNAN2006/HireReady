@@ -126,7 +126,7 @@ function InterviewDetailsModal({ interview, onClose }) {
           onClick={handleModalClick}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white">
+          <div className="bg-gradient-to-r from-primary-600 to-primary-600 p-6 text-white">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
@@ -220,7 +220,7 @@ function InterviewDetailsModal({ interview, onClose }) {
                       Candidate Information
                     </h3>
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center">
                         <span className="text-white font-bold text-lg">
                           {user?.firstName?.[0] || 'U'}
                           {user?.lastName?.[0] || ''}
@@ -263,7 +263,7 @@ function InterviewDetailsModal({ interview, onClose }) {
                 {/* Questions & Responses */}
                 <div>
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    <MessageSquare className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     Questions & Responses ({responses.length})
                   </h3>
 
@@ -277,8 +277,8 @@ function InterviewDetailsModal({ interview, onClose }) {
                           {/* Question Header */}
                           <div className="bg-slate-50 dark:bg-slate-800 p-4 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
-                                <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
+                              <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                                <span className="text-primary-600 dark:text-primary-400 font-semibold text-sm">
                                   {index + 1}
                                 </span>
                               </div>
@@ -338,10 +338,10 @@ function InterviewDetailsModal({ interview, onClose }) {
 
                             {(response.feedback?.detailedFeedback ||
                               (typeof response.feedback === 'string' ? response.feedback : '')) && (
-                              <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/30 rounded-lg p-4">
+                              <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/30 rounded-lg p-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                  <Award className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                                  <span className="text-indigo-700 dark:text-indigo-300 text-sm font-medium">
+                                  <Award className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+                                  <span className="text-primary-700 dark:text-primary-300 text-sm font-medium">
                                     AI Feedback
                                   </span>
                                 </div>
@@ -369,9 +369,9 @@ function InterviewDetailsModal({ interview, onClose }) {
                 {/* Overall Feedback */}
                 {(interviewDetail?.overallFeedback ||
                   interviewDetail?.insights?.overallFeedback) && (
-                  <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-xl p-6">
+                  <div className="bg-gradient-to-r from-primary-50 to-primary-50 dark:from-primary-900/20 dark:to-primary-900/20 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                      <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                      <Award className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                       Overall Performance Feedback
                     </h3>
                     <p className="text-slate-700 dark:text-slate-300">
@@ -453,7 +453,7 @@ export default function AdminInterviews() {
           <select
             value={filters.status}
             onChange={e => setFilters({ ...filters, status: e.target.value })}
-            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-colors"
           >
             <option value="">All Status</option>
             <option value="completed">Completed</option>
@@ -464,7 +464,7 @@ export default function AdminInterviews() {
           <select
             value={filters.category}
             onChange={e => setFilters({ ...filters, category: e.target.value })}
-            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-colors"
           >
             <option value="">All Categories</option>
             {Object.entries(CATEGORIES).map(([value, label]) => (
@@ -506,7 +506,7 @@ export default function AdminInterviews() {
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                             <User className="w-5 h-5 text-white" />
                           </div>
                           <div>
@@ -531,7 +531,7 @@ export default function AdminInterviews() {
                           {interview.status === 'cancelled' && <XCircle className="w-3 h-3 mr-1" />}
                           {interview.status}
                         </Badge>
-                        <Badge className="rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800/30">
+                        <Badge className="rounded-lg bg-primary-50 text-primary-700 border border-primary-100 dark:bg-primary-900/20 dark:text-primary-400 dark:border-primary-800/30">
                           {CATEGORIES[interview.category] || interview.category}
                         </Badge>
                         <Badge
@@ -566,7 +566,7 @@ export default function AdminInterviews() {
                     <Button
                       onClick={() => setSelectedInterview(interview)}
                       variant="outline"
-                      className="border-indigo-500/50 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl"
+                      className="border-primary-500/50 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-xl"
                     >
                       <Eye className="w-4 h-4 mr-2" />
                       View Details

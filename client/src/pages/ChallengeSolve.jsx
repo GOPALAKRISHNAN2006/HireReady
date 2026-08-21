@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { Card, Button, Badge } from '../components/ui'
-import { LoadingCard } from '../components/ui/Spinner'
-import { challengeApi } from '../services/featureApi'
-import toast from 'react-hot-toast'
-import { 
-  Clock, 
-  Send, 
-  Lightbulb, 
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Card, Button, Badge } from '../components/ui';
+import { LoadingCard } from '../components/ui/Spinner';
+import { challengeApi } from '../services/featureApi';
+import toast from 'react-hot-toast';
+import {
+  Clock,
+  Send,
+  Lightbulb,
   ArrowLeft,
   CheckCircle,
   XCircle,
@@ -19,21 +19,21 @@ import {
   Code,
   FileText,
   Award,
-  Timer
-} from 'lucide-react'
+  Timer,
+} from 'lucide-react';
 
 const ChallengeSolve = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const [code, setCode] = useState('')
-  const [answer, setAnswer] = useState('')
-  const [timeSpent, setTimeSpent] = useState(0)
-  const [isRunning, setIsRunning] = useState(true)
-  const [showHints, setShowHints] = useState(false)
-  const [hintsUsed, setHintsUsed] = useState(0)
-  const [activeTab, setActiveTab] = useState('problem')
-  const [submitted, setSubmitted] = useState(false)
-  const [result, setResult] = useState(null)
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [code, setCode] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
+  const [showHints, setShowHints] = useState(false);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [activeTab, setActiveTab] = useState('problem');
+  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState(null);
 
   // Fetch challenge details
   const { data: challengeData, isLoading } = useQuery({
@@ -41,80 +41,80 @@ const ChallengeSolve = () => {
     queryFn: async () => {
       // If id is 'today', fetch today's challenge
       if (id === 'today') {
-        const response = await challengeApi.getTodaysChallenge()
-        return response.data.data
+        const response = await challengeApi.getTodaysChallenge();
+        return response.data.data;
       }
       // Otherwise fetch specific challenge
-      const response = await challengeApi.getTodaysChallenge()
-      return response.data.data
+      const response = await challengeApi.getTodaysChallenge();
+      return response.data.data;
     },
-  })
+  });
 
-  const challenge = challengeData?.challenge
+  const challenge = challengeData?.challenge;
 
   // Timer effect
   useEffect(() => {
-    let interval
+    let interval;
     if (isRunning && !submitted) {
       interval = setInterval(() => {
-        setTimeSpent(prev => prev + 1)
-      }, 1000)
+        setTimeSpent(prev => prev + 1);
+      }, 1000);
     }
-    return () => clearInterval(interval)
-  }, [isRunning, submitted])
+    return () => clearInterval(interval);
+  }, [isRunning, submitted]);
 
   // Format time
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-  }
+  const formatTime = seconds => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   // Check if over time limit
-  const isOverTime = challenge?.timeLimit && timeSpent > challenge.timeLimit * 60
+  const isOverTime = challenge?.timeLimit && timeSpent > challenge.timeLimit * 60;
 
   // Submit mutation
   const submitMutation = useMutation({
-    mutationFn: async (data) => {
-      const response = await challengeApi.submitChallenge(challenge._id, data)
-      return response.data
+    mutationFn: async data => {
+      const response = await challengeApi.submitChallenge(challenge._id, data);
+      return response.data;
     },
-    onSuccess: (data) => {
-      setSubmitted(true)
-      setIsRunning(false)
-      setResult(data.data)
+    onSuccess: data => {
+      setSubmitted(true);
+      setIsRunning(false);
+      setResult(data.data);
       if (data.data.attempt?.isCompleted) {
-        toast.success(`Challenge completed! +${data.data.attempt.pointsEarned} points`)
+        toast.success(`Challenge completed! +${data.data.attempt.pointsEarned} points`);
       } else {
-        toast.error(data.data.attempt?.feedback || 'Keep trying! Your solution needs improvement.')
+        toast.error(data.data.attempt?.feedback || 'Keep trying! Your solution needs improvement.');
       }
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to submit')
-    }
-  })
+    onError: error => {
+      toast.error(error.response?.data?.message || 'Failed to submit');
+    },
+  });
 
   const handleSubmit = () => {
     if (!code.trim() && !answer.trim()) {
-      toast.error('Please write your solution before submitting')
-      return
+      toast.error('Please write your solution before submitting');
+      return;
     }
-    
+
     submitMutation.mutate({
       code: code.trim(),
       answer: answer.trim(),
       timeSpent,
-      hintsUsed
-    })
-  }
+      hintsUsed,
+    });
+  };
 
   const handleUseHint = () => {
     if (challenge?.hints && hintsUsed < challenge.hints.length) {
-      setHintsUsed(prev => prev + 1)
-      setShowHints(true)
-      toast.success('Hint revealed! (-10 points)')
+      setHintsUsed(prev => prev + 1);
+      setShowHints(true);
+      toast.success('Hint revealed! (-10 points)');
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -122,20 +122,24 @@ const ChallengeSolve = () => {
         <LoadingCard />
         <LoadingCard />
       </div>
-    )
+    );
   }
 
   if (!challenge) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">No Challenge Found</h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">There's no active challenge available right now.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          No Challenge Found
+        </h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          There's no active challenge available right now.
+        </p>
         <Button onClick={() => navigate('/daily-challenge')}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Challenges
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -150,22 +154,31 @@ const ChallengeSolve = () => {
           <div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{challenge.title}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant={
-                challenge.difficulty === 'easy' ? 'success' :
-                challenge.difficulty === 'medium' ? 'warning' : 'danger'
-              }>
+              <Badge
+                variant={
+                  challenge.difficulty === 'easy'
+                    ? 'success'
+                    : challenge.difficulty === 'medium'
+                      ? 'warning'
+                      : 'danger'
+                }
+              >
                 {challenge.difficulty}
               </Badge>
               <Badge variant="default">{challenge.category}</Badge>
-              <span className="text-sm text-slate-500 dark:text-slate-400">+{challenge.points} points</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">
+                +{challenge.points} points
+              </span>
             </div>
           </div>
         </div>
 
         {/* Timer */}
-        <div className={`flex items-center gap-3 px-4 py-2 rounded-xl ${
-          isOverTime ? 'bg-red-100 text-red-700' : 'bg-indigo-100 text-indigo-700'
-        }`}>
+        <div
+          className={`flex items-center gap-3 px-4 py-2 rounded-xl ${
+            isOverTime ? 'bg-red-100 text-red-700' : 'bg-primary-100 text-primary-700'
+          }`}
+        >
           <Timer className="w-5 h-5" />
           <span className="text-xl font-mono font-bold">{formatTime(timeSpent)}</span>
           {challenge.timeLimit && (
@@ -176,11 +189,13 @@ const ChallengeSolve = () => {
 
       {/* Result Banner */}
       {submitted && result && (
-        <Card className={`${
-          result.attempt?.isCompleted 
-            ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' 
-            : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200'
-        }`}>
+        <Card
+          className={`${
+            result.attempt?.isCompleted
+              ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
+              : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200'
+          }`}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {result.attempt?.isCompleted ? (
@@ -224,7 +239,7 @@ const ChallengeSolve = () => {
               onClick={() => setActiveTab('problem')}
               className={`px-4 py-3 font-medium transition-colors ${
                 activeTab === 'problem'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  ? 'text-primary-600 border-b-2 border-primary-600'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
@@ -235,7 +250,7 @@ const ChallengeSolve = () => {
               onClick={() => setActiveTab('hints')}
               className={`px-4 py-3 font-medium transition-colors ${
                 activeTab === 'hints'
-                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  ? 'text-primary-600 border-b-2 border-primary-600'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
@@ -248,15 +263,19 @@ const ChallengeSolve = () => {
             {activeTab === 'problem' ? (
               <div className="prose prose-sm max-w-none">
                 <p className="text-slate-600 dark:text-slate-400 mb-4">{challenge.description}</p>
-                
-                <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Question</h4>
+
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                  Question
+                </h4>
                 <div className="bg-slate-50 dark:bg-slate-800 dark:text-slate-300 p-4 rounded-lg whitespace-pre-wrap font-mono text-sm">
                   {challenge.question}
                 </div>
 
                 {challenge.sampleInput && (
                   <>
-                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">Sample Input</h4>
+                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">
+                      Sample Input
+                    </h4>
                     <div className="bg-slate-800 text-green-400 p-3 rounded-lg font-mono text-sm">
                       {challenge.sampleInput}
                     </div>
@@ -265,7 +284,9 @@ const ChallengeSolve = () => {
 
                 {challenge.sampleOutput && (
                   <>
-                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">Expected Output</h4>
+                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mt-4 mb-2">
+                      Expected Output
+                    </h4>
                     <div className="bg-slate-800 text-green-400 p-3 rounded-lg font-mono text-sm">
                       {challenge.sampleOutput}
                     </div>
@@ -275,7 +296,10 @@ const ChallengeSolve = () => {
                 {challenge.tags && challenge.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {challenge.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded">
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded"
+                      >
                         #{tag}
                       </span>
                     ))}
@@ -287,7 +311,10 @@ const ChallengeSolve = () => {
                 {challenge.hints && challenge.hints.length > 0 ? (
                   <>
                     {challenge.hints.slice(0, hintsUsed).map((hint, index) => (
-                      <div key={index} className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div
+                        key={index}
+                        className="p-4 bg-amber-50 border border-amber-200 rounded-lg"
+                      >
                         <div className="flex items-center gap-2 text-amber-700 font-medium mb-2">
                           <Lightbulb className="w-4 h-4" />
                           Hint {index + 1}
@@ -295,18 +322,14 @@ const ChallengeSolve = () => {
                         <p className="text-slate-700 dark:text-slate-300">{hint}</p>
                       </div>
                     ))}
-                    
+
                     {hintsUsed < challenge.hints.length && !submitted && (
-                      <Button
-                        variant="outline"
-                        onClick={handleUseHint}
-                        className="w-full"
-                      >
+                      <Button variant="outline" onClick={handleUseHint} className="w-full">
                         <Eye className="w-4 h-4 mr-2" />
                         Reveal Next Hint (-10 points)
                       </Button>
                     )}
-                    
+
                     {hintsUsed === 0 && (
                       <p className="text-center text-slate-500 dark:text-slate-400 py-4">
                         No hints revealed yet. Using hints will reduce your points.
@@ -327,15 +350,15 @@ const ChallengeSolve = () => {
         <Card className="min-h-[500px] max-h-[700px] flex flex-col overflow-hidden">
           <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-2">
-              <Code className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <Code className="w-5 h-5 text-primary-600 dark:text-primary-400" />
               <span className="font-medium text-slate-900 dark:text-white">Your Solution</span>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => {
-                setCode('')
-                setAnswer('')
+                setCode('');
+                setAnswer('');
               }}
               disabled={submitted}
             >
@@ -352,10 +375,10 @@ const ChallengeSolve = () => {
               </label>
               <textarea
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={e => setCode(e.target.value)}
                 placeholder="// Write your code here..."
                 disabled={submitted}
-                className="w-full h-[200px] p-4 font-mono text-sm bg-slate-900 text-green-400 rounded-lg border-0 focus:ring-2 focus:ring-indigo-500 resize-none"
+                className="w-full h-[200px] p-4 font-mono text-sm bg-slate-900 text-green-400 rounded-lg border-0 focus:ring-2 focus:ring-primary-500 resize-none"
               />
             </div>
 
@@ -366,10 +389,10 @@ const ChallengeSolve = () => {
               </label>
               <textarea
                 value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
+                onChange={e => setAnswer(e.target.value)}
                 placeholder="Explain your approach or write your answer here..."
                 disabled={submitted}
-                className="w-full h-[150px] p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                className="w-full h-[150px] p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary-500 resize-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -393,7 +416,7 @@ const ChallengeSolve = () => {
                 )}
               </Button>
             ) : (
-                <div className="text-center text-slate-500 dark:text-slate-400">
+              <div className="text-center text-slate-500 dark:text-slate-400">
                 Solution submitted • Time: {formatTime(timeSpent)}
               </div>
             )}
@@ -415,7 +438,7 @@ const ChallengeSolve = () => {
         </Card>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ChallengeSolve
+export default ChallengeSolve;

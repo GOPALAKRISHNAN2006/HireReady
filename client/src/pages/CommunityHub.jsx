@@ -267,7 +267,7 @@ const CommunityHub = () => {
   return (
     <div className="space-y-8 animate-slide-up">
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 rounded-3xl p-5 md:p-8 text-white shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary-600 via-primary-600 to-fuchsia-600 rounded-3xl p-5 md:p-8 text-white shadow-2xl">
         <div className="absolute inset-0">
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
@@ -287,7 +287,7 @@ const CommunityHub = () => {
             Join the Community
           </div>
           <h1 className="text-2xl md:text-4xl font-bold mb-3">Community Hub</h1>
-          <p className="text-purple-100 text-base md:text-lg max-w-2xl">
+          <p className="text-primary-100 text-base md:text-lg max-w-2xl">
             Connect with fellow developers, share experiences, and learn from each other's interview
             journeys.
           </p>
@@ -295,11 +295,11 @@ const CommunityHub = () => {
           <div className="mt-6 flex flex-wrap gap-4 md:gap-6">
             <div>
               <div className="text-2xl md:text-3xl font-bold">{posts.length}</div>
-              <div className="text-xs md:text-sm text-purple-100">Posts</div>
+              <div className="text-xs md:text-sm text-primary-100">Posts</div>
             </div>
             <div>
               <div className="text-2xl md:text-3xl font-bold">{mentors.length}</div>
-              <div className="text-xs md:text-sm text-purple-100">Mentors</div>
+              <div className="text-xs md:text-sm text-primary-100">Mentors</div>
             </div>
           </div>
         </div>
@@ -313,8 +313,8 @@ const CommunityHub = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-indigo-300'
+                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
+                : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary-300'
             }`}
           >
             <tab.icon className="w-5 h-5" />
@@ -329,7 +329,7 @@ const CommunityHub = () => {
           {/* Create Post */}
           <Card>
             <div className="flex gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div className="flex-1">
@@ -337,7 +337,7 @@ const CommunityHub = () => {
                   value={newPost}
                   onChange={e => setNewPost(e.target.value)}
                   placeholder="Share your interview experience, ask questions, or help others..."
-                  className="w-full p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl border border-slate-200 dark:border-slate-700 resize-none focus:ring-2 focus:ring-indigo-500 min-h-[100px] placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                  className="w-full p-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl border border-slate-200 dark:border-slate-700 resize-none focus:ring-2 focus:ring-primary-500 min-h-[100px] placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex gap-2">
@@ -410,7 +410,7 @@ const CommunityHub = () => {
                             {post.tags.map(tag => (
                               <span
                                 key={tag}
-                                className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:text-indigo-700 dark:hover:text-indigo-400 cursor-pointer transition-colors"
+                                className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 hover:text-primary-700 dark:hover:text-primary-400 cursor-pointer transition-colors"
                               >
                                 #{tag}
                               </span>
@@ -430,7 +430,7 @@ const CommunityHub = () => {
                             onClick={() =>
                               setExpandedComments(prev => ({ ...prev, [post.id]: !prev[post.id] }))
                             }
-                            className="flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-500 transition-colors"
+                            className="flex items-center gap-2 text-sm text-slate-500 hover:text-primary-500 transition-colors"
                           >
                             <MessageSquare className="w-5 h-5" />
                             {post.comments}
@@ -504,7 +504,7 @@ const CommunityHub = () => {
                             )}
 
                             <div className="flex gap-3">
-                              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                                 {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
                               </div>
                               <div className="flex-1 flex gap-2">
@@ -518,7 +518,7 @@ const CommunityHub = () => {
                                     }))
                                   }
                                   placeholder="Write a comment..."
-                                  className="flex-1 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder:text-slate-400"
+                                  className="flex-1 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder:text-slate-400"
                                   onKeyPress={e => {
                                     if (e.key === 'Enter' && commentInputs[post.id]?.trim()) {
                                       addCommentMutation.mutate({
@@ -540,7 +540,7 @@ const CommunityHub = () => {
                                   disabled={
                                     !commentInputs[post.id]?.trim() || addCommentMutation.isPending
                                   }
-                                  className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                                  className="px-4 py-2 bg-primary-600 text-white rounded-xl text-sm hover:bg-primary-700 disabled:opacity-50 transition-colors"
                                 >
                                   <Send className="w-4 h-4" />
                                 </button>
@@ -575,7 +575,7 @@ const CommunityHub = () => {
                 discussionsData.map((discussion, index) => (
                   <Card key={index} hover>
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
                         <MessageCircle className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -711,7 +711,7 @@ const CommunityHub = () => {
                           {mentor.expertise.map(skill => (
                             <span
                               key={skill}
-                              className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 text-sm rounded-lg"
+                              className="px-3 py-1 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 text-sm rounded-lg"
                             >
                               {skill}
                             </span>
@@ -764,7 +764,7 @@ const CommunityHub = () => {
           <Card>
             <Card.Header>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-indigo-500" />
+                <TrendingUp className="w-5 h-5 text-primary-500" />
                 <Card.Title>Trending Topics</Card.Title>
               </div>
             </Card.Header>
@@ -777,10 +777,10 @@ const CommunityHub = () => {
                       className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg cursor-pointer transition-colors group"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">
+                        <span className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-xs font-bold">
                           {index + 1}
                         </span>
-                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                           #{topic.tag}
                         </span>
                       </div>
@@ -812,13 +812,13 @@ const CommunityHub = () => {
           </Card>
 
           {/* Join Community CTA */}
-          <Card className="bg-gradient-to-br from-violet-500 to-purple-600 text-white border-0">
+          <Card className="bg-gradient-to-br from-primary-500 to-primary-600 text-white border-0">
             <div className="text-center">
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <UserPlus className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-lg font-bold mb-2">Invite Friends</h3>
-              <p className="text-sm text-purple-100 mb-4">
+              <p className="text-sm text-primary-100 mb-4">
                 Earn 100 points for each friend who joins!
               </p>
               <Button

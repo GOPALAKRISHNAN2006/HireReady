@@ -1,32 +1,32 @@
-import { useState, useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Card, Badge } from '../components/ui'
-import { LoadingCard } from '../components/ui/Spinner'
-import api from '../services/api'
-import { 
-  Award, 
-  Trophy, 
-  Star, 
+import { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Card, Badge } from '../components/ui';
+import { LoadingCard } from '../components/ui/Spinner';
+import api from '../services/api';
+import {
+  Award,
+  Trophy,
+  Star,
   CheckCircle,
   Lock,
   Sparkles,
   Zap,
   TrendingUp,
   Share2,
-  Clock
-} from 'lucide-react'
+  Clock,
+} from 'lucide-react';
 
 const Achievements = () => {
-  const [filter, setFilter] = useState('all')
+  const [filter, setFilter] = useState('all');
 
   // Fetch achievements data
   const { data, isLoading } = useQuery({
     queryKey: ['achievements'],
     queryFn: async () => {
-      const response = await api.get('/analytics/achievements')
-      return response.data?.data || response.data
+      const response = await api.get('/analytics/achievements');
+      return response.data?.data || response.data;
     },
-  })
+  });
 
   const achievements = (data?.achievements || []).map((a, index) => ({
     id: index + 1,
@@ -37,80 +37,95 @@ const Achievements = () => {
     unlocked: a.unlocked || false,
     unlockedAt: a.unlockedAt,
     // Derive rarity from category
-    rarity: a.category === 'speed' || a.category === 'variety' ? 'epic' 
-      : a.category === 'streak' ? 'rare' 
-      : a.category === 'score' ? 'rare'
-      : 'common',
+    rarity:
+      a.category === 'speed' || a.category === 'variety'
+        ? 'epic'
+        : a.category === 'streak'
+          ? 'rare'
+          : a.category === 'score'
+            ? 'rare'
+            : 'common',
     xp: a.unlocked ? 100 : 0,
     progress: a.unlocked ? 100 : 0,
-  }))
+  }));
 
   const stats = {
     totalAchievements: data?.totalCount || achievements.length,
     unlockedAchievements: data?.unlockedCount || achievements.filter(a => a.unlocked).length,
     totalXP: achievements.filter(a => a.unlocked).length * 100,
     nextMilestone: Math.max(1000, (achievements.filter(a => a.unlocked).length + 1) * 100),
-  }
+  };
 
   // Level system
   const level = useMemo(() => {
-    const xp = stats.totalXP
+    const xp = stats.totalXP;
     const levels = [
       { name: 'Beginner', minXP: 0, emoji: '🌱', color: 'from-slate-400 to-slate-500' },
       { name: 'Learner', minXP: 200, emoji: '📚', color: 'from-blue-400 to-blue-600' },
-      { name: 'Achiever', minXP: 500, emoji: '⭐', color: 'from-purple-400 to-purple-600' },
+      { name: 'Achiever', minXP: 500, emoji: '⭐', color: 'from-primary-400 to-primary-600' },
       { name: 'Expert', minXP: 1000, emoji: '🏆', color: 'from-amber-400 to-orange-500' },
       { name: 'Master', minXP: 2000, emoji: '👑', color: 'from-yellow-400 to-red-500' },
       { name: 'Legend', minXP: 5000, emoji: '🌟', color: 'from-pink-500 to-rose-600' },
-    ]
-    let current = levels[0]
-    let next = levels[1]
+    ];
+    let current = levels[0];
+    let next = levels[1];
     for (let i = levels.length - 1; i >= 0; i--) {
       if (xp >= levels[i].minXP) {
-        current = levels[i]
-        next = levels[i + 1] || null
-        break
+        current = levels[i];
+        next = levels[i + 1] || null;
+        break;
       }
     }
-    const progress = next ? ((xp - current.minXP) / (next.minXP - current.minXP)) * 100 : 100
-    return { current, next, progress, number: levels.indexOf(current) + 1 }
-  }, [stats.totalXP])
+    const progress = next ? ((xp - current.minXP) / (next.minXP - current.minXP)) * 100 : 100;
+    return { current, next, progress, number: levels.indexOf(current) + 1 };
+  }, [stats.totalXP]);
 
   // Recently unlocked achievements
   const recentlyUnlocked = useMemo(() => {
     return achievements
       .filter(a => a.unlocked && a.unlockedAt)
       .sort((a, b) => new Date(b.unlockedAt) - new Date(a.unlockedAt))
-      .slice(0, 3)
-  }, [achievements])
+      .slice(0, 3);
+  }, [achievements]);
 
-  const filteredAchievements = filter === 'all' 
-    ? achievements 
-    : filter === 'unlocked' 
-      ? achievements.filter(a => a.unlocked)
-      : filter === 'locked'
-        ? achievements.filter(a => !a.unlocked)
-        : achievements.filter(a => a.category === filter)
+  const filteredAchievements =
+    filter === 'all'
+      ? achievements
+      : filter === 'unlocked'
+        ? achievements.filter(a => a.unlocked)
+        : filter === 'locked'
+          ? achievements.filter(a => !a.unlocked)
+          : achievements.filter(a => a.category === filter);
 
-  const getRarityColor = (rarity) => {
+  const getRarityColor = rarity => {
     switch (rarity) {
-      case 'common': return 'from-slate-400 to-slate-500'
-      case 'rare': return 'from-blue-400 to-blue-600'
-      case 'epic': return 'from-purple-400 to-purple-600'
-      case 'legendary': return 'from-yellow-400 to-orange-500'
-      default: return 'from-slate-400 to-slate-500'
+      case 'common':
+        return 'from-slate-400 to-slate-500';
+      case 'rare':
+        return 'from-blue-400 to-blue-600';
+      case 'epic':
+        return 'from-primary-400 to-primary-600';
+      case 'legendary':
+        return 'from-yellow-400 to-orange-500';
+      default:
+        return 'from-slate-400 to-slate-500';
     }
-  }
+  };
 
-  const getRarityBadge = (rarity) => {
+  const getRarityBadge = rarity => {
     switch (rarity) {
-      case 'common': return 'default'
-      case 'rare': return 'primary'
-      case 'epic': return 'purple'
-      case 'legendary': return 'warning'
-      default: return 'default'
+      case 'common':
+        return 'default';
+      case 'rare':
+        return 'primary';
+      case 'epic':
+        return 'purple';
+      case 'legendary':
+        return 'warning';
+      default:
+        return 'default';
     }
-  }
+  };
 
   return (
     <div className="space-y-8">
@@ -124,7 +139,9 @@ const Achievements = () => {
             Your Milestones
           </div>
           <h1 className="text-3xl font-bold mb-2">Achievements</h1>
-          <p className="text-white/70 max-w-lg">Track your progress and unlock badges as you practice</p>
+          <p className="text-white/70 max-w-lg">
+            Track your progress and unlock badges as you practice
+          </p>
         </div>
       </div>
 
@@ -133,14 +150,22 @@ const Achievements = () => {
         <div className="flex flex-col md:flex-row md:items-center gap-6">
           {/* Level Badge */}
           <div className="flex items-center gap-4">
-            <div className={`w-20 h-20 bg-gradient-to-br ${level.current.color} rounded-2xl flex flex-col items-center justify-center shadow-xl flex-shrink-0`}>
+            <div
+              className={`w-20 h-20 bg-gradient-to-br ${level.current.color} rounded-2xl flex flex-col items-center justify-center shadow-xl flex-shrink-0`}
+            >
               <span className="text-3xl">{level.current.emoji}</span>
               <span className="text-xs font-bold text-white/80">Lv.{level.number}</span>
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Current Level</p>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{level.current.name}</h2>
-              <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{stats.totalXP} XP</p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                Current Level
+              </p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                {level.current.name}
+              </h2>
+              <p className="text-sm text-primary-600 dark:text-primary-400 font-medium">
+                {stats.totalXP} XP
+              </p>
             </div>
           </div>
 
@@ -148,14 +173,16 @@ const Achievements = () => {
           <div className="flex-1">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
-                {level.next ? `${Math.round(level.progress)}% to ${level.next.name} ${level.next.emoji}` : 'Max Level Reached!'}
+                {level.next
+                  ? `${Math.round(level.progress)}% to ${level.next.name} ${level.next.emoji}`
+                  : 'Max Level Reached!'}
               </span>
               <span className="text-sm text-slate-500 dark:text-slate-400">
                 {level.next ? `${level.next.minXP - stats.totalXP} XP needed` : ''}
               </span>
             </div>
             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-4 overflow-hidden">
-              <div 
+              <div
                 className={`h-full bg-gradient-to-r ${level.current.color} rounded-full transition-all duration-700 ease-out relative`}
                 style={{ width: `${Math.min(level.progress, 100)}%` }}
               >
@@ -177,12 +204,19 @@ const Achievements = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {recentlyUnlocked.map(a => (
-              <div key={a.id} className="flex items-center gap-3 bg-white dark:bg-slate-800 rounded-xl p-3 shadow-sm">
-                <div className={`w-12 h-12 bg-gradient-to-br ${getRarityColor(a.rarity)} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
+              <div
+                key={a.id}
+                className="flex items-center gap-3 bg-white dark:bg-slate-800 rounded-xl p-3 shadow-sm"
+              >
+                <div
+                  className={`w-12 h-12 bg-gradient-to-br ${getRarityColor(a.rarity)} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}
+                >
                   <span className="text-xl">{a.icon}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-slate-900 dark:text-white text-sm truncate">{a.name}</h4>
+                  <h4 className="font-semibold text-slate-900 dark:text-white text-sm truncate">
+                    {a.name}
+                  </h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {new Date(a.unlockedAt).toLocaleDateString()}
@@ -206,13 +240,13 @@ const Achievements = () => {
           { value: 'streak', label: 'Streak' },
           { value: 'category', label: 'Category' },
           { value: 'special', label: 'Special' },
-        ].map((f) => (
+        ].map(f => (
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
             className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${
               filter === f.value
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
                 : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600'
             }`}
           >
@@ -227,69 +261,80 @@ const Achievements = () => {
       ) : achievements.length === 0 ? (
         <Card className="text-center py-16">
           <Award className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">No Achievements Yet</h3>
+          <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">
+            No Achievements Yet
+          </h3>
           <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
             Start completing interviews to unlock achievements and earn XP!
           </p>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredAchievements.map((achievement) => (
-            <Card 
-              key={achievement.id} 
+          {filteredAchievements.map(achievement => (
+            <Card
+              key={achievement.id}
               className={`relative overflow-hidden transition-all duration-300 group ${
-                achievement.unlocked 
-                  ? 'hover:shadow-xl hover:-translate-y-1' 
+                achievement.unlocked
+                  ? 'hover:shadow-xl hover:-translate-y-1'
                   : 'opacity-60 grayscale hover:grayscale-0 hover:opacity-80'
               }`}
             >
               {/* Rarity glow effect for unlocked */}
               {achievement.unlocked && (
-                <div className={`absolute inset-0 bg-gradient-to-br ${getRarityColor(achievement.rarity)} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${getRarityColor(achievement.rarity)} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                />
               )}
-              
+
               {achievement.unlocked && (
                 <div className="absolute top-3 right-3">
                   <CheckCircle className="w-6 h-6 text-green-500" />
                 </div>
               )}
-              
+
               {!achievement.unlocked && (
                 <div className="absolute top-3 right-3">
                   <Lock className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                 </div>
               )}
-              
+
               <div className="flex items-start space-x-4">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${getRarityColor(achievement.rarity)} flex items-center justify-center shadow-lg flex-shrink-0 ${achievement.unlocked ? 'group-hover:scale-110' : ''} transition-transform`}>
+                <div
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${getRarityColor(achievement.rarity)} flex items-center justify-center shadow-lg flex-shrink-0 ${achievement.unlocked ? 'group-hover:scale-110' : ''} transition-transform`}
+                >
                   <span className="text-3xl">{achievement.icon}</span>
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2 mb-1">
-                    <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate">{achievement.name}</h3>
+                    <h3 className="font-bold text-slate-900 dark:text-slate-100 truncate">
+                      {achievement.name}
+                    </h3>
                     <Badge variant={getRarityBadge(achievement.rarity)} size="sm">
                       {achievement.rarity}
                     </Badge>
                   </div>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">{achievement.description}</p>
-                  
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                    {achievement.description}
+                  </p>
+
                   <div className="flex items-center justify-between">
                     <div className="flex-1 mr-4">
                       <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-                        <div 
+                        <div
                           className={`h-full bg-gradient-to-r ${getRarityColor(achievement.rarity)} rounded-full transition-all duration-500`}
                           style={{ width: `${achievement.progress}%` }}
                         />
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{achievement.progress}%</span>
+                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                      {achievement.progress}%
+                    </span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium flex items-center gap-1">
-                      <Zap className="w-3 h-3" />
-                      +{achievement.xp} XP
+                    <p className="text-xs text-primary-600 dark:text-primary-400 font-medium flex items-center gap-1">
+                      <Zap className="w-3 h-3" />+{achievement.xp} XP
                     </p>
                     {achievement.unlocked && achievement.unlockedAt && (
                       <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
@@ -305,7 +350,7 @@ const Achievements = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Achievements
+export default Achievements;

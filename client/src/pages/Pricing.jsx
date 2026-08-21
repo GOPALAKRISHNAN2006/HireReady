@@ -164,7 +164,7 @@ const Pricing = () => {
             <button
               onClick={() => setInterval(interval === 'monthly' ? 'yearly' : 'monthly')}
               className={`relative w-14 h-7 rounded-full transition-colors ${
-                interval === 'yearly' ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
+                interval === 'yearly' ? 'bg-primary-600' : 'bg-slate-300 dark:bg-slate-600'
               }`}
             >
               <span
@@ -192,13 +192,13 @@ const Pricing = () => {
                 key={plan.id}
                 className={`relative bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 flex flex-col ${
                   plan.highlighted
-                    ? 'ring-2 ring-indigo-600 dark:ring-indigo-400 scale-105'
+                    ? 'ring-2 ring-primary-600 dark:ring-primary-400 scale-105'
                     : ''
                 } ${isCurrentPlan ? 'ring-2 ring-green-500' : ''}`}
               >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="bg-indigo-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
+                    <span className="bg-primary-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
                       Most Popular
                     </span>
                   </div>
@@ -214,8 +214,8 @@ const Pricing = () => {
 
                 <div className="text-center mb-6">
                   {Icon && (
-                    <div className="w-12 h-12 mx-auto mb-4 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                    <div className="w-12 h-12 mx-auto mb-4 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                     </div>
                   )}
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -257,7 +257,7 @@ const Pricing = () => {
 
                 <Button
                   variant={getButtonVariant(plan.id, plan.highlighted)}
-                  className={`w-full ${plan.highlighted ? 'bg-indigo-600 hover:bg-indigo-700' : ''}`}
+                  className={`w-full ${plan.highlighted ? 'bg-primary-600 hover:bg-primary-700' : ''}`}
                   onClick={() => handleSubscribe(plan.id)}
                   disabled={loading === plan.id || isCurrentPlan}
                 >

@@ -2,7 +2,7 @@
  * ===========================================
  * Proctoring Report Component
  * ===========================================
- * 
+ *
  * Displays comprehensive proctoring report
  * after a session ends.
  */
@@ -25,7 +25,7 @@ import {
   TrendingUp,
   FileText,
   Download,
-  X
+  X,
 } from 'lucide-react';
 
 const ProctoringReport = ({ report, onClose }) => {
@@ -37,7 +37,7 @@ const ProctoringReport = ({ report, onClose }) => {
     sessionDuration = 0,
     stats = {},
     violations = [],
-    summary = {}
+    summary = {},
   } = report;
 
   // Get integrity color and icon
@@ -49,7 +49,7 @@ const ProctoringReport = ({ report, onClose }) => {
         borderColor: 'border-green-500/30',
         icon: ShieldCheck,
         label: 'Clean Session',
-        description: 'No significant integrity concerns detected'
+        description: 'No significant integrity concerns detected',
       };
     }
     if (integrityStatus === 'review_recommended') {
@@ -59,7 +59,7 @@ const ProctoringReport = ({ report, onClose }) => {
         borderColor: 'border-yellow-500/30',
         icon: ShieldAlert,
         label: 'Review Recommended',
-        description: 'Some concerns noted - manual review suggested'
+        description: 'Some concerns noted - manual review suggested',
       };
     }
     return {
@@ -68,7 +68,7 @@ const ProctoringReport = ({ report, onClose }) => {
       borderColor: 'border-red-500/30',
       icon: ShieldX,
       label: 'High Suspicion',
-      description: 'Multiple integrity concerns detected'
+      description: 'Multiple integrity concerns detected',
     };
   };
 
@@ -76,11 +76,11 @@ const ProctoringReport = ({ report, onClose }) => {
   const IntegrityIcon = integrityInfo.icon;
 
   // Format duration
-  const formatDuration = (ms) => {
+  const formatDuration = ms => {
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes % 60}m`;
     }
@@ -88,14 +88,14 @@ const ProctoringReport = ({ report, onClose }) => {
   };
 
   // Get severity color
-  const getSeverityColor = (severity) => {
+  const getSeverityColor = severity => {
     if (severity === 'high') return 'text-red-400 bg-red-500/10 border-red-500/30';
     if (severity === 'medium') return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30';
     return 'text-slate-400 bg-slate-500/10 border-slate-500/30';
   };
 
   // Get violation icon
-  const getViolationIcon = (category) => {
+  const getViolationIcon = category => {
     if (category === 'camera') return Camera;
     if (category === 'screen') return Monitor;
     if (category === 'audio') return Mic;
@@ -115,7 +115,9 @@ const ProctoringReport = ({ report, onClose }) => {
         className="w-full max-w-3xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden my-4"
       >
         {/* Header */}
-        <div className={`p-4 sm:p-6 ${integrityInfo.bgColor} border-b ${integrityInfo.borderColor}`}>
+        <div
+          className={`p-4 sm:p-6 ${integrityInfo.bgColor} border-b ${integrityInfo.borderColor}`}
+        >
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className={`p-2 sm:p-3 rounded-xl ${integrityInfo.bgColor}`}>
@@ -123,9 +125,7 @@ const ProctoringReport = ({ report, onClose }) => {
               </div>
               <div>
                 <h2 className="text-lg sm:text-xl font-bold text-white">Proctoring Report</h2>
-                <p className={`text-xs sm:text-sm ${integrityInfo.color}`}>
-                  {integrityInfo.label}
-                </p>
+                <p className={`text-xs sm:text-sm ${integrityInfo.color}`}>{integrityInfo.label}</p>
               </div>
             </div>
             <button
@@ -173,7 +173,7 @@ const ProctoringReport = ({ report, onClose }) => {
 
             <div className="bg-slate-800 rounded-xl p-3 sm:p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
-                <Eye className="w-4 h-4 text-purple-400" />
+                <Eye className="w-4 h-4 text-primary-400" />
                 <span className="text-xs text-slate-400">Warnings</span>
               </div>
               <p className="text-xl sm:text-2xl font-bold text-white">
@@ -183,16 +183,14 @@ const ProctoringReport = ({ report, onClose }) => {
           </div>
 
           {/* Integrity Status */}
-          <div className={`p-4 rounded-xl border ${integrityInfo.bgColor} ${integrityInfo.borderColor}`}>
+          <div
+            className={`p-4 rounded-xl border ${integrityInfo.bgColor} ${integrityInfo.borderColor}`}
+          >
             <div className="flex items-start gap-3">
               <IntegrityIcon className={`w-5 h-5 ${integrityInfo.color} flex-shrink-0 mt-0.5`} />
               <div>
-                <h3 className={`font-medium ${integrityInfo.color}`}>
-                  {integrityInfo.label}
-                </h3>
-                <p className="text-sm text-slate-400 mt-1">
-                  {integrityInfo.description}
-                </p>
+                <h3 className={`font-medium ${integrityInfo.color}`}>{integrityInfo.label}</h3>
+                <p className="text-sm text-slate-400 mt-1">{integrityInfo.description}</p>
               </div>
             </div>
           </div>
@@ -211,7 +209,9 @@ const ProctoringReport = ({ report, onClose }) => {
                   <p className="text-xs text-slate-400">High Severity</p>
                 </div>
                 <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-yellow-400">{stats.mediumViolations || 0}</p>
+                  <p className="text-2xl font-bold text-yellow-400">
+                    {stats.mediumViolations || 0}
+                  </p>
                   <p className="text-xs text-slate-400">Medium Severity</p>
                 </div>
                 <div className="bg-slate-500/10 border border-slate-500/30 rounded-lg p-4 text-center">
@@ -240,7 +240,9 @@ const ProctoringReport = ({ report, onClose }) => {
                               {new Date(violation.timestamp).toLocaleTimeString()}
                             </p>
                           </div>
-                          <span className={`text-xs px-2 py-0.5 rounded capitalize ${getSeverityColor(violation.severity)}`}>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded capitalize ${getSeverityColor(violation.severity)}`}
+                          >
                             {violation.severity}
                           </span>
                         </div>
@@ -261,11 +263,10 @@ const ProctoringReport = ({ report, onClose }) => {
           {stats.totalViolations === 0 && (
             <div className="text-center py-8 bg-slate-800 rounded-xl border border-slate-700">
               <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-white mb-2">
-                Clean Session!
-              </h3>
+              <h3 className="text-lg font-medium text-white mb-2">Clean Session!</h3>
               <p className="text-slate-400 max-w-md mx-auto">
-                No integrity violations were detected during this session. Great job maintaining proper exam conduct!
+                No integrity violations were detected during this session. Great job maintaining
+                proper exam conduct!
               </p>
             </div>
           )}

@@ -247,13 +247,13 @@ const AdminInterviews = () => {
             <Star className="w-8 h-8 text-yellow-500" />
           </div>
         </Card>
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+        <Card className="bg-gradient-to-br from-primary-50 to-primary-100 border-primary-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-600">This Week</p>
-              <p className="text-2xl font-bold text-purple-700">{stats.thisWeek || 0}</p>
+              <p className="text-sm text-primary-600">This Week</p>
+              <p className="text-2xl font-bold text-primary-700">{stats.thisWeek || 0}</p>
             </div>
-            <TrendingUp className="w-8 h-8 text-purple-500" />
+            <TrendingUp className="w-8 h-8 text-primary-500" />
           </div>
         </Card>
       </div>
@@ -272,7 +272,7 @@ const AdminInterviews = () => {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -283,7 +283,7 @@ const AdminInterviews = () => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[150px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[150px]"
           >
             {STATUS_OPTIONS.map(status => (
               <option key={status.value} value={status.value}>
@@ -299,7 +299,7 @@ const AdminInterviews = () => {
               setCategoryFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[180px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[180px]"
           >
             {CATEGORY_OPTIONS.map(cat => (
               <option key={cat.value} value={cat.value}>
@@ -316,7 +316,7 @@ const AdminInterviews = () => {
               setDateFilter(e.target.value);
               setPage(1);
             }}
-            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
           />
         </div>
       </Card>
@@ -356,8 +356,8 @@ const AdminInterviews = () => {
                   <div className="hidden lg:grid lg:grid-cols-12 gap-4 items-center">
                     {/* User */}
                     <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <User className="w-5 h-5 text-indigo-600" />
+                      <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                        <User className="w-5 h-5 text-primary-600" />
                       </div>
                       <div className="min-w-0">
                         <p className="font-medium text-slate-900 truncate">
@@ -406,7 +406,7 @@ const AdminInterviews = () => {
                     <div className="col-span-2 flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleView(interview)}
-                        className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 hover:text-primary-600 hover:bg-slate-100 rounded-lg transition-colors"
                         title="View Details"
                       >
                         <Eye className="w-5 h-5" />
@@ -428,8 +428,8 @@ const AdminInterviews = () => {
                   <div className="lg:hidden space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                          <User className="w-5 h-5 text-indigo-600" />
+                        <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                          <User className="w-5 h-5 text-primary-600" />
                         </div>
                         <div>
                           <p className="font-medium text-slate-900">
@@ -463,7 +463,7 @@ const AdminInterviews = () => {
                     <div className="flex justify-end gap-2">
                       <button
                         onClick={() => handleView(interview)}
-                        className="px-3 py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg"
+                        className="px-3 py-1.5 text-sm text-primary-600 hover:bg-primary-50 rounded-lg"
                       >
                         View
                       </button>
@@ -528,8 +528,8 @@ const AdminInterviews = () => {
           <div className="space-y-6">
             {/* User Info */}
             <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg">
-              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                <User className="w-6 h-6 text-indigo-600" />
+              <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+                <User className="w-6 h-6 text-primary-600" />
               </div>
               <div className="flex-1">
                 <h3 className="font-medium text-slate-900">
@@ -611,7 +611,7 @@ const AdminInterviews = () => {
                       </div>
                       <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-purple-500 rounded-full"
+                          className="h-full bg-primary-500 rounded-full"
                           style={{ width: `${detail.feedback.problemSolving}%` }}
                         />
                       </div>

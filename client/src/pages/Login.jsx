@@ -1,58 +1,57 @@
-import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuthStore } from '../store/authStore'
-import { Button, Input } from '../components/ui'
-import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react'
-import toast from 'react-hot-toast'
-import api, { preWarmServer, waitForServer } from '../services/api'
+import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
+import { Button, Input } from '../components/ui';
+import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react';
+import toast from 'react-hot-toast';
+import api, { preWarmServer, waitForServer } from '../services/api';
 
-const GOOGLE_CLIENT_ID = import.meta.env.
-VITE_GOOGLE_CLIENT_ID || ''
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
 const Login = () => {
-  const navigate = useNavigate()
-  const { login, googleLogin, isLoading, error, clearError } = useAuthStore()
+  const navigate = useNavigate();
+  const { login, googleLogin, isLoading, error, clearError } = useAuthStore();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-  })
-  const [rememberMe, setRememberMe] = useState(false)
-  const [errors, setErrors] = useState({})
-  const [googleLoading, setGoogleLoading] = useState(false)
-  const [googleReady, setGoogleReady] = useState(false)
-  const [slowRequest, setSlowRequest] = useState(false)
-  const slowTimerRef = useRef(null)
-  const googleBtnRef = useRef(null)
+  });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
+  const [slowRequest, setSlowRequest] = useState(false);
+  const slowTimerRef = useRef(null);
+  const googleBtnRef = useRef(null);
 
   // Pre-warm the server as soon as the login page loads
   useEffect(() => {
-    preWarmServer()
-  }, [])
+    preWarmServer();
+  }, []);
 
   // Load remembered email on mount
   useEffect(() => {
-    const rememberedEmail = localStorage.getItem('rememberedEmail')
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
     if (rememberedEmail) {
-      setFormData(prev => ({ ...prev, email: rememberedEmail }))
-      setRememberMe(true)
+      setFormData(prev => ({ ...prev, email: rememberedEmail }));
+      setRememberMe(true);
     }
-  }, [])
+  }, []);
 
   // Initialize Google Sign-In (wait for script to load)
   useEffect(() => {
-    if (!GOOGLE_CLIENT_ID) return
+    if (!GOOGLE_CLIENT_ID) return;
 
     const initGoogle = () => {
-      if (!window.google?.accounts?.id) return false
+      if (!window.google?.accounts?.id) return false;
       try {
         window.google.accounts.id.initialize({
           client_id: GOOGLE_CLIENT_ID,
           callback: handleGoogleResponse,
           ux_mode: 'popup',
           auto_select: false,
-        })
+        });
         if (googleBtnRef.current) {
-          googleBtnRef.current.innerHTML = ''
+          googleBtnRef.current.innerHTML = '';
           window.google.accounts.id.renderButton(googleBtnRef.current, {
             type: 'standard',
             theme: 'outline',
@@ -60,129 +59,134 @@ const Login = () => {
             text: 'continue_with',
             shape: 'rectangular',
             width: 400,
-          })
+          });
         }
-        setGoogleReady(true)
-        return true
+        setGoogleReady(true);
+        return true;
       } catch (err) {
-        console.error('Google init error:', err)
-        return false
+        console.error('Google init error:', err);
+        return false;
       }
-    }
+    };
 
     if (!initGoogle()) {
       const interval = setInterval(() => {
-        if (initGoogle()) clearInterval(interval)
-      }, 300)
-      const timeout = setTimeout(() => clearInterval(interval), 10000)
-      return () => { clearInterval(interval); clearTimeout(timeout) }
+        if (initGoogle()) clearInterval(interval);
+      }, 300);
+      const timeout = setTimeout(() => clearInterval(interval), 10000);
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
     }
-  }, [])
+  }, []);
 
-  const handleGoogleResponse = async (response) => {
-    setGoogleLoading(true)
+  const handleGoogleResponse = async response => {
+    setGoogleLoading(true);
     try {
       const result = await api.post('/auth/google', {
         credential: response.credential,
-        clientId: GOOGLE_CLIENT_ID
-      })
+        clientId: GOOGLE_CLIENT_ID,
+      });
       if (result.data.success) {
-        const { user, tokens } = result.data.data
-        googleLogin(user, tokens)
-        toast.success('Welcome back!')
-        navigate('/dashboard')
+        const { user, tokens } = result.data.data;
+        googleLogin(user, tokens);
+        toast.success('Welcome back!');
+        navigate('/dashboard');
       } else {
-        toast.error(result.data.message || 'Google sign-in failed. Please try again.')
+        toast.error(result.data.message || 'Google sign-in failed. Please try again.');
       }
     } catch (error) {
-      console.error('Google login error:', error)
-      toast.error(error.response?.data?.message || 'Google sign-in failed. Please try again.')
+      console.error('Google login error:', error);
+      toast.error(error.response?.data?.message || 'Google sign-in failed. Please try again.');
     } finally {
-      setGoogleLoading(false)
+      setGoogleLoading(false);
     }
-  }
-
-
+  };
 
   const validateForm = () => {
-    const newErrors = {}
-    
+    const newErrors = {};
+
     if (!formData.email) {
-      newErrors.email = 'Email is required'
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format'
+      newErrors.email = 'Invalid email format';
     }
-    
+
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = 'Password is required';
     }
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }))
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
-    if (error) clearError()
-  }
+    if (error) clearError();
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
-    
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
     // Handle remember me
     if (rememberMe) {
-      localStorage.setItem('rememberedEmail', formData.email)
+      localStorage.setItem('rememberedEmail', formData.email);
     } else {
-      localStorage.removeItem('rememberedEmail')
+      localStorage.removeItem('rememberedEmail');
     }
 
     // Detect slow request (Render cold start)
-    setSlowRequest(false)
-    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000)
+    setSlowRequest(false);
+    slowTimerRef.current = setTimeout(() => setSlowRequest(true), 4000);
 
     // Ensure server is awake before sending the login request
-    const serverReady = await waitForServer({ silent: false })
+    const serverReady = await waitForServer({ silent: false });
     if (!serverReady) {
-      clearTimeout(slowTimerRef.current)
-      setSlowRequest(false)
-      return
+      clearTimeout(slowTimerRef.current);
+      setSlowRequest(false);
+      return;
     }
-    
-    const result = await login(formData.email, formData.password)
 
-    clearTimeout(slowTimerRef.current)
-    setSlowRequest(false)
+    const result = await login(formData.email, formData.password);
+
+    clearTimeout(slowTimerRef.current);
+    setSlowRequest(false);
 
     if (result.success) {
-      navigate('/dashboard')
+      navigate('/dashboard');
     }
-  }
+  };
 
   return (
     <div className="animate-slide-up">
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
             <Brain className="w-7 h-7 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">HireReady</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+            HireReady
+          </span>
         </Link>
       </div>
 
       <div className="text-center mb-8">
-        <div className="inline-flex items-center px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 rounded-full text-xs font-medium text-indigo-600 dark:text-indigo-400 mb-4">
+        <div className="inline-flex items-center px-3 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-full text-xs font-medium text-primary-600 dark:text-primary-400 mb-4">
           <Sparkles className="w-3 h-3 mr-1" />
           AI-Powered Interview Prep
         </div>
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3">Welcome back!</h1>
-        <p className="text-slate-500 dark:text-slate-400 text-lg">Sign in to continue your interview preparation</p>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">
+          Sign in to continue your interview preparation
+        </p>
       </div>
 
       {/* Trust badges */}
@@ -193,7 +197,7 @@ const Login = () => {
         </div>
         <div className="w-1 h-1 bg-slate-300 dark:bg-slate-600 rounded-full" />
         <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-          <Sparkles className="w-3.5 h-3.5 text-purple-500" />
+          <Sparkles className="w-3.5 h-3.5 text-primary-500" />
           <span>Free Plan</span>
         </div>
       </div>
@@ -237,12 +241,17 @@ const Login = () => {
             <input
               type="checkbox"
               checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
+              onChange={e => setRememberMe(e.target.checked)}
+              className="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500 cursor-pointer"
             />
-            <span className="ml-2 text-sm text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Remember me</span>
+            <span className="ml-2 text-sm text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+              Remember me
+            </span>
           </label>
-          <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+          >
             Forgot password?
           </Link>
         </div>
@@ -267,7 +276,9 @@ const Login = () => {
             <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-transparent text-slate-500 dark:text-slate-400">Or continue with</span>
+            <span className="px-4 bg-transparent text-slate-500 dark:text-slate-400">
+              Or continue with
+            </span>
           </div>
         </div>
 
@@ -275,15 +286,23 @@ const Login = () => {
           {googleLoading ? (
             <div className="w-full flex items-center justify-center px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl">
               <Loader2 className="w-5 h-5 mr-2 animate-spin text-slate-500" />
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Signing in...</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Signing in...
+              </span>
             </div>
           ) : (
             <div ref={googleBtnRef} className="flex justify-center" />
           )}
           {!googleReady && !googleLoading && (
             <div className="w-full flex items-center justify-center px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl opacity-50">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Loading Google Sign-In...</span>
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google"
+                className="w-5 h-5 mr-2"
+              />
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Loading Google Sign-In...
+              </span>
             </div>
           )}
         </div>
@@ -292,7 +311,10 @@ const Login = () => {
       <div className="mt-8 text-center">
         <p className="text-sm text-slate-600 dark:text-slate-400">
           Don't have an account?{' '}
-          <Link to="/signup" className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+          <Link
+            to="/signup"
+            className="font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+          >
             Sign up for free →
           </Link>
         </p>
@@ -305,10 +327,12 @@ const Login = () => {
             <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">🎯</span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Mock Interviews</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              Mock Interviews
+            </p>
           </div>
           <div className="text-center group">
-            <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <span className="text-lg">🤖</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">AI Feedback</p>
@@ -322,7 +346,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

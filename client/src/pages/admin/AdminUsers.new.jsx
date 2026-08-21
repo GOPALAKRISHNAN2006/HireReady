@@ -227,7 +227,7 @@ const AdminUsers = () => {
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
           
@@ -238,7 +238,7 @@ const AdminUsers = () => {
               setRoleFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[140px]"
           >
             <option value="">All Roles</option>
             <option value="user">Users</option>
@@ -253,7 +253,7 @@ const AdminUsers = () => {
               setStatusFilter(e.target.value)
               setPage(1)
             }}
-            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[140px]"
           >
             <option value="">All Status</option>
             <option value="true">Active</option>
@@ -305,7 +305,7 @@ const AdminUsers = () => {
                     <tr key={user._id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
                             <span className="text-sm font-medium text-white">
                               {user.firstName?.charAt(0)}{user.lastName?.charAt(0)}
                             </span>
@@ -445,7 +445,7 @@ const AdminUsers = () => {
           <div className="space-y-6">
             {/* User Header */}
             <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-violet-600 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
                 <span className="text-xl font-bold text-white">
                   {userDetails.data.user.firstName?.charAt(0)}{userDetails.data.user.lastName?.charAt(0)}
                 </span>
@@ -465,7 +465,7 @@ const AdminUsers = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-50 rounded-lg p-4 text-center">
-                <Target className="w-6 h-6 mx-auto text-indigo-600 mb-2" />
+                <Target className="w-6 h-6 mx-auto text-primary-600 mb-2" />
                 <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.totalInterviews}</p>
                 <p className="text-sm text-slate-500">Interviews</p>
               </div>
@@ -480,7 +480,7 @@ const AdminUsers = () => {
                 <p className="text-sm text-slate-500">Avg Score</p>
               </div>
               <div className="bg-slate-50 rounded-lg p-4 text-center">
-                <FileText className="w-6 h-6 mx-auto text-purple-600 mb-2" />
+                <FileText className="w-6 h-6 mx-auto text-primary-600 mb-2" />
                 <p className="text-2xl font-bold text-slate-900">{userDetails.data.stats.resumeCount}</p>
                 <p className="text-sm text-slate-500">Resumes</p>
               </div>
@@ -565,8 +565,8 @@ const AdminUsers = () => {
                 disabled={updateRoleMutation.isPending}
                 className={`w-full p-3 rounded-lg border text-left transition-colors ${
                   selectedUser?.role === role 
-                    ? 'border-indigo-500 bg-indigo-50' 
-                    : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50'
+                    ? 'border-primary-500 bg-primary-50' 
+                    : 'border-slate-200 hover:border-primary-300 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex items-center justify-between">

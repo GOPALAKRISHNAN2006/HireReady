@@ -2,20 +2,14 @@
  * ===========================================
  * Feedback Section Component
  * ===========================================
- * 
+ *
  * Displays strengths and improvement suggestions
  * from the communication assessment.
  */
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  CheckCircle2, 
-  Lightbulb, 
-  ArrowUpRight,
-  Sparkles,
-  Target
-} from 'lucide-react';
+import { CheckCircle2, Lightbulb, ArrowUpRight, Sparkles, Target } from 'lucide-react';
 
 const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) => {
   return (
@@ -25,15 +19,15 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100"
+          className="p-4 bg-gradient-to-r from-primary-50 to-primary-50 rounded-xl border border-primary-100"
         >
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-indigo-100 rounded-lg">
-              <Sparkles className="w-5 h-5 text-indigo-600" />
+            <div className="p-2 bg-primary-100 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary-600" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-indigo-900 mb-1">Assessment Summary</h4>
-              <p className="text-sm text-indigo-700 leading-relaxed">{summary}</p>
+              <h4 className="text-sm font-semibold text-primary-900 mb-1">Assessment Summary</h4>
+              <p className="text-sm text-primary-700 leading-relaxed">{summary}</p>
             </div>
           </div>
         </motion.div>
@@ -52,7 +46,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
             </div>
             <h4 className="font-semibold text-slate-900">Strengths</h4>
           </div>
-          
+
           <div className="space-y-2">
             {strengths.length > 0 ? (
               strengths.map((strength, index) => (
@@ -87,7 +81,7 @@ const FeedbackSection = ({ strengths = [], improvements = [], summary = '' }) =>
             </div>
             <h4 className="font-semibold text-slate-900">Areas for Improvement</h4>
           </div>
-          
+
           <div className="space-y-2">
             {improvements.length > 0 ? (
               improvements.map((improvement, index) => (

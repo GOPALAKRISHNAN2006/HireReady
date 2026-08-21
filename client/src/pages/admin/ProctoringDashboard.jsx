@@ -223,12 +223,12 @@ const ProctoringDashboard = () => {
 
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <AlertTriangle className="w-5 h-5 text-purple-600" />
+            <div className="p-2 bg-primary-100 rounded-lg">
+              <AlertTriangle className="w-5 h-5 text-primary-600" />
             </div>
             <div>
               <p className="text-sm text-slate-500">Active Alerts</p>
-              <p className="text-xl font-bold text-purple-600">{stats.unresolvedAlerts}</p>
+              <p className="text-xl font-bold text-primary-600">{stats.unresolvedAlerts}</p>
             </div>
           </div>
         </Card>
@@ -304,7 +304,7 @@ const ProctoringDashboard = () => {
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
             <select
@@ -342,8 +342,8 @@ const ProctoringDashboard = () => {
                   <tr key={session._id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-indigo-600" />
+                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4 text-primary-600" />
                         </div>
                         <div>
                           <span className="font-medium text-slate-900">
@@ -518,7 +518,7 @@ const ProctoringDashboard = () => {
                 onChange={(e) => setReviewNotes(e.target.value)}
                 placeholder="Add notes about your decision..."
                 rows={3}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
 

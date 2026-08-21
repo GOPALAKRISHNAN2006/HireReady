@@ -319,17 +319,17 @@ const useProctoring = (options = {}) => {
               b = data[i + 2];
             totalSampled++;
 
-            // Detect bright screen-like glow (phone screen on)
-            if (r > 200 && g > 200 && b > 200) brightPixels++;
-            // Detect dark uniform rectangular object (phone screen off / back)
-            if (r < 40 && g < 40 && b < 40) darkUniformPixels++;
+            // Detect bright screen-like glow (tuned for balance between dim lighting and false positives)
+            if (r > 160 && g > 160 && b > 160) brightPixels++;
+            // Detect dark uniform rectangular object
+            if (r < 50 && g < 50 && b < 50) darkUniformPixels++;
 
             // Simple edge detection via neighbor difference
             if (x + 3 < region.endX && y + 3 < region.endY) {
               const ni = ((y + 3) * w + (x + 3)) * 4;
               const diff =
                 Math.abs(r - data[ni]) + Math.abs(g - data[ni + 1]) + Math.abs(b - data[ni + 2]);
-              if (diff > 100) edgeCount++;
+              if (diff > 70) edgeCount++; // Tuned for noticeable edges only
             }
           }
         }
@@ -339,8 +339,8 @@ const useProctoring = (options = {}) => {
         const darkRatio = darkUniformPixels / totalSampled;
         const edgeRatio = edgeCount / totalSampled;
 
-        // Phone-like detection: strong edges defining a rectangle + bright screen or dark back
-        if ((brightRatio > 0.25 || darkRatio > 0.35) && edgeRatio > 0.05) {
+        // Phone-like detection: balanced thresholds
+        if ((brightRatio > 0.2 || darkRatio > 0.3) && edgeRatio > 0.04) {
           return true;
         }
       }
@@ -399,29 +399,30 @@ const useProctoring = (options = {}) => {
           const g = data[i + 1];
           const b = data[i + 2];
 
-          // Improved skin tone detection heuristic (works better for various skin tones and lighting)
-          // Using multiple detection methods for better coverage
-          // Improved skin tone detection heuristic (works better for various skin tones and lighting)
-          // Simplified to be much more forgiving to prevent "No Face" false positives
-          const isSkinTone =
-            // Method 1: Extremely relaxed RGB
-            (r > 40 && g > 20 && b > 10 && r >= g && r >= b) ||
-            // Method 2: High brightness/contrast indicator
-            (r + g + b > 100 && r + g + b < 750 && r >= g * 0.9);
+          // Edge/Variance detection (works for all skin tones and grayscale)
+          // A face has features (eyes, nose, mouth) that create contrast/edges
+          // A blank wall or turned-off camera is uniform and has no edges
+          let isEdge = false;
+          if (x + 4 < centerRegion.endX && y + 4 < centerRegion.endY) {
+            const ni = ((y + 4) * canvas.width + (x + 4)) * 4;
+            const diff =
+              Math.abs(r - data[ni]) + Math.abs(g - data[ni + 1]) + Math.abs(b - data[ni + 2]);
+            if (diff > 40) isEdge = true; // threshold for noticeable contrast
+          }
 
-          if (isSkinTone) skinPixelCount++;
+          if (isEdge) skinPixelCount++;
         }
       }
 
       // Calculate face presence based on skin pixel ratio
       const totalPixels =
-        ((centerRegion.endX - centerRegion.startX) / 4) *
-        ((centerRegion.endY - centerRegion.startY) / 4);
+        Math.ceil((centerRegion.endX - centerRegion.startX) / 4) *
+        Math.ceil((centerRegion.endY - centerRegion.startY) / 4);
       const skinRatio = skinPixelCount / totalPixels;
 
       // Face detected if sufficient skin pixels in center region
-      // Lowered threshold significantly (to 1.5%) to reduce false negatives
-      const detected = skinRatio > 0.015 && skinRatio < 0.9;
+      // Lowered threshold to 1.0% and removed upper bound completely to prevent false negatives
+      const detected = skinRatio > 0.01;
       const confidence = Math.min(skinRatio * 3, 1);
 
       return {
@@ -457,8 +458,8 @@ const useProctoring = (options = {}) => {
     // No face detected - increased threshold to reduce false positives
     if (!detection.detected) {
       consecutiveNoFaceRef.current++;
-      if (consecutiveNoFaceRef.current >= 15) {
-        // Increased from 5 to 15 consecutive misses
+      if (consecutiveNoFaceRef.current >= 5) {
+        // Lowered from 15 to 5 consecutive misses for faster violation triggering
         logViolation('no_face_detected');
         consecutiveNoFaceRef.current = 0;
       }

@@ -4,10 +4,10 @@
  * ===========================================
  */
 
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { Card, Button, Badge } from '../components/ui'
-import toast from 'react-hot-toast'
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Card, Button, Badge } from '../components/ui';
+import toast from 'react-hot-toast';
 import {
   ArrowLeft,
   BookOpen,
@@ -32,7 +32,7 @@ import {
   Zap,
   CircleDot,
   ListChecks,
-} from 'lucide-react'
+} from 'lucide-react';
 
 // ─── Study material content database ────────────────────────
 const MATERIAL_CONTENT = {
@@ -57,7 +57,7 @@ const MATERIAL_CONTENT = {
 **Types of Data Structures:**
 1. **Linear**: Arrays, Linked Lists, Stacks, Queues
 2. **Non-Linear**: Trees, Graphs
-3. **Hash-Based**: Hash Tables, Hash Maps`
+3. **Hash-Based**: Hash Tables, Hash Maps`,
       },
       {
         title: 'Arrays',
@@ -87,7 +87,7 @@ arr.pop(); // [1, 2, 3, 4, 5]
 **When to Use Arrays:**
 - Fixed-size collections
 - Random access needed
-- Memory efficiency important`
+- Memory efficiency important`,
       },
       {
         title: 'Linked Lists',
@@ -131,7 +131,7 @@ class LinkedList {
     current.next = newNode;
   }
 }
-\`\`\``
+\`\`\``,
       },
       {
         title: 'Stacks and Queues',
@@ -155,7 +155,7 @@ Operations:
 1. Implement a queue using stacks
 2. Valid parentheses
 3. Next greater element
-4. Sliding window maximum`
+4. Sliding window maximum`,
       },
       {
         title: 'Trees',
@@ -193,14 +193,26 @@ function inorderTraversal(root) {
     ...inorderTraversal(root.right)
   ];
 }
-\`\`\``
-      }
+\`\`\``,
+      },
     ],
     quiz: [
-      { question: 'What is the time complexity of accessing an element in an array?', options: ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'], correctIndex: 0 },
-      { question: 'Which data structure uses LIFO principle?', options: ['Queue', 'Array', 'Stack', 'Linked List'], correctIndex: 2 },
-      { question: 'In a Binary Search Tree, where are smaller values stored?', options: ['Right subtree', 'Left subtree', 'Root', 'Leaf nodes only'], correctIndex: 1 },
-    ]
+      {
+        question: 'What is the time complexity of accessing an element in an array?',
+        options: ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'],
+        correctIndex: 0,
+      },
+      {
+        question: 'Which data structure uses LIFO principle?',
+        options: ['Queue', 'Array', 'Stack', 'Linked List'],
+        correctIndex: 2,
+      },
+      {
+        question: 'In a Binary Search Tree, where are smaller values stored?',
+        options: ['Right subtree', 'Left subtree', 'Root', 'Leaf nodes only'],
+        correctIndex: 1,
+      },
+    ],
   },
   4: {
     title: 'System Design Interview Guide',
@@ -239,7 +251,7 @@ function inorderTraversal(root) {
 
 4. **Wrap Up** (5 min)
    - Trade-offs discussion
-   - Future improvements`
+   - Future improvements`,
       },
       {
         title: 'Key Concepts',
@@ -268,7 +280,7 @@ function inorderTraversal(root) {
 **Message Queues**
 - Async processing
 - Decoupling services
-- Examples: Kafka, RabbitMQ, SQS`
+- Examples: Kafka, RabbitMQ, SQS`,
       },
       {
         title: 'Common System Design Problems',
@@ -295,13 +307,31 @@ function inorderTraversal(root) {
 **5. Design Uber**
 - Location tracking
 - Matching algorithm
-- ETA calculation`
-      }
+- ETA calculation`,
+      },
     ],
     quiz: [
-      { question: 'What does CAP theorem stand for?', options: ['Cache, API, Processing', 'Consistency, Availability, Partition tolerance', 'Compute, Analyze, Process', 'Connect, Authorize, Protect'], correctIndex: 1 },
-      { question: 'Which is better for read-heavy workloads?', options: ['Vertical scaling only', 'No caching', 'Read replicas with caching', 'Single database instance'], correctIndex: 2 },
-    ]
+      {
+        question: 'What does CAP theorem stand for?',
+        options: [
+          'Cache, API, Processing',
+          'Consistency, Availability, Partition tolerance',
+          'Compute, Analyze, Process',
+          'Connect, Authorize, Protect',
+        ],
+        correctIndex: 1,
+      },
+      {
+        question: 'Which is better for read-heavy workloads?',
+        options: [
+          'Vertical scaling only',
+          'No caching',
+          'Read replicas with caching',
+          'Single database instance',
+        ],
+        correctIndex: 2,
+      },
+    ],
   },
   7: {
     title: 'STAR Method Mastery',
@@ -337,7 +367,7 @@ Describe the specific steps YOU took.
 Share the outcome and what you learned.
 - What was the impact?
 - What did you learn?
-- Would you do anything differently?`
+- Would you do anything differently?`,
       },
       {
         title: 'Example: Tell me about a time you faced a challenge',
@@ -356,7 +386,7 @@ Share the outcome and what you learned.
 5. I personally handled the most complex payment service migration"
 
 **Result:**
-"We completed the migration 2 weeks ahead of schedule with zero downtime. The new architecture reduced average response time by 40% and allowed teams to deploy independently. This approach was later adopted as the company standard for migrations."`
+"We completed the migration 2 weeks ahead of schedule with zero downtime. The new architecture reduced average response time by 40% and allowed teams to deploy independently. This approach was later adopted as the company standard for migrations."`,
       },
       {
         title: 'Common Behavioral Questions',
@@ -383,159 +413,232 @@ Share the outcome and what you learned.
 **Success:**
 - What's your proudest achievement?
 - Tell me about exceeding expectations
-- Describe an innovative solution you created`
-      }
+- Describe an innovative solution you created`,
+      },
     ],
     quiz: [
-      { question: 'What does the "A" in STAR stand for?', options: ['Achievement', 'Action', 'Analysis', 'Approach'], correctIndex: 1 },
-      { question: 'Which part of STAR should describe the outcome?', options: ['Situation', 'Task', 'Action', 'Result'], correctIndex: 3 },
-    ]
-  }
-}
+      {
+        question: 'What does the "A" in STAR stand for?',
+        options: ['Achievement', 'Action', 'Analysis', 'Approach'],
+        correctIndex: 1,
+      },
+      {
+        question: 'Which part of STAR should describe the outcome?',
+        options: ['Situation', 'Task', 'Action', 'Result'],
+        correctIndex: 3,
+      },
+    ],
+  },
+};
 
 // ─── Helpers ────────────────────────────────────────────────
-const getCategoryGradient = (cat) => {
+const getCategoryGradient = cat => {
   const map = {
-    dsa: 'from-blue-500 to-indigo-600',
-    'system-design': 'from-purple-500 to-violet-600',
+    dsa: 'from-blue-500 to-primary-600',
+    'system-design': 'from-primary-500 to-primary-600',
     behavioral: 'from-pink-500 to-rose-600',
     database: 'from-emerald-500 to-teal-600',
     devops: 'from-orange-500 to-amber-600',
     ml: 'from-cyan-500 to-blue-600',
-  }
-  return map[cat] || 'from-slate-500 to-slate-600'
-}
+  };
+  return map[cat] || 'from-slate-500 to-slate-600';
+};
 
-const getDifficultyConfig = (d) => {
+const getDifficultyConfig = d => {
   const map = {
-    beginner: { label: 'Beginner', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400', icon: '🌱' },
-    intermediate: { label: 'Intermediate', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400', icon: '🔥' },
-    advanced: { label: 'Advanced', color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400', icon: '⚡' },
-  }
-  return map[d] || map.intermediate
-}
+    beginner: {
+      label: 'Beginner',
+      color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+      icon: '🌱',
+    },
+    intermediate: {
+      label: 'Intermediate',
+      color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+      icon: '🔥',
+    },
+    advanced: {
+      label: 'Advanced',
+      color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+      icon: '⚡',
+    },
+  };
+  return map[d] || map.intermediate;
+};
 
 // ─── Markdown-lite renderer ─────────────────────────────────
-const renderContent = (text) => {
-  const lines = text.split('\n')
-  const elements = []
-  let inCodeBlock = false
-  let codeLines = []
-  let codeLang = ''
+const renderContent = text => {
+  const lines = text.split('\n');
+  const elements = [];
+  let inCodeBlock = false;
+  let codeLines = [];
+  let codeLang = '';
 
-  const flushCode = (key) => {
+  const flushCode = key => {
     if (codeLines.length) {
       elements.push(
-        <div key={key} className="my-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+        <div
+          key={key}
+          className="my-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700"
+        >
           <div className="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-            <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">{codeLang || 'code'}</span>
+            <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">
+              {codeLang || 'code'}
+            </span>
             <button
-              onClick={() => { navigator.clipboard.writeText(codeLines.join('\n')); toast.success('Copied!') }}
+              onClick={() => {
+                navigator.clipboard.writeText(codeLines.join('\n'));
+                toast.success('Copied!');
+              }}
               className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
             >
               Copy
             </button>
           </div>
           <pre className="p-4 overflow-x-auto bg-slate-50 dark:bg-[#0d1117] text-sm">
-            <code className="text-slate-800 dark:text-slate-200 font-mono leading-relaxed">{codeLines.join('\n')}</code>
+            <code className="text-slate-800 dark:text-slate-200 font-mono leading-relaxed">
+              {codeLines.join('\n')}
+            </code>
           </pre>
         </div>
-      )
-      codeLines = []
-      codeLang = ''
+      );
+      codeLines = [];
+      codeLang = '';
     }
-  }
+  };
 
   lines.forEach((line, i) => {
     if (line.startsWith('```')) {
-      if (inCodeBlock) { flushCode(`code-${i}`); inCodeBlock = false }
-      else { inCodeBlock = true; codeLang = line.slice(3).trim() }
-      return
+      if (inCodeBlock) {
+        flushCode(`code-${i}`);
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+        codeLang = line.slice(3).trim();
+      }
+      return;
     }
-    if (inCodeBlock) { codeLines.push(line); return }
+    if (inCodeBlock) {
+      codeLines.push(line);
+      return;
+    }
 
     // bold heading line
     if (/^\*\*[^*]+\*\*$/.test(line.trim())) {
-      const text = line.trim().replace(/\*\*/g, '')
-      elements.push(<h4 key={i} className="font-bold text-slate-900 dark:text-white mt-5 mb-1.5 text-[15px]">{text}</h4>)
-      return
+      const text = line.trim().replace(/\*\*/g, '');
+      elements.push(
+        <h4 key={i} className="font-bold text-slate-900 dark:text-white mt-5 mb-1.5 text-[15px]">
+          {text}
+        </h4>
+      );
+      return;
     }
     // inline bold
-    const renderBold = (str) => {
-      const parts = str.split(/(\*\*[^*]+\*\*)/g)
+    const renderBold = str => {
+      const parts = str.split(/(\*\*[^*]+\*\*)/g);
       return parts.map((p, j) =>
-        p.startsWith('**') ? <strong key={j} className="font-semibold text-slate-900 dark:text-white">{p.replace(/\*\*/g, '')}</strong> : p
-      )
-    }
-    // inline code
-    const renderInlineCode = (nodes) => {
-      if (typeof nodes === 'string') {
-        const pts = nodes.split(/(`[^`]+`)/g)
-        return pts.map((p, j) =>
-          p.startsWith('`') ? <code key={j} className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-sm font-mono text-pink-600 dark:text-pink-400">{p.replace(/`/g, '')}</code> : renderBold(p)
+        p.startsWith('**') ? (
+          <strong key={j} className="font-semibold text-slate-900 dark:text-white">
+            {p.replace(/\*\*/g, '')}
+          </strong>
+        ) : (
+          p
         )
+      );
+    };
+    // inline code
+    const renderInlineCode = nodes => {
+      if (typeof nodes === 'string') {
+        const pts = nodes.split(/(`[^`]+`)/g);
+        return pts.map((p, j) =>
+          p.startsWith('`') ? (
+            <code
+              key={j}
+              className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-sm font-mono text-pink-600 dark:text-pink-400"
+            >
+              {p.replace(/`/g, '')}
+            </code>
+          ) : (
+            renderBold(p)
+          )
+        );
       }
-      return nodes
-    }
-    
+      return nodes;
+    };
+
     if (line.startsWith('- ')) {
       elements.push(
-        <li key={i} className="ml-5 list-disc text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5">
+        <li
+          key={i}
+          className="ml-5 list-disc text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5"
+        >
           {renderInlineCode(line.substring(2))}
         </li>
-      )
+      );
     } else if (/^\d+\./.test(line)) {
       elements.push(
-        <li key={i} className="ml-5 list-decimal text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5">
+        <li
+          key={i}
+          className="ml-5 list-decimal text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-0.5"
+        >
           {renderInlineCode(line.replace(/^\d+\.\s*/, ''))}
         </li>
-      )
+      );
     } else if (line.trim()) {
       elements.push(
         <p key={i} className="text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed my-2">
           {renderInlineCode(line)}
         </p>
-      )
+      );
     }
-  })
-  flushCode('code-final')
-  return elements
-}
+  });
+  flushCode('code-final');
+  return elements;
+};
 
 // ═══════════════════════════════════════════════════════════
 // Component
 // ═══════════════════════════════════════════════════════════
 const MaterialContent = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const [currentSection, setCurrentSection] = useState(0)
-  const [completedSections, setCompletedSections] = useState([])
-  const [showQuiz, setShowQuiz] = useState(false)
-  const [quizAnswers, setQuizAnswers] = useState({})
-  const [quizSubmitted, setQuizSubmitted] = useState(false)
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [currentSection, setCurrentSection] = useState(0);
+  const [completedSections, setCompletedSections] = useState([]);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
 
-  const material = MATERIAL_CONTENT[id]
-
-  useEffect(() => {
-    const saved = localStorage.getItem(`material-progress-${id}`)
-    if (saved) { const p = JSON.parse(saved); setCompletedSections(p.completedSections || []); setCurrentSection(p.currentSection || 0) }
-  }, [id])
+  const material = MATERIAL_CONTENT[id];
 
   useEffect(() => {
-    if (material) localStorage.setItem(`material-progress-${id}`, JSON.stringify({ completedSections, currentSection }))
-  }, [completedSections, currentSection, id, material])
-
-  useEffect(() => {
-    const progress = material ? Math.round((completedSections.length / material.sections.length) * 100) : 0
-    try {
-      const saved = localStorage.getItem('study-materials-progress')
-      const progressMap = saved ? JSON.parse(saved) : {}
-      const nextProgress = { ...progressMap, [Number(id)]: progress }
-      localStorage.setItem('study-materials-progress', JSON.stringify(nextProgress))
-    } catch {
-      localStorage.setItem('study-materials-progress', JSON.stringify({ [Number(id)]: progress }))
+    const saved = localStorage.getItem(`material-progress-${id}`);
+    if (saved) {
+      const p = JSON.parse(saved);
+      setCompletedSections(p.completedSections || []);
+      setCurrentSection(p.currentSection || 0);
     }
-  }, [completedSections, id, material])
+  }, [id]);
+
+  useEffect(() => {
+    if (material)
+      localStorage.setItem(
+        `material-progress-${id}`,
+        JSON.stringify({ completedSections, currentSection })
+      );
+  }, [completedSections, currentSection, id, material]);
+
+  useEffect(() => {
+    const progress = material
+      ? Math.round((completedSections.length / material.sections.length) * 100)
+      : 0;
+    try {
+      const saved = localStorage.getItem('study-materials-progress');
+      const progressMap = saved ? JSON.parse(saved) : {};
+      const nextProgress = { ...progressMap, [Number(id)]: progress };
+      localStorage.setItem('study-materials-progress', JSON.stringify(nextProgress));
+    } catch {
+      localStorage.setItem('study-materials-progress', JSON.stringify({ [Number(id)]: progress }));
+    }
+  }, [completedSections, id, material]);
 
   // ─── Not found ────────────────────────
   if (!material) {
@@ -544,49 +647,61 @@ const MaterialContent = () => {
         <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
           <BookOpen className="w-10 h-10 text-slate-400 dark:text-slate-500" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Material Not Found</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-8">This study material doesn't exist or has been removed.</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
+          Material Not Found
+        </h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-8">
+          This study material doesn't exist or has been removed.
+        </p>
         <Button onClick={() => navigate('/study-materials')}>
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Materials
         </Button>
       </div>
-    )
+    );
   }
 
-  const progress = Math.round((completedSections.length / material.sections.length) * 100)
-  const diff = getDifficultyConfig(material.difficulty)
+  const progress = Math.round((completedSections.length / material.sections.length) * 100);
+  const diff = getDifficultyConfig(material.difficulty);
 
   const markSectionComplete = () => {
     if (!completedSections.includes(currentSection)) {
-      setCompletedSections([...completedSections, currentSection])
-      toast.success('Section completed!')
+      setCompletedSections([...completedSections, currentSection]);
+      toast.success('Section completed!');
     }
-    if (currentSection < material.sections.length - 1) setCurrentSection(currentSection + 1)
-    else if (material.quiz && !showQuiz) setShowQuiz(true)
-  }
+    if (currentSection < material.sections.length - 1) setCurrentSection(currentSection + 1);
+    else if (material.quiz && !showQuiz) setShowQuiz(true);
+  };
 
   const calculateQuizScore = () => {
-    if (!material.quiz) return 0
-    let c = 0; material.quiz.forEach((q, i) => { if (quizAnswers[i] === q.correctIndex) c++ })
-    return Math.round((c / material.quiz.length) * 100)
-  }
+    if (!material.quiz) return 0;
+    let c = 0;
+    material.quiz.forEach((q, i) => {
+      if (quizAnswers[i] === q.correctIndex) c++;
+    });
+    return Math.round((c / material.quiz.length) * 100);
+  };
 
   const handleQuizSubmit = () => {
-    setQuizSubmitted(true)
-    const s = calculateQuizScore()
+    setQuizSubmitted(true);
+    const s = calculateQuizScore();
     if (s >= 70) {
-      const completedProgress = { ...(JSON.parse(localStorage.getItem('study-materials-progress') || '{}')), [Number(id)]: 100 }
-      localStorage.setItem('study-materials-progress', JSON.stringify(completedProgress))
-      toast.success(`Great job! You scored ${s}%`)
+      const completedProgress = {
+        ...JSON.parse(localStorage.getItem('study-materials-progress') || '{}'),
+        [Number(id)]: 100,
+      };
+      localStorage.setItem('study-materials-progress', JSON.stringify(completedProgress));
+      toast.success(`Great job! You scored ${s}%`);
     } else {
-      toast.error(`You scored ${s}%. Review the material and try again.`)
+      toast.error(`You scored ${s}%. Review the material and try again.`);
     }
-  }
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-slide-up">
       {/* ─── Hero Header ──────────────────────────────────── */}
-      <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${getCategoryGradient(material.category)} p-8 md:p-10 text-white`}>
+      <div
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${getCategoryGradient(material.category)} p-8 md:p-10 text-white`}
+      >
         <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl" />
         <div className="absolute bottom-0 left-0 w-52 h-52 bg-white/5 rounded-full translate-y-1/3 -translate-x-1/4 blur-2xl" />
 
@@ -598,10 +713,14 @@ const MaterialContent = () => {
             <ArrowLeft className="w-4 h-4" /> Back to Materials
           </button>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 leading-tight">{material.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 leading-tight">
+            {material.title}
+          </h1>
 
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold ${diff.color}`}>
+            <span
+              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-semibold ${diff.color}`}
+            >
               {diff.icon} {diff.label}
             </span>
             <span className="flex items-center gap-1.5 bg-white/15 px-2.5 py-1 rounded-lg backdrop-blur-sm">
@@ -641,28 +760,31 @@ const MaterialContent = () => {
             </div>
             <nav className="space-y-1.5">
               {material.sections.map((section, index) => {
-                const done = completedSections.includes(index)
-                const active = currentSection === index && !showQuiz
+                const done = completedSections.includes(index);
+                const active = currentSection === index && !showQuiz;
                 return (
                   <button
                     key={index}
-                    onClick={() => { setCurrentSection(index); setShowQuiz(false) }}
+                    onClick={() => {
+                      setCurrentSection(index);
+                      setShowQuiz(false);
+                    }}
                     className={`w-full text-left px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-3 group ${
                       active
-                        ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium shadow-sm'
+                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium shadow-sm'
                         : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     {done ? (
                       <CheckCircle className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
                     ) : active ? (
-                      <CircleDot className="w-4.5 h-4.5 text-indigo-500 shrink-0" />
+                      <CircleDot className="w-4.5 h-4.5 text-primary-500 shrink-0" />
                     ) : (
                       <div className="w-4.5 h-4.5 rounded-full border-2 border-slate-300 dark:border-slate-600 shrink-0" />
                     )}
                     <span className="text-sm truncate">{section.title}</span>
                   </button>
-                )
+                );
               })}
 
               {material.quiz && (
@@ -686,12 +808,20 @@ const MaterialContent = () => {
             {/* Quick Stats */}
             <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700 grid grid-cols-2 gap-3">
               <div className="text-center p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/15">
-                <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{completedSections.length}</p>
-                <p className="text-[10px] font-medium text-emerald-600 dark:text-emerald-500">Done</p>
+                <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
+                  {completedSections.length}
+                </p>
+                <p className="text-[10px] font-medium text-emerald-600 dark:text-emerald-500">
+                  Done
+                </p>
               </div>
               <div className="text-center p-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/15">
-                <p className="text-lg font-bold text-blue-700 dark:text-blue-400">{material.sections.length - completedSections.length}</p>
-                <p className="text-[10px] font-medium text-blue-600 dark:text-blue-500">Remaining</p>
+                <p className="text-lg font-bold text-blue-700 dark:text-blue-400">
+                  {material.sections.length - completedSections.length}
+                </p>
+                <p className="text-[10px] font-medium text-blue-600 dark:text-blue-500">
+                  Remaining
+                </p>
               </div>
             </div>
           </Card>
@@ -702,7 +832,9 @@ const MaterialContent = () => {
           {!showQuiz ? (
             <Card className="relative overflow-hidden">
               {/* Top accent */}
-              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${getCategoryGradient(material.category)}`} />
+              <div
+                className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${getCategoryGradient(material.category)}`}
+              />
 
               <div className="pt-2">
                 {/* Section chip */}
@@ -734,7 +866,9 @@ const MaterialContent = () => {
 
                   <Button onClick={markSectionComplete} className="rounded-xl">
                     {completedSections.includes(currentSection) ? (
-                      <>Next <ChevronRight className="w-4 h-4 ml-1.5" /></>
+                      <>
+                        Next <ChevronRight className="w-4 h-4 ml-1.5" />
+                      </>
                     ) : (
                       <>
                         <CheckCircle className="w-4 h-4 mr-1.5" /> Mark Complete
@@ -755,17 +889,23 @@ const MaterialContent = () => {
                     <Brain className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Knowledge Check</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Test what you've learned</p>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                      Knowledge Check
+                    </h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Test what you've learned
+                    </p>
                   </div>
                 </div>
 
                 {quizSubmitted && (
-                  <div className={`mb-6 p-4 rounded-xl border ${
-                    calculateQuizScore() >= 70
-                      ? 'bg-emerald-50 dark:bg-emerald-900/15 border-emerald-200 dark:border-emerald-800'
-                      : 'bg-red-50 dark:bg-red-900/15 border-red-200 dark:border-red-800'
-                  }`}>
+                  <div
+                    className={`mb-6 p-4 rounded-xl border ${
+                      calculateQuizScore() >= 70
+                        ? 'bg-emerald-50 dark:bg-emerald-900/15 border-emerald-200 dark:border-emerald-800'
+                        : 'bg-red-50 dark:bg-red-900/15 border-red-200 dark:border-red-800'
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
                       {calculateQuizScore() >= 70 ? (
                         <Award className="w-8 h-8 text-emerald-500" />
@@ -773,11 +913,17 @@ const MaterialContent = () => {
                         <RotateCcw className="w-8 h-8 text-red-500" />
                       )}
                       <div>
-                        <p className={`font-bold text-lg ${calculateQuizScore() >= 70 ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400'}`}>
+                        <p
+                          className={`font-bold text-lg ${calculateQuizScore() >= 70 ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400'}`}
+                        >
                           Score: {calculateQuizScore()}%
                         </p>
-                        <p className={`text-sm ${calculateQuizScore() >= 70 ? 'text-emerald-600 dark:text-emerald-500' : 'text-red-600 dark:text-red-500'}`}>
-                          {calculateQuizScore() >= 70 ? 'Great job! You\'ve mastered this material.' : 'Review the sections above and try again.'}
+                        <p
+                          className={`text-sm ${calculateQuizScore() >= 70 ? 'text-emerald-600 dark:text-emerald-500' : 'text-red-600 dark:text-red-500'}`}
+                        >
+                          {calculateQuizScore() >= 70
+                            ? "Great job! You've mastered this material."
+                            : 'Review the sections above and try again.'}
                         </p>
                       </div>
                     </div>
@@ -786,7 +932,10 @@ const MaterialContent = () => {
 
                 <div className="space-y-5">
                   {material.quiz.map((question, qIndex) => (
-                    <div key={qIndex} className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                    <div
+                      key={qIndex}
+                      className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700"
+                    >
                       <p className="font-semibold text-slate-900 dark:text-white mb-3 text-[15px]">
                         <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 mr-2">
                           {qIndex + 1}
@@ -795,20 +944,31 @@ const MaterialContent = () => {
                       </p>
                       <div className="space-y-2 mt-3">
                         {question.options.map((option, oIndex) => {
-                          const selected = quizAnswers[qIndex] === oIndex
-                          const isCorrect = oIndex === question.correctIndex
-                          let cls = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'
+                          const selected = quizAnswers[qIndex] === oIndex;
+                          const isCorrect = oIndex === question.correctIndex;
+                          let cls =
+                            'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20';
                           if (quizSubmitted) {
-                            if (isCorrect) cls = 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300'
-                            else if (selected) cls = 'bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-700 text-red-800 dark:text-red-300'
-                            else cls = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 opacity-60'
+                            if (isCorrect)
+                              cls =
+                                'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300';
+                            else if (selected)
+                              cls =
+                                'bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-700 text-red-800 dark:text-red-300';
+                            else
+                              cls =
+                                'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 opacity-60';
                           } else if (selected) {
-                            cls = 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-400 dark:border-indigo-700 ring-2 ring-indigo-200 dark:ring-indigo-800'
+                            cls =
+                              'bg-primary-50 dark:bg-primary-900/20 border-primary-400 dark:border-primary-700 ring-2 ring-primary-200 dark:ring-primary-800';
                           }
                           return (
                             <button
                               key={oIndex}
-                              onClick={() => !quizSubmitted && setQuizAnswers({ ...quizAnswers, [qIndex]: oIndex })}
+                              onClick={() =>
+                                !quizSubmitted &&
+                                setQuizAnswers({ ...quizAnswers, [qIndex]: oIndex })
+                              }
                               disabled={quizSubmitted}
                               className={`w-full text-left px-4 py-3 rounded-xl border transition-all text-sm font-medium ${cls}`}
                             >
@@ -817,10 +977,12 @@ const MaterialContent = () => {
                                   {String.fromCharCode(65 + oIndex)}
                                 </span>
                                 <span className="text-slate-800 dark:text-slate-200">{option}</span>
-                                {quizSubmitted && isCorrect && <CheckCircle className="w-4 h-4 ml-auto text-emerald-500 shrink-0" />}
+                                {quizSubmitted && isCorrect && (
+                                  <CheckCircle className="w-4 h-4 ml-auto text-emerald-500 shrink-0" />
+                                )}
                               </span>
                             </button>
-                          )
+                          );
                         })}
                       </div>
                     </div>
@@ -828,7 +990,11 @@ const MaterialContent = () => {
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                  <Button variant="outline" onClick={() => setShowQuiz(false)} className="rounded-xl">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowQuiz(false)}
+                    className="rounded-xl"
+                  >
                     <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Sections
                   </Button>
                   {!quizSubmitted ? (
@@ -841,7 +1007,14 @@ const MaterialContent = () => {
                     </Button>
                   ) : (
                     <div className="flex gap-2">
-                      <Button variant="outline" className="rounded-xl" onClick={() => { setQuizAnswers({}); setQuizSubmitted(false) }}>
+                      <Button
+                        variant="outline"
+                        className="rounded-xl"
+                        onClick={() => {
+                          setQuizAnswers({});
+                          setQuizSubmitted(false);
+                        }}
+                      >
                         <RotateCcw className="w-4 h-4 mr-1.5" /> Retry
                       </Button>
                       <Button onClick={() => navigate('/study-materials')} className="rounded-xl">
@@ -856,7 +1029,7 @@ const MaterialContent = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MaterialContent
+export default MaterialContent;

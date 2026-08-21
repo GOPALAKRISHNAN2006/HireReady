@@ -246,7 +246,7 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
         className="w-full max-w-2xl bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4 sm:p-6">
+        <div className="bg-gradient-to-r from-primary-600 to-blue-600 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-white flex-shrink-0" />
             <div>

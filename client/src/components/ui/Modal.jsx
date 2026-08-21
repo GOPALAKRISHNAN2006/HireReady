@@ -1,6 +1,6 @@
-import { createPortal } from 'react-dom'
-import { useEffect, useCallback, useState } from 'react'
-import { X, AlertCircle, CheckCircle, Info, AlertTriangle } from 'lucide-react'
+import { createPortal } from 'react-dom';
+import { useEffect, useCallback, useState } from 'react';
+import { X, AlertCircle, CheckCircle, Info, AlertTriangle } from 'lucide-react';
 
 const Modal = ({
   isOpen,
@@ -19,8 +19,8 @@ const Modal = ({
   animate = true,
   footer,
 }) => {
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [shouldRender, setShouldRender] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   const sizes = {
     xs: 'max-w-xs',
@@ -33,58 +33,58 @@ const Modal = ({
     '4xl': 'max-w-4xl',
     '5xl': 'max-w-5xl',
     full: 'max-w-[95vw] mx-4',
-  }
+  };
 
   const variantStyles = {
-    default: dark 
-      ? 'bg-slate-800 border border-slate-700' 
-      : 'bg-white',
+    default: dark ? 'bg-slate-800 border border-slate-700' : 'bg-white',
     glass: 'bg-white/10 backdrop-blur-xl border border-white/20 text-white',
     neon: 'bg-black/90 border border-neon-green/50 shadow-lg shadow-neon-green/20',
-    gradient: 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white',
-  }
+    gradient: 'bg-gradient-to-br from-primary-500 to-primary-600 text-white',
+  };
 
   const iconVariants = {
     success: { icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-100' },
     error: { icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-100' },
     warning: { icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-100' },
     info: { icon: Info, color: 'text-blue-500', bg: 'bg-blue-100' },
-  }
+  };
 
   // Handle escape key
   const handleEscape = useCallback(
-    (e) => {
+    e => {
       if (e.key === 'Escape' && closeOnEscape) {
-        onClose()
+        onClose();
       }
     },
     [onClose, closeOnEscape]
-  )
+  );
 
   useEffect(() => {
     if (isOpen) {
-      setShouldRender(true)
-      requestAnimationFrame(() => setIsAnimating(true))
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
+      setShouldRender(true);
+      requestAnimationFrame(() => setIsAnimating(true));
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
     } else {
-      setIsAnimating(false)
-      const timer = setTimeout(() => setShouldRender(false), 300)
-      return () => clearTimeout(timer)
+      setIsAnimating(false);
+      const timer = setTimeout(() => setShouldRender(false), 300);
+      return () => clearTimeout(timer);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, handleEscape])
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, handleEscape]);
 
-  if (!shouldRender) return null
+  if (!shouldRender) return null;
 
-  const IconComponent = icon && iconVariants[icon]?.icon
+  const IconComponent = icon && iconVariants[icon]?.icon;
 
   return createPortal(
-    <div className={`fixed inset-0 z-50 flex ${centered ? 'items-center' : 'items-start pt-20'} justify-center p-4`}>
+    <div
+      className={`fixed inset-0 z-50 flex ${centered ? 'items-center' : 'items-start pt-20'} justify-center p-4`}
+    >
       {/* Overlay */}
       <div
         className={`
@@ -102,30 +102,33 @@ const Modal = ({
           max-h-[90vh] overflow-hidden flex flex-col
           transition-all duration-300 ease-out
           ${variantStyles[variant]}
-          ${isAnimating 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-95 translate-y-4'
+          ${
+            isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
           }
         `}
       >
         {/* Decorative gradient border */}
         {variant === 'default' && !dark && (
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500 via-primary-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
         )}
 
         {/* Header */}
         {(title || showCloseButton || icon) && (
-          <div className={`
+          <div
+            className={`
             flex items-start gap-4 p-6 
             ${title ? `border-b ${dark ? 'border-slate-700' : variant === 'default' ? 'border-slate-100' : 'border-white/10'}` : ''}
-          `}>
+          `}
+          >
             {/* Icon */}
             {IconComponent && (
-              <div className={`
+              <div
+                className={`
                 flex-shrink-0 w-12 h-12 rounded-full 
                 flex items-center justify-center
                 ${iconVariants[icon].bg}
-              `}>
+              `}
+              >
                 <IconComponent className={`w-6 h-6 ${iconVariants[icon].color}`} />
               </div>
             )}
@@ -133,18 +136,22 @@ const Modal = ({
             {/* Title & Subtitle */}
             <div className="flex-1 min-w-0">
               {title && (
-                <h2 className={`
+                <h2
+                  className={`
                   text-xl font-semibold 
                   ${dark || variant === 'glass' || variant === 'neon' ? 'text-white' : variant === 'gradient' ? 'text-white' : 'text-slate-900'}
-                `}>
+                `}
+                >
                   {title}
                 </h2>
               )}
               {subtitle && (
-                <p className={`
+                <p
+                  className={`
                   mt-1 text-sm 
                   ${dark || variant === 'glass' || variant === 'neon' ? 'text-slate-400' : variant === 'gradient' ? 'text-white/80' : 'text-slate-500'}
-                `}>
+                `}
+                >
                   {subtitle}
                 </p>
               )}
@@ -157,11 +164,12 @@ const Modal = ({
                 className={`
                   flex-shrink-0 p-2 rounded-xl transition-all duration-200
                   hover:scale-110 active:scale-95
-                  ${dark || variant === 'glass' || variant === 'neon' 
-                    ? 'hover:bg-white/10 text-slate-400 hover:text-white' 
-                    : variant === 'gradient'
-                      ? 'hover:bg-white/20 text-white/80 hover:text-white'
-                      : 'hover:bg-slate-100 text-slate-500 hover:text-slate-700'
+                  ${
+                    dark || variant === 'glass' || variant === 'neon'
+                      ? 'hover:bg-white/10 text-slate-400 hover:text-white'
+                      : variant === 'gradient'
+                        ? 'hover:bg-white/20 text-white/80 hover:text-white'
+                        : 'hover:bg-slate-100 text-slate-500 hover:text-slate-700'
                   }
                 `}
               >
@@ -172,27 +180,31 @@ const Modal = ({
         )}
 
         {/* Content */}
-        <div className={`
+        <div
+          className={`
           p-6 overflow-y-auto flex-1
           ${dark || variant === 'glass' || variant === 'neon' || variant === 'gradient' ? 'text-slate-300' : 'text-slate-600'}
-        `}>
+        `}
+        >
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className={`
+          <div
+            className={`
             p-6 border-t 
             ${dark ? 'border-slate-700 bg-slate-900/50' : variant === 'default' ? 'border-slate-100 bg-slate-50/50' : 'border-white/10 bg-black/20'}
-          `}>
+          `}
+          >
             {footer}
           </div>
         )}
       </div>
     </div>,
     document.body
-  )
-}
+  );
+};
 
 // Modal Footer Component
 const ModalFooter = ({ children, className = '', dark = false, align = 'end' }) => {
@@ -201,18 +213,20 @@ const ModalFooter = ({ children, className = '', dark = false, align = 'end' }) 
     center: 'justify-center',
     end: 'justify-end',
     between: 'justify-between',
-  }
+  };
 
   return (
-    <div className={`
+    <div
+      className={`
       flex items-center gap-3 
       ${alignments[align]}
       ${className}
-    `}>
+    `}
+    >
       {children}
     </div>
-  )
-}
+  );
+};
 
 // Confirm Modal Component
 export const ConfirmModal = ({
@@ -260,9 +274,9 @@ export const ConfirmModal = ({
     >
       <p className="text-slate-600">{message}</p>
     </Modal>
-  )
-}
+  );
+};
 
-Modal.Footer = ModalFooter
+Modal.Footer = ModalFooter;
 
-export default Modal
+export default Modal;

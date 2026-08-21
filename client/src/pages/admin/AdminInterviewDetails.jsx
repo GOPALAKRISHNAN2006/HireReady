@@ -189,7 +189,7 @@ export default function AdminInterviewDetails() {
 
         {/* Interview Title Card */}
         <Card className="bg-white shadow-lg border border-slate-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6">
+          <div className="bg-gradient-to-r from-primary-600 to-primary-600 p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
@@ -248,12 +248,12 @@ export default function AdminInterviewDetails() {
           <Card className="bg-white shadow-md border border-slate-200">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-indigo-600" />
+                <User className="w-5 h-5 text-primary-600" />
                 Candidate Information
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">
                       {user?.firstName?.[0]}
                       {user?.lastName?.[0]}
@@ -277,7 +277,7 @@ export default function AdminInterviewDetails() {
           <Card className="bg-white shadow-md border border-slate-200 lg:col-span-2">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-indigo-600" />
+                <FileText className="w-5 h-5 text-primary-600" />
                 Interview Details
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -326,7 +326,7 @@ export default function AdminInterviewDetails() {
         <Card className="bg-white shadow-md border border-slate-200">
           <div className="p-6 border-b border-slate-200">
             <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-indigo-600" />
+              <MessageSquare className="w-5 h-5 text-primary-600" />
               Questions & Responses ({responses.length})
             </h3>
           </div>
@@ -336,8 +336,8 @@ export default function AdminInterviewDetails() {
                 <div key={index} className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                        <span className="text-indigo-600 font-semibold text-sm">{index + 1}</span>
+                      <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                        <span className="text-primary-600 font-semibold text-sm">{index + 1}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className="bg-blue-100 text-blue-600 text-xs">
@@ -393,10 +393,10 @@ export default function AdminInterviewDetails() {
 
                   {/* AI Feedback */}
                   {response.feedback && typeof response.feedback === 'object' ? (
-                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                    <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <Award className="w-4 h-4 text-indigo-600" />
-                        <span className="text-indigo-700 text-sm font-medium">AI Feedback</span>
+                        <Award className="w-4 h-4 text-primary-600" />
+                        <span className="text-primary-700 text-sm font-medium">AI Feedback</span>
                       </div>
                       {/* Render feedback details if available */}
                       {response.feedback.strengths && (
@@ -427,7 +427,7 @@ export default function AdminInterviewDetails() {
                       )}
                     </div>
                   ) : response.feedback ? (
-                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                    <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
                       <p className="text-slate-700 text-sm">{String(response.feedback)}</p>
                     </div>
                   ) : null}
@@ -455,10 +455,10 @@ export default function AdminInterviewDetails() {
           <Card className="bg-white shadow-md border border-slate-200">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-indigo-600" />
+                <TrendingUp className="w-5 h-5 text-primary-600" />
                 Overall Performance Feedback
               </h3>
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-primary-50 to-primary-50 rounded-lg p-6">
                 <p className="text-slate-700">{interview?.overallFeedback}</p>
               </div>
             </div>
