@@ -2,9 +2,9 @@
  * ===========================================
  * AI Routes
  * ===========================================
- * 
+ *
  * Handles AI-related operations like question generation and answer evaluation.
- * 
+ *
  * Routes:
  * POST /api/ai/generate-questions - Generate interview questions
  * POST /api/ai/evaluate-answer - Evaluate user's answer
@@ -23,8 +23,9 @@ const { asyncHandler } = require('../middleware/errorHandler');
  * @desc    Generate interview questions using AI
  * @access  Private/Admin
  */
-router.post('/generate-questions', 
-  protect, 
+router.post(
+  '/generate-questions',
+  protect,
   authorize('admin', 'moderator'),
   asyncHandler(async (req, res) => {
     const {
@@ -33,13 +34,13 @@ router.post('/generate-questions',
       count = 5,
       targetRole,
       topics,
-      style = 'technical'
+      style = 'technical',
     } = req.body;
 
     if (!category) {
       return res.status(400).json({
         success: false,
-        message: 'Category is required.'
+        message: 'Category is required.',
       });
     }
 
@@ -50,12 +51,12 @@ router.post('/generate-questions',
         count: Math.min(count, 10), // Limit to 10 questions per request
         targetRole,
         topics,
-        style
+        style,
       });
 
       // Save questions to database (as unapproved for review)
       const savedQuestions = await Promise.all(
-        generatedQuestions.map(async (q) => {
+        generatedQuestions.map(async q => {
           const question = await Question.create({
             text: q.text,
             category,
@@ -71,7 +72,7 @@ router.post('/generate-questions',
             aiProvider: AIService.getProvider(),
             isApproved: false, // Require admin approval
             createdBy: req.user._id,
-            recommendedTimeMinutes: q.recommendedTimeMinutes || 5
+            recommendedTimeMinutes: q.recommendedTimeMinutes || 5,
           });
           return question;
         })
@@ -82,16 +83,15 @@ router.post('/generate-questions',
         message: `Generated ${savedQuestions.length} questions successfully.`,
         data: {
           questions: savedQuestions,
-          provider: AIService.getProvider()
-        }
+          provider: AIService.getProvider(),
+        },
       });
-
     } catch (error) {
       console.error('AI Question Generation Error:', error);
       res.status(500).json({
         success: false,
         message: 'Failed to generate questions. Please try again.',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       });
     }
   })
@@ -102,8 +102,9 @@ router.post('/generate-questions',
  * @desc    Generate a single interview question using AI
  * @access  Private/Admin
  */
-router.post('/generate-question', 
-  protect, 
+router.post(
+  '/generate-question',
+  protect,
   authorize('admin', 'moderator'),
   asyncHandler(async (req, res) => {
     const {
@@ -111,7 +112,7 @@ router.post('/generate-question',
       difficulty = 'medium',
       targetRole,
       topics,
-      style = 'technical'
+      style = 'technical',
     } = req.body;
 
     try {
@@ -121,18 +122,18 @@ router.post('/generate-question',
         count: 1,
         targetRole,
         topics,
-        style
+        style,
       });
 
       if (generatedQuestions.length === 0) {
         return res.status(500).json({
           success: false,
-          message: 'Failed to generate question.'
+          message: 'Failed to generate question.',
         });
       }
 
       const q = generatedQuestions[0];
-      
+
       res.status(200).json({
         success: true,
         question: {
@@ -145,15 +146,14 @@ router.post('/generate-question',
           hints: q.hints || [],
           keyPoints: q.keyPoints || [],
         },
-        provider: AIService.getProvider()
+        provider: AIService.getProvider(),
       });
-
     } catch (error) {
       console.error('AI Question Generation Error:', error);
       res.status(500).json({
         success: false,
         message: 'Failed to generate question. Please try again.',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       });
     }
   })
@@ -164,229 +164,294 @@ router.post('/generate-question',
  * @desc    Evaluate a user's answer using AI
  * @access  Private
  */
-router.post('/evaluate-answer', protect, asyncHandler(async (req, res) => {
-  const {
-    question,
-    expectedAnswer,
-    userAnswer,
-    category,
-    keyPoints
-  } = req.body;
+router.post(
+  '/evaluate-answer',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { question, expectedAnswer, userAnswer, category, keyPoints } = req.body;
 
-  if (!question || !userAnswer) {
-    return res.status(400).json({
-      success: false,
-      message: 'Question and user answer are required.'
-    });
-  }
+    if (!question || !userAnswer) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question and user answer are required.',
+      });
+    }
 
-  try {
-    const evaluation = await AIService.evaluateAnswer({
-      question,
-      expectedAnswer,
-      userAnswer,
-      category,
-      keyPoints
-    });
+    if (userAnswer.length > 5000) {
+      return res.status(400).json({
+        success: false,
+        message: 'User answer exceeds maximum length of 5000 characters.',
+      });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        evaluation,
-        provider: AIService.getProvider()
-      }
-    });
+    if (question.length > 1000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question exceeds maximum length of 1000 characters.',
+      });
+    }
 
-  } catch (error) {
-    console.error('AI Evaluation Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to evaluate answer. Please try again.',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-}));
+    try {
+      const evaluation = await AIService.evaluateAnswer({
+        question,
+        expectedAnswer,
+        userAnswer,
+        category,
+        keyPoints,
+      });
+
+      res.status(200).json({
+        success: true,
+        data: {
+          evaluation,
+          provider: AIService.getProvider(),
+        },
+      });
+    } catch (error) {
+      console.error('AI Evaluation Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to evaluate answer. Please try again.',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      });
+    }
+  })
+);
 
 /**
  * @route   POST /api/ai/generate-feedback
  * @desc    Generate detailed feedback for an interview
  * @access  Private
  */
-router.post('/generate-feedback', protect, asyncHandler(async (req, res) => {
-  const {
-    category,
-    difficulty,
-    responses,
-    overallScore,
-    categoryScores
-  } = req.body;
+router.post(
+  '/generate-feedback',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { category, difficulty, responses, overallScore, categoryScores } = req.body;
 
-  if (!responses || !Array.isArray(responses)) {
-    return res.status(400).json({
-      success: false,
-      message: 'Interview responses are required.'
-    });
-  }
+    if (!responses || !Array.isArray(responses)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Interview responses are required.',
+      });
+    }
 
-  try {
-    const feedback = await AIService.generateInterviewInsights({
-      category,
-      difficulty,
-      responses,
-      overallScore,
-      categoryScores
-    });
+    if (responses.length > 30) {
+      return res.status(400).json({
+        success: false,
+        message: 'Number of responses to generate feedback for exceeds the maximum limit of 30.',
+      });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        feedback,
-        provider: AIService.getProvider()
-      }
-    });
+    try {
+      const feedback = await AIService.generateInterviewInsights({
+        category,
+        difficulty,
+        responses,
+        overallScore,
+        categoryScores,
+      });
 
-  } catch (error) {
-    console.error('AI Feedback Generation Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to generate feedback. Please try again.',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-}));
+      res.status(200).json({
+        success: true,
+        data: {
+          feedback,
+          provider: AIService.getProvider(),
+        },
+      });
+    } catch (error) {
+      console.error('AI Feedback Generation Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to generate feedback. Please try again.',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      });
+    }
+  })
+);
 
 /**
  * @route   POST /api/ai/analyze-resume
  * @desc    Analyze resume and suggest interview focus areas
  * @access  Private
  */
-router.post('/analyze-resume', protect, asyncHandler(async (req, res) => {
-  const { resumeText, targetRole } = req.body;
+router.post(
+  '/analyze-resume',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { resumeText, targetRole } = req.body;
 
-  if (!resumeText) {
-    return res.status(400).json({
-      success: false,
-      message: 'Resume text is required.'
-    });
-  }
+    if (!resumeText) {
+      return res.status(400).json({
+        success: false,
+        message: 'Resume text is required.',
+      });
+    }
 
-  try {
-    const analysis = await AIService.analyzeResume({
-      resumeText,
-      targetRole
-    });
+    if (resumeText.length > 15000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Resume text exceeds maximum length of 15000 characters.',
+      });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        analysis,
-        provider: AIService.getProvider()
-      }
-    });
+    try {
+      const analysis = await AIService.analyzeResume({
+        resumeText,
+        targetRole,
+      });
 
-  } catch (error) {
-    console.error('Resume Analysis Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to analyze resume. Please try again.',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-}));
+      res.status(200).json({
+        success: true,
+        data: {
+          analysis,
+          provider: AIService.getProvider(),
+        },
+      });
+    } catch (error) {
+      console.error('Resume Analysis Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to analyze resume. Please try again.',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      });
+    }
+  })
+);
 
 /**
  * @route   POST /api/ai/improve-answer
  * @desc    Get suggestions to improve an answer
  * @access  Private
  */
-router.post('/improve-answer', protect, asyncHandler(async (req, res) => {
-  const { question, userAnswer, category } = req.body;
+router.post(
+  '/improve-answer',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { question, userAnswer, category } = req.body;
 
-  if (!question || !userAnswer) {
-    return res.status(400).json({
-      success: false,
-      message: 'Question and answer are required.'
-    });
-  }
+    if (!question || !userAnswer) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question and answer are required.',
+      });
+    }
 
-  try {
-    const improvements = await AIService.suggestImprovements({
-      question,
-      userAnswer,
-      category
-    });
+    if (userAnswer.length > 5000) {
+      return res.status(400).json({
+        success: false,
+        message: 'User answer exceeds maximum length of 5000 characters.',
+      });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        improvements,
-        provider: AIService.getProvider()
-      }
-    });
+    if (question.length > 1000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question exceeds maximum length of 1000 characters.',
+      });
+    }
 
-  } catch (error) {
-    console.error('Answer Improvement Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to generate improvements. Please try again.',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-}));
+    try {
+      const improvements = await AIService.suggestImprovements({
+        question,
+        userAnswer,
+        category,
+      });
+
+      res.status(200).json({
+        success: true,
+        data: {
+          improvements,
+          provider: AIService.getProvider(),
+        },
+      });
+    } catch (error) {
+      console.error('Answer Improvement Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to generate improvements. Please try again.',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      });
+    }
+  })
+);
 
 /**
  * @route   POST /api/ai/chat
  * @desc    AI chatbot - general conversation for interview prep assistance
  * @access  Private
  */
-router.post('/chat', protect, asyncHandler(async (req, res) => {
-  const { message, conversationHistory } = req.body;
+router.post(
+  '/chat',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { message, conversationHistory } = req.body;
 
-  if (!message || !message.trim()) {
-    return res.status(400).json({
-      success: false,
-      message: 'Message is required.'
-    });
-  }
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Message is required.',
+      });
+    }
 
-  try {
-    const response = await AIService.chat({
-      message: message.trim(),
-      conversationHistory: conversationHistory || []
-    });
+    if (message.length > 1000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Message exceeds maximum length of 1000 characters.',
+      });
+    }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        response,
-        provider: AIService.getProvider()
-      }
-    });
-  } catch (error) {
-    console.error('AI Chat Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to generate response. Please try again.'
-    });
-  }
-}));
+    if (conversationHistory && conversationHistory.length > 30) {
+      return res.status(400).json({
+        success: false,
+        message: 'Conversation history exceeds maximum allowed limit of 30 messages.',
+      });
+    }
+
+    try {
+      const response = await AIService.chat({
+        message: message.trim(),
+        conversationHistory: conversationHistory || [],
+      });
+
+      res.status(200).json({
+        success: true,
+        data: {
+          response,
+          provider: AIService.getProvider(),
+        },
+      });
+    } catch (error) {
+      console.error('AI Chat Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to generate response. Please try again.',
+      });
+    }
+  })
+);
 
 /**
  * @route   GET /api/ai/status
  * @desc    Check AI service status
  * @access  Private/Admin
  */
-router.get('/status', protect, authorize('admin'), asyncHandler(async (req, res) => {
-  const status = await AIService.checkStatus();
+router.get(
+  '/status',
+  protect,
+  authorize('admin'),
+  asyncHandler(async (req, res) => {
+    const status = await AIService.checkStatus();
 
-  res.status(200).json({
-    success: true,
-    data: {
-      status,
-      provider: AIService.getProvider(),
-      isConfigured: status.isConfigured
-    }
-  });
-}));
+    res.status(200).json({
+      success: true,
+      data: {
+        status,
+        provider: AIService.getProvider(),
+        isConfigured: status.isConfigured,
+      },
+    });
+  })
+);
 
 module.exports = router;

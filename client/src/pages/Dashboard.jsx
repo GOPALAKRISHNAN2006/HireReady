@@ -346,7 +346,7 @@ const Dashboard = () => {
           };
         }
         return (
-          <Link to={suggestion.link}>
+          <Link to={suggestion.link} className="block">
             <Card hover className="group relative overflow-hidden border-l-4 border-l-primary-500">
               <div className="flex items-center gap-4">
                 <div

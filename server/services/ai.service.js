@@ -2,7 +2,7 @@
  * ===========================================
  * AI Service - OpenAI & Gemini Integration
  * ===========================================
- * 
+ *
  * Provides AI-powered features including:
  * - Question generation
  * - Answer evaluation with NLP
@@ -24,7 +24,7 @@ class AIService {
     // Initialize OpenAI if configured
     if (aiConfig.openai.apiKey) {
       this.openai = new OpenAI({
-        apiKey: aiConfig.openai.apiKey
+        apiKey: aiConfig.openai.apiKey,
       });
     }
 
@@ -39,6 +39,13 @@ class AIService {
     this.TfIdf = natural.TfIdf;
     this.stemmer = natural.PorterStemmer;
     this.sentiment = new natural.SentimentAnalyzer('English', this.stemmer, 'afinn');
+
+    // Auto-switch provider if the default one is missing its API key
+    if (this.provider === 'openai' && !this.openai && this.gemini) {
+      this.provider = 'gemini';
+    } else if (this.provider === 'gemini' && !this.gemini && this.openai) {
+      this.provider = 'openai';
+    }
   }
 
   /**
@@ -58,7 +65,7 @@ class AIService {
       isConfigured: !!(this.openai || this.gemini),
       openai: !!this.openai,
       gemini: !!this.gemini,
-      activeProvider: this.provider
+      activeProvider: this.provider,
     };
   }
 
@@ -76,7 +83,7 @@ class AIService {
       count,
       targetRole,
       topics,
-      style
+      style,
     });
 
     try {
@@ -92,7 +99,6 @@ class AIService {
       }
 
       return this._parseQuestionsResponse(response);
-
     } catch (error) {
       console.error('AI Question Generation Error:', error);
       // Fallback to mock questions
@@ -118,7 +124,7 @@ class AIService {
       expectedAnswer,
       userAnswer,
       category,
-      keyPoints
+      keyPoints,
     });
 
     try {
@@ -134,7 +140,6 @@ class AIService {
       }
 
       return this._parseEvaluationResponse(response, keyPoints);
-
     } catch (error) {
       console.error('AI Evaluation Error:', error);
       // Fallback to NLP-based evaluation
@@ -155,7 +160,7 @@ class AIService {
       difficulty,
       responses,
       overallScore,
-      categoryScores
+      categoryScores,
     });
 
     try {
@@ -170,7 +175,6 @@ class AIService {
       }
 
       return this._parseInsightsResponse(response, overallScore);
-
     } catch (error) {
       console.error('AI Insights Error:', error);
       return this._generateBasicInsights(params);
@@ -210,7 +214,6 @@ Provide analysis in JSON format with:
       }
 
       return JSON.parse(response);
-
     } catch (error) {
       console.error('Resume Analysis Error:', error);
       return this._analyzeResumeBasic(resumeText);
@@ -247,18 +250,17 @@ Provide response in JSON format with:
         return {
           suggestions: ['Consider adding more technical details', 'Use specific examples'],
           missingPoints: ['Could mention time/space complexity', 'Consider edge cases'],
-          structureAdvice: 'Start with the approach, then implementation, then complexity analysis'
+          structureAdvice: 'Start with the approach, then implementation, then complexity analysis',
         };
       }
 
       return JSON.parse(response);
-
     } catch (error) {
       console.error('Improvement Suggestion Error:', error);
       return {
         suggestions: ['Add more specific details', 'Include examples from experience'],
         missingPoints: [],
-        structureAdvice: 'Structure your answer with a clear beginning, middle, and end'
+        structureAdvice: 'Structure your answer with a clear beginning, middle, and end',
       };
     }
   }
@@ -290,23 +292,24 @@ If asked about something unrelated to interviews/career/education, politely redi
           { role: 'system', content: systemPrompt },
           ...conversationHistory.slice(-10).map(msg => ({
             role: msg.type === 'user' ? 'user' : 'assistant',
-            content: msg.text
+            content: msg.text,
           })),
-          { role: 'user', content: message }
+          { role: 'user', content: message },
         ];
 
         const completion = await this.openai.chat.completions.create({
           model: aiConfig.openai.model,
           messages,
           max_tokens: 800,
-          temperature: 0.7
+          temperature: 0.7,
         });
 
         return completion.choices[0].message.content;
       } else if (this.provider === 'gemini' && this.gemini) {
-        const contextMessages = conversationHistory.slice(-6).map(msg => 
-          `${msg.type === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
-        ).join('\n');
+        const contextMessages = conversationHistory
+          .slice(-6)
+          .map(msg => `${msg.type === 'user' ? 'User' : 'Assistant'}: ${msg.text}`)
+          .join('\n');
 
         const fullPrompt = `${systemPrompt}\n\nConversation history:\n${contextMessages}\n\nUser: ${message}\n\nAssistant:`;
         const result = await this.gemini.generateContent(fullPrompt);
@@ -326,8 +329,14 @@ If asked about something unrelated to interviews/career/education, politely redi
    * Fallback chat using keyword matching
    */
   _chatFallback(message) {
-    const lower = message.toLowerCase();
+    const lower = (message || '').toLowerCase().trim();
 
+    if (lower.includes('hi') || lower.includes('hello') || lower.includes('hey')) {
+      return `Hello! 👋 I'm your HireReady Assistant. I'm ready to help you with mock interviews, DSA questions, resume reviews, or general career tips. What are we practicing today?`;
+    }
+    if (lower.includes('how are you')) {
+      return `I'm doing great, thank you! I'm excited to help you prepare for your next career step. How can I assist you today?`;
+    }
     if (lower.includes('interview tip') || lower.includes('prepare for interview')) {
       return `Here are key interview tips:\n\n**Before the Interview:**\n- Research the company thoroughly\n- Review the job description\n- Prepare your elevator pitch\n\n**During the Interview:**\n- Use the STAR method for behavioral questions\n- Think out loud for technical problems\n- Ask clarifying questions\n\n**Technical Interviews:**\n- Practice DSA problems daily\n- Focus on problem-solving approach\n- Consider edge cases`;
     }
@@ -337,7 +346,12 @@ If asked about something unrelated to interviews/career/education, politely redi
     if (lower.includes('resume')) {
       return `**Resume Tips:**\n\n- Use action verbs (Developed, Implemented, Led)\n- Quantify achievements with numbers\n- Keep it to 1-2 pages\n- Tailor for each application\n\nUse our **Resume Builder** to create an ATS-friendly resume!`;
     }
-    if (lower.includes('company') || lower.includes('faang') || lower.includes('google') || lower.includes('amazon')) {
+    if (
+      lower.includes('company') ||
+      lower.includes('faang') ||
+      lower.includes('google') ||
+      lower.includes('amazon')
+    ) {
       return `**Company Preparation Guide:**\n\n- **Google**: Focus on problem-solving, medium-hard LeetCode\n- **Amazon**: Master 16 Leadership Principles, use STAR method\n- **Microsoft**: Strong coding fundamentals, growth mindset\n- **Meta**: Speed is crucial, practice timed coding\n\nVisit **Company Prep** in the sidebar for detailed guides!`;
     }
     if (lower.includes('communication') || lower.includes('speaking')) {
@@ -360,15 +374,16 @@ If asked about something unrelated to interviews/career/education, politely redi
       messages: [
         {
           role: 'system',
-          content: 'You are an expert technical interviewer and career coach. Always respond with valid JSON when asked for structured data.'
+          content:
+            'You are an expert technical interviewer and career coach. Always respond with valid JSON when asked for structured data.',
         },
         {
           role: 'user',
-          content: prompt
-        }
+          content: prompt,
+        },
       ],
       max_tokens: aiConfig.openai.maxTokens,
-      temperature: aiConfig.openai.temperature
+      temperature: aiConfig.openai.temperature,
     });
 
     return completion.choices[0].message.content;
@@ -393,7 +408,7 @@ If asked about something unrelated to interviews/career/education, politely redi
       behavioral: 'Behavioral and HR',
       database: 'Database Management and SQL',
       devops: 'DevOps and Cloud Infrastructure',
-      mobile: 'Mobile App Development'
+      mobile: 'Mobile App Development',
     };
 
     return `Generate ${count} ${difficulty} level ${categoryDescriptions[category]} interview questions${targetRole ? ` for a ${targetRole} position` : ''}.
@@ -504,7 +519,8 @@ Respond ONLY with the JSON object.`;
         improvements: evaluation.improvements || [],
         suggestions: evaluation.suggestions || [],
         detailedFeedback: evaluation.detailedFeedback || '',
-        keyPointsCovered: evaluation.keyPointsCovered || keyPoints?.map(p => ({ point: p, covered: false })) || []
+        keyPointsCovered:
+          evaluation.keyPointsCovered || keyPoints?.map(p => ({ point: p, covered: false })) || [],
       };
     } catch (error) {
       console.error('Failed to parse evaluation response:', error);
@@ -522,7 +538,7 @@ Respond ONLY with the JSON object.`;
         topStrengths: insights.topStrengths || [],
         areasToImprove: insights.areasToImprove || [],
         recommendations: insights.recommendations || [],
-        performanceLevel: insights.performanceLevel || this._getPerformanceLevel(overallScore)
+        performanceLevel: insights.performanceLevel || this._getPerformanceLevel(overallScore),
       };
     } catch (error) {
       console.error('Failed to parse insights response:', error);
@@ -543,7 +559,9 @@ Respond ONLY with the JSON object.`;
 
     // Tokenize answers
     const userTokens = this.tokenizer.tokenize(userAnswer.toLowerCase());
-    const expectedTokens = expectedAnswer ? this.tokenizer.tokenize(expectedAnswer.toLowerCase()) : [];
+    const expectedTokens = expectedAnswer
+      ? this.tokenizer.tokenize(expectedAnswer.toLowerCase())
+      : [];
 
     // Calculate similarity using TF-IDF
     const tfidf = new this.TfIdf();
@@ -557,14 +575,15 @@ Respond ONLY with the JSON object.`;
     const lengthScore = Math.min(100, (wordCount / 50) * 100); // Optimal around 50+ words
 
     // Check key points coverage
-    const keyPointsCovered = keyPoints?.map(point => {
-      const pointTokens = this.tokenizer.tokenize(point.toLowerCase());
-      const covered = pointTokens.some(token => userTokens.includes(token));
-      return { point, covered };
-    }) || [];
+    const keyPointsCovered =
+      keyPoints?.map(point => {
+        const pointTokens = this.tokenizer.tokenize(point.toLowerCase());
+        const covered = pointTokens.some(token => userTokens.includes(token));
+        return { point, covered };
+      }) || [];
 
-    const keyPointsScore = keyPoints?.length 
-      ? (keyPointsCovered.filter(k => k.covered).length / keyPoints.length) * 100 
+    const keyPointsScore = keyPoints?.length
+      ? (keyPointsCovered.filter(k => k.covered).length / keyPoints.length) * 100
       : 50;
 
     // Sentiment analysis for confidence
@@ -580,10 +599,7 @@ Respond ONLY with the JSON object.`;
 
     // Calculate overall score
     const overallScore = Math.round(
-      (relevanceScore * 0.3) +
-      (lengthScore * 0.2) +
-      (keyPointsScore * 0.3) +
-      (confidenceScore * 0.2)
+      relevanceScore * 0.3 + lengthScore * 0.2 + keyPointsScore * 0.3 + confidenceScore * 0.2
     );
 
     return {
@@ -598,7 +614,7 @@ Respond ONLY with the JSON object.`;
       improvements: this._generateImprovements(overallScore, wordCount, keyPointsCovered),
       suggestions: ['Try to include more specific examples', 'Consider mentioning edge cases'],
       detailedFeedback: this._generateBasicFeedback(overallScore),
-      keyPointsCovered
+      keyPointsCovered,
     };
   }
 
@@ -616,7 +632,7 @@ Respond ONLY with the JSON object.`;
         { text: 'Explain dynamic programming with an example.', type: 'technical' },
         { text: 'How would you reverse a linked list?', type: 'coding' },
         { text: 'What is a binary search tree and its properties?', type: 'conceptual' },
-        { text: 'Explain the concept of memoization.', type: 'technical' }
+        { text: 'Explain the concept of memoization.', type: 'technical' },
       ],
       web: [
         { text: 'Explain the difference between REST and GraphQL.', type: 'conceptual' },
@@ -628,7 +644,7 @@ Respond ONLY with the JSON object.`;
         { text: 'What is the difference between SSR and CSR?', type: 'technical' },
         { text: 'How does authentication work with JWT?', type: 'technical' },
         { text: 'Explain CSS flexbox and grid differences.', type: 'conceptual' },
-        { text: 'What are React hooks and why are they useful?', type: 'technical' }
+        { text: 'What are React hooks and why are they useful?', type: 'technical' },
       ],
       'web-development': [
         { text: 'Explain the difference between REST and GraphQL.', type: 'conceptual' },
@@ -640,7 +656,7 @@ Respond ONLY with the JSON object.`;
         { text: 'What is the difference between SSR and CSR?', type: 'technical' },
         { text: 'How does authentication work with JWT?', type: 'technical' },
         { text: 'Explain CSS flexbox and grid differences.', type: 'conceptual' },
-        { text: 'What are React hooks and why are they useful?', type: 'technical' }
+        { text: 'What are React hooks and why are they useful?', type: 'technical' },
       ],
       behavioral: [
         { text: 'Tell me about a challenging project you worked on.', type: 'behavioral' },
@@ -652,10 +668,13 @@ Respond ONLY with the JSON object.`;
         { text: 'Describe your ideal work environment.', type: 'behavioral' },
         { text: 'How do you stay updated with new technologies?', type: 'behavioral' },
         { text: 'Tell me about a time you mentored someone.', type: 'behavioral' },
-        { text: 'How do you approach code reviews?', type: 'situational' }
+        { text: 'How do you approach code reviews?', type: 'situational' },
       ],
       ml: [
-        { text: 'Explain the difference between supervised and unsupervised learning.', type: 'conceptual' },
+        {
+          text: 'Explain the difference between supervised and unsupervised learning.',
+          type: 'conceptual',
+        },
         { text: 'What is overfitting and how do you prevent it?', type: 'technical' },
         { text: 'Explain the bias-variance tradeoff.', type: 'conceptual' },
         { text: 'What are common evaluation metrics for classification?', type: 'technical' },
@@ -664,10 +683,13 @@ Respond ONLY with the JSON object.`;
         { text: 'Explain gradient descent and its variants.', type: 'conceptual' },
         { text: 'What is regularization and why is it used?', type: 'technical' },
         { text: 'Explain the attention mechanism in transformers.', type: 'conceptual' },
-        { text: 'How do you handle imbalanced datasets?', type: 'technical' }
+        { text: 'How do you handle imbalanced datasets?', type: 'technical' },
       ],
       'machine-learning': [
-        { text: 'Explain the difference between supervised and unsupervised learning.', type: 'conceptual' },
+        {
+          text: 'Explain the difference between supervised and unsupervised learning.',
+          type: 'conceptual',
+        },
         { text: 'What is overfitting and how do you prevent it?', type: 'technical' },
         { text: 'Explain the bias-variance tradeoff.', type: 'conceptual' },
         { text: 'What are common evaluation metrics for classification?', type: 'technical' },
@@ -676,7 +698,7 @@ Respond ONLY with the JSON object.`;
         { text: 'Explain gradient descent and its variants.', type: 'conceptual' },
         { text: 'What is regularization and why is it used?', type: 'technical' },
         { text: 'Explain the attention mechanism in transformers.', type: 'conceptual' },
-        { text: 'How do you handle imbalanced datasets?', type: 'technical' }
+        { text: 'How do you handle imbalanced datasets?', type: 'technical' },
       ],
       'system-design': [
         { text: 'How would you design a URL shortening service?', type: 'technical' },
@@ -688,7 +710,7 @@ Respond ONLY with the JSON object.`;
         { text: 'How would you design a notification system?', type: 'technical' },
         { text: 'What are different caching strategies?', type: 'conceptual' },
         { text: 'How would you design a distributed file storage system?', type: 'technical' },
-        { text: 'Explain load balancing strategies.', type: 'conceptual' }
+        { text: 'Explain load balancing strategies.', type: 'conceptual' },
       ],
       database: [
         { text: 'Explain the difference between SQL and NoSQL databases.', type: 'conceptual' },
@@ -698,9 +720,12 @@ Respond ONLY with the JSON object.`;
         { text: 'Explain the difference between joins in SQL.', type: 'conceptual' },
         { text: 'What are stored procedures and when to use them?', type: 'technical' },
         { text: 'Explain database transactions and isolation levels.', type: 'conceptual' },
-        { text: 'What is the difference between clustered and non-clustered indexes?', type: 'technical' },
+        {
+          text: 'What is the difference between clustered and non-clustered indexes?',
+          type: 'technical',
+        },
         { text: 'How would you optimize a slow SQL query?', type: 'coding' },
-        { text: 'Explain eventual consistency in distributed databases.', type: 'conceptual' }
+        { text: 'Explain eventual consistency in distributed databases.', type: 'conceptual' },
       ],
       devops: [
         { text: 'Explain CI/CD and its benefits.', type: 'conceptual' },
@@ -712,19 +737,25 @@ Respond ONLY with the JSON object.`;
         { text: 'How would you implement blue-green deployment?', type: 'technical' },
         { text: 'Explain monitoring and observability best practices.', type: 'conceptual' },
         { text: 'What is GitOps?', type: 'technical' },
-        { text: 'How do you manage secrets in a cloud environment?', type: 'technical' }
+        { text: 'How do you manage secrets in a cloud environment?', type: 'technical' },
       ],
       mobile: [
-        { text: 'Explain the difference between native and cross-platform development.', type: 'conceptual' },
+        {
+          text: 'Explain the difference between native and cross-platform development.',
+          type: 'conceptual',
+        },
         { text: 'What is the Android activity lifecycle?', type: 'technical' },
         { text: 'Explain how React Native works.', type: 'conceptual' },
-        { text: 'What are the key differences between iOS and Android development?', type: 'technical' },
+        {
+          text: 'What are the key differences between iOS and Android development?',
+          type: 'technical',
+        },
         { text: 'How would you handle offline functionality in a mobile app?', type: 'technical' },
         { text: 'Explain mobile app performance optimization techniques.', type: 'conceptual' },
         { text: 'What is Flutter and how does it work?', type: 'technical' },
         { text: 'How do you handle push notifications?', type: 'technical' },
         { text: 'Explain responsive design in mobile apps.', type: 'conceptual' },
-        { text: 'What are common security considerations for mobile apps?', type: 'technical' }
+        { text: 'What are common security considerations for mobile apps?', type: 'technical' },
       ],
       general: [
         { text: 'Tell me about yourself and your experience.', type: 'behavioral' },
@@ -736,7 +767,7 @@ Respond ONLY with the JSON object.`;
         { text: 'What motivates you in your work?', type: 'behavioral' },
         { text: 'How do you handle feedback and criticism?', type: 'situational' },
         { text: 'What do you know about our company?', type: 'behavioral' },
-        { text: 'Do you have any questions for us?', type: 'behavioral' }
+        { text: 'Do you have any questions for us?', type: 'behavioral' },
       ],
       mixed: [
         { text: 'Explain the difference between a Stack and a Queue.', type: 'conceptual' },
@@ -748,8 +779,8 @@ Respond ONLY with the JSON object.`;
         { text: 'Tell me about a challenging project you worked on.', type: 'behavioral' },
         { text: 'What is overfitting in machine learning?', type: 'technical' },
         { text: 'How do you prioritize multiple tasks?', type: 'situational' },
-        { text: 'Explain the event loop in JavaScript.', type: 'conceptual' }
-      ]
+        { text: 'Explain the event loop in JavaScript.', type: 'conceptual' },
+      ],
     };
 
     const questions = mockQuestions[category] || mockQuestions.general;
@@ -762,7 +793,7 @@ Respond ONLY with the JSON object.`;
       hints: ['Consider the trade-offs', 'Think about edge cases'],
       followUpQuestions: ['Can you elaborate on that?'],
       tags: [category, difficulty],
-      recommendedTimeMinutes: 5
+      recommendedTimeMinutes: 5,
     }));
   }
 
@@ -779,7 +810,7 @@ Respond ONLY with the JSON object.`;
       improvements: ['Please provide an answer to the question'],
       suggestions: ['Take your time to think through the problem before responding'],
       detailedFeedback: 'No answer was provided for this question.',
-      keyPointsCovered: []
+      keyPointsCovered: [],
     };
   }
 
@@ -796,7 +827,7 @@ Respond ONLY with the JSON object.`;
       improvements: ['Consider adding more detail'],
       suggestions: ['Practice explaining concepts clearly'],
       detailedFeedback: 'Your answer shows understanding but could be improved with more detail.',
-      keyPointsCovered: []
+      keyPointsCovered: [],
     };
   }
 
@@ -806,18 +837,24 @@ Respond ONLY with the JSON object.`;
 
     return {
       overallFeedback: `Your overall performance score is ${overallScore}/100, which is ${level}. Continue practicing to improve your interview skills.`,
-      topStrengths: overallScore >= 50 
-        ? ['Demonstrated understanding of core concepts', 'Provided structured responses']
-        : ['Attempted all questions'],
-      areasToImprove: overallScore < 70
-        ? ['Deepen technical knowledge', 'Practice explaining concepts clearly', 'Include more examples']
-        : ['Consider edge cases', 'Optimize solutions'],
+      topStrengths:
+        overallScore >= 50
+          ? ['Demonstrated understanding of core concepts', 'Provided structured responses']
+          : ['Attempted all questions'],
+      areasToImprove:
+        overallScore < 70
+          ? [
+              'Deepen technical knowledge',
+              'Practice explaining concepts clearly',
+              'Include more examples',
+            ]
+          : ['Consider edge cases', 'Optimize solutions'],
       recommendations: [
         'Practice mock interviews regularly',
         'Review fundamental concepts',
-        'Work on communication skills'
+        'Work on communication skills',
       ],
-      performanceLevel: level
+      performanceLevel: level,
     };
   }
 
@@ -841,26 +878,44 @@ Respond ONLY with the JSON object.`;
     const improvements = [];
     if (wordCount < 30) improvements.push('Provide more detailed explanations');
     if (score < 60) improvements.push('Review the core concepts');
-    
+
     const missedPoints = keyPointsCovered?.filter(k => !k.covered) || [];
     if (missedPoints.length > 0) {
-      improvements.push(`Cover key points: ${missedPoints.slice(0, 2).map(p => p.point).join(', ')}`);
+      improvements.push(
+        `Cover key points: ${missedPoints
+          .slice(0, 2)
+          .map(p => p.point)
+          .join(', ')}`
+      );
     }
-    
+
     return improvements.length ? improvements : ['Continue practicing'];
   }
 
   _generateBasicFeedback(score) {
-    if (score >= 80) return 'Excellent response! You demonstrated strong understanding and clear communication.';
-    if (score >= 60) return 'Good response with room for improvement. Consider adding more specific details and examples.';
-    if (score >= 40) return 'Your answer shows some understanding but needs more depth. Focus on covering key points and providing clear explanations.';
+    if (score >= 80)
+      return 'Excellent response! You demonstrated strong understanding and clear communication.';
+    if (score >= 60)
+      return 'Good response with room for improvement. Consider adding more specific details and examples.';
+    if (score >= 40)
+      return 'Your answer shows some understanding but needs more depth. Focus on covering key points and providing clear explanations.';
     return 'Your response needs significant improvement. Review the fundamental concepts and practice articulating your thoughts clearly.';
   }
 
   _analyzeResumeBasic(resumeText) {
     const tokens = this.tokenizer.tokenize(resumeText.toLowerCase());
-    
-    const techSkills = ['javascript', 'python', 'java', 'react', 'node', 'sql', 'aws', 'docker', 'git'];
+
+    const techSkills = [
+      'javascript',
+      'python',
+      'java',
+      'react',
+      'node',
+      'sql',
+      'aws',
+      'docker',
+      'git',
+    ];
     const foundSkills = techSkills.filter(skill => tokens.includes(skill));
 
     return {
@@ -869,7 +924,7 @@ Respond ONLY with the JSON object.`;
       strengths: ['Technical background detected'],
       gaps: ['Consider highlighting more specific achievements'],
       recommended_topics: ['System Design', 'Data Structures'],
-      overall_readiness: 60
+      overall_readiness: 60,
     };
   }
 }

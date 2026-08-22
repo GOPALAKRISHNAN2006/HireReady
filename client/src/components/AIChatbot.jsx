@@ -25,8 +25,16 @@ import {
 // Simple markdown renderer for bot responses
 const MarkdownText = ({ text }) => {
   const renderLine = (line, i) => {
+    // Escape raw HTML tags to prevent XSS
+    let html = line
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
     // Bold
-    let html = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     // Italic
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
     // Inline code

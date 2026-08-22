@@ -1,9 +1,22 @@
 const User = require('../models/User.model');
 
-const DEFAULT_ADMIN_EMAIL = (process.env.DEFAULT_ADMIN_EMAIL || 'hireready007@gmail.com').toLowerCase();
+const DEFAULT_ADMIN_EMAIL = (
+  process.env.DEFAULT_ADMIN_EMAIL || 'hireready007@gmail.com'
+).toLowerCase();
 const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || 'Hireready@12345';
 
 async function ensureDefaultAdmin() {
+  if (process.env.NODE_ENV === 'production') {
+    if (
+      DEFAULT_ADMIN_EMAIL === 'hireready007@gmail.com' ||
+      DEFAULT_ADMIN_PASSWORD === 'Hireready@12345'
+    ) {
+      console.error(
+        '❌ CRITICAL ERROR: Insecure default admin email or password is not allowed in production.'
+      );
+      process.exit(1);
+    }
+  }
   try {
     let admin = await User.findOne({ email: DEFAULT_ADMIN_EMAIL }).select('+password');
 

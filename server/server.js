@@ -2,7 +2,7 @@
  * ===========================================
  * HireReady - Main Server Entry Point
  * ===========================================
- * 
+ *
  * This is the main entry point for the Node.js/Express backend server.
  * It initializes the Express app, connects to MongoDB, and starts the HTTP server.
  */
@@ -15,6 +15,7 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
+const cookieParser = require('cookie-parser');
 
 // Load environment variables
 require('dotenv').config();
@@ -65,16 +66,21 @@ const errorHandler = require('./middleware/errorHandler');
 // Initialize Express app
 const app = express();
 
+// Parse Cookies
+app.use(cookieParser());
+
 // Create HTTP server for Socket.io
 const server = http.createServer(app);
 
 // Initialize Socket.io for real-time features
 const io = socketIo(server, {
   cors: {
-    origin: (process.env.FRONTEND_URL || 'https://hireready-1-0hvc.onrender.com').split(',').map(u => u.trim()),
+    origin: (process.env.FRONTEND_URL || 'https://hireready-1-0hvc.onrender.com')
+      .split(',')
+      .map(u => u.trim()),
     methods: ['GET', 'POST'],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 // Make io accessible to routes
@@ -84,38 +90,89 @@ app.set('io', io);
 // Middleware Configuration
 // ===========================================
 
-// Security Headers
-app.use(helmet());
+// Redirect HTTP to HTTPS in production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      return res.redirect(`https://${req.header('host')}${req.url}`);
+    }
+    next();
+  });
+}
+
+// Security Headers & Content Security Policy (CSP)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          'https://apis.google.com',
+          'https://js.stripe.com',
+        ],
+        connectSrc: [
+          "'self'",
+          'https://*.onrender.com',
+          'http://localhost:5000',
+          'http://localhost:5173',
+          'wss://*.onrender.com',
+          'ws://localhost:5000',
+          'https://api.stripe.com',
+          'https://*.sentry.io',
+        ],
+        frameSrc: ["'self'", 'https://js.stripe.com'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'https://*.googleusercontent.com',
+          'https://images.unsplash.com',
+          'https://*.onrender.com',
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
 
 // CORS Configuration
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
   .map(url => url.trim().replace(/\/$/, ''));
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
 
-    const normalizedOrigin = origin.replace(/\/$/, '');
-    const isConfiguredOrigin = allowedOrigins.includes(normalizedOrigin);
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      const isConfiguredOrigin = allowedOrigins.includes(normalizedOrigin);
 
-    let isRenderPreviewOrigin = false;
-    try {
-      isRenderPreviewOrigin = /\.onrender\.com$/i.test(new URL(normalizedOrigin).hostname);
-    } catch {
-      isRenderPreviewOrigin = false;
-    }
+      let isRenderPreviewOrigin = false;
+      if (process.env.NODE_ENV !== 'production') {
+        try {
+          isRenderPreviewOrigin = /\.onrender\.com$/i.test(new URL(normalizedOrigin).hostname);
+        } catch {
+          isRenderPreviewOrigin = false;
+        }
+      }
 
-    if (isConfiguredOrigin || isRenderPreviewOrigin) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+      if (isConfiguredOrigin || isRenderPreviewOrigin) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Request logging (development only)
 if (process.env.NODE_ENV === 'development') {
@@ -128,8 +185,8 @@ const limiter = rateLimit({
   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP
   message: {
     success: false,
-    message: 'Too many requests from this IP, please try again later.'
-  }
+    message: 'Too many requests from this IP, please try again later.',
+  },
 });
 app.use('/api', limiter);
 
@@ -137,16 +194,24 @@ app.use('/api', limiter);
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30,
-  message: { success: false, message: 'Too many authentication attempts, please try later.' }
+  message: { success: false, message: 'Too many authentication attempts, please try later.' },
 });
 app.use('/api/auth', authLimiter);
 
 const adminLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 50,
-  message: { success: false, message: 'Too many admin requests, slow down.' }
+  message: { success: false, message: 'Too many admin requests, slow down.' },
 });
 app.use('/api/admin', adminLimiter);
+
+// Rate limits for AI endpoints to prevent cost abuse
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15, // limit to 15 AI requests per 15 minutes per user/IP
+  message: { success: false, message: 'Too many AI requests, please try again later.' },
+});
+app.use('/api/ai', aiLimiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -170,7 +235,7 @@ app.get('/api/health', (req, res) => {
     success: true,
     message: 'HireReady API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+    environment: process.env.NODE_ENV,
   });
 });
 
@@ -182,9 +247,9 @@ app.get('/health', async (req, res) => {
     0: 'disconnected',
     1: 'connected',
     2: 'connecting',
-    3: 'disconnecting'
+    3: 'disconnecting',
   };
-  
+
   const health = {
     status: dbState === 1 ? 'healthy' : 'unhealthy',
     timestamp: new Date().toISOString(),
@@ -193,14 +258,14 @@ app.get('/health', async (req, res) => {
     version: require('./package.json').version,
     database: {
       status: dbStatus[dbState] || 'unknown',
-      name: mongoose.connection.name || 'N/A'
+      name: mongoose.connection.name || 'N/A',
     },
     memory: {
       used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + ' MB',
-      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + ' MB'
-    }
+      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + ' MB',
+    },
   };
-  
+
   res.status(dbState === 1 ? 200 : 503).json(health);
 });
 
@@ -235,29 +300,29 @@ app.use('/api/communication', communicationRoutes);
 // Socket.io Event Handlers
 // ===========================================
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log(`Client connected: ${socket.id}`);
 
   // Join a specific interview room
-  socket.on('joinInterview', (interviewId) => {
+  socket.on('joinInterview', interviewId => {
     socket.join(`interview_${interviewId}`);
     console.log(`Socket ${socket.id} joined interview room: ${interviewId}`);
   });
 
   // Handle real-time answer submission
-  socket.on('submitAnswer', async (data) => {
+  socket.on('submitAnswer', async data => {
     // Process answer and emit feedback
     io.to(`interview_${data.interviewId}`).emit('answerReceived', {
       questionId: data.questionId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   });
 
   // Handle interview completion
-  socket.on('completeInterview', (interviewId) => {
+  socket.on('completeInterview', interviewId => {
     io.to(`interview_${interviewId}`).emit('interviewCompleted', {
       interviewId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   });
 
@@ -275,7 +340,7 @@ io.on('connection', (socket) => {
 app.use((req, res, next) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.originalUrl} not found`,
   });
 });
 
@@ -293,7 +358,7 @@ const startServer = async () => {
   try {
     await connectDB();
     await ensureDefaultAdmin();
-    
+
     server.listen(PORT, () => {
       console.log('='.repeat(50));
       console.log(`🚀 HireReady Server Started`);
@@ -310,13 +375,13 @@ const startServer = async () => {
 };
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   console.error('❌ Unhandled Promise Rejection:', err.message);
   server.close(() => process.exit(1));
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.error('❌ Uncaught Exception:', err.message);
   process.exit(1);
 });

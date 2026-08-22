@@ -30,7 +30,15 @@ import {
 // Markdown renderer
 const MarkdownText = ({ text }) => {
   const renderLine = line => {
-    let html = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Escape raw HTML tags to prevent XSS
+    let html = line
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
     html = html.replace(
       /`([^`]+)`/g,
