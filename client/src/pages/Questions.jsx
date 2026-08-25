@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingCard } from '../components/ui/Spinner';
 import api from '../services/api';
+import { useDebounce } from '../hooks/useDebounce';
 import {
   Search,
   BookOpen,
@@ -18,18 +19,19 @@ const Questions = () => {
   const [filters, setFilters] = useState({
     category: '',
     difficulty: '',
-    search: '',
   });
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 300);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   // Fetch questions
   const { data, isLoading } = useQuery({
-    queryKey: ['questions', filters],
+    queryKey: ['questions', filters.category, filters.difficulty, debouncedSearch],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (filters.category) params.append('category', filters.category);
       if (filters.difficulty) params.append('difficulty', filters.difficulty);
-      if (filters.search) params.append('search', filters.search);
+      if (debouncedSearch) params.append('search', debouncedSearch);
 
       const response = await api.get(`/questions?${params.toString()}`);
       return response.data;
@@ -86,8 +88,8 @@ const Questions = () => {
             <input
               type="text"
               placeholder="Search questions..."
-              value={filters.search}
-              onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))}
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
               className="w-full pl-16 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 transition-all duration-200"
             />
           </div>

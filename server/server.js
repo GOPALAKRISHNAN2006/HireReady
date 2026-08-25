@@ -16,6 +16,7 @@ const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // Load environment variables
 require('dotenv').config();
@@ -65,6 +66,9 @@ const errorHandler = require('./middleware/errorHandler');
 
 // Initialize Express app
 const app = express();
+
+// Enable Gzip/Brotli response compression
+app.use(compression());
 
 // Parse Cookies
 app.use(cookieParser());
@@ -217,8 +221,15 @@ app.use('/api/ai', aiLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files (for uploaded content)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Static files (for uploaded content) with Cache-Control headers for performance
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, 'uploads'), {
+    maxAge: '1d', // Cache for 1 day
+    etag: true,
+    lastModified: true,
+  })
+);
 
 // ===========================================
 // API Routes

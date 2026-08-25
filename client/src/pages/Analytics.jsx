@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, Badge } from '../components/ui';
 import { LoadingCard } from '../components/ui/Spinner';
@@ -89,81 +90,91 @@ const Analytics = () => {
   ];
 
   // Transform weekly progress from API
-  const weeklyProgress = (weeklyData?.progress || []).map(w => ({
-    day: w.weekLabel || `W${w.week || ''}`,
-    score: Math.round(w.averageScore || 0),
-    interviews: w.interviewsCompleted || 0,
-  }));
+  const weeklyProgress = useMemo(() => {
+    return (weeklyData?.progress || []).map(w => ({
+      day: w.weekLabel || `W${w.week || ''}`,
+      score: Math.round(w.averageScore || 0),
+      interviews: w.interviewsCompleted || 0,
+    }));
+  }, [weeklyData]);
 
   // Transform category performance from API
-  const categoryPerformance = (categoryData?.categoryPerformance || []).map(c => ({
-    name: c.name || c.category,
-    score: Math.round(c.averageScore || 0),
-  }));
+  const categoryPerformance = useMemo(() => {
+    return (categoryData?.categoryPerformance || []).map(c => ({
+      name: c.name || c.category,
+      score: Math.round(c.averageScore || 0),
+    }));
+  }, [categoryData]);
 
   // Build difficulty distribution from score distribution
-  const scoreDistribution = analytics?.scoreDistribution || {};
-  const difficultyDistribution = [
-    {
-      name: 'Easy (70-100)',
-      value: (scoreDistribution['90-100'] || 0) + (scoreDistribution['70-89'] || 0),
-      color: '#22c55e',
-    },
-    {
-      name: 'Medium (40-69)',
-      value: (scoreDistribution['50-69'] || 0) + (scoreDistribution['40-49'] || 0),
-      color: '#f59e0b',
-    },
-    { name: 'Hard (0-39)', value: scoreDistribution['0-49'] || 0, color: '#ef4444' },
-  ].filter(d => d.value > 0);
+  const difficultyDistribution = useMemo(() => {
+    const scoreDistribution = analytics?.scoreDistribution || {};
+    return [
+      {
+        name: 'Easy (70-100)',
+        value: (scoreDistribution['90-100'] || 0) + (scoreDistribution['70-89'] || 0),
+        color: '#22c55e',
+      },
+      {
+        name: 'Medium (40-69)',
+        value: (scoreDistribution['50-69'] || 0) + (scoreDistribution['40-49'] || 0),
+        color: '#f59e0b',
+      },
+      { name: 'Hard (0-39)', value: scoreDistribution['0-49'] || 0, color: '#ef4444' },
+    ].filter(d => d.value > 0);
+  }, [analytics]);
 
   // Transform monthly progress from API
-  const monthlyTrend = (monthlyData?.progress || []).map(m => ({
-    month: monthNames[m.month - 1] || `M${m.month}`,
-    score: Math.round(m.averageScore || 0),
-  }));
+  const monthlyTrend = useMemo(() => {
+    return (monthlyData?.progress || []).map(m => ({
+      month: monthNames[m.month - 1] || `M${m.month}`,
+      score: Math.round(m.averageScore || 0),
+    }));
+  }, [monthlyData]);
 
-  const stats = analytics?.stats || {};
-  const statCards = [
-    {
-      title: 'Average Score',
-      value: `${stats.averageScore || 0}%`,
-      change: stats.improvementPercentage
-        ? `${stats.improvementPercentage > 0 ? '+' : ''}${stats.improvementPercentage}%`
-        : 'N/A',
-      isPositive: (stats.improvementPercentage || 0) >= 0,
-      icon: TrendingUp,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-    },
-    {
-      title: 'Total Interviews',
-      value: stats.completedInterviews || stats.totalInterviews || 0,
-      change: `${stats.totalInterviews || 0} total`,
-      isPositive: true,
-      icon: Target,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
-    },
-    {
-      title: 'Practice Time',
-      value: `${Math.round((stats.totalPracticeTime || 0) / 60)}h`,
-      change: `${stats.totalPracticeTime || 0} mins`,
-      isPositive: true,
-      icon: Clock,
-      color: 'text-primary-600',
-      bgColor: 'bg-primary-100',
-    },
-    {
-      title: 'Current Streak',
-      value: `${stats.currentStreak || 0} days`,
-      change: stats.currentStreak > 5 ? 'Great!' : 'Keep going!',
-      isPositive: true,
-      icon: Award,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100',
-    },
-  ];
+  const statCards = useMemo(() => {
+    const stats = analytics?.stats || {};
+    return [
+      {
+        title: 'Average Score',
+        value: `${stats.averageScore || 0}%`,
+        change: stats.improvementPercentage
+          ? `${stats.improvementPercentage > 0 ? '+' : ''}${stats.improvementPercentage}%`
+          : 'N/A',
+        isPositive: (stats.improvementPercentage || 0) >= 0,
+        icon: TrendingUp,
+        color: 'text-green-600',
+        bgColor: 'bg-green-100',
+      },
+      {
+        title: 'Total Interviews',
+        value: stats.completedInterviews || stats.totalInterviews || 0,
+        change: `${stats.totalInterviews || 0} total`,
+        isPositive: true,
+        icon: Target,
+        color: 'text-blue-600',
+        bgColor: 'bg-blue-100',
+      },
+      {
+        title: 'Practice Time',
+        value: `${Math.round((stats.totalPracticeTime || 0) / 60)}h`,
+        change: `${stats.totalPracticeTime || 0} mins`,
+        isPositive: true,
+        icon: Clock,
+        color: 'text-primary-600',
+        bgColor: 'bg-primary-100',
+      },
+      {
+        title: 'Current Streak',
+        value: `${stats.currentStreak || 0} days`,
+        change: stats.currentStreak > 5 ? 'Great!' : 'Keep going!',
+        isPositive: true,
+        icon: Award,
+        color: 'text-orange-600',
+        bgColor: 'bg-orange-100',
+      },
+    ];
+  }, [analytics]);
 
   return (
     <div className="space-y-8">
