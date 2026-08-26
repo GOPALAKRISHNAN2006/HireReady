@@ -329,6 +329,9 @@ const CompanyPrep = () => {
                   src={company.logo}
                   alt={company.name}
                   className="w-10 h-10 object-contain"
+                  loading="lazy"
+                  width={40}
+                  height={40}
                   onError={e => {
                     e.target.onerror = null;
                     e.target.src = `https://ui-avatars.com/api/?name=${company.name}&background=6366f1&color=fff`;

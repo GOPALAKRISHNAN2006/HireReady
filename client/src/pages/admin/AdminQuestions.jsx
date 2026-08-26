@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { useDebounce } from '../../hooks/useDebounce';
 import { Card, Button, Badge, Modal, Input } from '../../components/ui';
 import { LoadingCard } from '../../components/ui/Spinner';
 import api from '../../services/api';
@@ -23,7 +24,9 @@ import {
 const AdminQuestions = () => {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 300);
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [page, setPage] = useState(1);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -39,10 +42,12 @@ const AdminQuestions = () => {
 
   // Fetch questions
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'questions', search, categoryFilter],
+    queryKey: ['admin', 'questions', debouncedSearch, categoryFilter, page],
     queryFn: async () => {
       const params = new URLSearchParams();
-      if (search) params.append('search', search);
+      params.append('page', page);
+      params.append('limit', 20);
+      if (debouncedSearch) params.append('search', debouncedSearch);
       if (categoryFilter) params.append('category', categoryFilter);
       params.append('includeUnapproved', 'true'); // Include all questions for admin
 
@@ -50,6 +55,8 @@ const AdminQuestions = () => {
       return response.data?.data || response.data;
     },
   });
+
+  const pagination = data?.pagination || { page: 1, pages: 1, total: 0 };
 
   // Create question mutation
   const createQuestionMutation = useMutation({
@@ -227,7 +234,10 @@ const AdminQuestions = () => {
               type="text"
               placeholder="Search questions..."
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={e => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 focus:bg-white dark:focus:bg-slate-700 transition-all"
             />
           </div>
@@ -235,7 +245,10 @@ const AdminQuestions = () => {
             <Filter className="w-4 h-4 text-slate-400" />
             <select
               value={categoryFilter}
-              onChange={e => setCategoryFilter(e.target.value)}
+              onChange={e => {
+                setCategoryFilter(e.target.value);
+                setPage(1);
+              }}
               className="px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 cursor-pointer transition-all"
             >
               {categories.map(cat => (
@@ -346,6 +359,37 @@ const AdminQuestions = () => {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {pagination.pages > 1 && (
+        <div className="flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm mt-4">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Showing {(page - 1) * 20 + 1} to {Math.min(page * 20, pagination.total)} of{' '}
+            {pagination.total} questions
+          </p>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+              Page {page} of {pagination.pages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
+              disabled={page >= pagination.pages}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Add/Edit Modal */}
       <Modal

@@ -206,8 +206,10 @@ const ProctoringSetup = ({ onReady, onCancel, config = {} }) => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
-      // Keep screen stream for proctoring
-      onReady({ screenStream: screenStreamRef.current });
+      // Keep screen stream for proctoring - hand off to parent and clear ref
+      const screenStream = screenStreamRef.current;
+      screenStreamRef.current = null;
+      onReady({ screenStream });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countdown]);
