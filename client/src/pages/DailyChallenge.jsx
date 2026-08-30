@@ -515,6 +515,10 @@ const DailyChallenge = () => {
                         src={user.avatar}
                         alt={user.name}
                         className="w-10 h-10 rounded-full object-cover"
+                        onError={e => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`;
+                        }}
                       />
                       <div className="flex-1">
                         <p className="font-medium text-slate-900 dark:text-white">{user.name}</p>
