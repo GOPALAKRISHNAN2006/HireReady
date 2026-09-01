@@ -7,6 +7,7 @@ import { useSettingsStore } from './store/settingsStore';
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 import AdminLayout from './layouts/AdminLayout';
+import SEO from './components/SEO';
 
 // Page Loader spinner component for dynamic chunks
 const PageLoader = () => (
@@ -110,7 +111,12 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  return (
+    <>
+      <SEO robots="noindex, nofollow" />
+      {children}
+    </>
+  );
 };
 
 // Public Route (redirect if authenticated)
