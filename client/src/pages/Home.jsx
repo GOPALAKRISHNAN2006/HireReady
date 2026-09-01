@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
+import SEO from '../components/SEO';
 import { Button } from '../components/ui';
 import {
   Brain,
@@ -24,6 +25,26 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://hireready-1-0hvc.onrender.com/#website',
+      url: 'https://hireready-1-0hvc.onrender.com',
+      name: 'HireReady',
+      description: 'AI-Powered Interview Preparation & Mock Interview Platform',
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://hireready-1-0hvc.onrender.com/#organization',
+      name: 'HireReady',
+      url: 'https://hireready-1-0hvc.onrender.com',
+      logo: 'https://hireready-1-0hvc.onrender.com/og-image.png',
+    },
+  ],
+};
 
 const Home = () => {
   const { isAuthenticated } = useAuthStore();
@@ -81,6 +102,12 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] overflow-hidden transition-colors duration-300">
+      <SEO
+        title="HireReady | AI-Powered Interview Preparation Platform"
+        description="Ace your next technical and HR interview with HireReady. AI-powered mock interviews, real-time feedback, skill assessments, resume builder, and adaptive practice tests."
+        canonical="/"
+        jsonLd={websiteSchema}
+      />
       {/* Animated Background */}
       <div className="fixed inset-0 gradient-mesh opacity-60 dark:opacity-30 pointer-events-none" />
 

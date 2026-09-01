@@ -14,6 +14,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import SEO from '../components/SEO';
 import {
   LayoutDashboard,
   Users,
@@ -135,6 +136,7 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <SEO title="HireReady Admin" robots="noindex, nofollow" />
       {/* Top Bar */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="flex items-center justify-between h-16 px-4 lg:px-6">

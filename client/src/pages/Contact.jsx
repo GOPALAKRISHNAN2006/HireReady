@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, MessageSquare, Github } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] transition-colors duration-300">
+      <SEO
+        title="Contact Us | HireReady"
+        description="Get in touch with the HireReady team for support, feedback, or inquiries about our AI interview preparation platform."
+        canonical="/contact"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center text-white">

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Button, Input } from '../components/ui';
+import SEO from '../components/SEO';
 import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { preWarmServer, waitForServer } from '../services/api';
@@ -174,6 +175,11 @@ const Signup = () => {
 
   return (
     <div className="animate-in">
+      <SEO
+        title="Get Started Free | HireReady"
+        description="Create your free HireReady account to practice AI-powered mock interviews, solve aptitude tests, and master technical interview questions."
+        canonical="/signup"
+      />
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">

@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] transition-colors duration-300">
+      <SEO
+        title="Terms of Service | HireReady"
+        description="Read the HireReady Terms of Service governing your use of our AI interview preparation platform and services."
+        canonical="/terms"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-primary-600 via-primary-600 to-primary-600 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center text-white">

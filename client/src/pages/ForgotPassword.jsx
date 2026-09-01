@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '../components/ui';
+import SEO from '../components/SEO';
 import { Mail, ArrowLeft, Brain, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
@@ -125,7 +126,12 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="animate-slide-up">
+    <div className="animate-in">
+      <SEO
+        title="Forgot Password | HireReady"
+        description="Reset your HireReady account password to regain access to your interview preparation tools."
+        canonical="/forgot-password"
+      />
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">

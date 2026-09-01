@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Button, Input } from '../components/ui';
+import SEO from '../components/SEO';
 import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { preWarmServer, waitForServer } from '../services/api';
@@ -166,6 +167,11 @@ const Login = () => {
 
   return (
     <div className="animate-slide-up">
+      <SEO
+        title="Sign In | HireReady"
+        description="Sign in to your HireReady account to access AI mock interviews, practice questions, and skill assessment reports."
+        canonical="/login"
+      />
       {/* Logo for mobile */}
       <div className="lg:hidden mb-8 text-center">
         <Link to="/" className="inline-flex items-center space-x-3">

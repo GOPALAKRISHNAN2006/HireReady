@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import SEO from '../components/SEO';
 import { useState } from 'react';
 import { useNotificationTriggers } from '../hooks/useNotifications';
 
@@ -12,6 +13,7 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-[#0f172a] dark:to-slate-900 transition-colors duration-300">
+      <SEO robots="noindex, nofollow" />
       {/* Background decorations */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden"
