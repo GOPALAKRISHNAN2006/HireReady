@@ -150,6 +150,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <button
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-colors"
+            aria-label="Close sidebar menu"
           >
             <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
           </button>

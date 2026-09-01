@@ -124,6 +124,7 @@ const Home = () => {
                 onClick={toggleTheme}
                 className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-300 relative group"
                 title={themeLabel}
+                aria-label={themeLabel}
               >
                 {theme === 'system' ? (
                   <Monitor className="w-5 h-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
@@ -153,6 +154,7 @@ const Home = () => {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all"
+                aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? (
                   <X className="w-6 h-6 text-slate-600 dark:text-slate-400" />

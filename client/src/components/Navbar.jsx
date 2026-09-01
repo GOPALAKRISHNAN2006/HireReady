@@ -61,6 +61,7 @@ const Navbar = ({ onMenuClick }) => {
           <button
             onClick={onMenuClick}
             className="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-200 active:scale-95"
+            aria-label="Open sidebar menu"
           >
             <Menu className="w-6 h-6 text-slate-600 dark:text-slate-400" />
           </button>
@@ -94,6 +95,7 @@ const Navbar = ({ onMenuClick }) => {
             onClick={toggleTheme}
             className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-300 relative group"
             title={themeLabel}
+            aria-label={themeLabel}
           >
             {theme === 'system' ? (
               <Monitor className="w-5 h-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
@@ -108,6 +110,7 @@ const Navbar = ({ onMenuClick }) => {
           <Link
             to="/notifications"
             className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-200 relative group"
+            aria-label="View notifications"
           >
             <Bell className="w-5 h-5 text-slate-500 group-hover:text-slate-700 dark:text-slate-400 dark:group-hover:text-slate-200" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
@@ -118,6 +121,7 @@ const Navbar = ({ onMenuClick }) => {
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center space-x-2 p-1.5 pr-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-200 group"
+              aria-label="User account menu"
             >
               <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center shadow-md overflow-hidden">
                 {user?.avatar &&

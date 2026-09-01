@@ -107,6 +107,7 @@ if (process.env.NODE_ENV === 'production') {
 // Security Headers & Content Security Policy (CSP)
 app.use(
   helmet({
+    frameguard: { action: 'sameorigin' },
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
@@ -128,6 +129,7 @@ app.use(
           'https://*.sentry.io',
         ],
         frameSrc: ["'self'", 'https://js.stripe.com'],
+        frameAncestors: ["'self'"],
         imgSrc: [
           "'self'",
           'data:',
