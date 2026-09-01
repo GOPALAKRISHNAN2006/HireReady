@@ -44,8 +44,11 @@ export default defineConfig({
             if (id.includes('@tanstack/react-query')) {
               return 'vendor-query';
             }
-            if (id.includes('prismjs')) {
-              return 'vendor-prism';
+            if (id.includes('prismjs') || id.includes('react-markdown')) {
+              return 'vendor-markdown';
+            }
+            if (id.includes('socket.io-client')) {
+              return 'vendor-socket';
             }
             if (
               id.includes('react-dom') ||

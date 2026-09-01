@@ -30,6 +30,10 @@ export default function Avatar({ src, name, size = 'md', className = '' }) {
       <img
         src={src}
         alt={name || 'Avatar'}
+        loading="lazy"
+        onError={e => {
+          e.target.style.display = 'none';
+        }}
         className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-slate-800 ${className}`}
       />
     );

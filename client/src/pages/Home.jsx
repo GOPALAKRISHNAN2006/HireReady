@@ -41,7 +41,7 @@ const websiteSchema = {
       '@id': 'https://hireready-1-0hvc.onrender.com/#organization',
       name: 'HireReady',
       url: 'https://hireready-1-0hvc.onrender.com',
-      logo: 'https://hireready-1-0hvc.onrender.com/og-image.png',
+      logo: 'https://hireready-1-0hvc.onrender.com/og-image.webp',
     },
   ],
 };
@@ -239,405 +239,416 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-20 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
-        {/* Decorative elements */}
-        <div className="absolute top-40 left-10 w-72 h-72 bg-primary-400/30 dark:bg-primary-500/15 rounded-full blur-3xl animate-pulse-slow" />
-        <div
-          className="absolute top-60 right-10 w-96 h-96 bg-primary-400/20 dark:bg-primary-500/10 rounded-full blur-3xl animate-pulse-slow"
-          style={{ animationDelay: '1s' }}
-        />
-        <div
-          className="absolute bottom-20 left-1/3 w-64 h-64 bg-pink-400/20 dark:bg-pink-500/10 rounded-full blur-3xl animate-pulse-slow"
-          style={{ animationDelay: '2s' }}
-        />
-
-        <div className="max-w-7xl mx-auto relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="animate-slide-up">
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-100 to-primary-100 dark:from-primary-900/40 dark:to-primary-900/40 rounded-full text-primary-700 dark:text-primary-300 text-sm font-semibold mb-6 shadow-sm">
-                <Sparkles className="w-4 h-4 mr-2 text-primary-500 dark:text-primary-400" />
-                AI-Powered Interview Preparation
-              </div>
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
-                Ace Your Next Interview with{' '}
-                <span className="bg-gradient-to-r from-primary-600 via-primary-600 to-pink-500 bg-clip-text text-transparent">
-                  AI-Powered
-                </span>{' '}
-                Practice
-              </h1>
-              <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                Practice with intelligent mock interviews, get real-time feedback, and track your
-                progress to land your dream job.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/signup">
-                  <Button
-                    size="lg"
-                    icon={ArrowRight}
-                    iconPosition="right"
-                    className="w-full sm:w-auto group"
-                  >
-                    <span>Start Free Practice</span>
-                  </Button>
-                </Link>
-                <Link to="/login">
-                  <Button size="lg" variant="outline" icon={Play} className="w-full sm:w-auto">
-                    Login to Practice
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12">
-                {stats.map((stat, index) => (
-                  <div
-                    key={index}
-                    className="text-center p-4 rounded-2xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <div className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              {/* Floating decorative elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30 animate-float">
-                <Zap className="w-10 h-10 text-white" />
-              </div>
-              <div
-                className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30 animate-float"
-                style={{ animationDelay: '1s' }}
-              >
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-600 rounded-3xl transform rotate-3 shadow-2xl shadow-primary-500/30"></div>
-              <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 border border-slate-100 dark:border-slate-700">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                  <span className="ml-4 text-xs text-slate-400 font-medium">HireReady Session</span>
-                </div>
-                <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800/80 rounded-xl p-4 border border-slate-200/50 dark:border-slate-700">
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 font-semibold uppercase tracking-wider">
-                      Question:
-                    </p>
-                    <p className="font-medium text-slate-800 dark:text-slate-200">
-                      What is the time complexity of binary search?
-                    </p>
-                  </div>
-                  <div className="bg-gradient-to-r from-primary-50 to-primary-50 dark:from-primary-900/30 dark:to-primary-900/30 rounded-xl p-4 border border-primary-200/50 dark:border-primary-700/50">
-                    <p className="text-xs text-primary-600 dark:text-primary-400 mb-2 font-semibold uppercase tracking-wider">
-                      Your Answer:
-                    </p>
-                    <p className="text-slate-700 dark:text-slate-300">
-                      The time complexity is O(log n) because...
-                    </p>
-                  </div>
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      </div>
-                      <p className="font-semibold text-green-700">Excellent Answer!</p>
-                      <span className="ml-auto text-sm font-bold text-green-600">95%</span>
-                    </div>
-                    <p className="text-sm text-green-600">
-                      Your explanation correctly identifies the logarithmic complexity...
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="relative py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 animate-slide-up">
-            <div className="inline-flex items-center px-4 py-2 bg-primary-100/80 dark:bg-primary-900/40 rounded-full text-primary-700 dark:text-primary-300 text-sm font-semibold mb-4">
-              <Star className="w-4 h-4 mr-2" />
-              Premium Features
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Everything You Need to{' '}
-              <span className="bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent">
-                Succeed
-              </span>
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Our comprehensive platform provides all the tools you need to prepare for and ace any
-              interview.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group p-6 bg-white/70 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-slate-100 dark:border-slate-700/50 hover:border-primary-200 dark:hover:border-primary-700/50 hover:shadow-xl hover:shadow-primary-500/10 transition-all duration-500 hover:-translate-y-2 animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section
-        id="how-it-works"
-        className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white dark:from-[#0f1525] dark:to-[#0a0e1a]"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-green-100/80 dark:bg-green-900/40 rounded-full text-green-700 dark:text-green-300 text-sm font-semibold mb-4">
-              <Clock className="w-4 h-4 mr-2" />
-              Quick & Easy
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              How It{' '}
-              <span className="bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
-                Works
-              </span>
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Get started in minutes and begin improving your interview skills today.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01',
-                title: 'Choose Your Focus',
-                description: 'Select your target role, company, or skill area to practice.',
-                color: 'from-blue-500 to-cyan-500',
-              },
-              {
-                step: '02',
-                title: 'Practice with AI',
-                description: 'Answer AI-generated questions in realistic mock interviews.',
-                color: 'from-primary-500 to-pink-500',
-              },
-              {
-                step: '03',
-                title: 'Get Better',
-                description: 'Review feedback, track progress, and improve continuously.',
-                color: 'from-orange-500 to-red-500',
-              },
-            ].map((item, index) => (
-              <div key={index} className="relative group">
-                <div
-                  className={`absolute -inset-1 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300`}
-                ></div>
-                <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg dark:shadow-slate-900/50">
-                  <div
-                    className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${item.color} text-white font-bold text-lg mb-6 shadow-lg`}
-                  >
-                    {item.step}
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why HireReady */}
-      <section
-        id="testimonials"
-        className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50 dark:from-[#0a0e1a] dark:to-[#0f1525]"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-pink-100/80 dark:bg-pink-900/40 rounded-full text-pink-700 dark:text-pink-300 text-sm font-semibold mb-4">
-              <Users className="w-4 h-4 mr-2" />
-              Community
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Built for{' '}
-              <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-                Job Seekers
-              </span>
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Everything you need to ace your next interview.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: '🎯',
-                title: 'AI Mock Interviews',
-                desc: 'Practice with AI-powered interview simulations that give real-time feedback on your answers.',
-              },
-              {
-                icon: '📊',
-                title: 'Skill Analytics',
-                desc: 'Track your progress with detailed analytics on every skill area you practice.',
-              },
-              {
-                icon: '🤝',
-                title: 'Community Support',
-                desc: 'Connect with fellow job seekers, share tips, and learn from each other.',
-              },
-            ].map((item, index) => (
-              <div key={index} className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-500 rounded-2xl transform rotate-1 opacity-10 group-hover:opacity-20 transition-opacity"></div>
-                <div className="relative bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700/50 hover:shadow-2xl transition-all duration-300">
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Unique Features Showcase */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-slate-900 via-primary-900 to-slate-900 text-white relative overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
+      <main id="main-content">
+        {/* Hero Section */}
+        <section className="relative pt-20 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
+          {/* Decorative elements */}
+          <div className="absolute top-40 left-10 w-72 h-72 bg-primary-400/30 dark:bg-primary-500/15 rounded-full blur-3xl animate-pulse-slow" />
           <div
-            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow"
+            className="absolute top-60 right-10 w-96 h-96 bg-primary-400/20 dark:bg-primary-500/10 rounded-full blur-3xl animate-pulse-slow"
             style={{ animationDelay: '1s' }}
           />
-        </div>
+          <div
+            className="absolute bottom-20 left-1/3 w-64 h-64 bg-pink-400/20 dark:bg-pink-500/10 rounded-full blur-3xl animate-pulse-slow"
+            style={{ animationDelay: '2s' }}
+          />
 
-        <div className="max-w-7xl mx-auto relative">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 rounded-full text-white text-sm font-semibold mb-4 backdrop-blur-sm border border-white/20">
-              <Sparkles className="w-4 h-4 mr-2 text-yellow-400" />
-              Unique Features
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              What Makes Us{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-primary-500">
-                Different
-              </span>
-            </h2>
-            <p className="text-xl text-primary-200 max-w-2xl mx-auto">
-              Exclusive features you won't find anywhere else.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Target,
-                title: 'Skill Radar',
-                desc: 'Visual skill assessment with detailed analytics',
-                gradient: 'from-cyan-400 to-blue-500',
-              },
-              {
-                icon: Award,
-                title: 'Career Roadmap',
-                desc: 'Personalized learning path to your dream job',
-                gradient: 'from-green-400 to-emerald-500',
-              },
-              {
-                icon: MessageSquare,
-                title: 'Community Hub',
-                desc: 'Connect with mentors and fellow learners',
-                gradient: 'from-pink-400 to-rose-500',
-              },
-              {
-                icon: Sparkles,
-                title: 'Daily Challenges',
-                desc: 'Keep your streak and earn rewards daily',
-                gradient: 'from-amber-400 to-orange-500',
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="group p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2"
-              >
-                <div
-                  className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <item.icon className="w-7 h-7 text-white" />
+          <div className="max-w-7xl mx-auto relative">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="animate-slide-up">
+                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-100 to-primary-100 dark:from-primary-900/40 dark:to-primary-900/40 rounded-full text-primary-700 dark:text-primary-300 text-sm font-semibold mb-6 shadow-sm">
+                  <Sparkles className="w-4 h-4 mr-2 text-primary-500 dark:text-primary-400" />
+                  AI-Powered Interview Preparation
                 </div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-primary-200 text-sm">{item.desc}</p>
+                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
+                  Ace Your Next Interview with{' '}
+                  <span className="bg-gradient-to-r from-primary-600 via-primary-600 to-pink-500 bg-clip-text text-transparent">
+                    AI-Powered
+                  </span>{' '}
+                  Practice
+                </h1>
+                <p className="text-xl text-slate-700 dark:text-slate-200 mb-8 leading-relaxed">
+                  Practice with intelligent mock interviews, get real-time feedback, and track your
+                  progress to land your dream job.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link to="/signup" className="min-h-[48px] inline-block">
+                    <Button
+                      size="lg"
+                      icon={ArrowRight}
+                      iconPosition="right"
+                      className="w-full sm:w-auto group min-h-[48px] py-3.5 px-6"
+                    >
+                      <span>Start Free Practice</span>
+                    </Button>
+                  </Link>
+                  <Link to="/login" className="min-h-[48px] inline-block">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      icon={Play}
+                      className="w-full sm:w-auto min-h-[48px] py-3.5 px-6"
+                    >
+                      Login to Practice
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12">
+                  {stats.map((stat, index) => (
+                    <div
+                      key={index}
+                      className="text-center p-4 rounded-2xl bg-white/80 dark:bg-white/10 backdrop-blur-sm border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-all duration-300"
+                    >
+                      <div className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm text-slate-700 dark:text-slate-200 font-semibold">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-600 to-pink-600" />
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')]" />
-        </div>
+              <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                {/* Floating decorative elements */}
+                <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30 animate-float">
+                  <Zap className="w-10 h-10 text-white" />
+                </div>
+                <div
+                  className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30 animate-float"
+                  style={{ animationDelay: '1s' }}
+                >
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
 
-        <div className="max-w-4xl mx-auto text-center relative">
-          <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-semibold mb-6 backdrop-blur-sm">
-            🚀 Start your journey today
+                <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-600 rounded-3xl transform rotate-3 shadow-2xl shadow-primary-500/30"></div>
+                <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 border border-slate-100 dark:border-slate-700">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                    <span className="ml-4 text-xs text-slate-400 font-medium">
+                      HireReady Session
+                    </span>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800/80 rounded-xl p-4 border border-slate-200/50 dark:border-slate-700">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 font-semibold uppercase tracking-wider">
+                        Question:
+                      </p>
+                      <p className="font-medium text-slate-800 dark:text-slate-200">
+                        What is the time complexity of binary search?
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-r from-primary-50 to-primary-50 dark:from-primary-900/30 dark:to-primary-900/30 rounded-xl p-4 border border-primary-200/50 dark:border-primary-700/50">
+                      <p className="text-xs text-primary-600 dark:text-primary-400 mb-2 font-semibold uppercase tracking-wider">
+                        Your Answer:
+                      </p>
+                      <p className="text-slate-700 dark:text-slate-300">
+                        The time complexity is O(log n) because...
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <p className="font-semibold text-green-700">Excellent Answer!</p>
+                        <span className="ml-auto text-sm font-bold text-green-600">95%</span>
+                      </div>
+                      <p className="text-sm text-green-600">
+                        Your explanation correctly identifies the logarithmic complexity...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Ready to Ace Your Interview?
-          </h2>
-          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Start practicing for free today and land your dream job with confidence.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup">
-              <Button
-                size="lg"
-                variant="secondary"
-                icon={ArrowRight}
-                iconPosition="right"
-                className="shadow-2xl shadow-white/20"
-              >
-                Get Started Free
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10"
-              >
-                Login
-              </Button>
-            </Link>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="relative py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16 animate-slide-up">
+              <div className="inline-flex items-center px-4 py-2 bg-primary-100/80 dark:bg-primary-900/40 rounded-full text-primary-700 dark:text-primary-300 text-sm font-semibold mb-4">
+                <Star className="w-4 h-4 mr-2" />
+                Premium Features
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+                Everything You Need to{' '}
+                <span className="bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent">
+                  Succeed
+                </span>
+              </h2>
+              <p className="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mx-auto font-medium">
+                Our comprehensive platform provides all the tools you need to prepare for and ace
+                any interview.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="group p-6 bg-white/80 dark:bg-white/10 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-700/60 hover:border-primary-300 dark:hover:border-primary-600/50 hover:shadow-xl hover:shadow-primary-500/10 transition-all duration-500 hover:-translate-y-2 animate-slide-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <feature.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* How It Works */}
+        <section
+          id="how-it-works"
+          className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white dark:from-[#0f1525] dark:to-[#0a0e1a]"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center px-4 py-2 bg-green-100/80 dark:bg-green-900/40 rounded-full text-green-700 dark:text-green-300 text-sm font-semibold mb-4">
+                <Clock className="w-4 h-4 mr-2" />
+                Quick & Easy
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+                How It{' '}
+                <span className="bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+                  Works
+                </span>
+              </h2>
+              <p className="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mx-auto font-medium">
+                Get started in minutes and begin improving your interview skills today.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: '01',
+                  title: 'Choose Your Focus',
+                  description: 'Select your target role, company, or skill area to practice.',
+                  color: 'from-blue-500 to-cyan-500',
+                },
+                {
+                  step: '02',
+                  title: 'Practice with AI',
+                  description: 'Answer AI-generated questions in realistic mock interviews.',
+                  color: 'from-primary-500 to-pink-500',
+                },
+                {
+                  step: '03',
+                  title: 'Get Better',
+                  description: 'Review feedback, track progress, and improve continuously.',
+                  color: 'from-orange-500 to-red-500',
+                },
+              ].map((item, index) => (
+                <div key={index} className="relative group">
+                  <div
+                    className={`absolute -inset-1 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300`}
+                  ></div>
+                  <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg dark:shadow-slate-900/50 border border-slate-200 dark:border-slate-700/60">
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${item.color} text-white font-bold text-lg mb-6 shadow-lg`}
+                    >
+                      {item.step}
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-700 dark:text-slate-200 font-medium">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why HireReady */}
+        <section
+          id="testimonials"
+          className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50 dark:from-[#0a0e1a] dark:to-[#0f1525]"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center px-4 py-2 bg-pink-100/80 dark:bg-pink-900/40 rounded-full text-pink-700 dark:text-pink-300 text-sm font-semibold mb-4">
+                <Users className="w-4 h-4 mr-2" />
+                Community
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+                Built for{' '}
+                <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
+                  Job Seekers
+                </span>
+              </h2>
+              <p className="text-xl text-slate-700 dark:text-slate-200 max-w-2xl mx-auto font-medium">
+                Everything you need to ace your next interview.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: '🎯',
+                  title: 'AI Mock Interviews',
+                  desc: 'Practice with AI-powered interview simulations that give real-time feedback on your answers.',
+                },
+                {
+                  icon: '📊',
+                  title: 'Skill Analytics',
+                  desc: 'Track your progress with detailed analytics on every skill area you practice.',
+                },
+                {
+                  icon: '🤝',
+                  title: 'Community Support',
+                  desc: 'Connect with fellow job seekers, share tips, and learn from each other.',
+                },
+              ].map((item, index) => (
+                <div key={index} className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-500 rounded-2xl transform rotate-1 opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                  <div className="relative bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700/60 hover:shadow-2xl transition-all duration-300">
+                    <div className="text-4xl mb-4">{item.icon}</div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-700 dark:text-slate-200 text-lg leading-relaxed font-medium">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Unique Features Showcase */}
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-slate-900 via-primary-900 to-slate-900 text-white relative overflow-hidden">
+          {/* Animated background */}
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
+            <div
+              className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow"
+              style={{ animationDelay: '1s' }}
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto relative">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center px-4 py-2 bg-white/10 rounded-full text-white text-sm font-semibold mb-4 backdrop-blur-sm border border-white/20">
+                <Sparkles className="w-4 h-4 mr-2 text-yellow-400" />
+                Unique Features
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                What Makes Us{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-primary-500">
+                  Different
+                </span>
+              </h2>
+              <p className="text-xl text-primary-200 max-w-2xl mx-auto">
+                Exclusive features you won't find anywhere else.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: Target,
+                  title: 'Skill Radar',
+                  desc: 'Visual skill assessment with detailed analytics',
+                  gradient: 'from-cyan-400 to-blue-500',
+                },
+                {
+                  icon: Award,
+                  title: 'Career Roadmap',
+                  desc: 'Personalized learning path to your dream job',
+                  gradient: 'from-green-400 to-emerald-500',
+                },
+                {
+                  icon: MessageSquare,
+                  title: 'Community Hub',
+                  desc: 'Connect with mentors and fellow learners',
+                  gradient: 'from-pink-400 to-rose-500',
+                },
+                {
+                  icon: Sparkles,
+                  title: 'Daily Challenges',
+                  desc: 'Keep your streak and earn rewards daily',
+                  gradient: 'from-amber-400 to-orange-500',
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="group p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2"
+                >
+                  <div
+                    className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <item.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-primary-200 text-sm">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-600 to-pink-600" />
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')]" />
+          </div>
+
+          <div className="max-w-4xl mx-auto text-center relative">
+            <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-semibold mb-6 backdrop-blur-sm">
+              🚀 Start your journey today
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+              Ready to Ace Your Interview?
+            </h2>
+            <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+              Start practicing for free today and land your dream job with confidence.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/signup">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  icon={ArrowRight}
+                  iconPosition="right"
+                  className="shadow-2xl shadow-white/20"
+                >
+                  Get Started Free
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  Login
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-slate-900 dark:bg-[#060912] text-slate-400 py-16 px-4 sm:px-6 lg:px-8">
@@ -670,7 +681,7 @@ const Home = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Product</h4>
+              <h3 className="font-semibold text-white mb-4 text-base">Product</h3>
               <ul className="space-y-3 text-sm">
                 <li>
                   <a href="#features" className="hover:text-white transition-colors">
@@ -691,7 +702,7 @@ const Home = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Platform</h4>
+              <h3 className="font-semibold text-white mb-4 text-base">Platform</h3>
               <ul className="space-y-3 text-sm">
                 <li>
                   <Link to="/login" className="hover:text-white transition-colors">
@@ -717,7 +728,7 @@ const Home = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Legal</h4>
+              <h3 className="font-semibold text-white mb-4 text-base">Legal</h3>
               <ul className="space-y-3 text-sm">
                 <li>
                   <Link to="/privacy" className="hover:text-white transition-colors">
