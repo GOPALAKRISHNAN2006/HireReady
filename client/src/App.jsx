@@ -99,6 +99,10 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const Contact = lazy(() => import('./pages/Contact'));
 
+// Public Interview Question SEO Pages
+const PublicQuestionsDirectory = lazy(() => import('./pages/public/PublicQuestionsDirectory'));
+const PublicQuestionCategory = lazy(() => import('./pages/public/PublicQuestionCategory'));
+
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -156,6 +160,8 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/interview-questions" element={<PublicQuestionsDirectory />} />
+        <Route path="/interview-questions/:category" element={<PublicQuestionCategory />} />
 
         {/* Auth Routes */}
         <Route element={<AuthLayout />}>

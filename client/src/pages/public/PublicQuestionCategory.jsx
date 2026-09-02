@@ -1,0 +1,301 @@
+import { useState } from 'react';
+import { useParams, Link, Navigate } from 'react-router-dom';
+import SEO from '../../components/SEO';
+import { TECH_CATEGORIES, PUBLIC_QUESTIONS } from '../../data/publicQuestionsData';
+import {
+  Code,
+  Server,
+  Database,
+  Coffee,
+  Atom,
+  ChevronRight,
+  Search,
+  BookOpen,
+  ArrowLeft,
+  CheckCircle,
+  HelpCircle,
+} from 'lucide-react';
+
+const ICON_MAP = {
+  Coffee: Coffee,
+  Code: Code,
+  Atom: Atom,
+  Server: Server,
+  Database: Database,
+};
+
+const PublicQuestionCategory = () => {
+  const { category } = useParams();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSection, setSelectedSection] = useState('All');
+
+  const categorySlug = category?.toLowerCase();
+  const categoryInfo = TECH_CATEGORIES[categorySlug];
+  const questionsList = PUBLIC_QUESTIONS[categorySlug] || [];
+
+  if (!categoryInfo) {
+    return <Navigate to="/interview-questions" replace />;
+  }
+
+  const IconComponent = ICON_MAP[categoryInfo.iconName] || BookOpen;
+
+  // Filter questions by section and search term
+  const filteredQuestions = questionsList.filter(q => {
+    const matchesSection = selectedSection === 'All' || q.section === selectedSection;
+    const matchesSearch =
+      q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.section.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSection && matchesSearch;
+  });
+
+  const canonicalUrl = `https://hireready-1-0hvc.onrender.com/interview-questions/${categorySlug}`;
+
+  // Structured Data (Breadcrumb & FAQPage)
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://hireready-1-0hvc.onrender.com/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Interview Questions',
+          item: 'https://hireready-1-0hvc.onrender.com/interview-questions',
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: categoryInfo.title,
+          item: canonicalUrl,
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: questionsList.map(q => ({
+        '@type': 'Question',
+        name: q.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: q.answer,
+        },
+      })),
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+      <SEO
+        title={categoryInfo.metaTitle}
+        description={categoryInfo.metaDescription}
+        canonical={canonicalUrl}
+        robots="index, follow"
+      />
+
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <ol className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+            <li>
+              <Link
+                to="/"
+                className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <ChevronRight className="w-4 h-4 text-slate-400" />
+            </li>
+            <li>
+              <Link
+                to="/interview-questions"
+                className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                Interview Questions
+              </Link>
+            </li>
+            <li>
+              <ChevronRight className="w-4 h-4 text-slate-400" />
+            </li>
+            <li className="font-semibold text-slate-900 dark:text-slate-100" aria-current="page">
+              {categoryInfo.title}
+            </li>
+          </ol>
+        </nav>
+
+        {/* Back Link */}
+        <Link
+          to="/interview-questions"
+          className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-1.5" /> All Interview Categories
+        </Link>
+
+        {/* Category Header */}
+        <header className="p-8 sm:p-10 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700/80 shadow-sm mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-5">
+            <div className="p-4 rounded-2xl bg-primary-500/10 text-primary-600 dark:text-primary-400 shrink-0">
+              <IconComponent className="w-10 h-10" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-3">
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100">
+                  {categoryInfo.title}
+                </h1>
+                <span className="px-3 py-1 text-xs font-semibold rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400">
+                  {questionsList.length} Questions
+                </span>
+              </div>
+              <p className="mt-2 text-base text-slate-700 dark:text-slate-200 max-w-3xl">
+                {categoryInfo.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Section Filter Pills */}
+          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700/50 flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedSection('All')}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                selectedSection === 'All'
+                  ? 'bg-primary-600 text-white shadow-md'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+              }`}
+            >
+              All Sections
+            </button>
+            {categoryInfo.sections.map(sec => (
+              <button
+                key={sec}
+                onClick={() => setSelectedSection(sec)}
+                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  selectedSection === sec
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                }`}
+              >
+                {sec}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        {/* Question List */}
+        <section className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+              Questions ({filteredQuestions.length})
+            </h2>
+
+            {/* Keyword Search */}
+            <div className="relative max-w-sm w-full">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder={`Filter ${categoryInfo.title}...`}
+                aria-label={`Search ${categoryInfo.title}`}
+                className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs shadow-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+              />
+            </div>
+          </div>
+
+          {filteredQuestions.map((q, idx) => (
+            <article
+              key={q.id}
+              className="p-6 sm:p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2 text-xs font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400">
+                    Q{idx + 1}
+                  </span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-slate-500 dark:text-slate-400">{q.section}</span>
+                </div>
+                <span
+                  className={`px-2.5 py-0.5 rounded text-xs font-semibold ${
+                    q.difficulty === 'Easy'
+                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                      : q.difficulty === 'Medium'
+                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                        : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                  }`}
+                >
+                  {q.difficulty}
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                {q.question}
+              </h3>
+
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-700/50 mb-4">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                  Answer
+                </h4>
+                <p className="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed">
+                  {q.answer}
+                </p>
+              </div>
+
+              {q.explanation && (
+                <div className="mb-4 text-xs text-slate-700 dark:text-slate-200 bg-amber-500/5 dark:bg-amber-500/10 border-l-4 border-amber-500 p-3.5 rounded-r-xl">
+                  <strong className="font-semibold text-amber-700 dark:text-amber-400">
+                    Key Insight:{' '}
+                  </strong>
+                  {q.explanation}
+                </div>
+              )}
+
+              {q.codeSnippet && (
+                <div className="mb-4">
+                  <div className="text-xs font-mono text-slate-400 mb-1 px-1">Example Code:</div>
+                  <pre className="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs overflow-x-auto font-mono">
+                    <code>{q.codeSnippet}</code>
+                  </pre>
+                </div>
+              )}
+            </article>
+          ))}
+
+          {filteredQuestions.length === 0 && (
+            <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+              <HelpCircle className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <p className="text-base font-semibold text-slate-700 dark:text-slate-300">
+                No questions found matching your filter criteria.
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedSection('All');
+                  setSearchTerm('');
+                }}
+                className="mt-3 text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default PublicQuestionCategory;

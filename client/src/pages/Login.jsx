@@ -314,7 +314,7 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="mt-8 text-center">
+      <div className="mt-8 text-center space-y-3">
         <p className="text-sm text-slate-600 dark:text-slate-400">
           Don't have an account?{' '}
           <Link
@@ -324,6 +324,18 @@ const Login = () => {
             Sign up for free →
           </Link>
         </p>
+
+        <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 rounded-xl text-center">
+          <p className="text-xs text-slate-600 dark:text-slate-300">
+            Want to practice without logging in?{' '}
+            <Link
+              to="/interview-questions"
+              className="font-semibold text-primary-600 dark:text-primary-400 hover:underline"
+            >
+              Browse Public Interview Questions →
+            </Link>
+          </p>
+        </div>
       </div>
 
       {/* Bottom feature highlights */}

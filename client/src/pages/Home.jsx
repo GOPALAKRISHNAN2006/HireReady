@@ -131,6 +131,12 @@ const Home = () => {
               >
                 Features
               </a>
+              <Link
+                to="/interview-questions"
+                className="text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
+              >
+                Questions
+              </Link>
               <a
                 href="#how-it-works"
                 className="text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
@@ -202,6 +208,13 @@ const Home = () => {
               >
                 Features
               </a>
+              <Link
+                to="/interview-questions"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              >
+                Questions
+              </Link>
               <a
                 href="#how-it-works"
                 onClick={() => setMobileMenuOpen(false)}
@@ -704,6 +717,11 @@ const Home = () => {
             <div>
               <h3 className="font-semibold text-white mb-4 text-base">Platform</h3>
               <ul className="space-y-3 text-sm">
+                <li>
+                  <Link to="/interview-questions" className="hover:text-white transition-colors">
+                    Interview Questions
+                  </Link>
+                </li>
                 <li>
                   <Link to="/login" className="hover:text-white transition-colors">
                     Login

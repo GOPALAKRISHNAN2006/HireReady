@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Allow: /interview-questions
 Allow: /privacy
 Allow: /terms
 Allow: /contact
@@ -10,7 +11,7 @@ Disallow: /dashboard
 Disallow: /profile
 Disallow: /settings
 Disallow: /analytics
-Disallow: /interview
+Disallow: /interview/
 Disallow: /questions
 Disallow: /resume
 Disallow: /aptitude
