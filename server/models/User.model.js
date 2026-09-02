@@ -262,6 +262,11 @@ userSchema.pre('save', async function (next) {
     return next();
   }
 
+  // If password is already a bcrypt hash, skip re-hashing
+  if (typeof this.password === 'string' && /^\$2[ab]\$\d+\$/.test(this.password)) {
+    return next();
+  }
+
   try {
     // Generate salt and hash password (10 rounds is secure and fast for production)
     const salt = await bcrypt.genSalt(10);

@@ -79,7 +79,10 @@ const Modal = ({
 
   if (!shouldRender) return null;
 
-  const IconComponent = icon && iconVariants[icon]?.icon;
+  const titleId = title ? 'modal-title-' + Math.random().toString(36).substring(2, 9) : undefined;
+  const subtitleId = subtitle
+    ? 'modal-subtitle-' + Math.random().toString(36).substring(2, 9)
+    : undefined;
 
   return createPortal(
     <div
@@ -97,6 +100,10 @@ const Modal = ({
 
       {/* Modal */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={subtitleId}
         className={`
           relative rounded-2xl shadow-2xl w-full ${sizes[size]}
           max-h-[90vh] overflow-hidden flex flex-col
@@ -129,7 +136,10 @@ const Modal = ({
                 ${iconVariants[icon].bg}
               `}
               >
-                <IconComponent className={`w-6 h-6 ${iconVariants[icon].color}`} />
+                <IconComponent
+                  className={`w-6 h-6 ${iconVariants[icon].color}`}
+                  aria-hidden="true"
+                />
               </div>
             )}
 
@@ -137,6 +147,7 @@ const Modal = ({
             <div className="flex-1 min-w-0">
               {title && (
                 <h2
+                  id={titleId}
                   className={`
                   text-xl font-semibold 
                   ${dark || variant === 'glass' || variant === 'neon' ? 'text-white' : variant === 'gradient' ? 'text-white' : 'text-slate-900'}
@@ -147,6 +158,7 @@ const Modal = ({
               )}
               {subtitle && (
                 <p
+                  id={subtitleId}
                   className={`
                   mt-1 text-sm 
                   ${dark || variant === 'glass' || variant === 'neon' ? 'text-slate-400' : variant === 'gradient' ? 'text-white/80' : 'text-slate-500'}
@@ -161,6 +173,7 @@ const Modal = ({
             {showCloseButton && (
               <button
                 onClick={onClose}
+                aria-label="Close modal"
                 className={`
                   flex-shrink-0 p-2 rounded-xl transition-all duration-200
                   hover:scale-110 active:scale-95
@@ -173,7 +186,7 @@ const Modal = ({
                   }
                 `}
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden="true" />
               </button>
             )}
           </div>

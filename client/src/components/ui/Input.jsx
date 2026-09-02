@@ -72,6 +72,12 @@ const Input = forwardRef(
       lg: 'px-5 py-3.5 text-lg',
     };
 
+    const generatedId =
+      props.id || (label ? `input-${label.toLowerCase().replace(/[^a-z0-9]/g, '-')}` : undefined);
+    const errorId = error && generatedId ? `${generatedId}-error` : undefined;
+    const helperId = helperText && generatedId ? `${generatedId}-helper` : undefined;
+    const describedBy = errorId || helperId;
+
     const handleChange = e => {
       setValue(e.target.value);
       props.onChange?.(e);
@@ -101,9 +107,16 @@ const Input = forwardRef(
     return (
       <div className={`space-y-1.5 ${containerClassName}`}>
         {label && !floating && (
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label
+            htmlFor={generatedId}
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5"
+          >
             {label}
-            {props.required && <span className="text-red-500 ml-1">*</span>}
+            {props.required && (
+              <span className="text-red-500 ml-1" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
 
@@ -117,13 +130,14 @@ const Input = forwardRef(
             ${isFocused ? 'text-primary-500' : 'text-slate-400'}
           `}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-5 h-5" aria-hidden="true" />
             </div>
           )}
 
           {/* Floating Label */}
           {floating && (
             <label
+              htmlFor={generatedId}
               className={`
             absolute left-4 transition-all duration-200 pointer-events-none
             ${
@@ -134,14 +148,21 @@ const Input = forwardRef(
           `}
             >
               {label}
-              {props.required && <span className="text-red-500 ml-1">*</span>}
+              {props.required && (
+                <span className="text-red-500 ml-1" aria-hidden="true">
+                  *
+                </span>
+              )}
             </label>
           )}
 
           <input
             ref={ref}
+            id={generatedId}
             type={isPassword && showPassword ? 'text' : type}
             maxLength={maxLength}
+            aria-invalid={Boolean(error)}
+            aria-describedby={describedBy}
             onFocus={e => {
               setIsFocused(true);
               props.onFocus?.(e);
@@ -176,20 +197,20 @@ const Input = forwardRef(
             ${isFocused ? 'text-primary-500' : 'text-slate-400'}
           `}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-5 h-5" aria-hidden="true" />
             </div>
           )}
 
           {/* Status Icons */}
           {error && !isPassword && (
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
-              <AlertCircle className="w-5 h-5 text-red-500" />
+              <AlertCircle className="w-5 h-5 text-red-500" aria-hidden="true" />
             </div>
           )}
 
           {success && !error && !isPassword && (
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
-              <Check className="w-5 h-5 text-green-500" />
+              <Check className="w-5 h-5 text-green-500" aria-hidden="true" />
             </div>
           )}
 
@@ -198,13 +219,18 @@ const Input = forwardRef(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               className="
               absolute inset-y-0 right-0 pr-3.5 flex items-center
               text-slate-400 hover:text-slate-600 dark:hover:text-slate-300
               transition-colors duration-200
             "
             >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              {showPassword ? (
+                <EyeOff className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Eye className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
           )}
         </div>
@@ -213,6 +239,8 @@ const Input = forwardRef(
         <div className="flex items-center justify-between">
           {(error || helperText || success) && (
             <p
+              id={errorId || helperId}
+              role={error ? 'alert' : 'status'}
               className={`
             text-sm transition-colors duration-200
             ${error ? 'text-red-600' : success ? 'text-green-600' : 'text-slate-500'}
@@ -260,6 +288,12 @@ export const Textarea = forwardRef(
     ref
   ) => {
     const [value, setValue] = useState(props.value || props.defaultValue || '');
+    const generatedId =
+      props.id ||
+      (label ? `textarea-${label.toLowerCase().replace(/[^a-z0-9]/g, '-')}` : undefined);
+    const errorId = error && generatedId ? `${generatedId}-error` : undefined;
+    const helperId = helperText && generatedId ? `${generatedId}-helper` : undefined;
+    const describedBy = errorId || helperId;
 
     const variants = {
       default:
@@ -273,15 +307,25 @@ export const Textarea = forwardRef(
     return (
       <div className={`space-y-1.5 ${containerClassName}`}>
         {label && (
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label
+            htmlFor={generatedId}
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+          >
             {label}
-            {props.required && <span className="text-red-500 ml-1">*</span>}
+            {props.required && (
+              <span className="text-red-500 ml-1" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
 
         <textarea
           ref={ref}
+          id={generatedId}
           maxLength={maxLength}
+          aria-invalid={Boolean(error)}
+          aria-describedby={describedBy}
           onChange={e => {
             setValue(e.target.value);
             props.onChange?.(e);
@@ -302,7 +346,11 @@ export const Textarea = forwardRef(
 
         <div className="flex items-center justify-between">
           {(error || helperText) && (
-            <p className={`text-sm ${error ? 'text-red-600' : 'text-slate-500'}`}>
+            <p
+              id={errorId || helperId}
+              role={error ? 'alert' : 'status'}
+              className={`text-sm ${error ? 'text-red-600' : 'text-slate-500'}`}
+            >
               {error || helperText}
             </p>
           )}

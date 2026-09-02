@@ -23,6 +23,9 @@ const Signup = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [googleReady, setGoogleReady] = useState(false);
   const [slowRequest, setSlowRequest] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
+  const [verificationPending, setVerificationPending] = useState(false);
+  const [resendingEmail, setResendingEmail] = useState(false);
   const slowTimerRef = useRef(null);
   const googleBtnRef = useRef(null);
 
@@ -161,7 +164,7 @@ const Signup = () => {
       return;
     }
 
-    await register({
+    const result = await register({
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
@@ -171,7 +174,75 @@ const Signup = () => {
 
     clearTimeout(slowTimerRef.current);
     setSlowRequest(false);
+
+    if (result?.success) {
+      setSubmittedEmail(formData.email);
+      setVerificationPending(true);
+      toast.success(result.message || 'Verification email sent! Please check your inbox.');
+    }
   };
+
+  const handleResendVerification = async () => {
+    if (!submittedEmail) return;
+    setResendingEmail(true);
+    try {
+      const res = await api.post('/auth/resend-verification', { email: submittedEmail });
+      toast.success(res.data.message || 'Verification email resent!');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to resend verification email.');
+    } finally {
+      setResendingEmail(false);
+    }
+  };
+
+  if (verificationPending) {
+    return (
+      <div className="animate-in max-w-md mx-auto my-12 p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
+        <SEO
+          title="Verify Email | HireReady"
+          description="Please verify your email address to complete your registration."
+          canonical="/signup"
+        />
+        <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 text-primary-600 rounded-2xl flex items-center justify-center mx-auto">
+          <Mail className="w-8 h-8" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Check Your Email</h2>
+          <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm">
+            We've sent a verification link to:
+          </p>
+          <p className="font-semibold text-primary-600 dark:text-primary-400 text-base mt-1">
+            {submittedEmail}
+          </p>
+          <p className="text-slate-500 dark:text-slate-400 text-xs mt-3">
+            Please click the link in your email to verify your address. No permanent account is
+            created until verification succeeds.
+          </p>
+        </div>
+
+        <div className="space-y-3 pt-2">
+          <Button
+            fullWidth
+            variant="outline"
+            onClick={handleResendVerification}
+            disabled={resendingEmail}
+          >
+            {resendingEmail ? 'Sending...' : 'Resend Verification Email'}
+          </Button>
+          <Button
+            fullWidth
+            variant="ghost"
+            onClick={() => {
+              setVerificationPending(false);
+              setSubmittedEmail('');
+            }}
+          >
+            Use Different Email
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in">
@@ -234,7 +305,10 @@ const Signup = () => {
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
+        <div
+          role="alert"
+          className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm"
+        >
           {error}
         </div>
       )}

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui';
+import SEO from '../components/SEO';
+import { trackEvent } from '../services/analytics';
 import { CheckCircle, XCircle, Loader2, Mail, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
-import api from '../services/api';
+import { useAuthStore } from '../store/authStore';
 
 const VerifyEmail = () => {
   const { token: paramToken } = useParams();
@@ -29,12 +31,24 @@ const VerifyEmail = () => {
       if (response.data.success) {
         setStatus('success');
         setMessage(response.data.message);
-        toast.success('Email verified successfully!');
+        toast.success('Email verified! Account created successfully.');
+        trackEvent('signup_completed', { method: 'email' });
 
-        // Redirect to login after 3 seconds
+        // If user and tokens were returned, set auth state in store
+        if (response.data.data?.user && response.data.data?.tokens) {
+          const { user, tokens } = response.data.data;
+          api.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
+          useAuthStore.setState({
+            user,
+            token: tokens.accessToken,
+            isAuthenticated: true,
+          });
+        }
+
+        // Redirect to dashboard after 2.5 seconds
         setTimeout(() => {
-          navigate('/login');
-        }, 3000);
+          navigate('/dashboard');
+        }, 2500);
       }
     } catch (error) {
       setStatus('error');

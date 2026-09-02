@@ -178,22 +178,40 @@ const AdminUsers = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-100 dark:border-slate-800">
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       User
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       Role
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       Interviews
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       Joined
                     </th>
-                    <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
                       Actions
                     </th>
                   </tr>

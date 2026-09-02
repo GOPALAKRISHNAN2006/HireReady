@@ -34,7 +34,7 @@ const websiteSchema = {
       '@id': 'https://hireready-1-0hvc.onrender.com/#website',
       url: 'https://hireready-1-0hvc.onrender.com',
       name: 'HireReady',
-      description: 'AI-Powered Interview Preparation & Mock Interview Platform',
+      description: 'AI-Powered Interview Practice & Mock Interview Platform',
     },
     {
       '@type': 'Organization',
@@ -42,6 +42,40 @@ const websiteSchema = {
       name: 'HireReady',
       url: 'https://hireready-1-0hvc.onrender.com',
       logo: 'https://hireready-1-0hvc.onrender.com/og-image.webp',
+      sameAs: [
+        'https://linkedin.com/company/hireready',
+        'https://x.com/hireready',
+        'https://github.com/GOPALAKRISHNAN2006/HireReady',
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'What makes HireReady AI-Powered Mock Interviews effective?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'HireReady utilizes advanced natural language processing to simulate real technical, HR, and behavioral interview sessions. Candidates receive instant AI feedback on technical accuracy, structure, clarity, and key improvement tips.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is HireReady free to use for job seekers?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes! HireReady offers a free tier allowing job seekers to access AI mock interviews, practice questions, aptitude assessments, and skill tracking without any upfront payment.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Which interview domains and categories are supported?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'HireReady supports Data Structures & Algorithms (DSA), System Design, Web Development, Machine Learning, DevOps, SQL Databases, Mobile Development, and HR/Behavioral interview rounds.',
+          },
+        },
+      ],
     },
   ],
 };
@@ -103,16 +137,16 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e1a] overflow-hidden transition-colors duration-300">
       <SEO
-        title="HireReady | AI-Powered Interview Preparation Platform"
-        description="Ace your next technical and HR interview with HireReady. AI-powered mock interviews, real-time feedback, skill assessments, resume builder, and adaptive practice tests."
+        title="HireReady | AI-Powered Interview Practice & Mock Interviews"
+        description="Ace technical and HR interviews with HireReady's AI-powered mock interviews, real-time feedback, skill assessments, and practice tests."
         canonical="/"
         jsonLd={websiteSchema}
       />
-      {/* Animated Background */}
-      <div className="fixed inset-0 gradient-mesh opacity-60 dark:opacity-30 pointer-events-none" />
+      {/* Animated Background — absolute avoids scroll-triggered full-page repaints */}
+      <div className="absolute inset-0 gradient-mesh opacity-60 dark:opacity-30 pointer-events-none" />
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-[#0b1120]/85 backdrop-blur-xl border-b border-slate-100/50 dark:border-primary-500/[0.08] transition-colors duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 composited bg-white/70 dark:bg-[#0b1120]/85 backdrop-blur-xl border-b border-slate-100/50 dark:border-primary-500/[0.08] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center space-x-3 group">
@@ -276,9 +310,9 @@ const Home = () => {
                 <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
                   Ace Your Next Interview with{' '}
                   <span className="bg-gradient-to-r from-primary-600 via-primary-600 to-pink-500 bg-clip-text text-transparent">
-                    AI-Powered
+                    HireReady AI-Powered
                   </span>{' '}
-                  Practice
+                  Interview Practice
                 </h1>
                 <p className="text-xl text-slate-700 dark:text-slate-200 mb-8 leading-relaxed">
                   Practice with intelligent mock interviews, get real-time feedback, and track your
@@ -620,6 +654,92 @@ const Home = () => {
           </div>
         </section>
 
+        {/* FAQ & Candidate Knowledge Base Section */}
+        <section className="py-20 bg-slate-50 dark:bg-[#070b16] transition-colors duration-300">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center px-4 py-1.5 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-4">
+                Frequently Asked Questions
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
+                Everything You Need to Know About HireReady AI Interview Practice
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mt-4 max-w-2xl mx-auto">
+                Discover how HireReady helps candidates master technical interviews, aptitude tests,
+                and behavioral rounds.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  What makes HireReady AI Mock Interviews effective?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  HireReady uses advanced natural language processing (NLP) to evaluate technical
+                  depth, response structure, and communication clarity. Candidates receive immediate
+                  constructive feedback, model answers, and score metrics.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  Is HireReady free for job seekers?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  Yes! HireReady provides a comprehensive free tier allowing candidates to practice
+                  AI mock interviews, practice coding questions, complete aptitude tests, and track
+                  their skill analytics without payment.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  Which interview topics and roles are covered?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  HireReady covers Data Structures & Algorithms (DSA), System Design, Web
+                  Development (Frontend & Backend), Machine Learning, Databases, DevOps, and
+                  HR/Behavioral interview scenarios.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  How does the Skill Radar & Analytics tracking work?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  Every mock interview and practice test automatically populates your personal Skill
+                  Radar. You can monitor your performance across problem solving, communication,
+                  speed, and technical accuracy over time.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  What is the Group Discussion (GD) Simulator?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  The GD Simulator creates simulated group discussions with AI participants.
+                  Candidates practice presenting arguments, responding to counterpoints, and leading
+                  discussions with real-time feedback.
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  How does the ATS Resume Builder work?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                  HireReady's built-in Resume Builder checks your resume against target job
+                  descriptions, highlighting keyword gaps, formatting issues, and suggesting
+                  tailored bullet points to maximize recruiter responses.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-600 to-pink-600" />
@@ -678,16 +798,65 @@ const Home = () => {
                 AI-powered interview preparation platform to help you land your dream job with
                 confidence.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-3">
                 <a
                   href="https://github.com/GOPALAKRISHNAN2006/HireReady"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-slate-700 transition-colors"
+                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
                   title="GitHub"
+                  aria-label="HireReady GitHub Profile"
                 >
-                  <svg className="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com/company/hireready"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
+                  title="LinkedIn"
+                  aria-label="HireReady LinkedIn Profile"
+                >
+                  <svg className="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://x.com/hireready"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
+                  title="X (Twitter)"
+                  aria-label="HireReady X Profile"
+                >
+                  <svg className="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://facebook.com/hireready"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
+                  title="Facebook"
+                  aria-label="HireReady Facebook Page"
+                >
+                  <svg className="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://youtube.com/@hireready"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"
+                  title="YouTube"
+                  aria-label="HireReady YouTube Channel"
+                >
+                  <svg className="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
                 </a>
               </div>
@@ -777,9 +946,15 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-sm">
-            <p>© {new Date().getFullYear()} HireReady. All rights reserved.</p>
-            <p className="mt-4 md:mt-0">Made with ❤️ for job seekers worldwide</p>
+          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+            <div>
+              <p>© {new Date().getFullYear()} HireReady. All rights reserved.</p>
+              <p className="text-xs text-slate-400 mt-1">
+                Address: 100 Tech Plaza, Suite 500, San Francisco, CA 94107 | Phone: +1 (800)
+                555-0199
+              </p>
+            </div>
+            <p className="mt-2 md:mt-0">Made with ❤️ for job seekers worldwide</p>
           </div>
         </div>
       </footer>

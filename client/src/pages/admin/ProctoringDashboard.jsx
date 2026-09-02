@@ -2,7 +2,7 @@
  * ===========================================
  * Admin Proctoring Dashboard Page
  * ===========================================
- * 
+ *
  * Displays all proctoring sessions, alerts,
  * and allows admin to review suspicious sessions.
  */
@@ -31,7 +31,7 @@ import {
   Mic,
   RefreshCw,
   ChevronDown,
-  FileText
+  FileText,
 } from 'lucide-react';
 import { Card, Button, Badge, Modal, Spinner } from '../../components/ui';
 import { proctoringApi } from '../../services/proctoringApi';
@@ -57,7 +57,7 @@ const ProctoringDashboard = () => {
       }
       const response = await proctoringApi.getSessionsForReview(params);
       return response.data?.data?.sessions || response.data?.data || [];
-    }
+    },
   });
 
   // Fetch unacknowledged alerts
@@ -67,7 +67,7 @@ const ProctoringDashboard = () => {
       const response = await proctoringApi.getAlerts();
       return response.data?.data?.alerts || response.data?.data || [];
     },
-    refetchInterval: 30000 // Refresh every 30 seconds
+    refetchInterval: 30000, // Refresh every 30 seconds
   });
 
   // Acknowledge alert mutation
@@ -79,9 +79,9 @@ const ProctoringDashboard = () => {
       queryClient.invalidateQueries(['proctoring-alerts']);
       toast.success('Alert acknowledged');
     },
-    onError: (error) => {
+    onError: error => {
       toast.error('Failed to acknowledge alert');
-    }
+    },
   });
 
   // Submit review mutation
@@ -89,7 +89,7 @@ const ProctoringDashboard = () => {
     mutationFn: async ({ sessionId, decision, notes }) => {
       return proctoringApi.submitReview(sessionId, {
         decision,
-        reviewerNotes: notes
+        reviewerNotes: notes,
       });
     },
     onSuccess: () => {
@@ -99,9 +99,9 @@ const ProctoringDashboard = () => {
       setReviewNotes('');
       toast.success('Review submitted successfully');
     },
-    onError: (error) => {
+    onError: error => {
       toast.error('Failed to submit review');
-    }
+    },
   });
 
   // Handle acknowledge
@@ -115,23 +115,35 @@ const ProctoringDashboard = () => {
     submitReviewMutation.mutate({
       sessionId: selectedSession._id,
       decision: reviewDecision,
-      notes: reviewNotes
+      notes: reviewNotes,
     });
   };
 
   // Get integrity badge
-  const getIntegrityBadge = (status) => {
+  const getIntegrityBadge = status => {
     if (status === 'clean') {
-      return <Badge variant="success"><ShieldCheck className="w-3 h-3 mr-1" /> Clean</Badge>;
+      return (
+        <Badge variant="success">
+          <ShieldCheck className="w-3 h-3 mr-1" /> Clean
+        </Badge>
+      );
     }
     if (status === 'review_recommended') {
-      return <Badge variant="warning"><ShieldAlert className="w-3 h-3 mr-1" /> Review</Badge>;
+      return (
+        <Badge variant="warning">
+          <ShieldAlert className="w-3 h-3 mr-1" /> Review
+        </Badge>
+      );
     }
-    return <Badge variant="danger"><ShieldX className="w-3 h-3 mr-1" /> High Risk</Badge>;
+    return (
+      <Badge variant="danger">
+        <ShieldX className="w-3 h-3 mr-1" /> High Risk
+      </Badge>
+    );
   };
 
   // Get severity badge
-  const getSeverityBadge = (severity) => {
+  const getSeverityBadge = severity => {
     if (severity === 'high') {
       return <Badge variant="danger">High</Badge>;
     }
@@ -142,7 +154,7 @@ const ProctoringDashboard = () => {
   };
 
   // Format date
-  const formatDate = (date) => {
+  const formatDate = date => {
     return new Date(date).toLocaleString();
   };
 
@@ -150,9 +162,10 @@ const ProctoringDashboard = () => {
   const stats = {
     totalSessions: reviewSessions?.length || 0,
     cleanSessions: reviewSessions?.filter(s => s.integrityStatus === 'clean').length || 0,
-    reviewNeeded: reviewSessions?.filter(s => s.integrityStatus === 'review_recommended').length || 0,
+    reviewNeeded:
+      reviewSessions?.filter(s => s.integrityStatus === 'review_recommended').length || 0,
     highRisk: reviewSessions?.filter(s => s.integrityStatus === 'high_suspicion').length || 0,
-    unresolvedAlerts: alerts?.length || 0
+    unresolvedAlerts: alerts?.length || 0,
   };
 
   return (
@@ -246,23 +259,29 @@ const ProctoringDashboard = () => {
           </div>
 
           <div className="space-y-3">
-            {alerts.slice(0, 5).map((alert) => (
+            {alerts.slice(0, 5).map(alert => (
               <motion.div
                 key={alert._id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`flex items-center justify-between p-4 rounded-lg border ${
-                  alert.alertType === 'critical' ? 'bg-red-50 border-red-200' :
-                  alert.alertType === 'alert' ? 'bg-yellow-50 border-yellow-200' :
-                  'bg-slate-50 border-slate-200'
+                  alert.alertType === 'critical'
+                    ? 'bg-red-50 border-red-200'
+                    : alert.alertType === 'alert'
+                      ? 'bg-yellow-50 border-yellow-200'
+                      : 'bg-slate-50 border-slate-200'
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <AlertCircle className={`w-5 h-5 ${
-                    alert.alertType === 'critical' ? 'text-red-500' :
-                    alert.alertType === 'alert' ? 'text-yellow-500' :
-                    'text-slate-500'
-                  }`} />
+                  <AlertCircle
+                    className={`w-5 h-5 ${
+                      alert.alertType === 'critical'
+                        ? 'text-red-500'
+                        : alert.alertType === 'alert'
+                          ? 'text-yellow-500'
+                          : 'text-slate-500'
+                    }`}
+                  />
                   <div>
                     <p className="font-medium text-slate-900">
                       {alert.candidate?.firstName} {alert.candidate?.lastName}
@@ -303,13 +322,13 @@ const ProctoringDashboard = () => {
                 type="text"
                 placeholder="Search..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
+              onChange={e => setFilterStatus(e.target.value)}
               className="px-3 py-2 border border-slate-300 rounded-lg text-sm"
             >
               <option value="all">All Status</option>
@@ -328,17 +347,52 @@ const ProctoringDashboard = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">User</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Session Type</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Status</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Risk Score</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Violations</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Date</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Actions</th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    User
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Session Type
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Risk Score
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Violations
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-left py-3 px-4 text-sm font-medium text-slate-500"
+                  >
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {reviewSessions.map((session) => (
+                {reviewSessions.map(session => (
                   <tr key={session._id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
@@ -358,24 +412,28 @@ const ProctoringDashboard = () => {
                         {session.sessionType}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4">
-                      {getIntegrityBadge(session.integrityStatus)}
-                    </td>
+                    <td className="py-3 px-4">{getIntegrityBadge(session.integrityStatus)}</td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        <div className={`text-sm font-bold ${
-                          session.riskScore < 20 ? 'text-green-600' :
-                          session.riskScore < 50 ? 'text-yellow-600' :
-                          'text-red-600'
-                        }`}>
+                        <div
+                          className={`text-sm font-bold ${
+                            session.riskScore < 20
+                              ? 'text-green-600'
+                              : session.riskScore < 50
+                                ? 'text-yellow-600'
+                                : 'text-red-600'
+                          }`}
+                        >
                           {session.riskScore}/100
                         </div>
                         <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${
-                              session.riskScore < 20 ? 'bg-green-500' :
-                              session.riskScore < 50 ? 'bg-yellow-500' :
-                              'bg-red-500'
+                              session.riskScore < 20
+                                ? 'bg-green-500'
+                                : session.riskScore < 50
+                                  ? 'bg-yellow-500'
+                                  : 'bg-red-500'
                             }`}
                             style={{ width: `${session.riskScore}%` }}
                           />
@@ -384,9 +442,13 @@ const ProctoringDashboard = () => {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1">
-                        <span className="text-sm text-slate-900">{session.stats?.totalViolations || 0}</span>
+                        <span className="text-sm text-slate-900">
+                          {session.stats?.totalViolations || 0}
+                        </span>
                         {session.stats?.highViolations > 0 && (
-                          <Badge variant="danger" size="sm">{session.stats.highViolations} high</Badge>
+                          <Badge variant="danger" size="sm">
+                            {session.stats.highViolations} high
+                          </Badge>
                         )}
                       </div>
                     </td>
@@ -417,7 +479,9 @@ const ProctoringDashboard = () => {
           <div className="text-center py-12">
             <ShieldCheck className="w-16 h-16 text-green-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-900 mb-2">No Sessions to Review</h3>
-            <p className="text-slate-500">All proctored sessions are clean or have been reviewed.</p>
+            <p className="text-slate-500">
+              All proctored sessions are clean or have been reviewed.
+            </p>
           </div>
         )}
       </Card>
@@ -438,20 +502,30 @@ const ProctoringDashboard = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-slate-500">User</p>
-                <p className="font-medium text-slate-900">{selectedSession.candidate?.firstName} {selectedSession.candidate?.lastName}</p>
+                <p className="font-medium text-slate-900">
+                  {selectedSession.candidate?.firstName} {selectedSession.candidate?.lastName}
+                </p>
                 <p className="text-xs text-slate-500">{selectedSession.candidate?.email}</p>
               </div>
               <div>
                 <p className="text-sm text-slate-500">Session Type</p>
-                <p className="font-medium text-slate-900 capitalize">{selectedSession.sessionType}</p>
+                <p className="font-medium text-slate-900 capitalize">
+                  {selectedSession.sessionType}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-slate-500">Risk Score</p>
-                <p className={`font-bold ${
-                  selectedSession.riskScore < 20 ? 'text-green-600' :
-                  selectedSession.riskScore < 50 ? 'text-yellow-600' :
-                  'text-red-600'
-                }`}>{selectedSession.riskScore}/100</p>
+                <p
+                  className={`font-bold ${
+                    selectedSession.riskScore < 20
+                      ? 'text-green-600'
+                      : selectedSession.riskScore < 50
+                        ? 'text-yellow-600'
+                        : 'text-red-600'
+                  }`}
+                >
+                  {selectedSession.riskScore}/100
+                </p>
               </div>
               <div>
                 <p className="text-sm text-slate-500">Status</p>
@@ -462,15 +536,19 @@ const ProctoringDashboard = () => {
             {/* Violations */}
             {selectedSession.violations && selectedSession.violations.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-slate-900 mb-2">Violations ({selectedSession.violations.length})</h4>
+                <h4 className="text-sm font-medium text-slate-900 mb-2">
+                  Violations ({selectedSession.violations.length})
+                </h4>
                 <div className="max-h-48 overflow-y-auto space-y-2">
                   {selectedSession.violations.map((v, i) => (
                     <div
                       key={i}
                       className={`flex items-center justify-between p-2 rounded ${
-                        v.severity === 'high' ? 'bg-red-50' :
-                        v.severity === 'medium' ? 'bg-yellow-50' :
-                        'bg-slate-50'
+                        v.severity === 'high'
+                          ? 'bg-red-50'
+                          : v.severity === 'medium'
+                            ? 'bg-yellow-50'
+                            : 'bg-slate-50'
                       }`}
                     >
                       <span className="text-sm capitalize">{v.type.replace(/_/g, ' ')}</span>
@@ -515,7 +593,7 @@ const ProctoringDashboard = () => {
               <label className="block text-sm font-medium text-slate-900 mb-2">Review Notes</label>
               <textarea
                 value={reviewNotes}
-                onChange={(e) => setReviewNotes(e.target.value)}
+                onChange={e => setReviewNotes(e.target.value)}
                 placeholder="Add notes about your decision..."
                 rows={3}
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -527,10 +605,7 @@ const ProctoringDashboard = () => {
               <Button variant="secondary" onClick={() => setShowReviewModal(false)}>
                 Cancel
               </Button>
-              <Button
-                onClick={handleSubmitReview}
-                disabled={submitReviewMutation.isPending}
-              >
+              <Button onClick={handleSubmitReview} disabled={submitReviewMutation.isPending}>
                 {submitReviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
               </Button>
             </div>

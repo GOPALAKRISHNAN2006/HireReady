@@ -1,7 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import { useAuthStore } from './store/authStore';
 import { useSettingsStore } from './store/settingsStore';
+import { initGA, trackPageView } from './services/analytics';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -109,6 +110,7 @@ const Maintenance = lazy(() => import('./pages/Maintenance'));
 // Public Interview Question SEO Pages
 const PublicQuestionsDirectory = lazy(() => import('./pages/public/PublicQuestionsDirectory'));
 const PublicQuestionCategory = lazy(() => import('./pages/public/PublicQuestionCategory'));
+const FullStackRoadmap = lazy(() => import('./pages/public/FullStackRoadmap'));
 
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -148,6 +150,17 @@ const PublicRoute = ({ children, redirectTo = '/dashboard' }) => {
 function App() {
   const { checkAuth } = useAuthStore();
   const { initializeSettings } = useSettingsStore();
+  const location = useLocation();
+
+  // Initialize GA4
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  // Track SPA page views on route change
+  useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location]);
 
   // Check auth status on app load
   useEffect(() => {
@@ -177,6 +190,7 @@ function App() {
           <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/interview-questions" element={<PublicQuestionsDirectory />} />
           <Route path="/interview-questions/:category" element={<PublicQuestionCategory />} />
+          <Route path="/full-stack-interview-roadmap" element={<FullStackRoadmap />} />
 
           {/* Auth Routes */}
           <Route element={<AuthLayout />}>

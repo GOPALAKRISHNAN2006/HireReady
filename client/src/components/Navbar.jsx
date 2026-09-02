@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
+import { trackEvent } from '../services/analytics';
+
 const Navbar = ({ onMenuClick }) => {
   const { user, logout } = useAuthStore();
   const { theme, setTheme } = useSettingsStore();
@@ -34,6 +36,7 @@ const Navbar = ({ onMenuClick }) => {
   }, []);
 
   const handleLogout = () => {
+    trackEvent('logout');
     logout();
     setDropdownOpen(false);
   };
@@ -79,10 +82,14 @@ const Navbar = ({ onMenuClick }) => {
         {/* Search Bar */}
         <div className="hidden md:flex flex-1 max-w-md mx-8">
           <div className="relative w-full group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500 group-focus-within:text-primary-500 transition-colors" />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500 group-focus-within:text-primary-500 transition-colors"
+              aria-hidden="true"
+            />
             <input
               type="text"
               placeholder="Search questions, topics..."
+              aria-label="Search questions and topics"
               className="w-full pl-12 pr-4 py-2.5 bg-slate-100/80 dark:bg-[#0f172a]/80 border border-transparent dark:border-primary-500/10 rounded-xl focus:ring-2 focus:ring-primary-500/50 focus:bg-white dark:focus:bg-[#131c31] focus:border-primary-200 dark:focus:border-primary-500/30 transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 dark:text-slate-200"
             />
           </div>
@@ -98,11 +105,20 @@ const Navbar = ({ onMenuClick }) => {
             aria-label={themeLabel}
           >
             {theme === 'system' ? (
-              <Monitor className="w-5 h-5 text-primary-500 group-hover:text-primary-400 transition-colors" />
+              <Monitor
+                className="w-5 h-5 text-primary-500 group-hover:text-primary-400 transition-colors"
+                aria-hidden="true"
+              />
             ) : isDark ? (
-              <Sun className="w-5 h-5 text-amber-400 group-hover:text-amber-300 transition-colors" />
+              <Sun
+                className="w-5 h-5 text-amber-400 group-hover:text-amber-300 transition-colors"
+                aria-hidden="true"
+              />
             ) : (
-              <Moon className="w-5 h-5 text-slate-500 group-hover:text-primary-600 transition-colors" />
+              <Moon
+                className="w-5 h-5 text-slate-500 group-hover:text-primary-600 transition-colors"
+                aria-hidden="true"
+              />
             )}
           </button>
 
@@ -112,8 +128,14 @@ const Navbar = ({ onMenuClick }) => {
             className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-200 relative group"
             aria-label="View notifications"
           >
-            <Bell className="w-5 h-5 text-slate-500 group-hover:text-slate-700 dark:text-slate-400 dark:group-hover:text-slate-200" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+            <Bell
+              className="w-5 h-5 text-slate-500 group-hover:text-slate-700 dark:text-slate-400 dark:group-hover:text-slate-200"
+              aria-hidden="true"
+            />
+            <span
+              className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"
+              aria-hidden="true"
+            ></span>
           </Link>
 
           {/* User Dropdown */}
@@ -122,6 +144,8 @@ const Navbar = ({ onMenuClick }) => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center space-x-2 p-1.5 pr-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 transition-all duration-200 group"
               aria-label="User account menu"
+              aria-expanded={dropdownOpen}
+              aria-haspopup="true"
             >
               <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-500 rounded-xl flex items-center justify-center shadow-md overflow-hidden">
                 {user?.avatar &&

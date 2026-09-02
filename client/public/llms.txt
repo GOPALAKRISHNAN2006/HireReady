@@ -1,0 +1,21 @@
+# HireReady - AI-Powered Interview Preparation Platform
+
+> HireReady is an AI-powered interview practice platform offering real-time feedback, mock interviews, aptitude tests, skill analytics, GD practice, and resume building for job seekers.
+
+## Core Capabilities & Features
+
+- **AI Mock Interviews**: Practice technical, HR, behavioral, and DSA questions with instant voice/text NLP evaluation.
+- **Aptitude Practice**: Quantitative, logical, and verbal reasoning practice tests with instant scoring and explanation breakdown.
+- **Skill Radar & Analytics**: Multi-dimensional skill scorecards tracking technical, communication, and problem-solving readiness.
+- **Group Discussion (GD) Lab**: Simulated GD sessions with AI persona participants and turn-by-turn feedback.
+- **Resume Builder & Analyzer**: Built-in resume editor with real-time job description matching and ATS keyword optimization.
+- **Community Hub**: Interactive discussion forum for interview experience sharing, interview tips, and peer advice.
+
+## Key Links & Resources
+
+- [Home & Platform Overview](https://hireready-1-0hvc.onrender.com/)
+- [Public Interview Questions Directory](https://hireready-1-0hvc.onrender.com/interview-questions)
+- [Company Preparation Directory](https://hireready-1-0hvc.onrender.com/company-prep)
+- [Practice History & Analytics](https://hireready-1-0hvc.onrender.com/analytics)
+- [Privacy Policy](https://hireready-1-0hvc.onrender.com/privacy)
+- [Terms of Service](https://hireready-1-0hvc.onrender.com/terms)

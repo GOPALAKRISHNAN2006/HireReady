@@ -1,9 +1,11 @@
 import { Outlet, Link } from 'react-router-dom';
 import { Brain, Sparkles, Shield, Zap } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const AuthLayout = () => {
   return (
     <div className="min-h-screen flex">
+      <SEO robots="noindex, nofollow" />
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 via-primary-600 to-primary-700 p-12 flex-col justify-between relative overflow-hidden">
         {/* Animated background elements */}

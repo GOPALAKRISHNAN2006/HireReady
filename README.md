@@ -21,6 +21,8 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 
 ## 🎯 Overview
 
+**[🚀 Live Production Demo](https://hireready-1-0hvc.onrender.com/)**
+
 **HireReady** addresses the challenge of inadequate interview preparation by providing an intelligent, adaptive platform that simulates real interview scenarios. Using advanced AI technologies (OpenAI GPT-4 and Google Gemini), the system generates contextually relevant questions, evaluates responses using NLP, and provides actionable feedback.
 
 ### Key Objectives
@@ -34,6 +36,7 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 ## ✨ Features
 
 ### For Users
+
 - 📝 **Mock Interviews**: Practice with AI-generated questions across multiple categories
 - 🎯 **Real-time Feedback**: Get instant, detailed feedback on your answers
 - 📊 **Analytics Dashboard**: Track your progress with interactive charts
@@ -53,6 +56,7 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 - 🧩 **Rich UI Components**: Code editor, tabs, progress bars, tooltips, accordions, and more
 
 ### For Administrators
+
 - 👥 **User Management**: View, edit, and manage user accounts
 - ❓ **Question Management**: Create, edit, and approve questions
 - 🤖 **AI Question Generation**: Generate questions using AI with one click
@@ -61,30 +65,32 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 ## 🛠️ Tech Stack
 
 ### Backend
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Runtime environment |
-| Express.js | Web framework |
-| MongoDB | Database |
-| Mongoose | ODM |
-| JWT | Authentication |
-| bcryptjs | Password hashing |
-| Socket.io | Real-time communication |
-| OpenAI API | AI question generation |
+
+| Technology    | Purpose                 |
+| ------------- | ----------------------- |
+| Node.js       | Runtime environment     |
+| Express.js    | Web framework           |
+| MongoDB       | Database                |
+| Mongoose      | ODM                     |
+| JWT           | Authentication          |
+| bcryptjs      | Password hashing        |
+| Socket.io     | Real-time communication |
+| OpenAI API    | AI question generation  |
 | Google Gemini | Alternative AI provider |
-| natural.js | NLP fallback |
+| natural.js    | NLP fallback            |
 
 ### Frontend
-| Technology | Purpose |
-|------------|---------|
-| React 18 | UI library |
-| Vite | Build tool |
-| TailwindCSS | Styling |
-| Zustand | State management |
-| React Query | Server state |
-| Recharts | Data visualization |
-| React Router v6 | Routing |
-| Axios | HTTP client |
+
+| Technology      | Purpose            |
+| --------------- | ------------------ |
+| React 18        | UI library         |
+| Vite            | Build tool         |
+| TailwindCSS     | Styling            |
+| Zustand         | State management   |
+| React Query     | Server state       |
+| Recharts        | Data visualization |
+| React Router v6 | Routing            |
+| Axios           | HTTP client        |
 
 ## 📁 Project Structure
 
@@ -143,17 +149,20 @@ Hireready/
 ### Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/Interview-Portal-main.git
 cd Interview-Portal-main
 ```
 
 2. **Install root dependencies** (Husky, Prettier, lint-staged)
+
 ```bash
 npm install
 ```
 
 3. **Set up the backend**
+
 ```bash
 cd server
 npm install
@@ -162,6 +171,7 @@ cp .env.example .env
 ```
 
 4. **Set up the frontend**
+
 ```bash
 cd ../client
 npm install
@@ -175,6 +185,7 @@ Important: do not commit real environment files (`.env`).
 Only keep template files such as `.env.example` and `.env.prod.example` in git.
 
 Edit `server/.env`:
+
 ```env
 PORT=5000
 NODE_ENV=development
@@ -186,12 +197,14 @@ GEMINI_API_KEY=your-gemini-api-key
 ```
 
 Edit `client/.env`:
+
 ```env
 VITE_API_URL=http://localhost:5000
 VITE_SENTRY_DSN=           # Optional: for error monitoring
 ```
 
 6. **Seed the database**
+
 ```bash
 cd server
 npm run seed
@@ -200,24 +213,28 @@ npm run seed
 7. **Start the servers**
 
 Backend:
+
 ```bash
 cd server
 npm run dev
 ```
 
 Frontend (new terminal):
+
 ```bash
 cd client
 npm run dev
 ```
 
 8. **Open in browser**
+
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:5000
 
 ### Default Credentials
 
 After seeding:
+
 - **Admin**: hireready007@gmail.com / Hireready@12345
 - **Admin (secondary)**: admin@interviewportal.com / Admin@123456
 
@@ -229,81 +246,86 @@ Database schema and ERD: see [docs/schema.md](docs/schema.md).
 
 ### Authentication
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login user |
-| POST | `/api/auth/logout` | Logout user |
-| POST | `/api/auth/refresh` | Refresh token |
+| Method | Endpoint             | Description       |
+| ------ | -------------------- | ----------------- |
+| POST   | `/api/auth/register` | Register new user |
+| POST   | `/api/auth/login`    | Login user        |
+| POST   | `/api/auth/logout`   | Logout user       |
+| POST   | `/api/auth/refresh`  | Refresh token     |
 
 ### Users
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users/me` | Get current user |
-| PUT | `/api/users/me` | Update profile |
-| PUT | `/api/users/change-password` | Change password |
+| Method | Endpoint                     | Description      |
+| ------ | ---------------------------- | ---------------- |
+| GET    | `/api/users/me`              | Get current user |
+| PUT    | `/api/users/me`              | Update profile   |
+| PUT    | `/api/users/change-password` | Change password  |
 
 ### Questions
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/questions` | List questions |
-| GET | `/api/questions/:id` | Get question |
-| POST | `/api/questions` | Create question (admin) |
-| PUT | `/api/questions/:id` | Update question (admin) |
+| Method | Endpoint             | Description             |
+| ------ | -------------------- | ----------------------- |
+| GET    | `/api/questions`     | List questions          |
+| GET    | `/api/questions/:id` | Get question            |
+| POST   | `/api/questions`     | Create question (admin) |
+| PUT    | `/api/questions/:id` | Update question (admin) |
 | DELETE | `/api/questions/:id` | Delete question (admin) |
 
 ### Interviews
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/interviews` | Create interview |
-| GET | `/api/interviews` | List user interviews |
-| GET | `/api/interviews/:id` | Get interview |
-| POST | `/api/interviews/:id/submit-answer` | Submit answer |
-| POST | `/api/interviews/:id/complete` | Complete interview |
+| Method | Endpoint                            | Description          |
+| ------ | ----------------------------------- | -------------------- |
+| POST   | `/api/interviews`                   | Create interview     |
+| GET    | `/api/interviews`                   | List user interviews |
+| GET    | `/api/interviews/:id`               | Get interview        |
+| POST   | `/api/interviews/:id/submit-answer` | Submit answer        |
+| POST   | `/api/interviews/:id/complete`      | Complete interview   |
 
 ### Analytics
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/analytics/stats` | Get user stats |
-| GET | `/api/analytics/progress` | Get progress data |
-| GET | `/api/analytics/leaderboard` | Get leaderboard |
+| Method | Endpoint                     | Description       |
+| ------ | ---------------------------- | ----------------- |
+| GET    | `/api/analytics/stats`       | Get user stats    |
+| GET    | `/api/analytics/progress`    | Get progress data |
+| GET    | `/api/analytics/leaderboard` | Get leaderboard   |
 
 ### AI
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/ai/generate-question` | Generate AI question |
-| POST | `/api/ai/evaluate-answer` | Evaluate answer |
-| POST | `/api/ai/generate-feedback` | Generate feedback |
+| Method | Endpoint                    | Description          |
+| ------ | --------------------------- | -------------------- |
+| POST   | `/api/ai/generate-question` | Generate AI question |
+| POST   | `/api/ai/evaluate-answer`   | Evaluate answer      |
+| POST   | `/api/ai/generate-feedback` | Generate feedback    |
 
 ### Admin
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/admin/stats` | Get platform stats |
-| GET | `/api/admin/users` | List all users |
-| PUT | `/api/admin/users/:id/role` | Update user role |
-| DELETE | `/api/admin/users/:id` | Delete user |
+| Method | Endpoint                    | Description        |
+| ------ | --------------------------- | ------------------ |
+| GET    | `/api/admin/stats`          | Get platform stats |
+| GET    | `/api/admin/users`          | List all users     |
+| PUT    | `/api/admin/users/:id/role` | Update user role   |
+| DELETE | `/api/admin/users/:id`      | Delete user        |
 
 ## 🖼️ Screenshots
 
 ### Home Page
+
 Modern landing page with feature highlights and testimonials
 
 ### Dashboard
+
 Clean dashboard with progress overview and quick actions
 
 ### Interview Session
+
 Interactive interview interface with timer and navigation
 
 ### Analytics
+
 Comprehensive charts showing performance trends
 
 ### Admin Panel
+
 Full administrative control over platform
 
 ## 🤝 Contributing
@@ -330,6 +352,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **HireReady** - Made with ❤️ for better interview preparation
 
 <!-- Replace OWNER/REPO in the badge URL with your GitHub repo -->
+
 [![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
 
 ## CI / Tests

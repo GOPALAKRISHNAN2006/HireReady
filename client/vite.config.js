@@ -22,9 +22,12 @@ export default defineConfig({
     },
   },
   build: {
+    target: 'es2015',
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
     minify: 'esbuild',
+    // Inline assets smaller than 4KB to reduce HTTP round-trips
+    assetsInlineLimit: 4096,
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -44,9 +47,11 @@ export default defineConfig({
             if (id.includes('@tanstack/react-query')) {
               return 'vendor-query';
             }
+            // prismjs and react-markdown: code editor / feedback pages only
             if (id.includes('prismjs') || id.includes('react-markdown')) {
               return 'vendor-markdown';
             }
+            // socket.io: realtime features only — separate cache bucket
             if (id.includes('socket.io-client')) {
               return 'vendor-socket';
             }

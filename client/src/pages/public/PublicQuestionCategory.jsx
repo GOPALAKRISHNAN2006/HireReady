@@ -218,6 +218,7 @@ const PublicQuestionCategory = () => {
 
           {filteredQuestions.map((q, idx) => (
             <article
+              id={`q-${idx + 1}`}
               key={q.id}
               className="p-6 sm:p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-shadow"
             >
@@ -272,6 +273,21 @@ const PublicQuestionCategory = () => {
                   </pre>
                 </div>
               )}
+
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <span className="inline-flex items-center">
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-500 mr-1" /> Verified{' '}
+                  {categoryInfo.title} Answer
+                </span>
+                {idx < filteredQuestions.length - 1 && (
+                  <a
+                    href={`#q-${idx + 2}`}
+                    className="text-primary-600 dark:text-primary-400 font-semibold hover:underline inline-flex items-center"
+                  >
+                    Next Question in {q.section} <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                  </a>
+                )}
+              </div>
             </article>
           ))}
 
@@ -292,6 +308,80 @@ const PublicQuestionCategory = () => {
               </button>
             </div>
           )}
+        </section>
+
+        {/* Frequently Asked Questions (FAQ) Section */}
+        <section className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            Frequently Asked Questions about {categoryInfo.title}
+          </h2>
+          <div className="space-y-4">
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">
+                How should I prepare for a {categoryInfo.title.replace(' Questions', '')} technical
+                interview?
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Start by mastering core concepts in {categoryInfo.sections.join(', ')}. Review
+                standard question patterns, write working code examples by hand, and practice
+                interactive mock interviews to build speed and verbal communication confidence.
+              </p>
+            </div>
+
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">
+                Are these {categoryInfo.title.replace(' Questions', '')} interview questions updated
+                for 2026?
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Yes. All interview questions, code snippets, and explanations are curated according
+                to modern technical standards and top tech company hiring practices.
+              </p>
+            </div>
+
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">
+                Can I practice live AI mock interviews for{' '}
+                {categoryInfo.title.replace(' Questions', '')}?
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Yes! HireReady provides an interactive AI mock interview lab where you can receive
+                real-time speech and technical scoring on{' '}
+                {categoryInfo.title.replace(' Questions', '')} topics.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Related Interview Topics Section */}
+        <section className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            Related Interview Topics
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Object.values(TECH_CATEGORIES)
+              .filter(cat => cat.slug !== categorySlug)
+              .map(cat => (
+                <Link
+                  key={cat.slug}
+                  to={`/interview-questions/${cat.slug}`}
+                  className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+                >
+                  <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    {cat.title}
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              ))}
+          </div>
+          <div className="mt-6 text-center sm:text-left">
+            <Link
+              to="/interview-questions"
+              className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline"
+            >
+              Explore All Technical Interview Categories <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
         </section>
       </main>
     </div>

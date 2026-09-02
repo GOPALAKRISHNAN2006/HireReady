@@ -2,9 +2,9 @@ import { Helmet } from 'react-helmet-async';
 
 const DEFAULT_SITE_URL = import.meta.env.VITE_SITE_URL || 'https://hireready-1-0hvc.onrender.com';
 const DEFAULT_OG_IMAGE = `${DEFAULT_SITE_URL}/og-image.webp`;
-const DEFAULT_TITLE = 'HireReady | AI-Powered Interview Preparation Platform';
+const DEFAULT_TITLE = 'HireReady | AI-Powered Interview Practice & Mock Interviews';
 const DEFAULT_DESCRIPTION =
-  'Prepare for technical, aptitude, and HR interviews with AI-powered mock interviews, real-time feedback, skill radar, resume building, and curated practice tests.';
+  "Ace technical and HR interviews with HireReady's AI-powered mock interviews, real-time feedback, skill assessments, and practice tests.";
 
 const SEO = ({
   title = DEFAULT_TITLE,

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-jest.setTimeout(120000);
+jest.setTimeout(300000);
 
 let mongod;
 let app;

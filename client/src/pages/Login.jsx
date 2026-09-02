@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import { Mail, Lock, Brain, ArrowRight, Loader2, Sparkles, Shield, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { preWarmServer, waitForServer } from '../services/api';
+import { trackEvent } from '../services/analytics';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
@@ -161,6 +162,7 @@ const Login = () => {
     setSlowRequest(false);
 
     if (result.success) {
+      trackEvent('login_success', { method: 'email' });
       navigate('/dashboard');
     }
   };
@@ -209,9 +211,14 @@ const Login = () => {
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm flex items-center">
+        <div
+          role="alert"
+          className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm flex items-center"
+        >
           <div className="w-8 h-8 bg-red-100 dark:bg-red-900/40 rounded-full flex items-center justify-center mr-3">
-            <span className="text-red-500 dark:text-red-400">!</span>
+            <span className="text-red-500 dark:text-red-400" aria-hidden="true">
+              !
+            </span>
           </div>
           {error}
         </div>

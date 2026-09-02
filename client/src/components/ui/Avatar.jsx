@@ -29,7 +29,7 @@ export default function Avatar({ src, name, size = 'md', className = '' }) {
     return (
       <img
         src={src}
-        alt={name || 'Avatar'}
+        alt={name ? `${name}'s avatar` : 'User profile picture'}
         loading="lazy"
         onError={e => {
           e.target.style.display = 'none';

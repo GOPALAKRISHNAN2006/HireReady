@@ -4,9 +4,9 @@ export const TECH_CATEGORIES = {
   java: {
     slug: 'java',
     title: 'Java Interview Questions',
-    metaTitle: 'Java Interview Questions | HireReady',
+    metaTitle: 'Java Technical Interview Questions & Answers | HireReady',
     metaDescription:
-      'Prepare for Java technical interviews with top questions covering OOP, Collections, Multithreading, Exception Handling, and Core Java concepts.',
+      'Master Java technical interview questions with expert answers covering OOP, Collections framework, Multithreading, Exception Handling, and JVM memory concepts.',
     iconName: 'Coffee',
     badge: 'Popular',
     description:
@@ -21,9 +21,9 @@ export const TECH_CATEGORIES = {
   javascript: {
     slug: 'javascript',
     title: 'JavaScript Interview Questions',
-    metaTitle: 'JavaScript Interview Questions | HireReady',
+    metaTitle: 'JavaScript Interview Questions & Answers | HireReady',
     metaDescription:
-      'Ace your JavaScript interview with curated questions on Closures, Event Loop, Promises, Async/Await, Prototypes, and ES6+ features.',
+      'Ace your JavaScript interview with curated questions and code examples covering Closures, Event Loop, Promises, Async/Await, Prototypes, and ES6+ features.',
     iconName: 'Code',
     badge: 'Trending',
     description:
@@ -38,9 +38,9 @@ export const TECH_CATEGORIES = {
   react: {
     slug: 'react',
     title: 'React Interview Questions',
-    metaTitle: 'React Interview Questions | HireReady',
+    metaTitle: 'React.js Interview Questions & Answers | HireReady',
     metaDescription:
-      'Prepare for React.js developer interviews with top questions on Virtual DOM, Custom Hooks, State Management, useEffect, and Performance Optimization.',
+      'Prepare for React developer interviews with top questions on Virtual DOM, Custom Hooks, State Management, useEffect, and performance optimization.',
     iconName: 'Atom',
     badge: 'High Demand',
     description:
@@ -55,9 +55,9 @@ export const TECH_CATEGORIES = {
   nodejs: {
     slug: 'nodejs',
     title: 'Node.js Interview Questions',
-    metaTitle: 'Node.js Interview Questions | HireReady',
+    metaTitle: 'Node.js Backend Interview Questions & Answers | HireReady',
     metaDescription:
-      'Practice Node.js backend interview questions covering Event Loop, Non-blocking I/O, Express.js middleware, EventEmitters, and Streams.',
+      'Practice Node.js backend interview questions covering Event Loop, Non-blocking I/O, Express.js middleware, EventEmitters, and Streams with code examples.',
     iconName: 'Server',
     badge: 'Backend',
     description:
@@ -72,9 +72,9 @@ export const TECH_CATEGORIES = {
   sql: {
     slug: 'sql',
     title: 'SQL & Database Interview Questions',
-    metaTitle: 'SQL Interview Questions | HireReady',
+    metaTitle: 'SQL Database Interview Questions & Answers | HireReady',
     metaDescription:
-      'Master database technical interviews with top SQL questions on Joins, Indexes, ACID Transactions, Grouping, and Query Optimization.',
+      'Master database technical interviews with top SQL questions on Joins, Indexes, ACID Transactions, Grouping, Subqueries, and Query Optimization.',
     iconName: 'Database',
     badge: 'Essential',
     description:

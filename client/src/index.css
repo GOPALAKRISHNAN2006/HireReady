@@ -22,7 +22,7 @@
     font-size: 18px;
   }
   
-  /* Reduced motion */
+  /* Reduced motion — JS class approach */
   html.reduce-motion *,
   html.reduce-motion *::before,
   html.reduce-motion *::after {
@@ -30,6 +30,18 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  /* Reduced motion — OS-level media query (works even before JS loads) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   
   body {
@@ -215,6 +227,23 @@
     text-wrap: balance;
   }
   
+  /* Performance: promote element to its own GPU compositor layer.
+     Use on fixed navbars / sticky headers to avoid scroll-triggered repaints. */
+  .composited {
+    will-change: transform;
+  }
+
+  /* Performance: isolate layout impact of a subtree (improves INP) */
+  .contain-layout {
+    contain: layout;
+  }
+
+  /* Performance: browser skips rendering of fully off-screen sections */
+  .content-visibility-auto {
+    content-visibility: auto;
+  }
+
+
   .animate-in {
     animation: fadeIn 0.5s ease-out;
   }

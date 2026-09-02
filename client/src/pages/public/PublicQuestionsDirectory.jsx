@@ -260,6 +260,89 @@ const PublicQuestionsDirectory = () => {
           </div>
         </section>
 
+        {/* Explore Technical Roles & Categories */}
+        <section className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            Popular Interview Question Guides
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <Link
+              to="/interview-questions/java"
+              className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+            >
+              <div>
+                <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  Java Developer Interview Questions
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Core Java, OOP, Collections, Multithreading
+                </span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </Link>
+
+            <Link
+              to="/interview-questions/javascript"
+              className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+            >
+              <div>
+                <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  JavaScript Interview Questions
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Closures, Event Loop, Promises, ES6+
+                </span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </Link>
+
+            <Link
+              to="/interview-questions/react"
+              className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+            >
+              <div>
+                <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  React Developer Interview Questions
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Virtual DOM, Custom Hooks, State Management
+                </span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </Link>
+
+            <Link
+              to="/interview-questions/nodejs"
+              className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+            >
+              <div>
+                <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  Node.js Backend Interview Questions
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Architecture, Express, Streams, Async I/O
+                </span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </Link>
+
+            <Link
+              to="/interview-questions/sql"
+              className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-primary-500 hover:shadow-md transition-all flex items-center justify-between group"
+            >
+              <div>
+                <span className="block text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  SQL & Database Interview Questions
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Joins, Indexes, ACID Transactions, Queries
+                </span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </Link>
+          </div>
+        </section>
+
         {/* CTA Banner */}
         <section className="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-primary-600 via-indigo-600 to-purple-600 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between shadow-xl">
           <div className="mb-6 sm:mb-0 max-w-xl">

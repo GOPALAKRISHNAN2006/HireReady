@@ -19,8 +19,10 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
 const User = require('../models/User.model');
+const PendingRegistration = require('../models/PendingRegistration.model');
 const Analytics = require('../models/Analytics.model');
 
 // Dedicated rate limiter for password reset operations (5 requests per 15 minutes)
@@ -87,9 +89,10 @@ router.post(
   validateRegistration,
   asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password, targetRole, skills } = req.body;
+    const normalizedEmail = email.toLowerCase().trim();
 
-    // Check if user already exists
-    const existingUser = await User.findByEmail(email);
+    // Check if a permanent verified User account already exists
+    const existingUser = await User.findByEmail(normalizedEmail);
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -97,65 +100,53 @@ router.post(
       });
     }
 
-    // Create user
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      targetRole: targetRole || '',
-      skills: skills || [],
-    });
+    // Hash password securely with bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
 
-    // Generate email verification token
-    const verificationToken = user.generateEmailVerificationToken();
+    // Generate cryptographically secure verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const hashedVerificationToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    // Generate tokens
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
-
-    // Save refresh token + verification token in a single DB write
-    user.refreshToken = refreshToken;
-    await user.save();
+    // Create or update PendingRegistration document for this email
+    await PendingRegistration.findOneAndUpdate(
+      { email: normalizedEmail },
+      {
+        firstName,
+        lastName,
+        email: normalizedEmail,
+        password: passwordHash,
+        targetRole: targetRole || '',
+        skills: skills || [],
+        verificationToken: hashedVerificationToken,
+        verificationExpires,
+      },
+      { upsert: true, new: true, runValidators: true }
+    );
 
     // Build verification URL
     const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
 
     // Send verification email in background (don't block the response)
-    sendVerificationEmail(email, verificationUrl, firstName).catch(err => {
+    sendVerificationEmail(normalizedEmail, verificationUrl, firstName).catch(err => {
       console.warn('Verification email sending failed:', err.message || err);
     });
 
-    // Create analytics record in background (don't block the response)
-    Analytics.create({ user: user._id }).catch(err => {
-      console.warn('Analytics creation failed:', err.message || err);
-    });
-
-    // Set HttpOnly cookies
-    setAuthCookies(res, req, accessToken, refreshToken);
-
-    // Send response
-    res.status(201).json({
+    // Send response (DO NOT create permanent User, DO NOT issue JWT tokens/cookies)
+    res.status(200).json({
       success: true,
-      message: 'Registration successful! Please check your email to verify your account.',
-      data: {
-        user: {
-          id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          role: user.role,
-          avatar: user.avatar,
-          isEmailVerified: user.isEmailVerified,
-        },
-        tokens: {
-          accessToken,
-          refreshToken,
-          expiresIn: jwtConfig.expiresIn,
-        },
-      },
-      // Include token in response for development (remove in production)
-      ...(process.env.NODE_ENV === 'development' && { verificationToken, verificationUrl }),
+      requiresVerification: true,
+      email: normalizedEmail,
+      message: 'Verification email sent. Please check your inbox to verify your email address.',
+      // Include token in response for development / testing (remove in production)
+      ...((process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && {
+        verificationToken,
+        verificationUrl,
+      }),
     });
   })
 );
@@ -299,6 +290,16 @@ router.post(
       return res.status(401).json({
         success: false,
         message: 'Your account has been deactivated. Please contact support.',
+      });
+    }
+
+    // Check if email is verified
+    if (!user.isEmailVerified) {
+      return res.status(401).json({
+        success: false,
+        requiresVerification: true,
+        email: user.email,
+        message: 'Email not verified. Please verify your email address before logging in.',
       });
     }
 
@@ -739,37 +740,98 @@ router.post(
 
 /**
  * @route   POST /api/auth/verify-email/:token
- * @desc    Verify user email
+ * @desc    Verify user email and create permanent User document
  * @access  Public
  */
 router.post(
   '/verify-email/:token',
   asyncHandler(async (req, res) => {
-    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const rawToken = req.params.token || req.query.token;
+    if (!rawToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'Verification token is required.',
+      });
+    }
 
-    const user = await User.findOne({
-      emailVerificationToken: hashedToken,
-      emailVerificationExpires: { $gt: Date.now() },
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+    // Search PendingRegistration for active matching token
+    const pending = await PendingRegistration.findOne({
+      verificationToken: hashedToken,
+      verificationExpires: { $gt: Date.now() },
     });
 
-    if (!user) {
+    if (!pending) {
       return res.status(400).json({
         success: false,
         message: 'Invalid or expired verification token.',
       });
     }
 
-    user.isEmailVerified = true;
-    user.emailVerificationToken = undefined;
-    user.emailVerificationExpires = undefined;
+    // Atomic race-condition check: verify User document does not already exist
+    let user = await User.findByEmail(pending.email);
+    if (!user) {
+      user = await User.create({
+        firstName: pending.firstName,
+        lastName: pending.lastName,
+        email: pending.email,
+        password: pending.password, // Pre-hashed bcrypt string
+        targetRole: pending.targetRole,
+        skills: pending.skills,
+        isEmailVerified: true,
+      });
+
+      // Create analytics record for the user
+      Analytics.create({ user: user._id }).catch(err => {
+        console.warn('Analytics creation failed:', err.message || err);
+      });
+
+      // Send welcome email
+      sendWelcomeEmail(user.email, user.firstName).catch(err => {
+        console.warn('Welcome email sending failed:', err.message || err);
+      });
+    } else {
+      if (!user.isEmailVerified) {
+        user.isEmailVerified = true;
+        await user.save();
+      }
+    }
+
+    // Delete pending registration document after successful account creation
+    await PendingRegistration.deleteOne({ _id: pending._id });
+
+    // Generate tokens so user is authenticated upon verification
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    user.lastLogin = new Date();
+    user.loginCount += 1;
     await user.save();
 
-    // Send welcome email
-    await sendWelcomeEmail(user.email, user.firstName);
+    // Set HttpOnly cookies
+    setAuthCookies(res, req, accessToken, refreshToken);
 
     res.status(200).json({
       success: true,
-      message: 'Email verified successfully! Welcome to HireReady.',
+      message: 'Email verified successfully! Your HireReady account has been created.',
+      data: {
+        user: {
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role,
+          avatar: user.avatar,
+          isEmailVerified: true,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+          expiresIn: jwtConfig.expiresIn,
+        },
+      },
     });
   })
 );
@@ -781,6 +843,7 @@ router.post(
  */
 router.post(
   '/resend-verification',
+  passwordResetLimiter,
   asyncHandler(async (req, res) => {
     const { email } = req.body;
 
@@ -791,33 +854,50 @@ router.post(
       });
     }
 
-    const user = await User.findByEmail(email);
+    const normalizedEmail = email.toLowerCase().trim();
 
-    if (!user) {
-      // Don't reveal if email exists or not for security
-      return res.status(200).json({
-        success: true,
-        message:
-          'If an account with that email exists and is not verified, a verification email has been sent.',
-      });
-    }
-
-    if (user.isEmailVerified) {
+    // Check if verified User already exists
+    const existingUser = await User.findByEmail(normalizedEmail);
+    if (existingUser && existingUser.isEmailVerified) {
       return res.status(400).json({
         success: false,
         message: 'This email is already verified.',
       });
     }
 
+    // Check PendingRegistration
+    const pending = await PendingRegistration.findOne({ email: normalizedEmail });
+
+    if (!pending) {
+      // Don't reveal if pending registration exists or not for security
+      return res.status(200).json({
+        success: true,
+        message:
+          'If a pending registration for that email exists, a verification email has been sent.',
+      });
+    }
+
     // Generate new verification token
-    const verificationToken = user.generateEmailVerificationToken();
-    await user.save();
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const hashedVerificationToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    pending.verificationToken = hashedVerificationToken;
+    pending.verificationExpires = verificationExpires;
+    await pending.save();
 
     // Build verification URL
     const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
 
     // Send verification email
-    const emailResult = await sendVerificationEmail(email, verificationUrl, user.firstName);
+    const emailResult = await sendVerificationEmail(
+      normalizedEmail,
+      verificationUrl,
+      pending.firstName
+    );
 
     if (!emailResult.success) {
       console.warn('Verification email sending failed:', emailResult.message);
@@ -826,7 +906,7 @@ router.post(
     res.status(200).json({
       success: true,
       message:
-        'If an account with that email exists and is not verified, a verification email has been sent.',
+        'If a pending registration for that email exists, a verification email has been sent.',
       // Include token in response for development (remove in production)
       ...(process.env.NODE_ENV === 'development' && { verificationToken, verificationUrl }),
     });

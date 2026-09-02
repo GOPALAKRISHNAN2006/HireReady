@@ -26,6 +26,8 @@ import {
   Lightbulb,
 } from 'lucide-react';
 
+import { trackEvent } from '../services/analytics';
+
 const InterviewSetup = () => {
   const navigate = useNavigate();
   const { setSettings, settings, startInterview } = useInterviewStore();
@@ -161,6 +163,11 @@ const InterviewSetup = () => {
       setSettings(localSettings);
       const interview = data.data?.interview || data.interview;
       startInterview(interview);
+      trackEvent('interview_started', {
+        category: localSettings.category,
+        difficulty: localSettings.difficulty,
+        question_count: localSettings.questionCount,
+      });
       toast.success('Interview started!');
       navigate(`/interview/${interview._id || interview.id}`);
     },
