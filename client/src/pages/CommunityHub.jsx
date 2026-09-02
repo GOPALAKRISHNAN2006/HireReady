@@ -33,6 +33,7 @@ import {
   UserPlus,
   Bell,
   Trash2,
+  X,
 } from 'lucide-react';
 
 // Helper to get a valid avatar URL
@@ -48,6 +49,37 @@ const CommunityHub = () => {
   const [newPost, setNewPost] = useState('');
   const [commentInputs, setCommentInputs] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
+
+  // Toolbar States
+  const [imageUrl, setImageUrl] = useState('');
+  const [attachedImages, setAttachedImages] = useState([]);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [showLinkModal, setShowLinkModal] = useState(false);
+  const [linkText, setLinkText] = useState('');
+  const [linkUrl, setLinkUrl] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const EMOJI_LIST = [
+    '🎉',
+    '🚀',
+    '💡',
+    '🔥',
+    '❤️',
+    '👍',
+    '👏',
+    '✨',
+    '🎯',
+    '💯',
+    '😊',
+    '🙌',
+    '💻',
+    '⭐',
+    '🤝',
+    '💼',
+    '💪',
+    '📈',
+  ];
+
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
 
@@ -120,6 +152,11 @@ const CommunityHub = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['community', 'feed']);
       setNewPost('');
+      setAttachedImages([]);
+      setImageUrl('');
+      setShowImageModal(false);
+      setShowLinkModal(false);
+      setShowEmojiPicker(false);
       toast.success('Post created!');
       notifyPostCreated();
     },
@@ -189,10 +226,11 @@ const CommunityHub = () => {
 
   // Handle post submit
   const handlePostSubmit = () => {
-    if (!newPost.trim()) return;
+    if (!newPost.trim() && attachedImages.length === 0) return;
     createPostMutation.mutate({
-      title: newPost.slice(0, 50),
+      title: newPost.trim() ? newPost.trim().slice(0, 50) : 'Community Post',
       content: newPost,
+      images: attachedImages,
       type: 'discussion',
     });
   };
@@ -361,24 +399,168 @@ const CommunityHub = () => {
                 />
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex gap-2">
-                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <ImageIcon className="w-5 h-5 text-slate-400" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowImageModal(!showImageModal);
+                        setShowLinkModal(false);
+                        setShowEmojiPicker(false);
+                      }}
+                      className={`p-2 rounded-lg transition-colors ${showImageModal ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-600' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400'}`}
+                      title="Attach image URL"
+                    >
+                      <ImageIcon className="w-5 h-5" />
                     </button>
-                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <LinkIcon className="w-5 h-5 text-slate-400" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowLinkModal(!showLinkModal);
+                        setShowImageModal(false);
+                        setShowEmojiPicker(false);
+                      }}
+                      className={`p-2 rounded-lg transition-colors ${showLinkModal ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-600' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400'}`}
+                      title="Insert link"
+                    >
+                      <LinkIcon className="w-5 h-5" />
                     </button>
-                    <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                      <Smile className="w-5 h-5 text-slate-400" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowEmojiPicker(!showEmojiPicker);
+                        setShowImageModal(false);
+                        setShowLinkModal(false);
+                      }}
+                      className={`p-2 rounded-lg transition-colors ${showEmojiPicker ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-600' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400'}`}
+                      title="Insert emoji"
+                    >
+                      <Smile className="w-5 h-5" />
                     </button>
                   </div>
                   <Button
                     icon={Send}
-                    disabled={!newPost.trim() || createPostMutation.isPending}
+                    disabled={
+                      (!newPost.trim() && attachedImages.length === 0) ||
+                      createPostMutation.isPending
+                    }
                     onClick={handlePostSubmit}
                   >
                     Post
                   </Button>
                 </div>
+
+                {/* Attached Images Thumbnails */}
+                {attachedImages.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {attachedImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        className="relative group w-20 h-20 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700"
+                      >
+                        <img src={img.url} alt="Attached" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setAttachedImages(prev => prev.filter((_, i) => i !== idx))
+                          }
+                          className="absolute top-1 right-1 bg-black/70 text-white p-0.5 rounded-full hover:bg-red-600 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Image URL Modal Input */}
+                {showImageModal && (
+                  <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 flex gap-2 items-center">
+                    <input
+                      type="url"
+                      value={imageUrl}
+                      onChange={e => setImageUrl(e.target.value)}
+                      placeholder="Paste image URL (e.g. https://example.com/image.jpg)..."
+                      className="flex-1 px-3 py-1.5 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400"
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          if (imageUrl.trim()) {
+                            setAttachedImages(prev => [...prev, { url: imageUrl.trim() }]);
+                            setImageUrl('');
+                            setShowImageModal(false);
+                          }
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (imageUrl.trim()) {
+                          setAttachedImages(prev => [...prev, { url: imageUrl.trim() }]);
+                          setImageUrl('');
+                          setShowImageModal(false);
+                        }
+                      }}
+                      className="px-3 py-1.5 bg-primary-600 text-white rounded-lg text-xs font-semibold hover:bg-primary-700 transition-colors"
+                    >
+                      Attach
+                    </button>
+                  </div>
+                )}
+
+                {/* Link Modal Input */}
+                {showLinkModal && (
+                  <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="text"
+                      value={linkText}
+                      onChange={e => setLinkText(e.target.value)}
+                      placeholder="Link Title (optional)..."
+                      className="sm:w-1/3 px-3 py-1.5 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400"
+                    />
+                    <input
+                      type="url"
+                      value={linkUrl}
+                      onChange={e => setLinkUrl(e.target.value)}
+                      placeholder="URL (https://...)"
+                      className="flex-1 px-3 py-1.5 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (linkUrl.trim()) {
+                          const formattedLink = linkText.trim()
+                            ? `[${linkText.trim()}](${linkUrl.trim()})`
+                            : linkUrl.trim();
+                          setNewPost(prev => (prev ? `${prev} ${formattedLink}` : formattedLink));
+                          setLinkText('');
+                          setLinkUrl('');
+                          setShowLinkModal(false);
+                        }
+                      }}
+                      className="px-3 py-1.5 bg-primary-600 text-white rounded-lg text-xs font-semibold hover:bg-primary-700 transition-colors"
+                    >
+                      Insert Link
+                    </button>
+                  </div>
+                )}
+
+                {/* Emoji Picker Popover */}
+                {showEmojiPicker && (
+                  <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-wrap gap-2">
+                    {EMOJI_LIST.map((emoji, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setNewPost(prev => prev + emoji);
+                        }}
+                        className="w-8 h-8 flex items-center justify-center text-lg hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-transform hover:scale-125"
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </Card>
@@ -445,6 +627,22 @@ const CommunityHub = () => {
                           )}
                         </div>
                         <p className="text-slate-700 dark:text-slate-300 mb-4">{post.content}</p>
+
+                        {post.images && post.images.length > 0 && (
+                          <div className="mb-4 grid gap-2 grid-cols-1 sm:grid-cols-2 rounded-xl overflow-hidden">
+                            {post.images.map((img, idx) => (
+                              <img
+                                key={idx}
+                                src={typeof img === 'string' ? img : img.url}
+                                alt="Post attachment"
+                                className="w-full max-h-80 object-cover rounded-xl border border-slate-200 dark:border-slate-700"
+                                onError={e => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
 
                         {post.tags && post.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2 mb-4">
