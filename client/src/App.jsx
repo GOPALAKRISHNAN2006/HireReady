@@ -8,6 +8,8 @@ import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 import AdminLayout from './layouts/AdminLayout';
 import SEO from './components/SEO';
+import ErrorBoundary from './components/ErrorBoundary';
+import CookieBanner from './components/CookieBanner';
 
 // Page Loader spinner component for dynamic chunks
 const PageLoader = () => (
@@ -98,6 +100,11 @@ const Flashcards = lazy(() => import('./pages/Flashcards'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const Contact = lazy(() => import('./pages/Contact'));
+const CookiePreferences = lazy(() => import('./pages/CookiePreferences'));
+
+// System Flow Pages
+const AccessDenied = lazy(() => import('./pages/AccessDenied'));
+const Maintenance = lazy(() => import('./pages/Maintenance'));
 
 // Public Interview Question SEO Pages
 const PublicQuestionsDirectory = lazy(() => import('./pages/public/PublicQuestionsDirectory'));
@@ -112,7 +119,7 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   }
 
   if (adminOnly && user?.role !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/access-denied" replace />;
   }
 
   return (
@@ -153,545 +160,563 @@ function App() {
   }, [initializeSettings]);
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/interview-questions" element={<PublicQuestionsDirectory />} />
-        <Route path="/interview-questions/:category" element={<PublicQuestionCategory />} />
+    <ErrorBoundary>
+      <CookieBanner />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* Public Routes & Legal Aliases */}
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/terms-and-conditions" element={<TermsOfService />} />
+          <Route path="/cookie-preferences" element={<CookiePreferences />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/support" element={<Help />} />
+          <Route path="/access-denied" element={<AccessDenied />} />
+          <Route path="/maintenance" element={<Maintenance />} />
+          <Route path="/interview-questions" element={<PublicQuestionsDirectory />} />
+          <Route path="/interview-questions/:category" element={<PublicQuestionCategory />} />
 
-        {/* Auth Routes */}
-        <Route element={<AuthLayout />}>
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/admin/login"
-            element={
-              <PublicRoute redirectTo="/admin">
-                <AdminLogin />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PublicRoute>
-                <Signup />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <PublicRoute>
-                <ForgotPassword />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/reset-password/:token"
-            element={
-              <PublicRoute>
-                <ResetPassword />
-              </PublicRoute>
-            }
-          />
-          <Route path="/verify-email/:token?" element={<VerifyEmail />} />
-        </Route>
+          {/* Auth Routes */}
+          <Route element={<AuthLayout />}>
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/admin/login"
+              element={
+                <PublicRoute redirectTo="/admin">
+                  <AdminLogin />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <PublicRoute>
+                  <ForgotPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/reset-password/:token"
+              element={
+                <PublicRoute>
+                  <ResetPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <PublicRoute>
+                  <ResetPassword />
+                </PublicRoute>
+              }
+            />
+            <Route path="/verify-email/:token?" element={<VerifyEmail />} />
+            <Route path="/resend-verification" element={<VerifyEmail />} />
+          </Route>
 
-        {/* Full Screen Interview Route - No Layout Wrapper */}
-        <Route
-          path="/interview/:id"
-          element={
-            <ProtectedRoute>
-              <Interview />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Protected Routes */}
-        <Route element={<MainLayout />}>
+          {/* Full Screen Interview Route - No Layout Wrapper */}
           <Route
-            path="/dashboard"
+            path="/interview/:id"
             element={
               <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/interview/setup"
-            element={
-              <ProtectedRoute>
-                <InterviewSetup />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/interview/:id/result"
-            element={
-              <ProtectedRoute>
-                <InterviewResult />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/analytics"
-            element={
-              <ProtectedRoute>
-                <Analytics />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/questions"
-            element={
-              <ProtectedRoute>
-                <Questions />
+                <Interview />
               </ProtectedRoute>
             }
           />
 
-          {/* Resume Builder Routes */}
-          <Route
-            path="/resume"
-            element={
-              <ProtectedRoute>
-                <ResumeBuilder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/resume/new"
-            element={
-              <ProtectedRoute>
-                <ResumeEditor />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/resume/:id"
-            element={
-              <ProtectedRoute>
-                <ResumeEditor />
-              </ProtectedRoute>
-            }
-          />
+          {/* Protected Routes */}
+          <Route element={<MainLayout />}>
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/interview/setup"
+              element={
+                <ProtectedRoute>
+                  <InterviewSetup />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/interview/:id/result"
+              element={
+                <ProtectedRoute>
+                  <InterviewResult />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                <ProtectedRoute>
+                  <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions"
+              element={
+                <ProtectedRoute>
+                  <Questions />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Aptitude Test Routes */}
-          <Route
-            path="/aptitude"
-            element={
-              <ProtectedRoute>
-                <Aptitude />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/aptitude/test/:testId"
-            element={
-              <ProtectedRoute>
-                <AptitudeTest />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/aptitude/result/:testId"
-            element={
-              <ProtectedRoute>
-                <AptitudeResult />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/aptitude/result"
-            element={
-              <ProtectedRoute>
-                <AptitudeResult />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/aptitude/history"
-            element={
-              <ProtectedRoute>
-                <AptitudeHistory />
-              </ProtectedRoute>
-            }
-          />
+            {/* Resume Builder Routes */}
+            <Route
+              path="/resume"
+              element={
+                <ProtectedRoute>
+                  <ResumeBuilder />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/resume/new"
+              element={
+                <ProtectedRoute>
+                  <ResumeEditor />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/resume/:id"
+              element={
+                <ProtectedRoute>
+                  <ResumeEditor />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Group Discussion Routes */}
-          <Route
-            path="/gd"
-            element={
-              <ProtectedRoute>
-                <GroupDiscussion />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/gd/session/:sessionId"
-            element={
-              <ProtectedRoute>
-                <GDSession />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/gd/result/:sessionId"
-            element={
-              <ProtectedRoute>
-                <GDResult />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/gd/result"
-            element={
-              <ProtectedRoute>
-                <GDResult />
-              </ProtectedRoute>
-            }
-          />
+            {/* Aptitude Test Routes */}
+            <Route
+              path="/aptitude"
+              element={
+                <ProtectedRoute>
+                  <Aptitude />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/aptitude/test/:testId"
+              element={
+                <ProtectedRoute>
+                  <AptitudeTest />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/aptitude/result/:testId"
+              element={
+                <ProtectedRoute>
+                  <AptitudeResult />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/aptitude/result"
+              element={
+                <ProtectedRoute>
+                  <AptitudeResult />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/aptitude/history"
+              element={
+                <ProtectedRoute>
+                  <AptitudeHistory />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Leaderboard */}
-          <Route
-            path="/leaderboard"
-            element={
-              <ProtectedRoute>
-                <Leaderboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Group Discussion Routes */}
+            <Route
+              path="/gd"
+              element={
+                <ProtectedRoute>
+                  <GroupDiscussion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gd/session/:sessionId"
+              element={
+                <ProtectedRoute>
+                  <GDSession />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gd/result/:sessionId"
+              element={
+                <ProtectedRoute>
+                  <GDResult />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gd/result"
+              element={
+                <ProtectedRoute>
+                  <GDResult />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Achievements */}
-          <Route
-            path="/achievements"
-            element={
-              <ProtectedRoute>
-                <Achievements />
-              </ProtectedRoute>
-            }
-          />
+            {/* Leaderboard */}
+            <Route
+              path="/leaderboard"
+              element={
+                <ProtectedRoute>
+                  <Leaderboard />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Settings */}
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
+            {/* Achievements */}
+            <Route
+              path="/achievements"
+              element={
+                <ProtectedRoute>
+                  <Achievements />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Practice History */}
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute>
-                <PracticeHistory />
-              </ProtectedRoute>
-            }
-          />
+            {/* Settings */}
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Help */}
-          <Route
-            path="/help"
-            element={
-              <ProtectedRoute>
-                <Help />
-              </ProtectedRoute>
-            }
-          />
+            {/* Practice History */}
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
+                  <PracticeHistory />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Notifications */}
-          <Route
-            path="/notifications"
-            element={
-              <ProtectedRoute>
-                <Notifications />
-              </ProtectedRoute>
-            }
-          />
+            {/* Help */}
+            <Route
+              path="/help"
+              element={
+                <ProtectedRoute>
+                  <Help />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Saved Questions */}
-          <Route
-            path="/saved"
-            element={
-              <ProtectedRoute>
-                <SavedQuestions />
-              </ProtectedRoute>
-            }
-          />
+            {/* Notifications */}
+            <Route
+              path="/notifications"
+              element={
+                <ProtectedRoute>
+                  <Notifications />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Company Preparation */}
-          <Route
-            path="/company-prep"
-            element={
-              <ProtectedRoute>
-                <CompanyPrep />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/company/:companyId"
-            element={
-              <ProtectedRoute>
-                <CompanyDetail />
-              </ProtectedRoute>
-            }
-          />
+            {/* Saved Questions */}
+            <Route
+              path="/saved"
+              element={
+                <ProtectedRoute>
+                  <SavedQuestions />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Study Materials */}
-          <Route
-            path="/study-materials"
-            element={
-              <ProtectedRoute>
-                <StudyMaterials />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/study-materials/:id"
-            element={
-              <ProtectedRoute>
-                <MaterialContent />
-              </ProtectedRoute>
-            }
-          />
+            {/* Company Preparation */}
+            <Route
+              path="/company-prep"
+              element={
+                <ProtectedRoute>
+                  <CompanyPrep />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/:companyId"
+              element={
+                <ProtectedRoute>
+                  <CompanyDetail />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* New Unique Feature Routes */}
-          <Route
-            path="/roadmap"
-            element={
-              <ProtectedRoute>
-                <CareerRoadmap />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/skills"
-            element={
-              <ProtectedRoute>
-                <SkillRadar />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tips"
-            element={
-              <ProtectedRoute>
-                <InterviewTips />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/community"
-            element={
-              <ProtectedRoute>
-                <CommunityHub />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/daily-challenge"
-            element={
-              <ProtectedRoute>
-                <DailyChallenge />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/daily-challenge/solve/:id"
-            element={
-              <ProtectedRoute>
-                <ChallengeSolve />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/communication"
-            element={
-              <ProtectedRoute>
-                <CommunicationAssessment />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/communication/test"
-            element={
-              <ProtectedRoute>
-                <CommunicationTest />
-              </ProtectedRoute>
-            }
-          />
+            {/* Study Materials */}
+            <Route
+              path="/study-materials"
+              element={
+                <ProtectedRoute>
+                  <StudyMaterials />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/study-materials/:id"
+              element={
+                <ProtectedRoute>
+                  <MaterialContent />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Interview Feedback / Debrief */}
-          <Route
-            path="/interview/:id/feedback"
-            element={
-              <ProtectedRoute>
-                <InterviewFeedback />
-              </ProtectedRoute>
-            }
-          />
+            {/* New Unique Feature Routes */}
+            <Route
+              path="/roadmap"
+              element={
+                <ProtectedRoute>
+                  <CareerRoadmap />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/skills"
+              element={
+                <ProtectedRoute>
+                  <SkillRadar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tips"
+              element={
+                <ProtectedRoute>
+                  <InterviewTips />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/community"
+              element={
+                <ProtectedRoute>
+                  <CommunityHub />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/daily-challenge"
+              element={
+                <ProtectedRoute>
+                  <DailyChallenge />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/daily-challenge/solve/:id"
+              element={
+                <ProtectedRoute>
+                  <ChallengeSolve />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/communication"
+              element={
+                <ProtectedRoute>
+                  <CommunicationAssessment />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/communication/test"
+              element={
+                <ProtectedRoute>
+                  <CommunicationTest />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Study Plan */}
-          <Route
-            path="/study-plan"
-            element={
-              <ProtectedRoute>
-                <StudyPlan />
-              </ProtectedRoute>
-            }
-          />
+            {/* Interview Feedback / Debrief */}
+            <Route
+              path="/interview/:id/feedback"
+              element={
+                <ProtectedRoute>
+                  <InterviewFeedback />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Mock Interview Lab */}
-          <Route
-            path="/mock-lab"
-            element={
-              <ProtectedRoute>
-                <MockInterviewLab />
-              </ProtectedRoute>
-            }
-          />
+            {/* Study Plan */}
+            <Route
+              path="/study-plan"
+              element={
+                <ProtectedRoute>
+                  <StudyPlan />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* AI Chat Page */}
-          <Route
-            path="/ai-chat"
-            element={
-              <ProtectedRoute>
-                <AIChatPage />
-              </ProtectedRoute>
-            }
-          />
+            {/* Mock Interview Lab */}
+            <Route
+              path="/mock-lab"
+              element={
+                <ProtectedRoute>
+                  <MockInterviewLab />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Interview Notes */}
-          <Route
-            path="/notes"
-            element={
-              <ProtectedRoute>
-                <InterviewNotes />
-              </ProtectedRoute>
-            }
-          />
+            {/* AI Chat Page */}
+            <Route
+              path="/ai-chat"
+              element={
+                <ProtectedRoute>
+                  <AIChatPage />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Progress Report */}
-          <Route
-            path="/progress"
-            element={
-              <ProtectedRoute>
-                <ProgressReport />
-              </ProtectedRoute>
-            }
-          />
+            {/* Interview Notes */}
+            <Route
+              path="/notes"
+              element={
+                <ProtectedRoute>
+                  <InterviewNotes />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Flashcards */}
-          <Route
-            path="/flashcards"
-            element={
-              <ProtectedRoute>
-                <Flashcards />
-              </ProtectedRoute>
-            }
-          />
+            {/* Progress Report */}
+            <Route
+              path="/progress"
+              element={
+                <ProtectedRoute>
+                  <ProgressReport />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Admin Routes */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/users"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminUsers />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/users/:userId"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminUserDetails />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/questions"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminQuestions />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/aptitude"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminAptitude />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/gd-topics"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminGDTopics />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/interviews"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminInterviews />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/settings"
-            element={
-              <ProtectedRoute adminOnly>
-                <AdminSettings />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/proctoring"
-            element={
-              <ProtectedRoute adminOnly>
-                <ProctoringDashboard />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
+            {/* Flashcards */}
+            <Route
+              path="/flashcards"
+              element={
+                <ProtectedRoute>
+                  <Flashcards />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+            {/* Admin Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminUsers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users/:userId"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminUserDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/questions"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminQuestions />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/aptitude"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminAptitude />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/gd-topics"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminGDTopics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/interviews"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminInterviews />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/settings"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/proctoring"
+              element={
+                <ProtectedRoute adminOnly>
+                  <ProctoringDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

@@ -19,8 +19,21 @@
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
 const User = require('../models/User.model');
 const Analytics = require('../models/Analytics.model');
+
+// Dedicated rate limiter for password reset operations (5 requests per 15 minutes)
+const passwordResetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    success: false,
+    message: 'Too many password reset requests. Please try again in 15 minutes.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 const { protect } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
 const {
@@ -472,6 +485,7 @@ router.post(
  */
 router.post(
   '/forgot-password',
+  passwordResetLimiter,
   asyncHandler(async (req, res) => {
     const { email } = req.body;
 
@@ -515,6 +529,7 @@ router.post(
  */
 router.put(
   '/reset-password/:token',
+  passwordResetLimiter,
   asyncHandler(async (req, res) => {
     const { password } = req.body;
 

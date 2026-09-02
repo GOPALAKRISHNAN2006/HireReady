@@ -197,12 +197,32 @@ const CommunityHub = () => {
     });
   };
 
+  // Delete post mutation
+  const deletePostMutation = useMutation({
+    mutationFn: id => communityApi.deletePost(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['community', 'feed']);
+      toast.success('Post deleted successfully!');
+    },
+    onError: () => {
+      toast.error('Failed to delete post');
+    },
+  });
+
   // Map API posts to display format
   const mapPostToDisplay = post => ({
     ...post,
     id: post._id,
-    authorId: post.author?._id,
-    author: post.author ? `${post.author.firstName} ${post.author.lastName}` : 'Anonymous',
+    authorId: post.author?._id
+      ? String(post.author._id)
+      : typeof post.author === 'string'
+        ? String(post.author)
+        : undefined,
+    author: post.author?.firstName
+      ? `${post.author.firstName} ${post.author.lastName}`
+      : typeof post.author === 'string'
+        ? 'User'
+        : 'Anonymous',
     role: post.author?.jobTitle || 'Community Member',
     avatar: getAvatarUrl(post.author?.avatar, post.author?.firstName || 'User'),
     verified: true,
@@ -380,29 +400,50 @@ const CommunityHub = () => {
                         }}
                       />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-slate-900 dark:text-white">
-                            {post.author}
-                          </span>
-                          {post.verified && (
-                            <svg
-                              className="w-4 h-4 text-blue-500"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-slate-900 dark:text-white">
+                                {post.author}
+                              </span>
+                              {post.verified && (
+                                <svg
+                                  className="w-4 h-4 text-blue-500"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              )}
+                              <span className="text-slate-400">·</span>
+                              <span className="text-sm text-slate-500">{post.time}</span>
+                            </div>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                              {post.role}
+                            </p>
+                          </div>
+                          {((user?._id &&
+                            post.authorId &&
+                            String(user._id) === String(post.authorId)) ||
+                            user?.role === 'admin') && (
+                            <button
+                              onClick={() => {
+                                if (window.confirm('Are you sure you want to delete this post?')) {
+                                  deletePostMutation.mutate(post.id);
+                                }
+                              }}
+                              disabled={deletePostMutation.isPending}
+                              title="Delete post"
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors flex-shrink-0"
                             >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           )}
-                          <span className="text-slate-400">·</span>
-                          <span className="text-sm text-slate-500">{post.time}</span>
                         </div>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
-                          {post.role}
-                        </p>
                         <p className="text-slate-700 dark:text-slate-300 mb-4">{post.content}</p>
 
                         {post.tags && post.tags.length > 0 && (
@@ -478,8 +519,13 @@ const CommunityHub = () => {
                                             {timeAgo(comment.createdAt)}
                                           </span>
                                         </div>
-                                        {(user?._id === comment.author?._id ||
-                                          user?._id === post.authorId) && (
+                                        {((user?._id &&
+                                          comment.author?._id &&
+                                          String(user._id) === String(comment.author._id)) ||
+                                          (user?._id &&
+                                            post.authorId &&
+                                            String(user._id) === String(post.authorId)) ||
+                                          user?.role === 'admin') && (
                                           <button
                                             onClick={() =>
                                               deleteCommentMutation.mutate({
@@ -488,6 +534,7 @@ const CommunityHub = () => {
                                               })
                                             }
                                             disabled={deleteCommentMutation.isPending}
+                                            title="Delete comment"
                                             className="text-slate-400 hover:text-red-500 transition-colors"
                                           >
                                             <Trash2 className="w-4 h-4" />

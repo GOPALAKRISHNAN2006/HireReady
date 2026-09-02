@@ -746,21 +746,31 @@ const Home = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold text-white mb-4 text-base">Legal</h3>
+              <h3 className="font-semibold text-white mb-4 text-base">Legal & Support</h3>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <Link to="/privacy" className="hover:text-white transition-colors">
+                  <Link to="/privacy-policy" className="hover:text-white transition-colors">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/terms" className="hover:text-white transition-colors">
-                    Terms of Service
+                  <Link to="/terms-and-conditions" className="hover:text-white transition-colors">
+                    Terms & Conditions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/cookie-preferences" className="hover:text-white transition-colors">
+                    Cookie Preferences
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/support" className="hover:text-white transition-colors">
+                    Support Center
                   </Link>
                 </li>
                 <li>
                   <Link to="/contact" className="hover:text-white transition-colors">
-                    Contact
+                    Contact Us
                   </Link>
                 </li>
               </ul>

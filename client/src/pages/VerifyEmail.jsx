@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui';
 import { CheckCircle, XCircle, Loader2, Mail, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
 const VerifyEmail = () => {
-  const { token } = useParams();
+  const { token: paramToken } = useParams();
+  const [searchParams] = useSearchParams();
+  const token = paramToken || searchParams.get('token');
   const navigate = useNavigate();
   const [status, setStatus] = useState('verifying'); // verifying, success, error, resend
   const [message, setMessage] = useState('');

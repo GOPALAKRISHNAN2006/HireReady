@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Button, Input } from '../components/ui';
 import { Lock, ArrowLeft, Brain, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
 const ResetPassword = () => {
-  const { token } = useParams();
+  const { token: paramToken } = useParams();
+  const [searchParams] = useSearchParams();
+  const token = paramToken || searchParams.get('token');
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

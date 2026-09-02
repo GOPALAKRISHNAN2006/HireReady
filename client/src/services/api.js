@@ -164,6 +164,12 @@ api.interceptors.response.use(
         case 500:
           toast.error('Server error. Please try again later.');
           break;
+        case 503:
+          toast.error('HireReady is currently undergoing maintenance. Please try again shortly.');
+          if (window.location.pathname !== '/maintenance') {
+            window.location.href = '/maintenance';
+          }
+          break;
         default:
           // Show generic error message
           if (resp.data?.message) {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
@@ -644,6 +645,23 @@ const Settings = () => {
         </Card.Header>
         <Card.Content>
           <div className="space-y-4">
+            <Link
+              to="/cookie-preferences"
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
+              <div className="flex items-center space-x-3">
+                <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <div className="text-left">
+                  <p className="font-medium text-slate-900 dark:text-white">
+                    Cookie & Privacy Preferences
+                  </p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Manage data collection, tracking consent and storage preferences
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-slate-400" />
+            </Link>
             <button
               onClick={handleExportData}
               className="w-full flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"

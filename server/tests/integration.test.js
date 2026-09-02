@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
+jest.setTimeout(120000);
+
 let mongod;
 let app;
 
 beforeAll(async () => {
-  jest.setTimeout(60000);
   mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri();
   process.env.MONGODB_URI = uri;

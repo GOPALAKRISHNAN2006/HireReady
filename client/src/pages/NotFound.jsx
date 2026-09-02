@@ -12,6 +12,8 @@ import {
   Compass,
 } from 'lucide-react';
 
+import SEO from '../components/SEO';
+
 const NotFound = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,6 +79,11 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center px-4 relative overflow-hidden">
+      <SEO
+        title="404 - Page Not Found | HireReady"
+        description="The requested page could not be found on HireReady."
+        robots="noindex, nofollow"
+      />
       {/* Animated background shapes */}
       <div
         className="absolute top-20 left-10 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl transition-transform duration-700 ease-out"
