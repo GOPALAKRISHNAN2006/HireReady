@@ -171,6 +171,12 @@ const Home = () => {
               >
                 Questions
               </Link>
+              <Link
+                to="/full-stack-interview-roadmap"
+                className="text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
+              >
+                Full-Stack Roadmap
+              </Link>
               <a
                 href="#how-it-works"
                 className="text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium"
@@ -248,6 +254,13 @@ const Home = () => {
                 className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
                 Questions
+              </Link>
+              <Link
+                to="/full-stack-interview-roadmap"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-2 text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              >
+                Full-Stack Roadmap
               </Link>
               <a
                 href="#how-it-works"
@@ -884,31 +897,59 @@ const Home = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold text-white mb-4 text-base">Platform</h3>
-              <ul className="space-y-3 text-sm">
+              <h3 className="font-semibold text-white mb-4 text-base">Platform & Prep Guides</h3>
+              <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/interview-questions" className="hover:text-white transition-colors">
                     Interview Questions
                   </Link>
                 </li>
                 <li>
-                  <Link to="/login" className="hover:text-white transition-colors">
-                    Login
+                  <Link
+                    to="/full-stack-interview-roadmap"
+                    className="hover:text-white transition-colors"
+                  >
+                    Full-Stack Roadmap
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signup" className="hover:text-white transition-colors">
-                    Sign Up
+                  <Link
+                    to="/interview-questions/javascript"
+                    className="hover:text-white transition-colors text-slate-400"
+                  >
+                    JavaScript Questions
                   </Link>
                 </li>
                 <li>
-                  <Link to="/community" className="hover:text-white transition-colors">
-                    Community
+                  <Link
+                    to="/interview-questions/react"
+                    className="hover:text-white transition-colors text-slate-400"
+                  >
+                    React Questions
                   </Link>
                 </li>
                 <li>
-                  <Link to="/daily-challenge" className="hover:text-white transition-colors">
-                    Daily Challenge
+                  <Link
+                    to="/interview-questions/nodejs"
+                    className="hover:text-white transition-colors text-slate-400"
+                  >
+                    Node.js Questions
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/interview-questions/java"
+                    className="hover:text-white transition-colors text-slate-400"
+                  >
+                    Java Questions
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/interview-questions/sql"
+                    className="hover:text-white transition-colors text-slate-400"
+                  >
+                    SQL Questions
                   </Link>
                 </li>
               </ul>
@@ -918,12 +959,12 @@ const Home = () => {
               <h3 className="font-semibold text-white mb-4 text-base">Legal & Support</h3>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <Link to="/privacy-policy" className="hover:text-white transition-colors">
+                  <Link to="/privacy" className="hover:text-white transition-colors">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/terms-and-conditions" className="hover:text-white transition-colors">
+                  <Link to="/terms" className="hover:text-white transition-colors">
                     Terms & Conditions
                   </Link>
                 </li>

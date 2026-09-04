@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
       <SEO
         title="Privacy Policy | HireReady"
         description="Learn how HireReady collects, uses, and safeguards your profile data, interview responses, resume information, and privacy settings."
-        canonical="/privacy-policy"
+        canonical="/privacy"
       />
 
       {/* Header */}

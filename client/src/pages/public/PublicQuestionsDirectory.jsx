@@ -343,8 +343,31 @@ const PublicQuestionsDirectory = () => {
           </div>
         </section>
 
+        {/* Full-Stack Interview Roadmap Banner */}
+        <section className="mt-12 p-6 sm:p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400 text-xs font-semibold mb-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Complete Preparation Strategy</span>
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">
+              Full-Stack Developer Interview Roadmap 2026
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 max-w-2xl">
+              Explore our step-by-step 6-week preparation strategy covering React, Node.js, SQL,
+              System Design, DSA, and Behavioral interviews.
+            </p>
+          </div>
+          <Link
+            to="/full-stack-interview-roadmap"
+            className="px-5 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors shrink-0 inline-flex items-center"
+          >
+            View Roadmap <ChevronRight className="w-4 h-4 ml-1" />
+          </Link>
+        </section>
+
         {/* CTA Banner */}
-        <section className="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-primary-600 via-indigo-600 to-purple-600 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between shadow-xl">
+        <section className="mt-12 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-primary-600 via-indigo-600 to-purple-600 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between shadow-xl">
           <div className="mb-6 sm:mb-0 max-w-xl">
             <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">
               Ready to Practice AI Mock Interviews?

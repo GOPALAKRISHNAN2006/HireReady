@@ -287,20 +287,38 @@ const FullStackRoadmap = () => {
             management.
           </p>
 
-          <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
-              Node.js & Express API Development
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-              Understand the libuv event loop phases, non-blocking I/O queues, Express middleware
-              chains, JWT authentication mechanisms, and rate limiting security controls.
-            </p>
-            <Link
-              to="/interview-questions/nodejs"
-              className="inline-flex items-center text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline"
-            >
-              Practice Node.js Backend Questions <ArrowRight className="w-3.5 h-3.5 ml-1" />
-            </Link>
+          <div className="space-y-4">
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                Node.js & Express API Development
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
+                Understand the libuv event loop phases, non-blocking I/O queues, Express middleware
+                chains, JWT authentication mechanisms, and rate limiting security controls.
+              </p>
+              <Link
+                to="/interview-questions/nodejs"
+                className="inline-flex items-center text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                Practice Node.js Backend Questions <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </div>
+
+            <div className="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+                Java & Enterprise Services
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
+                Review core Java OOP principles, collections, multithreading synchronization, and
+                JVM memory management.
+              </p>
+              <Link
+                to="/interview-questions/java"
+                className="inline-flex items-center text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                Practice Java Developer Questions <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -481,6 +499,14 @@ const FullStackRoadmap = () => {
                 (filling un-matched right values with `NULL`).
               </p>
             </div>
+          </div>
+          <div className="mt-6 text-center sm:text-left">
+            <Link
+              to="/interview-questions"
+              className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline"
+            >
+              Explore All Technical Interview Categories <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
           </div>
         </section>
 

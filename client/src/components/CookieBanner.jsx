@@ -79,7 +79,7 @@ const CookieBanner = () => {
 
                 <div className="mt-3 text-[11px] text-slate-400">
                   Read our{' '}
-                  <Link to="/privacy-policy" className="underline hover:text-white">
+                  <Link to="/privacy" className="underline hover:text-white">
                     Privacy Policy
                   </Link>{' '}
                   and{' '}

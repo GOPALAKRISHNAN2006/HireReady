@@ -374,12 +374,18 @@ const PublicQuestionCategory = () => {
                 </Link>
               ))}
           </div>
-          <div className="mt-6 text-center sm:text-left">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm font-semibold">
             <Link
               to="/interview-questions"
-              className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline"
+              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
             >
-              Explore All Technical Interview Categories <ChevronRight className="w-4 h-4 ml-1" />
+              <ArrowLeft className="w-4 h-4 mr-1.5" /> All Technical Interview Categories
+            </Link>
+            <Link
+              to="/full-stack-interview-roadmap"
+              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
+            >
+              Full-Stack Developer Interview Roadmap 2026 <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
         </section>

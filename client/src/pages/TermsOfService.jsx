@@ -44,7 +44,7 @@ const TermsOfService = () => {
       <SEO
         title="Terms & Conditions | HireReady"
         description="Read the HireReady Terms & Conditions governing your use of our AI interview preparation platform, aptitude tests, and career resources."
-        canonical="/terms-and-conditions"
+        canonical="/terms"
       />
 
       {/* Header */}
