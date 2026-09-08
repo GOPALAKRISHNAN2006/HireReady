@@ -176,9 +176,8 @@ const Signup = () => {
     setSlowRequest(false);
 
     if (result?.success) {
-      setSubmittedEmail(formData.email);
-      setVerificationPending(true);
-      toast.success(result.message || 'Verification email sent! Please check your inbox.');
+      toast.success('Account created successfully!');
+      navigate('/dashboard');
     }
   };
 

@@ -100,53 +100,61 @@ router.post(
       });
     }
 
-    // Hash password securely with bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    // Generate cryptographically secure verification token
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    const hashedVerificationToken = crypto
-      .createHash('sha256')
-      .update(verificationToken)
-      .digest('hex');
-    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
-    // Create or update PendingRegistration document for this email
-    await PendingRegistration.findOneAndUpdate(
-      { email: normalizedEmail },
-      {
-        firstName,
-        lastName,
-        email: normalizedEmail,
-        password: passwordHash,
-        targetRole: targetRole || '',
-        skills: skills || [],
-        verificationToken: hashedVerificationToken,
-        verificationExpires,
-      },
-      { upsert: true, new: true, runValidators: true }
-    );
-
-    // Build verification URL
-    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email/${verificationToken}`;
-
-    // Send verification email in background (don't block the response)
-    sendVerificationEmail(normalizedEmail, verificationUrl, firstName).catch(err => {
-      console.warn('Verification email sending failed:', err.message || err);
+    // Create user directly (email verification not required)
+    const user = await User.create({
+      firstName,
+      lastName,
+      email: normalizedEmail,
+      password,
+      targetRole: targetRole || '',
+      skills: skills || [],
+      isEmailVerified: true,
     });
 
-    // Send response (DO NOT create permanent User, DO NOT issue JWT tokens/cookies)
-    res.status(200).json({
+    // Generate authentication tokens
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    // Save refreshToken to user
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    // Set HTTP-only cookies
+    setAuthCookies(res, req, accessToken, refreshToken);
+
+    // Track analytics event (background)
+    Analytics.trackEvent({
+      userId: user._id,
+      eventType: 'user_registered',
+      metadata: { method: 'local' },
+    }).catch(err => console.warn('Analytics tracking error:', err.message));
+
+    // Send welcome email (background)
+    sendWelcomeEmail(user.email, user.firstName).catch(err => {
+      console.warn('Welcome email sending failed:', err.message || err);
+    });
+
+    // Clean up any pending registration for this email if present
+    PendingRegistration.deleteOne({ email: normalizedEmail }).catch(() => {});
+
+    res.status(201).json({
       success: true,
-      requiresVerification: true,
-      email: normalizedEmail,
-      message: 'Verification email sent. Please check your inbox to verify your email address.',
-      // Include token in response for development / testing (remove in production)
-      ...((process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') && {
-        verificationToken,
-        verificationUrl,
-      }),
+      message: 'Account created successfully.',
+      data: {
+        user: {
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role,
+          avatar: user.avatar,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+          expiresIn: jwtConfig.expiresIn,
+        },
+      },
     });
   })
 );
@@ -293,14 +301,9 @@ router.post(
       });
     }
 
-    // Check if email is verified
+    // Auto-verify email if not already marked
     if (!user.isEmailVerified) {
-      return res.status(401).json({
-        success: false,
-        requiresVerification: true,
-        email: user.email,
-        message: 'Email not verified. Please verify your email address before logging in.',
-      });
+      user.isEmailVerified = true;
     }
 
     // Check if account is locked

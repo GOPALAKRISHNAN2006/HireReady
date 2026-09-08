@@ -63,19 +63,27 @@ export const useAuthStore = create(
         }
       },
 
-      // Register action (initiates pending registration requiring email verification)
+      // Register action (directly logs in user after registration)
       register: async userData => {
         set({ isLoading: true, error: null });
         try {
           const response = await api.post('/auth/register', userData);
-          const { requiresVerification, email, message } = response.data;
+          const { user, tokens } = response.data.data;
+
+          // Save tokens and set Authorization header
+          localStorage.setItem('accessToken', tokens.accessToken);
+          localStorage.setItem('refreshToken', tokens.refreshToken);
+          api.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
 
           set({
+            user,
+            token: tokens.accessToken,
+            isAuthenticated: true,
             isLoading: false,
             error: null,
           });
 
-          return { success: true, requiresVerification, email, message };
+          return { success: true, user, message: 'Account created successfully!' };
         } catch (error) {
           const message =
             error.response?.data?.message ||
