@@ -43,7 +43,7 @@ const websiteSchema = {
       url: 'https://hireready-1-0hvc.onrender.com',
       logo: 'https://hireready-1-0hvc.onrender.com/og-image.webp',
       sameAs: [
-        'https://linkedin.com/company/hireready',
+        'https://www.linkedin.com/in/gopalakrishnan-m-6a323a292/',
         'https://x.com/hireready',
         'https://github.com/GOPALAKRISHNAN2006/HireReady',
       ],
@@ -825,7 +825,7 @@ const Home = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://linkedin.com/company/hireready"
+                  href="https://www.linkedin.com/in/gopalakrishnan-m-6a323a292/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors"

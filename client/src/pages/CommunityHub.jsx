@@ -273,6 +273,14 @@ const CommunityHub = () => {
     isLiked: post.isLiked || false,
   });
 
+  const currentUserId = user?._id || user?.id;
+  const canDeletePost = post => {
+    if (!user) return false;
+    if (user.role === 'admin') return true;
+    if (!post.authorId) return true;
+    return String(currentUserId) === String(post.authorId);
+  };
+
   // Format time ago
   const timeAgo = date => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -608,10 +616,7 @@ const CommunityHub = () => {
                               {post.role}
                             </p>
                           </div>
-                          {((user?._id &&
-                            post.authorId &&
-                            String(user._id) === String(post.authorId)) ||
-                            user?.role === 'admin') && (
+                          {canDeletePost(post) && (
                             <button
                               onClick={() => {
                                 if (window.confirm('Are you sure you want to delete this post?')) {
@@ -620,9 +625,10 @@ const CommunityHub = () => {
                               }}
                               disabled={deletePostMutation.isPending}
                               title="Delete post"
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors flex-shrink-0"
+                              className="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 rounded-lg transition-colors border border-red-200/50 dark:border-red-800/40 flex-shrink-0"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Delete</span>
                             </button>
                           )}
                         </div>
@@ -880,12 +886,29 @@ const CommunityHub = () => {
                         }}
                       />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-slate-900 dark:text-white">
-                            {post.author}
-                          </span>
-                          <Trophy className="w-4 h-4 text-amber-500" />
-                          <span className="text-sm text-slate-500">{post.time}</span>
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-900 dark:text-white">
+                              {post.author}
+                            </span>
+                            <Trophy className="w-4 h-4 text-amber-500" />
+                            <span className="text-sm text-slate-500">{post.time}</span>
+                          </div>
+                          {canDeletePost(post) && (
+                            <button
+                              onClick={() => {
+                                if (window.confirm('Are you sure you want to delete this post?')) {
+                                  deletePostMutation.mutate(post.id);
+                                }
+                              }}
+                              disabled={deletePostMutation.isPending}
+                              title="Delete post"
+                              className="flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 rounded-lg transition-colors border border-red-200/50 dark:border-red-800/40 flex-shrink-0"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Delete</span>
+                            </button>
+                          )}
                         </div>
                         <p className="text-slate-700 dark:text-slate-300 mb-3">{post.content}</p>
                         <div className="flex items-center gap-4 pt-3 border-t border-slate-100 dark:border-slate-700">

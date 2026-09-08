@@ -192,7 +192,11 @@ router.delete(
     }
 
     // Check ownership
-    if (post.author.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+    if (
+      post.author &&
+      post.author.toString() !== req.user._id.toString() &&
+      req.user.role !== 'admin'
+    ) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to delete this post',

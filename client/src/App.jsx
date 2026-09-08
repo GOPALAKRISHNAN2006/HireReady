@@ -610,6 +610,22 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/lab"
+              element={
+                <ProtectedRoute>
+                  <MockInterviewLab />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/interview-lab"
+              element={
+                <ProtectedRoute>
+                  <MockInterviewLab />
+                </ProtectedRoute>
+              }
+            />
 
             {/* AI Chat Page */}
             <Route
