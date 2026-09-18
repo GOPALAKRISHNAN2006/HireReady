@@ -6,18 +6,19 @@ export const TECH_CATEGORIES = {
     title: 'Java Interview Questions',
     h1Title: 'Java Technical Interview Questions & Answers',
     topicName: 'Java',
-    metaTitle: 'Java Technical Interview Questions & Answers | HireReady',
+    metaTitle: 'Java Interview Questions & Answers (2026) | HireReady',
     metaDescription:
-      'Master Java technical interview questions with expert answers covering OOP, Collections framework, Multithreading, Exception Handling, and JVM memory concepts.',
+      'Practice Java technical interview questions covering OOP, Collections, exception handling, multithreading, JVM concepts, and core Java programming.',
     iconName: 'Coffee',
     badge: 'Popular',
     description:
-      'Master core Java, object-oriented programming, collections framework, exception handling, and concurrent multithreading concepts with curated interview questions.',
+      'Prepare for Java technical interviews with curated questions and detailed explanations covering Core Java, OOP concepts, Collections and Generics, exception handling, multithreading, JVM fundamentals, and coding-oriented questions for freshers and experienced developers.',
     sections: [
-      'Core Java & OOP',
-      'Collections Framework',
-      'Exceptions & Multithreading',
-      'Memory & JVM',
+      'Core Java Fundamentals',
+      'OOP & Object-Oriented Design',
+      'Collections & Generics',
+      'Exception Handling',
+      'Multithreading & JVM Concepts',
     ],
   },
   javascript: {
@@ -82,20 +83,21 @@ export const TECH_CATEGORIES = {
   sql: {
     slug: 'sql',
     title: 'SQL & Database Interview Questions',
-    h1Title: 'SQL & Database Interview Questions & Answers',
-    topicName: 'SQL & Database',
-    metaTitle: 'SQL Database Interview Questions & Answers | HireReady',
+    h1Title: 'SQL Technical Interview Questions & Answers',
+    topicName: 'SQL',
+    metaTitle: 'SQL Interview Questions & Answers (2026) | HireReady',
     metaDescription:
-      'Master database technical interviews with top SQL questions on Joins, Indexes, ACID Transactions, Grouping, Subqueries, and Query Optimization.',
+      'Practice SQL technical interview questions covering joins, subqueries, indexing, transactions, normalization, SQL queries, and essential database concepts.',
     iconName: 'Database',
     badge: 'Essential',
     description:
-      'Sharpen relational database skills with questions covering complex SQL joins, indexing strategies, ACID compliance, subqueries, and aggregation.',
+      'Prepare for SQL and database technical interviews with curated questions and detailed explanations covering SQL fundamentals, SELECT queries, JOINs, subqueries, GROUP BY and aggregate functions, indexes, transactions, normalization, and database concepts for freshers and experienced developers.',
     sections: [
-      'Queries & Joins',
-      'Database Indexing',
-      'ACID & Transactions',
-      'Aggregation & Subqueries',
+      'SQL Fundamentals',
+      'SELECT, Filtering & Aggregation',
+      'JOINs & Relationships',
+      'Subqueries & Advanced Queries',
+      'Indexing, Transactions & Database Design',
     ],
   },
 };
@@ -104,7 +106,7 @@ export const PUBLIC_QUESTIONS = {
   java: [
     {
       id: 'java-1',
-      section: 'Core Java & OOP',
+      section: 'Core Java Fundamentals',
       difficulty: 'Easy',
       question: 'What is the difference between == and equals() in Java?',
       answer:
@@ -119,7 +121,7 @@ System.out.println(s1.equals(s2)); // true  (same string content)`,
     },
     {
       id: 'java-2',
-      section: 'Core Java & OOP',
+      section: 'OOP & Object-Oriented Design',
       difficulty: 'Medium',
       question: 'What is the difference between Method Overloading and Method Overriding?',
       answer:
@@ -141,7 +143,7 @@ class Dog extends Animal {
     },
     {
       id: 'java-3',
-      section: 'Collections Framework',
+      section: 'Collections & Generics',
       difficulty: 'Medium',
       question: 'What is the internal working mechanism of HashMap in Java?',
       answer:
@@ -151,7 +153,7 @@ class Dog extends Animal {
     },
     {
       id: 'java-4',
-      section: 'Exceptions & Multithreading',
+      section: 'Exception Handling',
       difficulty: 'Medium',
       question: 'What is the difference between Checked and Unchecked exceptions?',
       answer:
@@ -161,7 +163,7 @@ class Dog extends Animal {
     },
     {
       id: 'java-5',
-      section: 'Memory & JVM',
+      section: 'Multithreading & JVM Concepts',
       difficulty: 'Hard',
       question: 'Explain Garbage Collection generations in Java JVM memory.',
       answer:

@@ -54,9 +54,13 @@ const PublicQuestionCategory = () => {
 
   const canonicalUrl = `https://hireready-1-0hvc.onrender.com/interview-questions/${categorySlug}`;
 
+  const article = ['a', 'e', 'i', 'o', 'u', 'sql'].some(v => topicName.toLowerCase().startsWith(v))
+    ? 'an'
+    : 'a';
+
   const faqItems = [
     {
-      q: `How should I prepare for a ${topicName} technical interview?`,
+      q: `How should I prepare for ${article} ${topicName} technical interview?`,
       a: `Start by mastering core concepts in ${categoryInfo.sections.join(', ')}. Review standard question patterns, write working code examples by hand, and practice interactive mock interviews to build speed and verbal communication confidence.`,
     },
     {
