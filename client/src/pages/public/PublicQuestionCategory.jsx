@@ -61,11 +61,11 @@ const PublicQuestionCategory = () => {
     },
     {
       q: `Are these ${topicName} interview questions suitable for freshers and experienced developers?`,
-      a: `Yes. All interview questions, code snippets, and explanations are structured for candidates across experience levels—from fundamental language mechanics for freshers to advanced architectural concepts for senior engineers.`,
+      a: `Yes. All interview questions, code snippets, and explanations are structured for candidates across experience levels—from fundamental mechanics for freshers to advanced architectural concepts for senior engineers.`,
     },
     {
-      q: `Can I practice ${topicName} interviews with AI?`,
-      a: `Yes! HireReady provides an interactive AI mock interview lab where you can receive real-time speech and technical scoring on ${topicName} topics.`,
+      q: `What ${topicName} topics should I study before an interview?`,
+      a: `Focus on core areas including ${categoryInfo.sections.join(', ')}. Practice writing code snippets, understanding runtime mechanics, and practicing interactive mock interview sessions on HireReady.`,
     },
   ];
 

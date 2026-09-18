@@ -42,20 +42,21 @@ export const TECH_CATEGORIES = {
   react: {
     slug: 'react',
     title: 'React Interview Questions',
-    h1Title: 'React Developer Interview Questions & Answers',
+    h1Title: 'React Technical Interview Questions & Answers',
     topicName: 'React',
-    metaTitle: 'React.js Interview Questions & Answers | HireReady',
+    metaTitle: 'React Interview Questions & Answers (2026) | HireReady',
     metaDescription:
-      'Prepare for React developer interviews with top questions on Virtual DOM, Custom Hooks, State Management, useEffect, and performance optimization.',
+      'Practice React technical interview questions and answers covering Hooks, components, state management, Virtual DOM, performance, and modern React concepts.',
     iconName: 'Atom',
     badge: 'High Demand',
     description:
-      'Master component lifecycle, state management, custom React Hooks, virtual DOM reconciliation, and modern performance optimization techniques.',
+      'Prepare for React technical interviews with curated questions and detailed explanations covering components, props, state, custom Hooks, Context API, Virtual DOM reconciliation, performance optimization, and modern coding-oriented interview questions for freshers and experienced developers.',
     sections: [
-      'Core Concepts & Virtual DOM',
-      'Hooks & State',
-      'Component Lifecycle',
-      'Performance Optimization',
+      'React Fundamentals',
+      'Components, Props & State',
+      'React Hooks',
+      'State Management & Context',
+      'Virtual DOM & Performance',
     ],
   },
   nodejs: {
