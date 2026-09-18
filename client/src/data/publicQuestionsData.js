@@ -4,6 +4,8 @@ export const TECH_CATEGORIES = {
   java: {
     slug: 'java',
     title: 'Java Interview Questions',
+    h1Title: 'Java Technical Interview Questions & Answers',
+    topicName: 'Java',
     metaTitle: 'Java Technical Interview Questions & Answers | HireReady',
     metaDescription:
       'Master Java technical interview questions with expert answers covering OOP, Collections framework, Multithreading, Exception Handling, and JVM memory concepts.',
@@ -21,13 +23,15 @@ export const TECH_CATEGORIES = {
   javascript: {
     slug: 'javascript',
     title: 'JavaScript Interview Questions',
-    metaTitle: 'JavaScript Interview Questions & Answers | HireReady',
+    h1Title: 'JavaScript Technical Interview Questions & Answers',
+    topicName: 'JavaScript',
+    metaTitle: 'JavaScript Interview Questions & Answers (2026) | HireReady',
     metaDescription:
-      'Ace your JavaScript interview with curated questions and code examples covering Closures, Event Loop, Promises, Async/Await, Prototypes, and ES6+ features.',
+      'Practice top JavaScript technical interview questions and answers. Master closures, Event Loop, promises, ES6+ coding snippets, and core JS concepts for freshers & pros.',
     iconName: 'Code',
     badge: 'Trending',
     description:
-      'Deep dive into JavaScript execution context, closures, prototypal inheritance, asynchronous event loop, promises, and modern ES6 syntax.',
+      'Prepare for JavaScript technical interviews with curated questions and detailed explanations covering core JavaScript fundamentals, closures, the Event Loop, promises, async/await, prototypal inheritance, ES6+ features, and practical coding challenges for freshers and experienced developers.',
     sections: [
       'Execution & Closures',
       'Asynchronous JS & Promises',
@@ -38,6 +42,8 @@ export const TECH_CATEGORIES = {
   react: {
     slug: 'react',
     title: 'React Interview Questions',
+    h1Title: 'React Developer Interview Questions & Answers',
+    topicName: 'React',
     metaTitle: 'React.js Interview Questions & Answers | HireReady',
     metaDescription:
       'Prepare for React developer interviews with top questions on Virtual DOM, Custom Hooks, State Management, useEffect, and performance optimization.',
@@ -55,6 +61,8 @@ export const TECH_CATEGORIES = {
   nodejs: {
     slug: 'nodejs',
     title: 'Node.js Interview Questions',
+    h1Title: 'Node.js Backend Interview Questions & Answers',
+    topicName: 'Node.js',
     metaTitle: 'Node.js Backend Interview Questions & Answers | HireReady',
     metaDescription:
       'Practice Node.js backend interview questions covering Event Loop, Non-blocking I/O, Express.js middleware, EventEmitters, and Streams with code examples.',
@@ -72,6 +80,8 @@ export const TECH_CATEGORIES = {
   sql: {
     slug: 'sql',
     title: 'SQL & Database Interview Questions',
+    h1Title: 'SQL & Database Interview Questions & Answers',
+    topicName: 'SQL & Database',
     metaTitle: 'SQL Database Interview Questions & Answers | HireReady',
     metaDescription:
       'Master database technical interviews with top SQL questions on Joins, Indexes, ACID Transactions, Grouping, Subqueries, and Query Optimization.',
