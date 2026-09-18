@@ -62,20 +62,21 @@ export const TECH_CATEGORIES = {
   nodejs: {
     slug: 'nodejs',
     title: 'Node.js Interview Questions',
-    h1Title: 'Node.js Backend Interview Questions & Answers',
+    h1Title: 'Node.js Technical Interview Questions & Answers',
     topicName: 'Node.js',
-    metaTitle: 'Node.js Backend Interview Questions & Answers | HireReady',
+    metaTitle: 'Node.js Interview Questions & Answers (2026) | HireReady',
     metaDescription:
-      'Practice Node.js backend interview questions covering Event Loop, Non-blocking I/O, Express.js middleware, EventEmitters, and Streams with code examples.',
+      'Practice Node.js technical interview questions covering the Event Loop, Express.js, REST APIs, asynchronous programming, streams, authentication, and backend concepts.',
     iconName: 'Server',
     badge: 'Backend',
     description:
-      'Understand Node.js architecture, libuv event loop, non-blocking asynchronous I/O, streams, buffers, and scalable Express middleware patterns.',
+      'Prepare for Node.js backend technical interviews with curated questions and detailed explanations covering Node.js fundamentals, the libuv Event Loop, asynchronous programming, Express.js middleware, REST APIs, authentication, streams, and backend architectural concepts for freshers and experienced developers.',
     sections: [
-      'Node.js Architecture',
-      'Event Loop & Async I/O',
-      'Streams & Buffers',
-      'API & Express Patterns',
+      'Node.js Fundamentals',
+      'Event Loop & Asynchronous Programming',
+      'Express.js & Middleware',
+      'REST APIs & Authentication',
+      'Streams & Backend Performance',
     ],
   },
   sql: {
