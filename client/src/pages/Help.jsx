@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Card, Button } from '../components/ui';
+import SEO from '../components/SEO';
 import {
   HelpCircle,
   Search,
@@ -175,6 +176,12 @@ const Help = () => {
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
+      <SEO
+        title="Support Center | HireReady"
+        description="Get help with HireReady, interview preparation, mock interviews, and account-related questions."
+        canonical="/support"
+        robots="index, follow"
+      />
       {/* Gradient Header */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-blue-600 to-sky-600 p-8 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
