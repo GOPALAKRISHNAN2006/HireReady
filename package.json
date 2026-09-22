@@ -4,6 +4,7 @@
   "description": "HireReady - AI-Powered Interview Preparation Portal",
   "private": true,
   "scripts": {
+    "start": "node server/server.js",
     "build": "cd client && npm run build",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",

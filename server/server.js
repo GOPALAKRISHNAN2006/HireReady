@@ -376,13 +376,22 @@ app.get('*', (req, res, next) => {
   // Normalize path (strip trailing slash except root)
   const cleanReqPath = req.path === '/' ? '/' : req.path.replace(/\/$/, '');
 
-  // 1. Check if route-specific pre-rendered HTML file exists on disk (e.g., client/dist/interview-questions/java/index.html)
-  const prerenderedPath = path.join(clientDistPath, cleanReqPath.replace(/^\//, ''), 'index.html');
+  // 1. Check if route-specific pre-rendered HTML file exists on disk (e.g., client/dist/interview-questions/react/index.html)
+  if (cleanReqPath !== '/') {
+    const prerenderedPath = path.join(
+      clientDistPath,
+      cleanReqPath.replace(/^\//, ''),
+      'index.html'
+    );
+    if (fs.existsSync(prerenderedPath)) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.sendFile(prerenderedPath);
+    }
+  }
 
+  // 2. Fallback to template path (client/dist/index.html or client/index.html)
   let templatePath = clientIndexPath;
-  if (fs.existsSync(prerenderedPath)) {
-    templatePath = prerenderedPath;
-  } else if (!fs.existsSync(templatePath)) {
+  if (!fs.existsSync(templatePath)) {
     templatePath = clientDevIndexPath;
   }
 

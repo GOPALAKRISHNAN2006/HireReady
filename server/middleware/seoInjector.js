@@ -14,9 +14,9 @@ function escapeHtmlAttr(str) {
 }
 
 /**
- * Injects route-specific SEO metadata and unique pre-rendered HTML body
- * into an HTML index template string.
- * @param {string} htmlTemplate - Raw HTML index content
+ * Injects route-specific SEO metadata and pre-rendered HTML body
+ * into an HTML template string.
+ * @param {string} htmlTemplate - Raw HTML index template string
  * @param {string} reqPath - Request path (e.g. /interview-questions/react)
  * @returns {string} Injected HTML content
  */
@@ -28,7 +28,7 @@ function injectSeoMetadata(htmlTemplate, reqPath) {
   const meta = getSeoMetadataForPath(reqPath);
   const routeBodyHtml = getPreRenderedBodyForPath(reqPath);
 
-  // 1. Remove any existing title, description, robots, canonical, og, twitter, or previous injected comment blocks
+  // 1. Remove any legacy/static SEO head tags to avoid duplicates
   let cleanedHtml = htmlTemplate
     .replace(/<!--\s*Primary SEO Metadata[\s\S]*?<!--\s*Twitter Card Metadata[^>]*-->/gi, '')
     .replace(/<title>[^<]*<\/title>/gi, '')
@@ -38,7 +38,7 @@ function injectSeoMetadata(htmlTemplate, reqPath) {
     .replace(/<meta\s+property=["']og:[^"']+["'][^>]*\/?>/gi, '')
     .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*\/?>/gi, '');
 
-  // 2. Construct fresh, clean SEO head block
+  // 2. Construct the single, fresh SEO head block
   const seoHeadTags = `
     <!-- Primary SEO Metadata (Server-Injected) -->
     <title>${escapeHtmlAttr(meta.title)}</title>
@@ -61,15 +61,19 @@ function injectSeoMetadata(htmlTemplate, reqPath) {
     <meta name="twitter:image" content="${escapeHtmlAttr(meta.twitterImage || meta.ogImage)}" />
 `;
 
-  // 3. Inject head metadata before </head>
-  if (cleanedHtml.includes('</head>')) {
+  // 3. Inject head tags (replace placeholder if present, or before </head>)
+  if (cleanedHtml.includes('<!-- SEO_META_TAGS -->')) {
+    cleanedHtml = cleanedHtml.replace('<!-- SEO_META_TAGS -->', seoHeadTags);
+  } else if (cleanedHtml.includes('</head>')) {
     cleanedHtml = cleanedHtml.replace('</head>', `${seoHeadTags}\n  </head>`);
   } else {
     cleanedHtml = `${seoHeadTags}\n${cleanedHtml}`;
   }
 
-  // 4. Inject route-specific pre-rendered semantic HTML body into <div id="root">
-  if (routeBodyHtml && cleanedHtml.includes('<div id="root">')) {
+  // 4. Inject route-specific body HTML (replace placeholder if present, or inside <div id="root">)
+  if (cleanedHtml.includes('<!-- SEO_BODY_CONTENT -->')) {
+    cleanedHtml = cleanedHtml.replace('<!-- SEO_BODY_CONTENT -->', routeBodyHtml || '');
+  } else if (routeBodyHtml && cleanedHtml.includes('<div id="root">')) {
     cleanedHtml = cleanedHtml.replace(
       /<div id="root">[\s\S]*?<\/div>(\s*<\/body>)/i,
       `<div id="root">\n${routeBodyHtml}\n    </div>\n  </body>`
