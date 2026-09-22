@@ -240,6 +240,13 @@ const clientDistPath = path.join(__dirname, '../client/dist');
 const clientIndexPath = path.join(clientDistPath, 'index.html');
 const clientDevIndexPath = path.join(__dirname, '../client/index.html');
 
+function getRequestPath(req) {
+  const requestUrl = new URL(req.originalUrl || req.url || '/', 'http://localhost');
+  const requestPath = requestUrl.pathname || '/';
+
+  return requestPath === '/' ? '/' : requestPath.replace(/\/+$/, '');
+}
+
 app.use(
   express.static(clientDistPath, {
     index: false,
@@ -373,8 +380,9 @@ app.get('*', (req, res, next) => {
     return next();
   }
 
-  // Normalize path (strip trailing slash except root)
-  const cleanReqPath = req.path === '/' ? '/' : req.path.replace(/\/$/, '');
+  // Derive the route from the incoming URL, independent of query strings or
+  // Express middleware mount paths.
+  const cleanReqPath = getRequestPath(req);
 
   // Always read the shared template here so the server injects metadata for
   // the requested route before sending the initial HTML response. Serving a
