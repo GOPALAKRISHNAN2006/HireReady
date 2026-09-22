@@ -1,6 +1,7 @@
 services:
   - type: static_site
     name: hireready
+    rootDir: .
     buildCommand: cd client && npm ci && npm run build
     staticPublishPath: ./client/dist
     routes:
