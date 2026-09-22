@@ -29,13 +29,21 @@ const SEO = ({
   const finalTwitterDescription = twitterDescription || finalOgDescription;
   const finalTwitterImage = twitterImage || ogImage;
 
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-  const finalCanonical = canonical
+  const rawPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const cleanPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
+
+  let targetCanonical = canonical
     ? canonical.startsWith('http')
       ? canonical
       : `${DEFAULT_SITE_URL}${canonical}`
-    : `${DEFAULT_SITE_URL}${currentPath}`;
+    : `${DEFAULT_SITE_URL}${cleanPath}`;
 
+  // Strip trailing slashes except for root URL
+  if (targetCanonical !== `${DEFAULT_SITE_URL}/`) {
+    targetCanonical = targetCanonical.replace(/\/$/, '');
+  }
+
+  const finalCanonical = targetCanonical;
   const finalOgUrl = ogUrl || finalCanonical;
 
   return (

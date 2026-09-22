@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node ../scripts/prerenderSeo.js",
     "preview": "vite preview",
     "lint": "echo 'Linting disabled temporarily'",
     "test:coverage": "jest --coverage",

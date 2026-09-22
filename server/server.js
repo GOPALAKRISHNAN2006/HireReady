@@ -13,10 +13,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 const http = require('http');
 const socketIo = require('socket.io');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const { injectSeoMetadata } = require('./middleware/seoInjector');
 
 // Load environment variables
 require('dotenv').config();
@@ -233,6 +235,21 @@ app.use(
   })
 );
 
+// Serve built client static assets (JS, CSS, images, favicon, sitemap.xml, robots.txt, etc.)
+const clientDistPath = path.join(__dirname, '../client/dist');
+const clientIndexPath = path.join(clientDistPath, 'index.html');
+const clientDevIndexPath = path.join(__dirname, '../client/index.html');
+
+app.use(
+  express.static(clientDistPath, {
+    index: false,
+    redirect: false,
+    maxAge: '1d',
+    etag: true,
+    lastModified: true,
+  })
+);
+
 // ===========================================
 // API Routes
 // ===========================================
@@ -346,10 +363,49 @@ io.on('connection', socket => {
 });
 
 // ===========================================
+// SPA Route Handling & Server-Side SEO Injection
+// ===========================================
+
+// Catch-all route for Single Page Application (SPA) page requests with initial HTML SEO Metadata & Body Injection
+app.get('*', (req, res, next) => {
+  // If request is for an API route or uploaded file, pass to 404 API handler
+  if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/uploads')) {
+    return next();
+  }
+
+  // Normalize path (strip trailing slash except root)
+  const cleanReqPath = req.path === '/' ? '/' : req.path.replace(/\/$/, '');
+
+  // 1. Check if route-specific pre-rendered HTML file exists on disk (e.g., client/dist/interview-questions/java/index.html)
+  const prerenderedPath = path.join(clientDistPath, cleanReqPath.replace(/^\//, ''), 'index.html');
+
+  let templatePath = clientIndexPath;
+  if (fs.existsSync(prerenderedPath)) {
+    templatePath = prerenderedPath;
+  } else if (!fs.existsSync(templatePath)) {
+    templatePath = clientDevIndexPath;
+  }
+
+  if (fs.existsSync(templatePath)) {
+    try {
+      const rawHtml = fs.readFileSync(templatePath, 'utf8');
+      const injectedHtml = injectSeoMetadata(rawHtml, cleanReqPath);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.status(200).send(injectedHtml);
+    } catch (err) {
+      console.error('Error injecting SEO metadata:', err);
+      return res.sendFile(templatePath);
+    }
+  }
+
+  next();
+});
+
+// ===========================================
 // Error Handling
 // ===========================================
 
-// 404 handler for undefined routes
+// 404 handler for undefined API routes
 app.use((req, res, next) => {
   res.status(404).json({
     success: false,
