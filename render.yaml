@@ -1,7 +1,7 @@
 services:
   - type: static_site
     name: hireready
-    buildCommand: npm ci && npm ci --prefix client && npm run build
+    buildCommand: cd client && npm ci && npm run build
     staticPublishPath: ./client/dist
     routes:
       - type: rewrite
