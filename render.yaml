@@ -1,7 +1,42 @@
 services:
-  - type: web
+  - type: static_site
     name: hireready
-    runtime: node
-    buildCommand: npm ci && npm ci --prefix server && npm ci --prefix client && npm run build
-    startCommand: npm start
-    healthCheckPath: /ping
+    buildCommand: npm ci && npm ci --prefix client && npm run build
+    staticPublishPath: ./client/dist
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
+      - type: rewrite
+        source: /interview-questions
+        destination: /interview-questions/index.html
+      - type: rewrite
+        source: /interview-questions/java
+        destination: /interview-questions/java/index.html
+      - type: rewrite
+        source: /interview-questions/javascript
+        destination: /interview-questions/javascript/index.html
+      - type: rewrite
+        source: /interview-questions/react
+        destination: /interview-questions/react/index.html
+      - type: rewrite
+        source: /interview-questions/nodejs
+        destination: /interview-questions/nodejs/index.html
+      - type: rewrite
+        source: /interview-questions/sql
+        destination: /interview-questions/sql/index.html
+      - type: rewrite
+        source: /full-stack-interview-roadmap
+        destination: /full-stack-interview-roadmap/index.html
+      - type: rewrite
+        source: /privacy
+        destination: /privacy/index.html
+      - type: rewrite
+        source: /terms
+        destination: /terms/index.html
+      - type: rewrite
+        source: /contact
+        destination: /contact/index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
