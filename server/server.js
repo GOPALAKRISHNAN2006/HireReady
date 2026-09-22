@@ -376,20 +376,9 @@ app.get('*', (req, res, next) => {
   // Normalize path (strip trailing slash except root)
   const cleanReqPath = req.path === '/' ? '/' : req.path.replace(/\/$/, '');
 
-  // 1. Check if route-specific pre-rendered HTML file exists on disk (e.g., client/dist/interview-questions/react/index.html)
-  if (cleanReqPath !== '/') {
-    const prerenderedPath = path.join(
-      clientDistPath,
-      cleanReqPath.replace(/^\//, ''),
-      'index.html'
-    );
-    if (fs.existsSync(prerenderedPath)) {
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      return res.sendFile(prerenderedPath);
-    }
-  }
-
-  // 2. Fallback to template path (client/dist/index.html or client/index.html)
+  // Always read the shared template here so the server injects metadata for
+  // the requested route before sending the initial HTML response. Serving a
+  // pre-rendered route file would allow stale metadata to bypass this step.
   let templatePath = clientIndexPath;
   if (!fs.existsSync(templatePath)) {
     templatePath = clientDevIndexPath;
@@ -403,7 +392,7 @@ app.get('*', (req, res, next) => {
       return res.status(200).send(injectedHtml);
     } catch (err) {
       console.error('Error injecting SEO metadata:', err);
-      return res.sendFile(templatePath);
+      return res.status(500).send('Unable to render the application shell.');
     }
   }
 

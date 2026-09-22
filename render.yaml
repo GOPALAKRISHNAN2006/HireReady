@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: hireready
+    runtime: node
+    buildCommand: npm ci && npm ci --prefix server && npm ci --prefix client && npm run build
+    startCommand: npm start
+    healthCheckPath: /ping
