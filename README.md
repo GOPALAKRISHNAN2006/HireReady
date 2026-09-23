@@ -16,6 +16,7 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 - [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
 - [Screenshots](#screenshots)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -151,8 +152,8 @@ Hireready/
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Interview-Portal-main.git
-cd Interview-Portal-main
+git clone https://github.com/GOPALAKRISHNAN2006/HireReady.git
+cd HireReady
 ```
 
 2. **Install root dependencies** (Husky, Prettier, lint-staged)
@@ -351,9 +352,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **HireReady** - Made with ❤️ for better interview preparation
 
-<!-- Replace OWNER/REPO in the badge URL with your GitHub repo -->
-
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/GOPALAKRISHNAN2006/HireReady/actions/workflows/ci.yml/badge.svg)](https://github.com/GOPALAKRISHNAN2006/HireReady/actions/workflows/ci.yml)
 
 ## CI / Tests
 
@@ -379,6 +378,26 @@ npm run build
 Add a GitHub secret `NODE_AUTH_TOKEN` or configure package registries if you use private packages.
 
 ## 🚀 Deployment
+
+### Render Static Frontend
+
+The frontend is deployed as a Render Static Site using [render.yaml](render.yaml):
+
+- **Build root:** repository root
+- **Build command:** `cd client && npm ci && npm run build`
+- **Publish directory:** `client/dist`
+- **Live site:** [hireready-1-0hvc.onrender.com](https://hireready-1-0hvc.onrender.com/)
+
+The client build runs the SEO prerenderer after Vite finishes. It creates route-specific HTML files for public pages, including:
+
+- `/interview-questions`
+- `/interview-questions/java`
+- `/interview-questions/javascript`
+- `/interview-questions/react`
+- `/interview-questions/nodejs`
+- `/interview-questions/sql`
+
+Each prerendered page contains one canonical URL matching its route. Render rewrite rules serve these generated files directly, while the final catch-all rewrite supports other client-side routes.
 
 ### Production Checklist
 
