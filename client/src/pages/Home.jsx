@@ -26,52 +26,33 @@ import {
   X,
 } from 'lucide-react';
 
-const websiteSchema = {
+const faqSchema = {
   '@context': 'https://schema.org',
-  '@graph': [
+  '@type': 'FAQPage',
+  mainEntity: [
     {
-      '@type': 'WebSite',
-      '@id': 'https://hireready-1-0hvc.onrender.com/#website',
-      url: 'https://hireready-1-0hvc.onrender.com',
-      name: 'HireReady',
-      description: 'AI-Powered Interview Practice & Mock Interview Platform',
+      '@type': 'Question',
+      name: 'What makes HireReady AI-Powered Mock Interviews effective?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'HireReady utilizes advanced natural language processing to simulate real technical, HR, and behavioral interview sessions. Candidates receive instant AI feedback on technical accuracy, structure, clarity, and key improvement tips.',
+      },
     },
     {
-      '@type': 'Organization',
-      '@id': 'https://hireready-1-0hvc.onrender.com/#organization',
-      name: 'HireReady',
-      url: 'https://hireready-1-0hvc.onrender.com',
-      logo: 'https://hireready-1-0hvc.onrender.com/og-image.webp',
-      sameAs: ['https://github.com/GOPALAKRISHNAN2006/HireReady'],
+      '@type': 'Question',
+      name: 'Is HireReady free to use for job seekers?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes! HireReady offers a free tier allowing job seekers to access AI mock interviews, practice questions, aptitude assessments, and skill tracking without any upfront payment.',
+      },
     },
     {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'What makes HireReady AI-Powered Mock Interviews effective?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'HireReady utilizes advanced natural language processing to simulate real technical, HR, and behavioral interview sessions. Candidates receive instant AI feedback on technical accuracy, structure, clarity, and key improvement tips.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Is HireReady free to use for job seekers?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes! HireReady offers a free tier allowing job seekers to access AI mock interviews, practice questions, aptitude assessments, and skill tracking without any upfront payment.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Which interview domains and categories are supported?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'HireReady supports Data Structures & Algorithms (DSA), System Design, Web Development, Machine Learning, DevOps, SQL Databases, Mobile Development, and HR/Behavioral interview rounds.',
-          },
-        },
-      ],
+      '@type': 'Question',
+      name: 'Which interview domains and categories are supported?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'HireReady supports Data Structures & Algorithms (DSA), System Design, Web Development, Machine Learning, DevOps, SQL Databases, Mobile Development, and HR/Behavioral interview rounds.',
+      },
     },
   ],
 };
@@ -136,7 +117,7 @@ const Home = () => {
         title="HireReady | AI-Powered Interview Practice & Mock Interviews"
         description="Ace technical and HR interviews with HireReady's AI-powered mock interviews, real-time feedback, skill assessments, and practice tests."
         canonical="/"
-        jsonLd={websiteSchema}
+        jsonLd={faqSchema}
       />
       {/* Animated Background — absolute avoids scroll-triggered full-page repaints */}
       <div className="absolute inset-0 gradient-mesh opacity-60 dark:opacity-30 pointer-events-none" />
