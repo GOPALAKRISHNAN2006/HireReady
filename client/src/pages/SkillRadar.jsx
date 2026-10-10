@@ -199,6 +199,231 @@ const SkillRadar = () => {
       action: `Practice ${s.name.toLowerCase()} to reach your target of ${s.target}`,
       resources: 0,
     }));
+  // Professional Report Export Handler (PNG with custom layout & branding)
+  const handleExport = () => {
+    try {
+      const sourceCanvas = canvasRef.current;
+      if (!sourceCanvas) {
+        toast.error('Skill radar is still loading, please wait.');
+        return;
+      }
+
+      // Create high-resolution export canvas
+      const exportCanvas = document.createElement('canvas');
+      const width = 800;
+      const height = 980;
+      exportCanvas.width = width;
+      exportCanvas.height = height;
+      const ctx = exportCanvas.getContext('2d');
+
+      // 1. Clean background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Top header gradient banner
+      const headerGrad = ctx.createLinearGradient(0, 0, width, 0);
+      headerGrad.addColorStop(0, '#0284C7');
+      headerGrad.addColorStop(0.5, '#2563EB');
+      headerGrad.addColorStop(1, '#4F46E5');
+      ctx.fillStyle = headerGrad;
+      ctx.fillRect(0, 0, width, 140);
+
+      // Title & Subtitle
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 30px Inter, system-ui, sans-serif';
+      ctx.fillText('HireReady', 40, 55);
+
+      ctx.font = '16px Inter, system-ui, sans-serif';
+      ctx.fillStyle = '#E0F2FE';
+      ctx.fillText('Technical Skill Radar Assessment', 40, 85);
+
+      const dateStr = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      ctx.font = '14px Inter, system-ui, sans-serif';
+      ctx.fillStyle = '#BAE6FD';
+      ctx.fillText(dateStr, 40, 112);
+
+      // Overall Score Pill on top right
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.beginPath();
+      ctx.roundRect(width - 220, 35, 180, 70, 16);
+      ctx.fill();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 36px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${overallScore}%`, width - 130, 80);
+
+      ctx.font = '12px Inter, system-ui, sans-serif';
+      ctx.fillText('Overall Score', width - 130, 98);
+      ctx.textAlign = 'left';
+
+      // 3. Draw radar container card
+      ctx.fillStyle = '#F8FAFC';
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(40, 165, width - 80, 460, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw the source radar canvas centered
+      const radarSize = 420;
+      const radarX = (width - radarSize) / 2;
+      const radarY = 185;
+      ctx.drawImage(sourceCanvas, radarX, radarY, radarSize, radarSize);
+
+      // 4. Skills Breakdown Header
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 20px Inter, system-ui, sans-serif';
+      ctx.fillText('Skill Breakdown', 40, 665);
+
+      // Draw skill bars in 2 columns
+      const colWidth = (width - 100) / 2;
+      skills.forEach((skill, idx) => {
+        const col = idx % 2;
+        const row = Math.floor(idx / 2);
+        const x = 40 + col * (colWidth + 20);
+        const y = 690 + row * 62;
+
+        // Skill card box
+        ctx.fillStyle = '#F8FAFC';
+        ctx.beginPath();
+        ctx.roundRect(x, y, colWidth, 52, 10);
+        ctx.fill();
+
+        // Color bullet
+        ctx.fillStyle = skill.color || '#4F46E5';
+        ctx.beginPath();
+        ctx.arc(x + 16, y + 20, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Skill name
+        ctx.fillStyle = '#1E293B';
+        ctx.font = 'bold 14px Inter, system-ui, sans-serif';
+        ctx.fillText(skill.name, x + 30, y + 24);
+
+        // Score percentage
+        ctx.font = 'bold 14px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${skill.score}%`, x + colWidth - 14, y + 24);
+        ctx.textAlign = 'left';
+
+        // Progress track
+        ctx.fillStyle = '#E2E8F0';
+        ctx.beginPath();
+        ctx.roundRect(x + 14, y + 34, colWidth - 28, 6, 3);
+        ctx.fill();
+
+        // Progress fill
+        const fillWidth = Math.max(
+          0,
+          Math.min(colWidth - 28, ((colWidth - 28) * skill.score) / 100)
+        );
+        ctx.fillStyle = skill.color || '#4F46E5';
+        ctx.beginPath();
+        ctx.roundRect(x + 14, y + 34, fillWidth, 6, 3);
+        ctx.fill();
+      });
+
+      // 5. Footer branding
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '12px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        'Generated on HireReady • AI-Powered Interview Preparation • https://hireready-1-0hvc.onrender.com',
+        width / 2,
+        height - 30
+      );
+      ctx.textAlign = 'left';
+
+      // 6. Download file
+      exportCanvas.toBlob(blob => {
+        if (!blob) {
+          toast.error('Failed to create export image.');
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `hireready-skill-radar-${new Date().toISOString().split('T')[0]}.png`;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          if (document.body.contains(link)) {
+            document.body.removeChild(link);
+          }
+          URL.revokeObjectURL(url);
+        }, 150);
+        toast.success('Skill radar report exported as PNG!');
+      }, 'image/png');
+    } catch (err) {
+      console.error('Export error:', err);
+      toast.error('Failed to export skill radar.');
+    }
+  };
+
+  // Robust Native Share & Clipboard Fallback Handler
+  const handleShare = async () => {
+    const shareTitle = 'HireReady Technical Skill Radar';
+    const shareText =
+      `🎯 My HireReady Skill Radar Assessment\n` +
+      `📊 Overall Score: ${overallScore}%\n\n` +
+      `Skill Breakdown:\n` +
+      skills.map(s => `• ${s.name}: ${s.score}% (Target: ${s.target}%)`).join('\n') +
+      `\n\nAssess your interview skills on HireReady: ${window.location.origin}/skills`;
+
+    // 1. Try native Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: window.location.href,
+        });
+        toast.success('Skill radar shared successfully!');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.warn('Native share failed, falling back to clipboard', err);
+      }
+    }
+
+    // 2. Clipboard API fallback
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        toast.success('Skill summary copied to clipboard!');
+        return;
+      }
+    } catch (clipErr) {
+      console.warn('Clipboard writeText failed, trying execCommand', clipErr);
+    }
+
+    // 3. Hidden textarea fallback
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = shareText;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (copied) {
+        toast.success('Skill summary copied to clipboard!');
+      } else {
+        toast.error('Unable to copy summary to clipboard.');
+      }
+    } catch (err) {
+      console.error('Share fallback error:', err);
+      toast.error('Sharing failed. Please try again.');
+    }
+  };
 
   return (
     <div className="space-y-8 animate-slide-up">
@@ -342,32 +567,10 @@ const SkillRadar = () => {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              variant="outline"
-              icon={Download}
-              className="flex-1"
-              onClick={() => {
-                const canvas = canvasRef.current;
-                if (!canvas) return;
-                const link = document.createElement('a');
-                link.download = 'skill-radar.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                toast.success('Skill radar exported!');
-              }}
-            >
+            <Button variant="outline" icon={Download} className="flex-1" onClick={handleExport}>
               Export
             </Button>
-            <Button
-              variant="outline"
-              icon={Share2}
-              className="flex-1"
-              onClick={() => {
-                const text = `My HireReady Skill Radar: Overall ${overallScore}% | ${skills.map(s => `${s.name}: ${s.score}%`).join(' | ')}`;
-                navigator.clipboard.writeText(text);
-                toast.success('Skill summary copied!');
-              }}
-            >
+            <Button variant="outline" icon={Share2} className="flex-1" onClick={handleShare}>
               Share
             </Button>
           </div>

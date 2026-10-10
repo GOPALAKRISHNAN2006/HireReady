@@ -5,6 +5,7 @@ import { LoadingOverlay } from '../components/ui/Spinner';
 import api from '../services/api';
 import communicationApi from '../services/communicationApi';
 import { notifyInterviewComplete } from '../hooks/useNotifications';
+import toast from 'react-hot-toast';
 import {
   Trophy,
   Target,
@@ -18,6 +19,8 @@ import {
   MessageSquare,
   Lightbulb,
   Mic,
+  Share2,
+  Download,
 } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { CommunicationAssessmentCard } from '../components/communication';
@@ -134,6 +137,117 @@ const InterviewResult = () => {
     if (score >= 70) return 'Good';
     if (score >= 60) return 'Fair';
     return 'Needs Improvement';
+  };
+
+  // Share interview result
+  const handleShareResult = async () => {
+    const score = interview?.overallScore ?? interview?.score ?? 0;
+    const cat = interview?.category?.replace('-', ' ') || 'Technical';
+    const shareTitle = `HireReady Mock Interview Result - ${score}%`;
+    const shareText =
+      `🎯 Just completed a ${cat} mock interview on HireReady!\n` +
+      `📊 Overall Score: ${score}%\n` +
+      `⏱️ Duration: ${interview?.duration || 0} minutes\n\n` +
+      `Practice AI mock technical & HR interviews on HireReady: ${window.location.origin}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: window.location.href,
+        });
+        toast.success('Interview result shared!');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        toast.success('Interview result copied to clipboard!');
+        return;
+      }
+    } catch {}
+
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = shareText;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      toast.success('Interview result copied to clipboard!');
+    } catch {
+      toast.error('Failed to copy to clipboard.');
+    }
+  };
+
+  // Export interview summary report
+  const handleExportResult = () => {
+    try {
+      const score = interview?.overallScore ?? interview?.score ?? 0;
+      const cat = interview?.category?.replace('-', ' ') || 'Technical';
+      const date = new Date(interview?.createdAt || Date.now()).toLocaleDateString();
+
+      let report = `=================================================\n`;
+      report += `HIREREADY MOCK INTERVIEW ASSESSMENT REPORT\n`;
+      report += `=================================================\n\n`;
+      report += `Date: ${date}\n`;
+      report += `Category: ${cat}\n`;
+      report += `Difficulty: ${interview?.difficulty || 'N/A'}\n`;
+      report += `Overall Score: ${score}%\n`;
+      report += `Duration: ${interview?.duration || 0} minutes\n\n`;
+
+      if (interview?.questions?.length) {
+        report += `-------------------------------------------------\n`;
+        report += `QUESTION BREAKDOWN (${interview.questions.length} Questions)\n`;
+        report += `-------------------------------------------------\n\n`;
+
+        interview.questions.forEach((q, idx) => {
+          report += `[Q${idx + 1}] ${q.question || q.title || ''}\n`;
+          if (q.userAnswer) {
+            report += `Your Answer: ${q.userAnswer}\n`;
+          }
+          if (q.expectedAnswer) {
+            report += `Expected Answer: ${q.expectedAnswer}\n`;
+          }
+          if (q.score !== undefined) {
+            report += `Score: ${q.score}/100\n`;
+          }
+          if (q.feedback) {
+            const fbText =
+              typeof q.feedback === 'string' ? q.feedback : q.feedback.detailedFeedback || '';
+            if (fbText) report += `Feedback: ${fbText}\n`;
+          }
+          report += `\n`;
+        });
+      }
+
+      report += `=================================================\n`;
+      report += `Generated with HireReady • ${window.location.origin}\n`;
+      report += `=================================================\n`;
+
+      const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hireready-interview-${id || 'result'}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        if (document.body.contains(a)) document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+      toast.success('Interview report exported successfully!');
+    } catch (err) {
+      console.error('Export report error:', err);
+      toast.error('Failed to export interview report.');
+    }
   };
 
   if (isLoading) {
@@ -713,13 +827,27 @@ const InterviewResult = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center pb-6">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center pb-6">
           <Link to="/interview/setup">
             <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-semibold rounded-2xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 hover:-translate-y-0.5">
               <RefreshCcw className="w-5 h-5" />
               Practice Again
             </button>
           </Link>
+          <button
+            onClick={handleShareResult}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 hover:text-primary-600 dark:hover:text-primary-400 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <Share2 className="w-5 h-5" />
+            Share Result
+          </button>
+          <button
+            onClick={handleExportResult}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 hover:text-primary-600 dark:hover:text-primary-400 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <Download className="w-5 h-5" />
+            Export Report
+          </button>
           <Link to="/analytics">
             <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 hover:text-primary-600 dark:hover:text-primary-400 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
               <BarChart3 className="w-5 h-5" />

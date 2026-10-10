@@ -211,17 +211,48 @@ const CommunityHub = () => {
     },
   });
 
-  // Share post (copy link)
-  const sharePost = postId => {
+  // Share post (native share or copy link)
+  const sharePost = async postId => {
     const url = `${window.location.origin}/community?post=${postId}`;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
+    const shareData = {
+      title: 'HireReady Community Post',
+      text: 'Check out this discussion on HireReady Developer Community:',
+      url,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast.success('Post shared successfully!');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
         toast.success('Link copied to clipboard!');
-      })
-      .catch(() => {
-        toast.error('Could not copy link');
-      });
+        return;
+      }
+    } catch {
+      // Fallback below
+    }
+
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      toast.success('Link copied to clipboard!');
+    } catch {
+      toast.error('Could not copy link');
+    }
   };
 
   // Handle post submit
@@ -1092,9 +1123,34 @@ const CommunityHub = () => {
               <Button
                 variant="secondary"
                 className="w-full"
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.origin);
-                  toast.success('Invite link copied!');
+                onClick={async () => {
+                  const url = window.location.origin;
+                  const shareData = {
+                    title: 'Join HireReady - AI Interview Preparation',
+                    text: 'Practice AI mock interviews and aptitude assessments on HireReady!',
+                    url,
+                  };
+                  if (navigator.share) {
+                    try {
+                      await navigator.share(shareData);
+                      toast.success('Invite link shared!');
+                      return;
+                    } catch (err) {
+                      if (err.name === 'AbortError') return;
+                    }
+                  }
+                  try {
+                    await navigator.clipboard.writeText(url);
+                    toast.success('Invite link copied!');
+                  } catch {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = url;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    toast.success('Invite link copied!');
+                  }
                 }}
               >
                 Share Invite Link

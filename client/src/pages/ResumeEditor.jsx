@@ -276,15 +276,48 @@ const ResumeEditor = () => {
       </html>
     `;
 
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-    printWindow.focus();
+    try {
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        // Fallback using invisible iframe if popup was blocked
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(printContent);
+        doc.close();
+        setTimeout(() => {
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+          setTimeout(() => {
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
+          }, 2000);
+        }, 300);
+        toast.success('Resume print/export initiated!');
+        return;
+      }
 
-    // Wait for content to load then print
-    setTimeout(() => {
-      printWindow.print();
-    }, 250);
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.focus();
+
+      // Wait for content to load then print
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+      toast.success('Resume PDF preview opened!');
+    } catch (err) {
+      console.error('Export PDF error:', err);
+      toast.error('Failed to open PDF export. Please try again.');
+    }
   };
 
   if (loading) {

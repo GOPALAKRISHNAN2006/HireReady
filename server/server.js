@@ -75,15 +75,42 @@ app.use(compression());
 // Parse Cookies
 app.use(cookieParser());
 
+// ===========================================
+// CORS Configuration & Helper
+// ===========================================
+const defaultOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://hireready-1-0hvc.onrender.com',
+];
+const envOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(',').map(url => url.trim().replace(/\/$/, ''))
+  : [];
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
+
+const isAllowedOrigin = origin => {
+  if (!origin) return true;
+  const normalizedOrigin = origin.replace(/\/$/, '');
+  if (allowedOrigins.includes(normalizedOrigin)) return true;
+  try {
+    return /\.onrender\.com$/i.test(new URL(normalizedOrigin).hostname);
+  } catch {
+    return false;
+  }
+};
+
 // Create HTTP server for Socket.io
 const server = http.createServer(app);
 
 // Initialize Socket.io for real-time features
 const io = socketIo(server, {
   cors: {
-    origin: (process.env.FRONTEND_URL || 'https://hireready-1-0hvc.onrender.com')
-      .split(',')
-      .map(u => u.trim()),
+    origin: function (origin, callback) {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -148,30 +175,11 @@ app.use(
   })
 );
 
-// CORS Configuration
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
-  .split(',')
-  .map(url => url.trim().replace(/\/$/, ''));
-
+// CORS Middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin) return callback(null, true);
-
-      const normalizedOrigin = origin.replace(/\/$/, '');
-      const isConfiguredOrigin = allowedOrigins.includes(normalizedOrigin);
-
-      let isRenderPreviewOrigin = false;
-      if (process.env.NODE_ENV !== 'production') {
-        try {
-          isRenderPreviewOrigin = /\.onrender\.com$/i.test(new URL(normalizedOrigin).hostname);
-        } catch {
-          isRenderPreviewOrigin = false;
-        }
-      }
-
-      if (isConfiguredOrigin || isRenderPreviewOrigin) {
+      if (isAllowedOrigin(origin)) {
         return callback(null, true);
       }
       return callback(new Error('Not allowed by CORS'));
@@ -402,6 +410,16 @@ app.get('*', (req, res, next) => {
       console.error('Error injecting SEO metadata:', err);
       return res.status(500).send('Unable to render the application shell.');
     }
+  }
+
+  // If client template is not hosted on this service (e.g. standalone backend API on Render)
+  if (cleanReqPath === '/') {
+    return res.status(200).json({
+      success: true,
+      message: 'HireReady API Server is running.',
+      docs: '/api/docs',
+      health: '/api/health',
+    });
   }
 
   next();
