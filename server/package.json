@@ -9,7 +9,7 @@
     "seed": "node seeds/seedData.js",
     "seed:challenges": "node seeds/seedCodingChallenges.js",
     "seed:all": "npm run seed && npm run seed:challenges",
-    "test": "jest",
+    "test": "jest --forceExit",
     "test:ci": "echo 'Testing disabled temporarily'",
     "lint": "echo 'Linting disabled temporarily'"
   },

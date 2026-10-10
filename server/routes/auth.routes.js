@@ -123,11 +123,13 @@ router.post(
     setAuthCookies(res, req, accessToken, refreshToken);
 
     // Track analytics event (background)
-    Analytics.trackEvent({
-      userId: user._id,
-      eventType: 'user_registered',
-      metadata: { method: 'local' },
-    }).catch(err => console.warn('Analytics tracking error:', err.message));
+    if (typeof Analytics.trackEvent === 'function') {
+      Analytics.trackEvent({
+        userId: user._id,
+        eventType: 'user_registered',
+        metadata: { method: 'local' },
+      }).catch(err => console.warn('Analytics tracking error:', err.message));
+    }
 
     // Send welcome email (background)
     sendWelcomeEmail(user.email, user.firstName).catch(err => {

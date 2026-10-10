@@ -332,7 +332,7 @@ function getPreRenderedBodyForPath(rawPath) {
 
   const commonFooter = `
       <footer>
-        <p>© 2026 HireReady. All rights reserved. Contact: hireready007@gmail.com</p>
+        <p>&copy; 2026 HireReady. All rights reserved. Contact: hireready007@gmail.com</p>
         <nav aria-label="Footer Navigation">
           <a href="/">Home</a> |
           <a href="/interview-questions">Interview Questions</a> |

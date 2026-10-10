@@ -132,6 +132,7 @@ const Settings = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
       toast.success('Data exported successfully!');
     } catch (error) {
       // Fallback: export from localStorage
@@ -148,6 +149,7 @@ const Settings = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
       toast.success('Data exported!');
     }
   };
