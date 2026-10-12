@@ -1,14 +1,59 @@
 services:
-  # Single Node.js Web Service (serves both API + SPA frontend)
-  # The Express server handles SPA routing via its catch-all handler,
-  # so page refreshes and direct navigation always work.
+  # Frontend Static Site (SPA with Pre-rendered SEO Routes)
   - type: web
     name: hireready
-    runtime: node
+    runtime: static
     rootDir: .
-    buildCommand: cd client && npm ci && npm run build && cd ../server && npm install
-    startCommand: node server/server.js
+    buildCommand: cd client && npm ci && npm run build
+    staticPublishPath: ./client/dist
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
+      - type: rewrite
+        source: /interview-questions
+        destination: /interview-questions/index.html
+      - type: rewrite
+        source: /interview-questions/java
+        destination: /interview-questions/java/index.html
+      - type: rewrite
+        source: /interview-questions/javascript
+        destination: /interview-questions/javascript/index.html
+      - type: rewrite
+        source: /interview-questions/react
+        destination: /interview-questions/react/index.html
+      - type: rewrite
+        source: /interview-questions/nodejs
+        destination: /interview-questions/nodejs/index.html
+      - type: rewrite
+        source: /interview-questions/sql
+        destination: /interview-questions/sql/index.html
+      - type: rewrite
+        source: /full-stack-interview-roadmap
+        destination: /full-stack-interview-roadmap/index.html
+      - type: rewrite
+        source: /privacy
+        destination: /privacy/index.html
+      - type: rewrite
+        source: /terms
+        destination: /terms/index.html
+      - type: rewrite
+        source: /contact
+        destination: /contact/index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend Web Service (Node.js / Express API)
+  - type: web
+    name: hireready-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
     healthCheckPath: /ping
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 5000
