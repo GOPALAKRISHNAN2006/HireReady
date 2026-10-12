@@ -55,6 +55,8 @@ router.post(
     const allowedFields = [
       'title',
       'template',
+      'themeColor',
+      'fontFamily',
       'personalInfo',
       'summary',
       'experience',
@@ -77,10 +79,10 @@ router.post(
       }
     });
 
-    // Enforce name and email match authenticated identity
+    // Enforce name and email match authenticated identity if personalInfo provided
     resumeData.personalInfo = {
-      fullName: `${req.user.firstName} ${req.user.lastName}`,
-      email: req.user.email,
+      fullName: req.body.personalInfo?.fullName || `${req.user.firstName} ${req.user.lastName}`,
+      email: req.body.personalInfo?.email || req.user.email,
       ...(req.body.personalInfo || {}),
     };
 
@@ -114,6 +116,8 @@ router.put(
     const allowedFields = [
       'title',
       'template',
+      'themeColor',
+      'fontFamily',
       'personalInfo',
       'summary',
       'experience',
