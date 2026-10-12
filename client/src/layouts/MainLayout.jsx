@@ -27,7 +27,7 @@ const MainLayout = () => {
       {/* Navbar */}
       <Navbar onMenuClick={() => setSidebarOpen(true)} />
 
-      <div className="flex relative">
+      <div className="flex relative pt-16">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 

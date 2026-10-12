@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
+import api from '../services/api';
 import {
   Menu,
   Bell,
@@ -13,27 +14,106 @@ import {
   Sun,
   Moon,
   Monitor,
+  X,
+  Loader2,
+  ArrowRight,
+  BookOpen,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 import { trackEvent } from '../services/analytics';
 
 const Navbar = ({ onMenuClick }) => {
+  const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { theme, setTheme } = useSettingsStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const searchContainerRef = useRef(null);
+  const inputRef = useRef(null);
+  const mobileInputRef = useRef(null);
+
+  // Live search debounced fetch
+  useEffect(() => {
+    const trimmed = searchQuery.trim();
+    if (trimmed.length < 2) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const response = await api.get('/questions', {
+          params: { search: trimmed, limit: 5 },
+        });
+        const items = response.data?.data?.questions || response.data?.questions || [];
+        setSearchResults(items);
+        setShowSearchDropdown(true);
+      } catch (err) {
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Close dropdowns when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setShowSearchDropdown(false);
+      }
     };
+
+    const handleKeyDown = event => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault();
+        inputRef.current?.focus();
+        setShowSearchDropdown(true);
+      }
+      if (event.key === 'Escape') {
+        setShowSearchDropdown(false);
+        setDropdownOpen(false);
+        setMobileSearchOpen(false);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
+
+  const handleSearchSubmit = e => {
+    if (e) e.preventDefault();
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+    setShowSearchDropdown(false);
+    setMobileSearchOpen(false);
+    navigate(`/questions?search=${encodeURIComponent(trimmed)}`);
+  };
+
+  const handleSelectResult = item => {
+    setShowSearchDropdown(false);
+    setMobileSearchOpen(false);
+    navigate(`/questions?search=${encodeURIComponent(item.text)}`);
+  };
 
   const handleLogout = () => {
     trackEvent('logout');
@@ -57,8 +137,8 @@ const Navbar = ({ onMenuClick }) => {
   const displayName = user?.firstName || user?.name?.split(' ')[0] || 'User';
 
   return (
-    <header className="bg-white/80 dark:bg-slate-900/85 backdrop-blur-xl border-b border-slate-100/50 dark:border-primary-500/[0.08] sticky top-0 z-40 transition-colors duration-300">
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/60 dark:border-primary-500/[0.08] transition-colors duration-300">
+      <div className="flex items-center justify-between px-4 py-2.5 h-16">
         {/* Left Side */}
         <div className="flex items-center space-x-4">
           <button
@@ -79,24 +159,125 @@ const Navbar = ({ onMenuClick }) => {
           </Link>
         </div>
 
-        {/* Search Bar */}
-        <div className="hidden md:flex flex-1 max-w-md mx-8">
-          <div className="relative w-full group">
+        {/* Desktop Search Bar */}
+        <div className="hidden md:flex flex-1 max-w-lg mx-8 relative" ref={searchContainerRef}>
+          <form onSubmit={handleSearchSubmit} className="relative w-full group">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500 group-focus-within:text-primary-500 transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 group-focus-within:text-primary-500 transition-colors"
               aria-hidden="true"
             />
             <input
+              ref={inputRef}
               type="text"
-              placeholder="Search questions, topics..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onFocus={() => {
+                if (searchQuery.trim().length >= 2) setShowSearchDropdown(true);
+              }}
+              placeholder="Search interview questions, DSA, topics... (⌘K)"
               aria-label="Search questions and topics"
-              className="w-full pl-12 pr-4 py-2.5 bg-slate-100/80 dark:bg-[#0f172a]/80 border border-transparent dark:border-primary-500/10 rounded-xl focus:ring-2 focus:ring-primary-500/50 focus:bg-white dark:focus:bg-[#131c31] focus:border-primary-200 dark:focus:border-primary-500/30 transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 dark:text-slate-200"
+              className="w-full pl-11 pr-20 py-2 bg-slate-100/90 dark:bg-[#0f172a]/90 border border-slate-200/60 dark:border-primary-500/15 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/40 focus:bg-white dark:focus:bg-[#131c31] focus:border-primary-300 dark:focus:border-primary-500/40 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-800 dark:text-slate-100"
             />
-          </div>
+
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+              {isSearching ? (
+                <Loader2 className="w-4 h-4 text-primary-500 animate-spin" />
+              ) : searchQuery ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSearchResults([]);
+                    setShowSearchDropdown(false);
+                  }}
+                  className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-200/60 dark:bg-slate-800 rounded border border-slate-300/40 dark:border-slate-700/60">
+                  ⌘K
+                </kbd>
+              )}
+            </div>
+          </form>
+
+          {/* Autocomplete Results Dropdown */}
+          {showSearchDropdown && searchQuery.trim().length >= 2 && (
+            <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-primary-500/20 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="p-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-400 px-3">
+                <span>QUESTION BANK MATCHES</span>
+                {isSearching && <span>Searching...</span>}
+              </div>
+
+              <div className="max-h-80 overflow-y-auto divide-y divide-slate-100/60 dark:divide-slate-800/60">
+                {searchResults.length > 0 ? (
+                  searchResults.map(q => (
+                    <button
+                      key={q._id || q.id}
+                      type="button"
+                      onClick={() => handleSelectResult(q)}
+                      className="w-full text-left p-3 hover:bg-slate-50 dark:hover:bg-primary-500/10 transition-colors flex items-start gap-3 group"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-primary-50 dark:bg-primary-950 flex items-center justify-center flex-shrink-0 mt-0.5 text-primary-600 dark:text-primary-400">
+                        <BookOpen className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 line-clamp-2">
+                          {q.text}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1 text-xs text-slate-400">
+                          <span className="capitalize px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                            {q.category}
+                          </span>
+                          <span
+                            className={`capitalize text-[11px] font-medium ${
+                              q.difficulty === 'easy'
+                                ? 'text-emerald-500'
+                                : q.difficulty === 'hard'
+                                  ? 'text-rose-500'
+                                  : 'text-amber-500'
+                            }`}
+                          >
+                            {q.difficulty}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  ))
+                ) : !isSearching ? (
+                  <div className="p-4 text-center text-sm text-slate-500">
+                    No questions found matching "{searchQuery}"
+                  </div>
+                ) : null}
+              </div>
+
+              {/* Dropdown Footer: Search all */}
+              <button
+                type="button"
+                onClick={handleSearchSubmit}
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-xs font-semibold text-primary-600 dark:text-primary-400 flex items-center justify-center gap-1.5 transition-colors border-t border-slate-100 dark:border-slate-800"
+              >
+                <span>View all results for "{searchQuery}" in Question Bank</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          {/* Mobile Search Toggle */}
+          <button
+            onClick={() => {
+              setMobileSearchOpen(!mobileSearchOpen);
+              setTimeout(() => mobileInputRef.current?.focus(), 100);
+            }}
+            className="md:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-primary-500/10 text-slate-500 transition-colors"
+            aria-label="Toggle search"
+          >
+            <Search className="w-5 h-5" />
+          </button>
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -232,6 +413,38 @@ const Navbar = ({ onMenuClick }) => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Search Input */}
+      {mobileSearchOpen && (
+        <div className="md:hidden px-4 pb-3 pt-1 border-t border-slate-100 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl">
+          <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              ref={mobileInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search interview questions..."
+              className="w-full pl-10 pr-20 py-2 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
+            />
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <button
+                type="submit"
+                className="px-2.5 py-1 text-xs font-semibold bg-primary-600 text-white rounded-lg shadow-sm"
+              >
+                Go
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileSearchOpen(false)}
+                className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </header>
   );
 };

@@ -46,6 +46,7 @@ const AdminLayout = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [adminSearch, setAdminSearch] = useState('');
 
   // Close dropdowns on route change
   useEffect(() => {
@@ -176,21 +177,29 @@ const AdminLayout = () => {
 
           {/* Center: Search */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <div
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                if (adminSearch.trim()) {
+                  navigate(`/admin/questions?search=${encodeURIComponent(adminSearch.trim())}`);
+                }
+              }}
               className={`relative w-full transition-all duration-200 ${searchFocused ? 'scale-[1.02]' : ''}`}
             >
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
+                value={adminSearch}
+                onChange={e => setAdminSearch(e.target.value)}
                 placeholder="Search users, questions, interviews..."
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
-                className="w-full pl-10 pr-12 py-2.5 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:bg-white dark:focus:bg-slate-700 focus:shadow-lg focus:shadow-primary-500/10 placeholder:text-slate-400 transition-all"
+                className="w-full pl-10 pr-12 py-2.5 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/50 focus:bg-white dark:focus:bg-slate-700 focus:shadow-lg focus:shadow-primary-500/10 placeholder:text-slate-400 transition-all text-slate-800 dark:text-slate-100"
               />
               <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-medium text-slate-400 bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded hidden lg:inline">
                 ⌘K
               </kbd>
-            </div>
+            </form>
           </div>
 
           {/* Right */}

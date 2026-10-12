@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { LoadingCard } from '../components/ui/Spinner';
@@ -33,15 +34,35 @@ import {
 const Questions = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const [searchParams] = useSearchParams();
+
+  const urlSearch = searchParams.get('search') || searchParams.get('q') || '';
+  const urlCategory = searchParams.get('category') || '';
+  const urlDifficulty = searchParams.get('difficulty') || '';
+
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
-    category: '',
-    difficulty: '',
+    category: urlCategory,
+    difficulty: urlDifficulty,
   });
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
   const debouncedSearch = useDebounce(searchTerm, 300);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+
+  // Sync searchTerm & filters with URL search params changes
+  useEffect(() => {
+    const q = searchParams.get('search') || searchParams.get('q') || '';
+    const cat = searchParams.get('category') || '';
+    const diff = searchParams.get('difficulty') || '';
+
+    setSearchTerm(q);
+    setFilters(prev => ({
+      category: cat !== '' ? cat : prev.category,
+      difficulty: diff !== '' ? diff : prev.difficulty,
+    }));
+    setPage(1);
+  }, [searchParams]);
 
   // Fetch saved questions for bookmark status
   const { data: savedQuestionsData } = useQuery({
