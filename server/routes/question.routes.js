@@ -283,63 +283,6 @@ router.get(
 );
 
 /**
- * @route   GET /api/questions/:id
- * @desc    Get question by ID
- * @access  Private
- */
-router.get(
-  '/:id',
-  protect,
-  validateObjectId('id'),
-  asyncHandler(async (req, res) => {
-    const question = await Question.findById(req.params.id);
-
-    if (!question || !question.isActive) {
-      return res.status(404).json({
-        success: false,
-        message: 'Question not found.',
-      });
-    }
-
-    // Increment times asked
-    await question.incrementAskedCount();
-
-    res.status(200).json({
-      success: true,
-      data: { question },
-    });
-  })
-);
-
-/**
- * @route   POST /api/questions
- * @desc    Create new question
- * @access  Private/Admin
- */
-router.post(
-  '/',
-  protect,
-  authorize('admin', 'moderator'),
-  validateQuestion,
-  asyncHandler(async (req, res) => {
-    const questionData = {
-      ...req.body,
-      createdBy: req.user._id,
-      isApproved: req.user.role === 'admin', // Auto-approve for admins
-      aiProvider: 'manual',
-    };
-
-    const question = await Question.create(questionData);
-
-    res.status(201).json({
-      success: true,
-      message: 'Question created successfully.',
-      data: { question },
-    });
-  })
-);
-
-/**
  * @route   GET /api/questions/saved
  * @desc    Get user's saved questions
  * @access  Private
@@ -378,6 +321,84 @@ router.get(
 );
 
 /**
+ * @route   POST /api/questions/saved
+ * @desc    Save a question (alternate route accepting questionId in body)
+ * @access  Private
+ */
+router.post(
+  '/saved',
+  protect,
+  asyncHandler(async (req, res) => {
+    const { questionId, id, notes } = req.body;
+    const targetId = questionId || id;
+    if (!targetId) {
+      return res.status(400).json({ success: false, message: 'Question ID is required' });
+    }
+
+    const question = await Question.findById(targetId);
+    if (!question) {
+      return res.status(404).json({ success: false, message: 'Question not found.' });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const existingIndex = user.savedQuestions?.findIndex(
+      sq => sq.question?.toString() === targetId.toString()
+    );
+
+    if (existingIndex >= 0) {
+      user.savedQuestions[existingIndex].notes = notes || user.savedQuestions[existingIndex].notes;
+    } else {
+      if (!user.savedQuestions) user.savedQuestions = [];
+      user.savedQuestions.push({
+        question: targetId,
+        savedAt: new Date(),
+        notes: notes || '',
+        starred: false,
+      });
+    }
+
+    await user.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+      success: true,
+      message: 'Question saved successfully.',
+    });
+  })
+);
+
+/**
+ * @route   POST /api/questions
+ * @desc    Create new question
+ * @access  Private/Admin
+ */
+router.post(
+  '/',
+  protect,
+  authorize('admin', 'moderator'),
+  validateQuestion,
+  asyncHandler(async (req, res) => {
+    const questionData = {
+      ...req.body,
+      createdBy: req.user._id,
+      isApproved: req.user.role === 'admin', // Auto-approve for admins
+      aiProvider: 'manual',
+    };
+
+    const question = await Question.create(questionData);
+
+    res.status(201).json({
+      success: true,
+      message: 'Question created successfully.',
+      data: { question },
+    });
+  })
+);
+
+/**
  * @route   POST /api/questions/:id/save
  * @desc    Save a question
  * @access  Private
@@ -401,6 +422,12 @@ router.post(
 
     // Add to saved questions
     const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.',
+      });
+    }
 
     // Check if already saved
     const existingIndex = user.savedQuestions?.findIndex(
@@ -417,14 +444,44 @@ router.post(
         question: questionId,
         savedAt: new Date(),
         notes: notes || '',
+        starred: false,
       });
     }
 
-    await user.save();
+    await user.save({ validateBeforeSave: false });
 
     res.status(200).json({
       success: true,
       message: 'Question saved successfully.',
+    });
+  })
+);
+
+/**
+ * @route   GET /api/questions/:id
+ * @desc    Get question by ID
+ * @access  Private
+ */
+router.get(
+  '/:id',
+  protect,
+  validateObjectId('id'),
+  asyncHandler(async (req, res) => {
+    const question = await Question.findById(req.params.id);
+
+    if (!question || !question.isActive) {
+      return res.status(404).json({
+        success: false,
+        message: 'Question not found.',
+      });
+    }
+
+    // Increment times asked
+    await question.incrementAskedCount();
+
+    res.status(200).json({
+      success: true,
+      data: { question },
     });
   })
 );
@@ -466,11 +523,15 @@ router.put(
     const { starred } = req.body;
 
     const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
     const savedQuestion = user.savedQuestions?.find(sq => sq.question?.toString() === questionId);
 
     if (savedQuestion) {
       savedQuestion.starred = starred !== undefined ? starred : !savedQuestion.starred;
-      await user.save();
+      await user.save({ validateBeforeSave: false });
     }
 
     res.status(200).json({

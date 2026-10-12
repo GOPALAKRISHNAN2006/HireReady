@@ -79,6 +79,14 @@ const SavedQuestions = () => {
       count: savedData?.filter(q => q.category === 'dsa').length || 0,
     },
     {
+      id: 'web',
+      label: 'Web Development',
+      icon: Smartphone,
+      count:
+        savedData?.filter(q => q.category === 'web' || q.category === 'web-development').length ||
+        0,
+    },
+    {
       id: 'system-design',
       label: 'System Design',
       icon: Layers,
@@ -112,7 +120,7 @@ const SavedQuestions = () => {
     },
   ];
 
-  // No fake defaults — only show real saved questions from API
+  // Real saved questions from API
   const savedQuestions = savedData?.length > 0 ? savedData : [];
 
   const handleDelete = questionId => {
@@ -126,7 +134,9 @@ const SavedQuestions = () => {
   };
 
   const getCategoryIcon = category => {
-    const cat = categories.find(c => c.id === category);
+    const normalized =
+      category === 'web-development' ? 'web' : category === 'machine-learning' ? 'ml' : category;
+    const cat = categories.find(c => c.id === normalized);
     return cat ? cat.icon : Bookmark;
   };
 
@@ -135,22 +145,37 @@ const SavedQuestions = () => {
       easy: 'bg-green-100 text-green-700',
       medium: 'bg-yellow-100 text-yellow-700',
       hard: 'bg-red-100 text-red-700',
+      expert: 'bg-purple-100 text-purple-700',
     };
     return colors[difficulty] || colors.medium;
   };
 
   const filteredQuestions = savedQuestions.filter(q => {
-    const matchesCategory = activeCategory === 'all' || q.category === activeCategory;
+    const matchesCategory =
+      activeCategory === 'all' ||
+      q.category === activeCategory ||
+      (activeCategory === 'web' && q.category === 'web-development') ||
+      (activeCategory === 'ml' && q.category === 'machine-learning');
+
+    const qText = q.question || q.text || '';
+    const qTags = Array.isArray(q.tags) ? q.tags : [];
+    const searchLower = searchQuery.toLowerCase().trim();
+
     const matchesSearch =
-      searchQuery === '' ||
-      q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      searchLower === '' ||
+      qText.toLowerCase().includes(searchLower) ||
+      qTags.some(t => t.toLowerCase().includes(searchLower));
+
     return matchesCategory && matchesSearch;
   });
 
   const sortedQuestions = [...filteredQuestions].sort((a, b) => {
     if (sortBy === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0);
-    return 0; // Keep original order for 'newest'
+    if (sortBy === 'oldest') {
+      return new Date(a.savedAt || 0) - new Date(b.savedAt || 0);
+    }
+    // Default newest first
+    return new Date(b.savedAt || 0) - new Date(a.savedAt || 0);
   });
 
   return (
@@ -276,7 +301,7 @@ const SavedQuestions = () => {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {question.tags.map((tag, index) => (
+                      {(question.tags || []).map((tag, index) => (
                         <span
                           key={index}
                           className="flex items-center space-x-1 px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg text-xs"
@@ -293,12 +318,20 @@ const SavedQuestions = () => {
                         <span
                           className={`px-2 py-1 rounded-lg text-xs font-medium ${getDifficultyColor(question.difficulty)}`}
                         >
-                          {question.difficulty.charAt(0).toUpperCase() +
-                            question.difficulty.slice(1)}
+                          {(question.difficulty || 'medium').charAt(0).toUpperCase() +
+                            (question.difficulty || 'medium').slice(1)}
                         </span>
                         <span className="flex items-center space-x-1">
                           <Clock className="w-4 h-4" />
-                          <span>{question.savedAt}</span>
+                          <span>
+                            {question.savedAt
+                              ? new Date(question.savedAt).toLocaleDateString(undefined, {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                })
+                              : 'Recently'}
+                          </span>
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
