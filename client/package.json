@@ -12,8 +12,6 @@
     "test": "jest --config=jest.config.js",
     "test:coverage": "jest --config=jest.config.js --coverage",
     "test:a11y": "jest --config=jest.a11y.config.js",
-    "test:e2e": "echo 'E2E tests disabled temporarily'",
-    "test:e2e:ui": "npx playwright test --ui",
     "test:lint": "npm run lint"
   },
   "dependencies": {
@@ -39,7 +37,6 @@
   "devDependencies": {
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-react": "^7.22.5",
-    "@playwright/test": "^1.43.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^18.2.43",

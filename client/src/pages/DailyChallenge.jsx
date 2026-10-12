@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Card, Button, Badge } from '../components/ui';
 import { LoadingCard } from '../components/ui/Spinner';
@@ -24,6 +24,10 @@ import {
   Crown,
   Rocket,
   AlertCircle,
+  Code2,
+  Cpu,
+  Brain,
+  MessageSquare,
 } from 'lucide-react';
 
 const DailyChallenge = () => {
@@ -62,6 +66,19 @@ const DailyChallenge = () => {
     queryFn: async () => {
       try {
         const response = await challengeApi.getLeaderboard({ type: 'streak', limit: 5 });
+        return response.data.data;
+      } catch (e) {
+        return null;
+      }
+    },
+  });
+
+  // Fetch challenge attempt history
+  const { data: historyData } = useQuery({
+    queryKey: ['challenges', 'history'],
+    queryFn: async () => {
+      try {
+        const response = await challengeApi.getHistory({ limit: 5 });
         return response.data.data;
       } catch (e) {
         return null;
@@ -422,15 +439,242 @@ const DailyChallenge = () => {
             </Card>
           )}
 
-          {/* Past Challenges - using empty state since we need API */}
+          {/* Past Challenges / Attempt History */}
           <Card>
             <Card.Header>
-              <Card.Title>Recent Challenges</Card.Title>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                    <Trophy className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+                  </div>
+                  <Card.Title>Recent Challenges History</Card.Title>
+                </div>
+                {historyData?.attempts?.length > 0 && (
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    {historyData.attempts.length} completed
+                  </span>
+                )}
+              </div>
             </Card.Header>
             <Card.Content>
-              <p className="text-center text-slate-500 dark:text-slate-400 py-4">
-                Complete challenges to see your history here!
-              </p>
+              {historyData?.attempts && historyData.attempts.length > 0 ? (
+                <div className="space-y-3">
+                  {historyData.attempts.map(attempt => (
+                    <div
+                      key={attempt._id}
+                      className="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700/60"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                            attempt.isCompleted
+                              ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400'
+                              : 'bg-amber-100 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400'
+                          }`}
+                        >
+                          {attempt.isCompleted ? (
+                            <CheckCircle className="w-5 h-5" />
+                          ) : (
+                            <Clock className="w-5 h-5" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-slate-900 dark:text-white">
+                            {attempt.challenge?.title || 'Daily Challenge'}
+                          </p>
+                          <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                            <span className="capitalize font-medium">
+                              {attempt.challenge?.category || 'General'}
+                            </span>
+                            <span>•</span>
+                            <span>{new Date(attempt.attemptDate).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right flex items-center gap-3">
+                        <div>
+                          <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                            +{attempt.pointsEarned || 0} XP
+                          </p>
+                          <p className="text-xs text-slate-400">Score: {attempt.score || 0}%</p>
+                        </div>
+                        {attempt.challenge?._id && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() =>
+                              navigate(`/daily-challenge/solve/${attempt.challenge._id}`)
+                            }
+                          >
+                            Review
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-6 px-4 bg-slate-50/60 dark:bg-slate-800/30 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <Flame className="w-6 h-6 text-orange-500" />
+                  </div>
+                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">
+                    No Challenges Completed Yet
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-4">
+                    Complete today's challenge to log your first solve, maintain your streak, and
+                    see your history here!
+                  </p>
+                  {canAttempt && !userAttempt?.isCompleted && (
+                    <Button size="sm" onClick={handleSolveChallenge} icon={Play}>
+                      Solve Today's Challenge
+                    </Button>
+                  )}
+                </div>
+              )}
+            </Card.Content>
+          </Card>
+
+          {/* Daily Workout Tracks & Recommended Drills */}
+          <Card>
+            <Card.Header>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/20">
+                    <Zap className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <Card.Title>Daily Practice Drills</Card.Title>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Sharpen key competencies while waiting for tomorrow's challenge
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to="/questions"
+                  className="text-xs font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 flex items-center"
+                >
+                  Question Bank <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                </Link>
+              </div>
+            </Card.Header>
+            <Card.Content>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {[
+                  {
+                    title: 'DSA & Coding Patterns',
+                    desc: 'Arrays, Two-Pointers, Trees & Dynamic Programming',
+                    questions: '150+ Problems',
+                    level: 'Medium',
+                    color: 'from-blue-500 to-indigo-600',
+                    icon: Code2,
+                    link: '/questions',
+                  },
+                  {
+                    title: 'System Design Drills',
+                    desc: 'Microservices, Caching, DB Sharding & Scalability',
+                    questions: '45+ Scenarios',
+                    level: 'Advanced',
+                    color: 'from-purple-500 to-pink-600',
+                    icon: Cpu,
+                    link: '/questions',
+                  },
+                  {
+                    title: 'Behavioral & Leadership',
+                    desc: 'STAR Framework drills for culture and fit interviews',
+                    questions: '60+ Prompts',
+                    level: 'All Levels',
+                    color: 'from-emerald-500 to-teal-600',
+                    icon: MessageSquare,
+                    link: '/lab',
+                  },
+                  {
+                    title: 'Aptitude & Speed Logic',
+                    desc: 'Quantitative puzzles, logic and pattern recognition',
+                    questions: '80+ Drills',
+                    level: 'Fast Pace',
+                    color: 'from-amber-500 to-orange-600',
+                    icon: Brain,
+                    link: '/aptitude',
+                  },
+                ].map(drill => {
+                  const DrillIcon = drill.icon;
+                  return (
+                    <Link
+                      key={drill.title}
+                      to={drill.link}
+                      className="group p-4 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-700/60 rounded-xl border border-slate-100 dark:border-slate-700/60 transition-all flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div
+                            className={`w-9 h-9 rounded-lg bg-gradient-to-br ${drill.color} flex items-center justify-center text-white shadow-md`}
+                          >
+                            <DrillIcon className="w-4 h-4" />
+                          </div>
+                          <Badge size="sm" variant="default">
+                            {drill.level}
+                          </Badge>
+                        </div>
+                        <h4 className="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                          {drill.title}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                          {drill.desc}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-200/60 dark:border-slate-700/60 text-xs">
+                        <span className="text-slate-500 dark:text-slate-400 font-medium">
+                          {drill.questions}
+                        </span>
+                        <span className="font-semibold text-primary-600 dark:text-primary-400 flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+                          Practice <ChevronRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </Card.Content>
+          </Card>
+
+          {/* Streak Boosts & Multiplier Guide */}
+          <Card className="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent border-amber-200/60 dark:border-amber-800/40">
+            <Card.Header>
+              <div className="flex items-center gap-2">
+                <Flame className="w-5 h-5 text-orange-500" />
+                <Card.Title>How Streak XP Multipliers Work</Card.Title>
+              </div>
+            </Card.Header>
+            <Card.Content>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div className="p-3 bg-white/80 dark:bg-slate-800/80 rounded-xl border border-slate-100 dark:border-slate-700">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Days 1 - 3
+                  </p>
+                  <p className="text-lg font-bold text-slate-800 dark:text-slate-200">1.0x XP</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Base Earning</p>
+                </div>
+                <div className="p-3 bg-white/80 dark:bg-slate-800/80 rounded-xl border border-amber-200/60 dark:border-amber-700/60">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                    Days 4 - 7
+                  </p>
+                  <p className="text-lg font-bold text-amber-600 dark:text-amber-400">1.5x XP</p>
+                  <p className="text-[11px] text-amber-500 mt-0.5">+50% Bonus</p>
+                </div>
+                <div className="p-3 bg-white/80 dark:bg-slate-800/80 rounded-xl border border-orange-200/60 dark:border-orange-700/60">
+                  <p className="text-xs text-orange-600 dark:text-orange-400 font-medium">
+                    Days 8 - 14
+                  </p>
+                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">2.0x XP</p>
+                  <p className="text-[11px] text-orange-500 mt-0.5">Double Rewards</p>
+                </div>
+                <div className="p-3 bg-white/80 dark:bg-slate-800/80 rounded-xl border border-rose-200/60 dark:border-rose-700/60">
+                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">Day 15+</p>
+                  <p className="text-lg font-bold text-rose-600 dark:text-rose-400">3.0x XP 🔥</p>
+                  <p className="text-[11px] text-rose-500 mt-0.5">Legendary Status</p>
+                </div>
+              </div>
             </Card.Content>
           </Card>
         </div>

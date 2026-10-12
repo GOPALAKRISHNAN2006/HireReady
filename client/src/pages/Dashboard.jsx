@@ -33,6 +33,10 @@ import {
   Moon,
   Sunrise,
   Coffee,
+  Pencil,
+  Trash2,
+  Check,
+  X,
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -50,6 +54,8 @@ const Dashboard = () => {
         ];
   });
   const [newCheckItem, setNewCheckItem] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState('');
 
   // Save checklist to localStorage
   useEffect(() => {
@@ -66,8 +72,29 @@ const Dashboard = () => {
     setNewCheckItem('');
   };
 
+  const startEditing = item => {
+    setEditingId(item.id);
+    setEditingText(item.text);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingText('');
+  };
+
+  const saveEditing = id => {
+    const trimmed = editingText.trim();
+    if (!trimmed) return;
+    setChecklist(prev => prev.map(item => (item.id === id ? { ...item, text: trimmed } : item)));
+    setEditingId(null);
+    setEditingText('');
+  };
+
   const removeCheckItem = id => {
     setChecklist(prev => prev.filter(item => item.id !== id));
+    if (editingId === id) {
+      cancelEditing();
+    }
   };
 
   // Time-of-day greeting
@@ -181,6 +208,45 @@ const Dashboard = () => {
   const stats = summaryData?.stats || {};
   const recentInterviews = summaryData?.recentInterviews || [];
   const achievements = summaryData?.achievements || [];
+
+  const defaultSkills = useMemo(
+    () => [
+      { name: 'Data Structures', score: 65, color: '#3B82F6' },
+      { name: 'Algorithms', score: 60, color: '#8B5CF6' },
+      { name: 'System Design', score: 55, color: '#EC4899' },
+      { name: 'Problem Solving', score: 70, color: '#F59E0B' },
+      { name: 'Communication', score: 75, color: '#10B981' },
+      { name: 'Behavioral', score: 80, color: '#06B6D4' },
+    ],
+    []
+  );
+
+  const skillsList = useMemo(() => {
+    if (skillData?.skills && skillData.skills.length > 0) {
+      return skillData.skills.map((skill, index) => ({
+        name: skill.categoryName || skill.category || 'Skill',
+        score: skill.currentLevel || 0,
+        color: ['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981', '#06B6D4'][index % 6],
+      }));
+    }
+    if (stats?.averageScore) {
+      const avg = stats.averageScore;
+      return [
+        { name: 'Data Structures', score: Math.min(100, Math.round(avg * 0.95)), color: '#3B82F6' },
+        { name: 'Algorithms', score: Math.min(100, Math.round(avg * 0.9)), color: '#8B5CF6' },
+        { name: 'System Design', score: Math.min(100, Math.round(avg * 0.85)), color: '#EC4899' },
+        { name: 'Problem Solving', score: Math.min(100, Math.round(avg * 1.05)), color: '#F59E0B' },
+        { name: 'Communication', score: Math.min(100, Math.round(avg * 1.02)), color: '#10B981' },
+        { name: 'Behavioral', score: Math.min(100, Math.round(avg * 1.08)), color: '#06B6D4' },
+      ];
+    }
+    return defaultSkills;
+  }, [skillData, stats?.averageScore, defaultSkills]);
+
+  const weakestSkill = useMemo(() => {
+    if (!skillsList || skillsList.length === 0) return null;
+    return [...skillsList].sort((a, b) => a.score - b.score)[0];
+  }, [skillsList]);
 
   const statCards = [
     {
@@ -411,31 +477,123 @@ const Dashboard = () => {
               <div
                 className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500 ease-out"
                 style={{
-                  width: `${(checklist.filter(i => i.done).length / checklist.length) * 100}%`,
+                  width: `${checklist.length > 0 ? (checklist.filter(i => i.done).length / checklist.length) * 100 : 0}%`,
                 }}
               />
             </div>
             <div className="space-y-2">
-              {checklist.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => toggleCheckItem(item.id)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 ${
-                    item.done
-                      ? 'bg-emerald-50 dark:bg-emerald-900/20 line-through text-slate-400 dark:text-slate-500'
-                      : 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  {item.done ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                  ) : (
-                    <Circle className="w-5 h-5 text-slate-300 dark:text-slate-500 flex-shrink-0" />
-                  )}
-                  <span className="text-sm font-medium">{item.text}</span>
-                </button>
-              ))}
+              {checklist.length === 0 ? (
+                <div className="p-4 text-center rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-dashed border-slate-200 dark:border-slate-700">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    No tasks in your checklist. Add one below to get started!
+                  </p>
+                </div>
+              ) : (
+                checklist.map(item => {
+                  const isEditing = editingId === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`group w-full flex items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl transition-all duration-200 ${
+                        item.done
+                          ? 'bg-emerald-50/80 dark:bg-emerald-900/20 text-slate-400 dark:text-slate-500'
+                          : 'bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {isEditing ? (
+                        <div className="flex items-center gap-2 w-full">
+                          <input
+                            type="text"
+                            value={editingText}
+                            onChange={e => setEditingText(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') saveEditing(item.id);
+                              if (e.key === 'Escape') cancelEditing();
+                            }}
+                            autoFocus
+                            placeholder="Edit task..."
+                            className="flex-1 px-3 py-1.5 text-sm border border-primary-500 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => saveEditing(item.id)}
+                            title="Save"
+                            className="p-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex-shrink-0"
+                            aria-label="Save task"
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={cancelEditing}
+                            title="Cancel"
+                            className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors flex-shrink-0"
+                            aria-label="Cancel editing"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => toggleCheckItem(item.id)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                toggleCheckItem(item.id);
+                              }
+                            }}
+                            className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer select-none"
+                          >
+                            {item.done ? (
+                              <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                            ) : (
+                              <Circle className="w-5 h-5 text-slate-300 dark:text-slate-500 flex-shrink-0" />
+                            )}
+                            <span
+                              className={`text-sm font-medium break-words ${
+                                item.done ? 'line-through text-slate-400 dark:text-slate-500' : ''
+                              }`}
+                            >
+                              {item.text}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 transition-opacity flex-shrink-0">
+                            <button
+                              type="button"
+                              onClick={e => {
+                                e.stopPropagation();
+                                startEditing(item);
+                              }}
+                              title="Edit task"
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-primary-600 hover:bg-slate-200/70 dark:hover:bg-slate-600/50 transition-colors"
+                              aria-label="Edit task"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={e => {
+                                e.stopPropagation();
+                                removeCheckItem(item.id);
+                              }}
+                              title="Delete task"
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+                              aria-label="Delete task"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
-            {checklist.every(i => i.done) && (
+            {checklist.length > 0 && checklist.every(i => i.done) && (
               <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-center">
                 <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
                   🎉 All done! You're fully prepared!
@@ -465,8 +623,8 @@ const Dashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Recent Interviews */}
-        <div className="lg:col-span-2">
+        {/* Recent Interviews & Readiness */}
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <Card.Header>
               <div className="flex items-center justify-between">
@@ -525,6 +683,117 @@ const Dashboard = () => {
                   <p className="text-slate-500 dark:text-slate-400 mb-4">No interviews yet</p>
                   <Link to="/interview/setup">
                     <Button size="sm">Start Your First Interview</Button>
+                  </Link>
+                </div>
+              )}
+            </Card.Content>
+          </Card>
+
+          {/* Skill Readiness & Domain Mastery */}
+          <Card>
+            <Card.Header>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-cyan-500/20">
+                    <Radar className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <Card.Title>Interview Readiness & Skills</Card.Title>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Real-time assessment across key evaluation competencies
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary" size="sm" className="capitalize font-semibold">
+                    {skillData?.rank || 'Intermediate'}
+                  </Badge>
+                  <Link
+                    to="/skills"
+                    className="text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 flex items-center"
+                  >
+                    Skill Radar <ChevronRight className="w-4 h-4 ml-0.5" />
+                  </Link>
+                </div>
+              </div>
+            </Card.Header>
+            <Card.Content className="space-y-4">
+              {/* Overall Readiness Banner */}
+              <div className="p-3.5 bg-gradient-to-r from-slate-50 via-primary-50/20 to-cyan-50/20 dark:from-slate-800/60 dark:via-primary-950/20 dark:to-cyan-950/20 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-500 to-cyan-500 text-white flex items-center justify-center font-bold text-base shadow-md shadow-primary-500/20">
+                    {skillData?.overallLevel ||
+                      Math.round(
+                        skillsList.reduce((acc, s) => acc + s.score, 0) / (skillsList.length || 1)
+                      )}
+                    %
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      Overall Readiness Score
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Evaluated from mock performances and problem-solving metrics
+                    </p>
+                  </div>
+                </div>
+                <Link to="/interview/setup">
+                  <Button size="sm" variant="outline" className="text-xs">
+                    Start Mock Test
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Grid of skill progress bars */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {skillsList.map((skill, idx) => (
+                  <div
+                    key={skill.name || idx}
+                    className="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-100 dark:border-slate-700/50 hover:border-slate-200 dark:hover:border-slate-600 transition-all"
+                  >
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="font-semibold text-slate-700 dark:text-slate-200 truncate flex items-center gap-1.5">
+                        <span
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: skill.color }}
+                        />
+                        {skill.name}
+                      </span>
+                      <span className="font-bold text-slate-900 dark:text-white">
+                        {skill.score}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${Math.min(100, Math.max(5, skill.score))}%`,
+                          backgroundColor: skill.color,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Recommended Focus Area */}
+              {weakestSkill && (
+                <div className="flex items-center justify-between p-3 bg-amber-50/80 dark:bg-amber-900/20 border border-amber-200/60 dark:border-amber-800/40 rounded-xl">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Target className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                    <p className="text-xs text-amber-800 dark:text-amber-300 truncate">
+                      <span className="font-semibold">Recommended Focus:</span> Boost{' '}
+                      <span className="font-bold underline decoration-amber-400">
+                        {weakestSkill.name}
+                      </span>{' '}
+                      with targeted questions.
+                    </p>
+                  </div>
+                  <Link
+                    to="/questions"
+                    className="text-xs font-semibold text-amber-700 dark:text-amber-300 hover:underline flex-shrink-0 ml-2"
+                  >
+                    Practice Now &rarr;
                   </Link>
                 </div>
               )}

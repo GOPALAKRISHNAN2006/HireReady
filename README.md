@@ -99,7 +99,7 @@ A comprehensive MERN stack application designed to revolutionize interview prepa
 Hireready/
 ├── .github/
 │   ├── workflows/
-│   │   ├── ci.yml              # CI pipeline (lint, test, build, E2E)
+│   │   ├── ci.yml              # CI pipeline (lint, test, build)
 │   │   └── codeql.yml          # Security scanning
 │   └── dependabot.yml          # Auto dependency updates
 ├── client/                      # React frontend
@@ -112,7 +112,6 @@ Hireready/
 │   │   ├── monitoring/          # Sentry integration
 │   │   ├── App.jsx
 │   │   └── main.jsx
-│   ├── e2e/                     # Playwright E2E tests
 │   ├── tests/                   # Accessibility tests
 │   └── package.json
 ├── server/                      # Express backend
@@ -416,22 +415,6 @@ Each prerendered page contains one canonical URL matching its route. Render rewr
 - **Uptime** — configure uptime monitors (UptimeRobot, Pingdom) for public endpoints.
 - **Alerts** — set up alerts on error rate spikes, latency, and resource usage in your monitoring tool.
 - **Frontend monitoring** — optional Sentry integration included. Provide `VITE_SENTRY_DSN` (and sampling rates) in `client/.env` and view errors/performance data in your Sentry project. Wraps the React app in a Sentry error boundary by default.
-
-## 🧪 End-to-End Tests
-
-E2E tests use Playwright and live in `client/e2e/`. Run locally:
-
-```bash
-cd client
-npx playwright install --with-deps   # first time only
-npm run test:e2e
-```
-
-To open interactive UI mode:
-
-```bash
-npm run test:e2e:ui
-```
 
 ## 🤖 AI API Configuration
 

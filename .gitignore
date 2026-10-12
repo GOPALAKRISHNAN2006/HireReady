@@ -4,6 +4,7 @@ build/
 /.turbo/
 .turbo/
 coverage/
+*.timestamp-*.mjs
 # Environment files (never commit secrets)
 **/.env
 **/.env.*

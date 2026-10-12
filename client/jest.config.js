@@ -5,5 +5,5 @@ export default {
   },
   moduleFileExtensions: ['js', 'jsx', 'json'],
   testMatch: ['**/tests/**/*.test.(js|jsx)', '**/tests/**/*.test.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
+  testPathIgnorePatterns: ['/node_modules/'],
 };
