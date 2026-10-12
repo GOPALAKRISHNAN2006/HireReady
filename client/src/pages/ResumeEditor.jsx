@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 import { Button, Card, Input, Spinner } from '../components/ui';
 import { Save, ArrowLeft, Plus, Trash2, Download } from 'lucide-react';
 
@@ -22,6 +23,7 @@ const ResumeEditor = () => {
       setResume(response.data.data);
     } catch (error) {
       console.error('Error fetching resume:', error);
+      toast.error('Failed to load resume');
       navigate('/resume');
     } finally {
       setLoading(false);
@@ -32,8 +34,10 @@ const ResumeEditor = () => {
     setSaving(true);
     try {
       await api.put(`/resumes/${id}`, resume);
+      toast.success('Resume saved successfully!');
     } catch (error) {
       console.error('Error saving resume:', error);
+      toast.error(error.response?.data?.message || 'Failed to save resume');
     } finally {
       setSaving(false);
     }

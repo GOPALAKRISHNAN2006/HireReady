@@ -246,12 +246,12 @@ router.post(
     session.status = 'completed';
     session.completedAt = new Date();
     session.feedback = {
-      overallScore: Math.round(avgScore),
-      communication: Math.round(avgScore * (0.8 + Math.random() * 0.4)),
-      content: Math.round(avgScore * (0.8 + Math.random() * 0.4)),
-      leadership: Math.round(avgScore * (0.7 + Math.random() * 0.5)),
-      teamwork: Math.round(avgScore * (0.8 + Math.random() * 0.4)),
-      reasoning: Math.round(avgScore * (0.8 + Math.random() * 0.4)),
+      overallScore: Math.min(100, Math.max(0, Math.round(avgScore))),
+      communication: Math.min(100, Math.max(0, Math.round(avgScore * (0.8 + Math.random() * 0.4)))),
+      content: Math.min(100, Math.max(0, Math.round(avgScore * (0.8 + Math.random() * 0.4)))),
+      leadership: Math.min(100, Math.max(0, Math.round(avgScore * (0.7 + Math.random() * 0.5)))),
+      teamwork: Math.min(100, Math.max(0, Math.round(avgScore * (0.8 + Math.random() * 0.4)))),
+      reasoning: Math.min(100, Math.max(0, Math.round(avgScore * (0.8 + Math.random() * 0.4)))),
       strengths: [
         'Good articulation of points',
         'Engaged actively in discussion',

@@ -15,6 +15,7 @@ const AptitudeTest = () => {
   const proctoringEnabled = searchParams.get('proctored') !== 'false';
 
   const [testData, setTestData] = useState(location.state?.testData || null);
+  const [loadingTest, setLoadingTest] = useState(!location.state?.testData);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [answers, setAnswers] = useState({});
@@ -24,11 +25,43 @@ const AptitudeTest = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
 
   useEffect(() => {
+    if (!testData && testId) {
+      setLoadingTest(true);
+      api
+        .get(`/aptitude/${testId}`)
+        .then(res => {
+          const test = res.data.data;
+          if (test && test.responses && test.responses.length > 0) {
+            setTestData({
+              testId: test._id,
+              totalQuestions: test.totalQuestions || test.responses.length,
+              questions: test.responses.map((r, idx) => ({
+                index: idx,
+                question: r.questionText,
+                options: (r.options || []).map(o => (typeof o === 'object' ? o.text : o)),
+              })),
+            });
+          }
+        })
+        .catch(err => console.error('Error restoring test data:', err))
+        .finally(() => setLoadingTest(false));
+    }
+  }, [testData, testId]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setTimeElapsed(prev => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (loadingTest) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   if (!testData) {
     return (

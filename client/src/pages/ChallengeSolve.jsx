@@ -40,13 +40,19 @@ const ChallengeSolve = () => {
     queryKey: ['challenge', id],
     queryFn: async () => {
       // If id is 'today', fetch today's challenge
-      if (id === 'today') {
+      if (!id || id === 'today') {
         const response = await challengeApi.getTodaysChallenge();
         return response.data.data;
       }
       // Otherwise fetch specific challenge
-      const response = await challengeApi.getTodaysChallenge();
-      return response.data.data;
+      try {
+        const response = await challengeApi.getChallenge(id);
+        return response.data.data;
+      } catch (err) {
+        // Fallback to today's challenge if specific challenge fails
+        const response = await challengeApi.getTodaysChallenge();
+        return response.data.data;
+      }
     },
   });
 

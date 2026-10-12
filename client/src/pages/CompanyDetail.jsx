@@ -392,7 +392,7 @@ const CompanyDetail = () => {
     },
   };
 
-  const company = companies[companyId];
+  const company = companies[companyId?.toLowerCase()];
 
   if (!company) {
     return (

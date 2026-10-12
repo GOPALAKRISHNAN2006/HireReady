@@ -2,7 +2,7 @@
  * ===========================================
  * Communication Assessment Routes
  * ===========================================
- * 
+ *
  * API endpoints for communication skills assessment.
  */
 
@@ -18,27 +18,21 @@ const { protect } = require('../middleware/auth.middleware');
  */
 router.post('/assess', protect, async (req, res) => {
   try {
-    const {
-      questionId,
-      questionText,
-      transcript,
-      audioFeatures,
-      interviewId,
-      assessmentType
-    } = req.body;
+    const { questionId, questionText, transcript, audioFeatures, interviewId, assessmentType } =
+      req.body;
 
     // Validation
     if (!questionId || !questionText || !transcript) {
       return res.status(400).json({
         success: false,
-        message: 'Question ID, question text, and transcript are required'
+        message: 'Question ID, question text, and transcript are required',
       });
     }
 
     if (transcript.length < 10) {
       return res.status(400).json({
         success: false,
-        message: 'Transcript is too short for meaningful assessment'
+        message: 'Transcript is too short for meaningful assessment',
       });
     }
 
@@ -49,20 +43,19 @@ router.post('/assess', protect, async (req, res) => {
       questionText,
       transcript,
       audioFeatures,
-      assessmentType
+      assessmentType,
     });
 
     res.json({
       success: true,
-      data: result
+      data: result,
     });
-
   } catch (error) {
     console.error('Communication assessment error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to perform communication assessment',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -79,7 +72,7 @@ router.post('/batch-assess', protect, async (req, res) => {
     if (!responses || !Array.isArray(responses) || responses.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'Responses array is required'
+        message: 'Responses array is required',
       });
     }
 
@@ -91,7 +84,7 @@ router.post('/batch-assess', protect, async (req, res) => {
       grammar_vocabulary: 0,
       pronunciation: 0,
       tone_confidence: 0,
-      question_relevance: 0
+      question_relevance: 0,
     };
 
     // Process each response
@@ -108,12 +101,12 @@ router.post('/batch-assess', protect, async (req, res) => {
           questionText: response.questionText,
           transcript: response.transcript,
           audioFeatures: response.audioFeatures,
-          assessmentType
+          assessmentType,
         });
 
         results.push(result);
         totalScore += result.overall_score;
-        
+
         Object.keys(aggregatedSubscores).forEach(key => {
           aggregatedSubscores[key] += result.subscores[key];
         });
@@ -125,25 +118,24 @@ router.post('/batch-assess', protect, async (req, res) => {
     // Calculate averages
     const count = results.length;
     const averageScore = count > 0 ? Math.round((totalScore / count) * 10) / 10 : 0;
-    
+
     Object.keys(aggregatedSubscores).forEach(key => {
-      aggregatedSubscores[key] = count > 0 
-        ? Math.round((aggregatedSubscores[key] / count) * 10) / 10 
-        : 0;
+      aggregatedSubscores[key] =
+        count > 0 ? Math.round((aggregatedSubscores[key] / count) * 10) / 10 : 0;
     });
 
     // Aggregate strengths and improvements
     const allStrengths = results.flatMap(r => r.strengths);
     const allImprovements = results.flatMap(r => r.improvements);
-    
+
     // Get unique and most common feedback
     const strengthCounts = {};
     const improvementCounts = {};
-    
+
     allStrengths.forEach(s => {
       strengthCounts[s] = (strengthCounts[s] || 0) + 1;
     });
-    
+
     allImprovements.forEach(i => {
       improvementCounts[i] = (improvementCounts[i] || 0) + 1;
     });
@@ -168,17 +160,16 @@ router.post('/batch-assess', protect, async (req, res) => {
           totalResponses: count,
           topStrengths,
           topImprovements,
-          overallFeedback: generateOverallFeedback(averageScore, aggregatedSubscores)
-        }
-      }
+          overallFeedback: generateOverallFeedback(averageScore, aggregatedSubscores),
+        },
+      },
     });
-
   } catch (error) {
     console.error('Batch assessment error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to perform batch assessment',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -195,7 +186,7 @@ router.get('/assessment/:id', protect, async (req, res) => {
     if (!assessment) {
       return res.status(404).json({
         success: false,
-        message: 'Assessment not found'
+        message: 'Assessment not found',
       });
     }
 
@@ -203,21 +194,20 @@ router.get('/assessment/:id', protect, async (req, res) => {
     if (assessment.user._id.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({
         success: false,
-        message: 'Access denied'
+        message: 'Access denied',
       });
     }
 
     res.json({
       success: true,
-      data: assessment.getFormattedResult()
+      data: assessment.getFormattedResult(),
     });
-
   } catch (error) {
     console.error('Get assessment error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch assessment',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -231,30 +221,26 @@ router.get('/history', protect, async (req, res) => {
   try {
     const { limit = 20, skip = 0, type } = req.query;
 
-    const assessments = await CommunicationAssessmentService.getUserAssessments(
-      req.user.id,
-      { 
-        limit: parseInt(limit), 
-        skip: parseInt(skip),
-        assessmentType: type 
-      }
-    );
+    const assessments = await CommunicationAssessmentService.getUserAssessments(req.user.id, {
+      limit: parseInt(limit),
+      skip: parseInt(skip),
+      assessmentType: type,
+    });
 
     res.json({
       success: true,
       data: assessments.map(a => a.getFormattedResult()),
       pagination: {
         limit: parseInt(limit),
-        skip: parseInt(skip)
-      }
+        skip: parseInt(skip),
+      },
     });
-
   } catch (error) {
     console.error('Get history error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch assessment history',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -274,8 +260,8 @@ router.get('/stats', protect, async (req, res) => {
         success: true,
         data: {
           hasData: false,
-          message: 'No assessments found. Complete an interview to see your communication stats.'
-        }
+          message: 'No assessments found. Complete an interview to see your communication stats.',
+        },
       });
     }
 
@@ -286,12 +272,16 @@ router.get('/stats', protect, async (req, res) => {
     else if (averages.overall >= 4) level = 'average';
 
     // Find strongest and weakest areas
-    const subscoreEntries = Object.entries(averages)
-      .filter(([key]) => key !== 'overall' && key !== 'totalAssessments');
-    
+    const subscoreEntries = Object.entries(averages).filter(
+      ([key]) => key !== 'overall' && key !== 'totalAssessments'
+    );
+
     subscoreEntries.sort((a, b) => b[1] - a[1]);
-    const strongest = subscoreEntries[0];
-    const weakest = subscoreEntries[subscoreEntries.length - 1];
+    const strongest = subscoreEntries[0] || ['overall', averages.overall || 0];
+    const weakest = subscoreEntries[subscoreEntries.length - 1] || [
+      'overall',
+      averages.overall || 0,
+    ];
 
     res.json({
       success: true,
@@ -302,22 +292,21 @@ router.get('/stats', protect, async (req, res) => {
         totalAssessments: averages.totalAssessments,
         strongestArea: {
           name: formatSubscoreName(strongest[0]),
-          score: strongest[1]
+          score: strongest[1],
         },
         weakestArea: {
           name: formatSubscoreName(weakest[0]),
-          score: weakest[1]
+          score: weakest[1],
         },
-        trends
-      }
+        trends,
+      },
     });
-
   } catch (error) {
     console.error('Get stats error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch communication stats',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -330,11 +319,11 @@ router.get('/stats', protect, async (req, res) => {
 router.get('/interview/:interviewId', protect, async (req, res) => {
   try {
     const CommunicationAssessment = require('../models/CommunicationAssessment.model');
-    
+
     const assessments = await CommunicationAssessment.find({
       interview: req.params.interviewId,
       user: req.user.id,
-      status: 'completed'
+      status: 'completed',
     }).sort({ createdAt: 1 });
 
     if (assessments.length === 0) {
@@ -342,8 +331,8 @@ router.get('/interview/:interviewId', protect, async (req, res) => {
         success: true,
         data: {
           hasAssessments: false,
-          message: 'No communication assessments found for this interview'
-        }
+          message: 'No communication assessments found for this interview',
+        },
       });
     }
 
@@ -354,7 +343,7 @@ router.get('/interview/:interviewId', protect, async (req, res) => {
       clarity_structure: 0,
       grammar_vocabulary: 0,
       pronunciation: 0,
-      tone_confidence: 0
+      tone_confidence: 0,
     };
 
     assessments.forEach(a => {
@@ -366,7 +355,7 @@ router.get('/interview/:interviewId', protect, async (req, res) => {
 
     const count = assessments.length;
     const averageScore = Math.round((totalScore / count) * 10) / 10;
-    
+
     Object.keys(aggregatedSubscores).forEach(key => {
       aggregatedSubscores[key] = Math.round((aggregatedSubscores[key] / count) * 10) / 10;
     });
@@ -379,17 +368,16 @@ router.get('/interview/:interviewId', protect, async (req, res) => {
         summary: {
           averageScore,
           averageSubscores: aggregatedSubscores,
-          totalQuestions: count
-        }
-      }
+          totalQuestions: count,
+        },
+      },
     });
-
   } catch (error) {
     console.error('Get interview assessments error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch interview assessments',
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -401,7 +389,7 @@ function formatSubscoreName(key) {
     clarity_structure: 'Clarity & Structure',
     grammar_vocabulary: 'Grammar & Vocabulary',
     pronunciation: 'Pronunciation',
-    tone_confidence: 'Tone & Confidence'
+    tone_confidence: 'Tone & Confidence',
   };
   return names[key] || key;
 }
@@ -409,7 +397,7 @@ function formatSubscoreName(key) {
 // Helper function to generate overall feedback
 function generateOverallFeedback(score, subscores) {
   let feedback = '';
-  
+
   if (score >= 8) {
     feedback = 'Outstanding communication skills demonstrated across all responses. ';
   } else if (score >= 6) {
@@ -421,10 +409,10 @@ function generateOverallFeedback(score, subscores) {
   }
 
   // Find the weakest area
-  const weakest = Object.entries(subscores)
-    .sort((a, b) => a[1] - b[1])[0];
-  
-  feedback += `Focus on improving ${formatSubscoreName(weakest[0])} for the best results.`;
+  const sortedSubscores = Object.entries(subscores || {}).sort((a, b) => a[1] - b[1]);
+  if (sortedSubscores.length > 0) {
+    feedback += `Focus on improving ${formatSubscoreName(sortedSubscores[0][0])} for the best results.`;
+  }
 
   return feedback;
 }

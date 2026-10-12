@@ -162,16 +162,27 @@ const DailyChallenge = () => {
 
   // Get leaderboard from API
   const leaderboard =
-    leaderboardData?.leaderboard?.map(entry => ({
-      rank: entry.rank,
-      name: entry.user
-        ? `${entry.user.firstName} ${entry.user.lastName?.charAt(0) || ''}.`
-        : 'User',
-      streak: entry.currentStreak,
-      avatar:
-        entry.user?.avatar ||
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(entry.user?.firstName || 'U')}`,
-    })) || [];
+    leaderboardData?.leaderboard?.map(entry => {
+      const user = entry.user;
+      let displayName = 'User';
+      if (user) {
+        if (user.firstName) {
+          displayName =
+            `${user.firstName}${user.lastName ? ' ' + user.lastName.charAt(0) + '.' : ''}`.trim();
+        } else if (user.name) {
+          displayName = user.name;
+        } else if (user.username) {
+          displayName = user.username;
+        }
+      }
+      return {
+        rank: entry.rank,
+        name: displayName,
+        streak: entry.currentStreak || 0,
+        avatar:
+          user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}`,
+      };
+    }) || [];
 
   // Loading state
   if (challengeLoading || streakLoading) {

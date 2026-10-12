@@ -21,6 +21,9 @@ export const challengeApi = {
   // Get today's challenge
   getTodaysChallenge: () => api.get('/challenges/today'),
 
+  // Get specific challenge by id
+  getChallenge: id => api.get(`/challenges/${id}`),
+
   // Get user streak
   getStreak: () => api.get('/challenges/streak'),
 

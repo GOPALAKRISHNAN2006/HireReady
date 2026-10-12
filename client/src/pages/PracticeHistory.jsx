@@ -119,8 +119,13 @@ const PracticeHistory = () => {
 
   const filteredHistory = history.filter(item => {
     if (search) {
-      const searchLower = search.toLowerCase();
-      return item.category?.toLowerCase().includes(searchLower);
+      const searchLower = search.toLowerCase().trim();
+      return (
+        item.category?.toLowerCase().includes(searchLower) ||
+        item.title?.toLowerCase().includes(searchLower) ||
+        item.difficulty?.toLowerCase().includes(searchLower) ||
+        item.type?.toLowerCase().includes(searchLower)
+      );
     }
     return true;
   });
