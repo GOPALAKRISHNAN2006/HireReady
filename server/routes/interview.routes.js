@@ -59,12 +59,68 @@ router.post(
     };
     const mappedCategory = categoryMap[category] || category;
 
-    // Get random questions based on category and difficulty
-    let questions = await Question.getRandomQuestions(
-      mappedCategory === 'mixed' ? null : mappedCategory,
-      difficulty,
-      totalQuestions
-    );
+    // Number of questions requested by student
+    const targetCount = parseInt(totalQuestions) || 5;
+
+    // Build category query filter
+    let categoryFilter = null;
+    if (mappedCategory && mappedCategory !== 'mixed' && mappedCategory !== 'general') {
+      if (mappedCategory === 'web' || mappedCategory === 'web-development') {
+        categoryFilter = { $in: ['web', 'web-development'] };
+      } else if (mappedCategory === 'ml' || mappedCategory === 'machine-learning') {
+        categoryFilter = { $in: ['ml', 'machine-learning'] };
+      } else {
+        categoryFilter = mappedCategory;
+      }
+    }
+
+    const baseQuery = {
+      isActive: { $ne: false },
+      isApproved: { $ne: false },
+    };
+
+    // Stage 1: Get questions matching student's chosen category AND difficulty
+    const primaryQuery = { ...baseQuery };
+    if (categoryFilter) primaryQuery.category = categoryFilter;
+    if (difficulty) primaryQuery.difficulty = difficulty;
+
+    let questions = await Question.aggregate([
+      { $match: primaryQuery },
+      { $sample: { size: targetCount } },
+    ]);
+
+    // Stage 2: If fewer than targetCount, backfill from SAME category with other difficulty levels
+    if (questions.length < targetCount && categoryFilter) {
+      const selectedIds = questions.map(q => q._id);
+      const needed = targetCount - questions.length;
+      const additionalFromCategory = await Question.aggregate([
+        {
+          $match: {
+            ...baseQuery,
+            category: categoryFilter,
+            _id: { $nin: selectedIds },
+          },
+        },
+        { $sample: { size: needed } },
+      ]);
+      questions = [...questions, ...additionalFromCategory];
+    }
+
+    // Stage 3: If STILL fewer than targetCount (e.g. general category), backfill from other active questions
+    if (questions.length < targetCount) {
+      const selectedIds = questions.map(q => q._id);
+      const needed = targetCount - questions.length;
+      const additionalGeneral = await Question.aggregate([
+        {
+          $match: {
+            ...baseQuery,
+            _id: { $nin: selectedIds },
+          },
+        },
+        { $sample: { size: needed } },
+      ]);
+      questions = [...questions, ...additionalGeneral];
+    }
 
     // Fallback questions if no database questions exist - create them in DB
     if (questions.length === 0) {
@@ -499,7 +555,7 @@ router.post(
       mode,
       targetRole,
       targetCompany,
-      timeLimitMinutes,
+      timeLimitMinutes: timeLimitMinutes ? parseInt(timeLimitMinutes) : null,
       responses: questions.map(q => ({
         question: q._id,
         questionText: q.text,

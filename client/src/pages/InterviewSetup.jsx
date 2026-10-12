@@ -124,11 +124,13 @@ const InterviewSetup = () => {
 
   const questionCounts = [5, 10, 15, 20];
   const timeLimits = [
-    { value: null, label: 'No Limit', icon: '♾️' },
+    { value: 10, label: '10 min', icon: '⏱️' },
     { value: 15, label: '15 min', icon: '⚡' },
-    { value: 30, label: '30 min', icon: '⏱️' },
-    { value: 45, label: '45 min', icon: '🕐' },
-    { value: 60, label: '60 min', icon: '🕕' },
+    { value: 20, label: '20 min', icon: '⏳' },
+    { value: 30, label: '30 min', icon: '🕐' },
+    { value: 45, label: '45 min', icon: '🕕' },
+    { value: 60, label: '60 min', icon: '🎯' },
+    { value: null, label: 'No Limit', icon: '♾️' },
   ];
 
   // Estimated time calculation
@@ -392,7 +394,7 @@ const InterviewSetup = () => {
                 </Card.Title>
               </Card.Header>
               <Card.Content>
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                   {timeLimits.map(time => (
                     <button
                       key={time.label}

@@ -485,7 +485,7 @@ const Interview = () => {
                       ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 animate-pulse'
                       : timeRemaining < 600
                         ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/30'
-                        : 'bg-slate-100 text-slate-700'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-sm'
                   }`}
                 >
                   <Clock className="w-5 h-5" />
