@@ -471,6 +471,29 @@ function findCuratedAnswer(questionText = '') {
   return null;
 }
 
+try {
+  const { additionalQuestions } = require('../seeds/additionalQuestions');
+  const { additionalBatch2 } = require('../seeds/additionalBatch2');
+  const allBatches = [
+    ...(Array.isArray(additionalQuestions) ? additionalQuestions : []),
+    ...(Array.isArray(additionalBatch2) ? additionalBatch2 : []),
+  ];
+
+  for (const q of allBatches) {
+    const k = normalizeKey(q.text);
+    if (!curatedAnswersMap[k]) {
+      curatedAnswersMap[k] = {
+        expectedAnswer: q.expectedAnswer,
+        keyPoints: q.keyPoints || [],
+        hints: q.hints || [],
+        followUpQuestions: q.followUpQuestions || [],
+      };
+    }
+  }
+} catch (e) {
+  // non-blocking
+}
+
 module.exports = {
   curatedAnswersMap,
   findCuratedAnswer,

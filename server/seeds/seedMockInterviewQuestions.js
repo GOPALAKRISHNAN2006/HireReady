@@ -11,6 +11,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Question = require('../models/Question.model');
+const { additionalQuestions } = require('./additionalQuestions');
+const { additionalBatch2 } = require('./additionalBatch2');
 
 const questionsData = [
   // ==========================================
@@ -1231,7 +1233,9 @@ async function seedMockQuestions() {
     let insertedCount = 0;
     let skippedCount = 0;
 
-    for (const q of questionsData) {
+    const allQuestions = [...questionsData, ...additionalQuestions, ...additionalBatch2];
+
+    for (const q of allQuestions) {
       const exists = await Question.findOne({ text: q.text });
       if (!exists) {
         await Question.create({
