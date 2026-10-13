@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -22,6 +22,8 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { RESUME_TEMPLATES, SAMPLE_RESUMES, THEME_COLORS } from '../constants/resumeTemplates';
+import ResumePreview from '../components/resume/ResumePreview';
+import { downloadResumeAsPdf } from '../utils/pdfExport';
 
 const calculateAtsScore = resume => {
   if (!resume) return 0;
@@ -54,6 +56,33 @@ const ResumeBuilder = () => {
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [exportingId, setExportingId] = useState(null);
+  const [exportingResume, setExportingResume] = useState(null);
+  const exportRef = useRef(null);
+
+  const handleDownloadCardPdf = (e, r) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setExportingId(r._id);
+    setExportingResume(r);
+
+    // Allow DOM to mount the preview element
+    setTimeout(async () => {
+      try {
+        if (exportRef.current) {
+          const filename = `${r.personalInfo?.fullName || r.title || 'Resume'}_Resume`;
+          await downloadResumeAsPdf(exportRef.current, filename);
+        } else {
+          toast.error('Could not prepare PDF element for download');
+        }
+      } catch (err) {
+        console.error('Card PDF download error:', err);
+      } finally {
+        setExportingId(null);
+        setExportingResume(null);
+      }
+    }, 150);
+  };
 
   useEffect(() => {
     fetchResumes();
@@ -414,6 +443,16 @@ const ResumeBuilder = () => {
                     </Link>
                     <Button
                       size="sm"
+                      variant="outline"
+                      onClick={e => handleDownloadCardPdf(e, resume)}
+                      isLoading={exportingId === resume._id}
+                      title="Download A4 PDF"
+                      className="px-2.5 text-slate-700 dark:text-slate-200 hover:text-primary-600 hover:border-primary-400"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </Button>
+                    <Button
+                      size="sm"
                       variant="ghost"
                       onClick={() => duplicateResume(resume._id)}
                       title="Duplicate"
@@ -436,6 +475,22 @@ const ResumeBuilder = () => {
           </div>
         )}
       </div>
+
+      {/* Offscreen Resume Preview for card-level one-click PDF export */}
+      {exportingResume && (
+        <div
+          style={{
+            position: 'fixed',
+            left: '-99999px',
+            top: 0,
+            zIndex: -99999,
+            opacity: 0,
+            pointerEvents: 'none',
+          }}
+        >
+          <ResumePreview ref={exportRef} resume={exportingResume} />
+        </div>
+      )}
 
       {/* ATS Guidelines card */}
       <div className="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200/70 dark:border-slate-800">

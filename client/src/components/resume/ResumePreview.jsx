@@ -135,7 +135,7 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-3">
             {experience.map((exp, idx) => (
-              <div key={idx} className="space-y-1">
+              <div key={idx} className="space-y-1 break-inside-avoid print:break-inside-avoid">
                 <div className="flex items-start justify-between text-xs">
                   <div>
                     <span className="font-bold text-slate-900">{exp.position || 'Role'}</span>
@@ -205,7 +205,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-2">
             {projects.map((proj, idx) => (
-              <div key={idx} className="text-xs space-y-0.5">
+              <div
+                key={idx}
+                className="text-xs space-y-0.5 break-inside-avoid print:break-inside-avoid"
+              >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-900">{proj.name}</span>
                   {proj.link && (
@@ -242,7 +245,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-2">
             {education.map((edu, idx) => (
-              <div key={idx} className="flex items-start justify-between text-xs">
+              <div
+                key={idx}
+                className="flex items-start justify-between text-xs break-inside-avoid print:break-inside-avoid"
+              >
                 <div>
                   <span className="font-bold text-slate-900">{edu.degree}</span>
                   {edu.field && <span> in {edu.field}</span>}
@@ -270,7 +276,7 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs">
             {certifications.map((cert, idx) => (
-              <div key={idx}>
+              <div key={idx} className="break-inside-avoid print:break-inside-avoid">
                 <span className="font-semibold text-slate-900">{cert.name}</span>
                 {cert.issuer && <span className="text-slate-500"> — {cert.issuer}</span>}
               </div>
@@ -329,7 +335,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-2.5 pt-1">
             {experience.map((exp, idx) => (
-              <div key={idx} className="space-y-1 text-xs">
+              <div
+                key={idx}
+                className="space-y-1 text-xs break-inside-avoid print:break-inside-avoid"
+              >
                 <div className="flex justify-between font-bold">
                   <span>
                     {exp.position} <span className="font-normal">at {exp.company}</span>
@@ -358,7 +367,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-2 pt-1">
             {education.map((edu, idx) => (
-              <div key={idx} className="flex justify-between text-xs">
+              <div
+                key={idx}
+                className="flex justify-between text-xs break-inside-avoid print:break-inside-avoid"
+              >
                 <div>
                   <span className="font-bold">{edu.institution}</span>
                   <p className="text-slate-700">
@@ -383,7 +395,7 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-1 pt-1 text-xs">
             {skills.map((cat, idx) => (
-              <div key={idx}>
+              <div key={idx} className="break-inside-avoid print:break-inside-avoid">
                 <span className="font-bold">{cat.category}: </span>
                 <span className="text-slate-700">{(cat.items || []).join(', ')}</span>
               </div>
@@ -400,7 +412,7 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
           </h2>
           <div className="space-y-2 pt-1 text-xs">
             {projects.map((proj, idx) => (
-              <div key={idx}>
+              <div key={idx} className="break-inside-avoid print:break-inside-avoid">
                 <div className="flex justify-between font-bold">
                   <span>{proj.name}</span>
                   {proj.link && <span className="font-normal text-slate-500">{proj.link}</span>}
@@ -550,7 +562,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
             </h2>
             <div className="space-y-3 pt-1">
               {experience.map((exp, idx) => (
-                <div key={idx} className="space-y-1 text-xs">
+                <div
+                  key={idx}
+                  className="space-y-1 text-xs break-inside-avoid print:break-inside-avoid"
+                >
                   <div className="flex justify-between items-baseline">
                     <span className="font-bold text-slate-900">
                       {exp.position}{' '}
@@ -583,7 +598,10 @@ const ResumePreview = forwardRef(({ resume, scale = 1 }, ref) => {
             </h2>
             <div className="space-y-2.5 pt-1">
               {projects.map((proj, idx) => (
-                <div key={idx} className="space-y-0.5 text-xs">
+                <div
+                  key={idx}
+                  className="space-y-0.5 text-xs break-inside-avoid print:break-inside-avoid"
+                >
                   <div className="flex justify-between items-baseline font-bold">
                     <span className="text-slate-900">{proj.name}</span>
                     {proj.link && (

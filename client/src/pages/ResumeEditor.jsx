@@ -30,8 +30,13 @@ import {
   Award,
   User,
   Sliders,
+  CheckCircle2,
+  AlertCircle,
+  X,
+  ExternalLink,
 } from 'lucide-react';
 import ResumePreview from '../components/resume/ResumePreview';
+import { downloadResumeAsPdf, printResumeDocument } from '../utils/pdfExport';
 import {
   THEME_COLORS,
   FONT_OPTIONS,
@@ -91,6 +96,10 @@ const ResumeEditor = () => {
   const [activeSection, setActiveSection] = useState('personal');
   const [viewMode, setViewMode] = useState('split'); // 'split' | 'edit' | 'preview'
   const [previewZoom, setPreviewZoom] = useState(0.85);
+  const [exportingPdf, setExportingPdf] = useState(false);
+  const [analyzingAi, setAnalyzingAi] = useState(false);
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [aiFeedback, setAiFeedback] = useState(null);
 
   useEffect(() => {
     fetchResume();
@@ -293,8 +302,45 @@ const ResumeEditor = () => {
     toast.success('Resume copied to clipboard for ATS application forms!');
   };
 
+  const handleDownloadPdf = async () => {
+    if (!printRef.current) {
+      toast.error('Resume preview is not ready yet');
+      return;
+    }
+    setExportingPdf(true);
+    try {
+      const filename = `${resume.personalInfo?.fullName || resume.title || 'Resume'}_Resume`;
+      await downloadResumeAsPdf(printRef.current, filename);
+    } catch (err) {
+      console.error('Download PDF error:', err);
+    } finally {
+      setExportingPdf(false);
+    }
+  };
+
   const handlePrint = () => {
-    window.print();
+    printResumeDocument();
+  };
+
+  const handleAiReview = async () => {
+    setAnalyzingAi(true);
+    setAiModalOpen(true);
+    try {
+      // Save current state first so server evaluates latest edits
+      await api.put(`/resumes/${id}`, resume);
+      const res = await api.post(`/resumes/${id}/analyze`, {
+        targetRole: resume.personalInfo?.jobTitle || 'Software Engineer',
+      });
+      if (res.data?.data) {
+        setAiFeedback(res.data.data);
+        toast.success('AI Resume Analysis complete!');
+      }
+    } catch (err) {
+      console.error('AI Review error:', err);
+      toast.error('AI analysis encountered an error. Please try again.');
+    } finally {
+      setAnalyzingAi(false);
+    }
   };
 
   if (loading) {
@@ -342,13 +388,32 @@ const ResumeEditor = () => {
 
   return (
     <div className="space-y-6 animate-in pb-12">
-      {/* Printable Style Sheet injection */}
+      {/* High-Precision Printable Style Sheet injection */}
       <style>{`
         @media print {
+          @page {
+            size: A4 portrait;
+            margin: 10mm 8mm;
+          }
+          html, body {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
           body * {
             visibility: hidden !important;
           }
-          #printable-resume, #printable-resume * {
+          #resume-preview-panel,
+          #resume-preview-panel * {
+            display: block !important;
+            visibility: visible !important;
+          }
+          #printable-resume,
+          #printable-resume * {
             visibility: visible !important;
           }
           #printable-resume {
@@ -356,10 +421,16 @@ const ResumeEditor = () => {
             left: 0 !important;
             top: 0 !important;
             width: 100% !important;
+            max-width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
             box-shadow: none !important;
+            border: none !important;
             transform: none !important;
+            background: #ffffff !important;
+          }
+          .no-print {
+            display: none !important;
           }
         }
       `}</style>
@@ -428,31 +499,60 @@ const ResumeEditor = () => {
             </button>
           </div>
 
+          {/* AI Review */}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleAiReview}
+            isLoading={analyzingAi}
+            title="Get AI critique, missing keywords, and suggestions"
+            className="text-xs gap-1.5 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/40"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+            <span className="hidden sm:inline">AI Review</span>
+          </Button>
+
+          {/* Copy Plain Text */}
           <Button
             size="sm"
             variant="outline"
             onClick={copyPlainText}
-            title="Copy plain text for job applications"
+            title="Copy plain text for ATS application forms"
             className="text-xs gap-1"
           >
             <Copy className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Copy Text</span>
+            <span className="hidden md:inline">Copy Text</span>
           </Button>
 
+          {/* Print / System PDF */}
           <Button
             size="sm"
             variant="outline"
             onClick={handlePrint}
-            title="Print or Save as PDF"
+            title="Open browser print dialog or Save to PDF"
             className="text-xs gap-1 text-slate-700 dark:text-slate-200"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Export PDF</span>
+            <span className="hidden sm:inline">Print</span>
           </Button>
 
+          {/* Direct Download PDF Button */}
           <Button
             size="sm"
             variant="primary"
+            onClick={handleDownloadPdf}
+            isLoading={exportingPdf}
+            title="Directly download high-resolution A4 PDF"
+            className="text-xs gap-1.5 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white font-semibold shadow-md shadow-primary-500/20"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Download PDF</span>
+          </Button>
+
+          {/* Save Button */}
+          <Button
+            size="sm"
+            variant="outline"
             onClick={() => saveResume(true)}
             isLoading={saving}
             className="text-xs gap-1"
@@ -1127,20 +1227,50 @@ const ResumeEditor = () => {
                   </div>
                 </div>
 
-                {/* Backup export */}
-                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-                      JSON Resume Backup
-                    </p>
-                    <p className="text-[11px] text-slate-400">
-                      Download your structured resume for portability
-                    </p>
+                {/* Export & Portability Options */}
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                    Export & Share Options
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-2.5">
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={handleDownloadPdf}
+                      isLoading={exportingPdf}
+                      className="text-xs gap-1.5 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 text-white font-semibold"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Download A4 PDF
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handlePrint}
+                      className="text-xs gap-1.5"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      Print / System PDF
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={copyPlainText}
+                      className="text-xs gap-1.5"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      Copy Plain Text
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={exportAsJson}
+                      className="text-xs gap-1.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Download JSON
+                    </Button>
                   </div>
-                  <Button size="sm" variant="outline" onClick={exportAsJson} className="text-xs">
-                    <Download className="w-3.5 h-3.5 mr-1" />
-                    Download JSON
-                  </Button>
                 </div>
               </div>
             )}
@@ -1151,6 +1281,7 @@ const ResumeEditor = () => {
         {/* RIGHT PANE: Live A4 Document Preview (xl:col-span-6)     */}
         {/* ======================================================== */}
         <div
+          id="resume-preview-panel"
           className={`space-y-3 ${
             viewMode === 'edit' ? 'hidden xl:block xl:col-span-6' : 'xl:col-span-6'
           }`}
@@ -1198,6 +1329,166 @@ const ResumeEditor = () => {
           </div>
         </div>
       </div>
+
+      {/* AI Resume Review Modal */}
+      {aiModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                    AI Resume Critique & Analysis
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Target Role:{' '}
+                    <span className="font-semibold text-slate-700 dark:text-slate-300">
+                      {resume.personalInfo?.jobTitle || 'Software Engineer'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setAiModalOpen(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {analyzingAi ? (
+              <div className="py-12 flex flex-col items-center justify-center space-y-4">
+                <Spinner size="lg" />
+                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Analyzing skills, action verbs, and ATS keywords...
+                </p>
+                <p className="text-xs text-slate-400">
+                  Scanning your resume against industry recruiter rubrics
+                </p>
+              </div>
+            ) : aiFeedback ? (
+              <div className="space-y-5">
+                {/* Score Banner */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 border border-indigo-100 dark:border-indigo-900/40 flex items-center justify-between">
+                  <div>
+                    <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                      Overall Readiness Score
+                    </span>
+                    <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">
+                      {aiFeedback.overall_readiness || atsScore}%
+                    </p>
+                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                      (aiFeedback.overall_readiness || atsScore) >= 75
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                        : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                    }`}
+                  >
+                    {(aiFeedback.overall_readiness || atsScore) >= 75
+                      ? 'Strong Candidate'
+                      : 'Needs Polish'}
+                  </span>
+                </div>
+
+                {/* Detected Skills */}
+                {aiFeedback.skills && aiFeedback.skills.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      Detected Core Competencies ({aiFeedback.skills.length})
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {aiFeedback.skills.map((s, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Strengths */}
+                {aiFeedback.strengths && aiFeedback.strengths.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Key Strengths
+                    </h4>
+                    <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                      {aiFeedback.strengths.map((st, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-emerald-500 font-bold">•</span>
+                          <span>{st}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Gaps & Improvements */}
+                {aiFeedback.gaps && aiFeedback.gaps.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <AlertCircle className="w-4 h-4" />
+                      Recommended Improvements & Gaps
+                    </h4>
+                    <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                      {aiFeedback.gaps.map((gp, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-amber-500 font-bold">•</span>
+                          <span>{gp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Recommended Topics */}
+                {aiFeedback.recommended_topics && aiFeedback.recommended_topics.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">
+                      Target Interview Topics To Practice
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {aiFeedback.recommended_topics.map((tp, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800/40"
+                        >
+                          {tp}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+                  <Button variant="outline" size="sm" onClick={() => setAiModalOpen(false)}>
+                    Close
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleDownloadPdf}
+                    isLoading={exportingPdf}
+                    className="gap-1.5"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download Ready PDF
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
