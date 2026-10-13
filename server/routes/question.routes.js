@@ -26,6 +26,7 @@ const {
   validateObjectId,
   validatePagination,
 } = require('../middleware/validation.middleware');
+const { findCuratedAnswer } = require('../data/curatedAnswers');
 
 /**
  * @route   GET /api/questions
@@ -96,10 +97,28 @@ router.get(
       Question.countDocuments(query),
     ]);
 
+    const enrichedQuestions = questions.map(q => {
+      if (q.expectedAnswer && String(q.expectedAnswer).trim().length > 0) {
+        return q;
+      }
+      const curated = findCuratedAnswer(q.text);
+      if (!curated) return q;
+      return {
+        ...q,
+        expectedAnswer: curated.expectedAnswer,
+        keyPoints: q.keyPoints && q.keyPoints.length > 0 ? q.keyPoints : curated.keyPoints,
+        hints: q.hints && q.hints.length > 0 ? q.hints : curated.hints,
+        followUpQuestions:
+          q.followUpQuestions && q.followUpQuestions.length > 0
+            ? q.followUpQuestions
+            : curated.followUpQuestions,
+      };
+    });
+
     res.status(200).json({
       success: true,
       data: {
-        questions,
+        questions: enrichedQuestions,
         pagination: {
           page: parseInt(page),
           limit: parseInt(limit),
@@ -479,9 +498,21 @@ router.get(
     // Increment times asked
     await question.incrementAskedCount();
 
+    const qObj = question.toObject ? question.toObject() : question;
+    if (!qObj.expectedAnswer || String(qObj.expectedAnswer).trim().length === 0) {
+      const curated = findCuratedAnswer(qObj.text);
+      if (curated) {
+        qObj.expectedAnswer = curated.expectedAnswer;
+        qObj.keyPoints = qObj.keyPoints?.length > 0 ? qObj.keyPoints : curated.keyPoints;
+        qObj.hints = qObj.hints?.length > 0 ? qObj.hints : curated.hints;
+        qObj.followUpQuestions =
+          qObj.followUpQuestions?.length > 0 ? qObj.followUpQuestions : curated.followUpQuestions;
+      }
+    }
+
     res.status(200).json({
       success: true,
-      data: { question },
+      data: { question: qObj },
     });
   })
 );

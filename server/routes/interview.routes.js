@@ -22,6 +22,7 @@ const Question = require('../models/Question.model');
 const Analytics = require('../models/Analytics.model');
 const Feedback = require('../models/Feedback.model');
 const AIService = require('../services/ai.service');
+const { findCuratedAnswer } = require('../data/curatedAnswers');
 const { protect } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
 const {
@@ -539,7 +540,20 @@ router.post(
 
       const categoryQuestions =
         fallbackQuestionsData[mappedCategory] || fallbackQuestionsData['mixed'];
-      const questionsToCreate = categoryQuestions.slice(0, totalQuestions);
+      const questionsToCreate = categoryQuestions.slice(0, totalQuestions).map(q => {
+        const curated = findCuratedAnswer(q.text);
+        if (!curated) return q;
+        return {
+          ...q,
+          expectedAnswer: q.expectedAnswer || curated.expectedAnswer,
+          keyPoints: q.keyPoints && q.keyPoints.length > 0 ? q.keyPoints : curated.keyPoints,
+          hints: q.hints && q.hints.length > 0 ? q.hints : curated.hints,
+          followUpQuestions:
+            q.followUpQuestions && q.followUpQuestions.length > 0
+              ? q.followUpQuestions
+              : curated.followUpQuestions,
+        };
+      });
 
       // Insert questions into database
       questions = await Question.insertMany(questionsToCreate);

@@ -19,6 +19,7 @@ import {
   Smartphone,
   ChevronDown,
   Eye,
+  EyeOff,
   Bookmark,
   Check,
   Copy,
@@ -29,7 +30,10 @@ import {
   Clock,
   Building2,
   Tag,
+  Loader2,
+  Lightbulb,
 } from 'lucide-react';
+import { getCuratedAnswer } from '../data/questionBankAnswers';
 
 const Questions = () => {
   const queryClient = useQueryClient();
@@ -49,6 +53,54 @@ const Questions = () => {
   const debouncedSearch = useDebounce(searchTerm, 300);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+  const [copiedAnswerId, setCopiedAnswerId] = useState(null);
+  const [aiAnswers, setAiAnswers] = useState({});
+  const [generatingAnswerId, setGeneratingAnswerId] = useState(null);
+
+  const handleGenerateAnswer = async (e, q) => {
+    e.stopPropagation();
+    const qId = q._id || q.id;
+    setGeneratingAnswerId(qId);
+    try {
+      const response = await api.post('/ai/question-answer', {
+        questionId: qId,
+        questionText: q.text,
+        category: q.category,
+        difficulty: q.difficulty,
+      });
+      const generated = response.data?.data;
+      if (generated?.expectedAnswer) {
+        setAiAnswers(prev => ({ ...prev, [qId]: generated }));
+        toast.success('AI solution ready!');
+      } else {
+        const fallbackCurated = getCuratedAnswer(q.text);
+        if (fallbackCurated) {
+          setAiAnswers(prev => ({ ...prev, [qId]: fallbackCurated }));
+          toast.success('Curated answer loaded!');
+        } else {
+          toast.error('Could not generate answer at this time');
+        }
+      }
+    } catch (err) {
+      const fallbackCurated = getCuratedAnswer(q.text);
+      if (fallbackCurated) {
+        setAiAnswers(prev => ({ ...prev, [qId]: fallbackCurated }));
+        toast.success('Curated solution loaded!');
+      } else {
+        toast.error(err.response?.data?.message || 'Failed to generate solution');
+      }
+    } finally {
+      setGeneratingAnswerId(null);
+    }
+  };
+
+  const handleCopyAnswer = (e, text, id) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(text);
+    setCopiedAnswerId(id);
+    toast.success('Answer copied to clipboard!');
+    setTimeout(() => setCopiedAnswerId(null), 2000);
+  };
 
   // Sync searchTerm & filters with URL search params changes
   useEffect(() => {
@@ -290,15 +342,45 @@ const Questions = () => {
           </div>
         ) : questionsList.length > 0 ? (
           questionsList.map(question => {
+            const qId = question._id || question.id;
             const CategoryIcon = getCategoryIcon(question.category);
-            const isExpanded = selectedQuestion === question._id;
-            const isBookmarked = savedQuestionIds.has((question._id || question.id)?.toString());
+            const isExpanded = selectedQuestion === qId;
+            const isBookmarked = savedQuestionIds.has(qId?.toString());
+
+            const curated = getCuratedAnswer(question.text);
+            const aiGenerated = aiAnswers[qId];
+
+            const answerText =
+              aiGenerated?.expectedAnswer ||
+              question.expectedAnswer ||
+              question.answer ||
+              curated?.expectedAnswer ||
+              '';
+
+            const keyPoints =
+              aiGenerated?.keyPoints ||
+              (question.keyPoints && question.keyPoints.length > 0
+                ? question.keyPoints
+                : curated?.keyPoints) ||
+              [];
+
+            const hints =
+              aiGenerated?.hints ||
+              (question.hints && question.hints.length > 0 ? question.hints : curated?.hints) ||
+              [];
+
+            const followUpQuestions =
+              aiGenerated?.followUpQuestions ||
+              (question.followUpQuestions && question.followUpQuestions.length > 0
+                ? question.followUpQuestions
+                : curated?.followUpQuestions) ||
+              [];
 
             return (
               <div
-                key={question._id}
+                key={qId}
                 className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-primary-300 dark:hover:border-primary-800/60 transition-all duration-300 cursor-pointer overflow-hidden"
-                onClick={() => setSelectedQuestion(isExpanded ? null : question._id)}
+                onClick={() => setSelectedQuestion(isExpanded ? null : qId)}
               >
                 <div className="p-5 md:p-6">
                   <div className="flex items-start justify-between gap-4">
@@ -373,10 +455,10 @@ const Questions = () => {
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       <button
                         title="Copy question"
-                        onClick={e => handleCopyQuestion(e, question.text, question._id)}
+                        onClick={e => handleCopyQuestion(e, question.text, qId)}
                         className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
                       >
-                        {copiedId === question._id ? (
+                        {copiedId === qId ? (
                           <Check className="w-4 h-4 text-emerald-500" />
                         ) : (
                           <Copy className="w-4 h-4" />
@@ -386,7 +468,7 @@ const Questions = () => {
                       {user && (
                         <button
                           title={isBookmarked ? 'Remove bookmark' : 'Bookmark question'}
-                          onClick={e => handleToggleBookmark(e, question._id)}
+                          onClick={e => handleToggleBookmark(e, qId)}
                           className={`p-2 rounded-xl transition-colors ${
                             isBookmarked
                               ? 'text-amber-500 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100'
@@ -400,12 +482,25 @@ const Questions = () => {
                       <button
                         onClick={e => {
                           e.stopPropagation();
-                          setSelectedQuestion(isExpanded ? null : question._id);
+                          setSelectedQuestion(isExpanded ? null : qId);
                         }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-xl transition-colors ml-1"
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl transition-all ml-1 ${
+                          isExpanded
+                            ? 'bg-primary-600 text-white shadow-sm hover:bg-primary-700'
+                            : 'text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20'
+                        }`}
                       >
-                        <Eye className="w-3.5 h-3.5" />
-                        {isExpanded ? 'Hide Answer' : 'View Answer'}
+                        {isExpanded ? (
+                          <>
+                            <EyeOff className="w-3.5 h-3.5" />
+                            Hide Answer
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="w-3.5 h-3.5" />
+                            View Answer
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -413,91 +508,172 @@ const Questions = () => {
 
                 {/* Expanded Section */}
                 {isExpanded && (
-                  <div className="px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/30 space-y-5">
-                    {/* Expected Answer */}
-                    {question.expectedAnswer ? (
-                      <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5" />
-                          Expected Answer / Ideal Response
-                        </h4>
-                        <div className="text-sm text-slate-800 dark:text-slate-200 bg-emerald-50/60 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-200/70 dark:border-emerald-800/40 leading-relaxed whitespace-pre-line font-normal">
-                          {question.expectedAnswer}
+                  <div className="px-6 pb-6 pt-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/40 space-y-5">
+                    {answerText ? (
+                      <>
+                        {/* Expected Answer Header & Body */}
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-2.5">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                              <Check className="w-4 h-4" />
+                              Expected Answer / Ideal Architecture
+                            </h4>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={e => handleCopyAnswer(e, answerText, qId)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-2xs"
+                                title="Copy Answer"
+                              >
+                                {copiedAnswerId === qId ? (
+                                  <>
+                                    <Check className="w-3 h-3 text-emerald-500" />
+                                    <span className="text-emerald-600 dark:text-emerald-400">
+                                      Copied
+                                    </span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3 h-3 text-slate-400" />
+                                    <span>Copy Answer</span>
+                                  </>
+                                )}
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={generatingAnswerId === qId}
+                                onClick={e => handleGenerateAnswer(e, question)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 bg-primary-50 dark:bg-primary-950/40 border border-primary-200 dark:border-primary-800/40 rounded-lg transition-colors shadow-2xs disabled:opacity-60"
+                                title="Re-generate with AI"
+                              >
+                                {generatingAnswerId === qId ? (
+                                  <>
+                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                    <span>Analyzing...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Sparkles className="w-3 h-3 text-amber-500" />
+                                    <span>AI Deep Dive</span>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                          <div className="text-sm text-slate-800 dark:text-slate-200 bg-emerald-50/70 dark:bg-emerald-950/20 p-4 md:p-5 rounded-2xl border border-emerald-200/70 dark:border-emerald-800/40 leading-relaxed whitespace-pre-line font-normal shadow-xs">
+                            {answerText}
+                          </div>
                         </div>
-                      </div>
-                    ) : null}
 
-                    {/* Key Points */}
-                    {question.keyPoints && question.keyPoints.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-2">
-                          Key Evaluation Criteria
-                        </h4>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {question.keyPoints.map((point, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start gap-2 text-xs md:text-sm text-slate-700 dark:text-slate-300 bg-purple-50/40 dark:bg-purple-950/20 p-2.5 rounded-lg border border-purple-100/60 dark:border-purple-900/30"
-                            >
-                              <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">
-                                ✓
-                              </span>
-                              <span>{point}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                        {/* Key Points */}
+                        {keyPoints.length > 0 && (
+                          <div>
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-2.5 flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-purple-500 inline-block" />
+                              Key Evaluation Criteria & Discussion Points
+                            </h4>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              {keyPoints.map((point, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start gap-2.5 text-xs md:text-sm text-slate-700 dark:text-slate-300 bg-purple-50/40 dark:bg-purple-950/20 p-3 rounded-xl border border-purple-100/70 dark:border-purple-900/30 shadow-2xs"
+                                >
+                                  <span className="text-purple-600 dark:text-purple-400 font-bold mt-0.5">
+                                    ✓
+                                  </span>
+                                  <span className="leading-snug">{point}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                    {/* Hints */}
-                    {question.hints && question.hints.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">
-                          Hints & Thinking Process
-                        </h4>
-                        <ul className="space-y-1.5">
-                          {question.hints.map((hint, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"
-                            >
-                              <span className="text-amber-500 mt-0.5 font-bold">•</span>
-                              {hint}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                        {/* Hints */}
+                        {hints.length > 0 && (
+                          <div className="bg-amber-50/50 dark:bg-amber-950/20 p-4 rounded-xl border border-amber-200/60 dark:border-amber-900/40">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+                              <Lightbulb className="w-3.5 h-3.5" />
+                              Hints & Thinking Process
+                            </h4>
+                            <ul className="space-y-1.5">
+                              {hints.map((hint, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"
+                                >
+                                  <span className="text-amber-500 font-bold mt-0.5">•</span>
+                                  <span>{hint}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                    {/* Explanation */}
-                    {question.explanation && (
-                      <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-2">
-                          Concept Explanation
-                        </h4>
-                        <div className="text-sm text-slate-700 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-200/60 dark:border-blue-800/40 leading-relaxed">
-                          {question.explanation}
+                        {/* Explanation */}
+                        {question.explanation && (
+                          <div>
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-2">
+                              Concept Explanation
+                            </h4>
+                            <div className="text-sm text-slate-700 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-200/60 dark:border-blue-800/40 leading-relaxed">
+                              {question.explanation}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Follow Up Questions */}
+                        {followUpQuestions.length > 0 && (
+                          <div className="bg-indigo-50/50 dark:bg-indigo-950/20 p-4 rounded-xl border border-indigo-200/60 dark:border-indigo-900/40">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2">
+                              Potential Follow-up Questions
+                            </h4>
+                            <ul className="space-y-1.5">
+                              {followUpQuestions.map((fq, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-start gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"
+                                >
+                                  <span className="text-indigo-500 font-bold mt-0.5">→</span>
+                                  <span>{fq}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      /* Fallback state when question truly has no cached answer */
+                      <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-100 to-indigo-50/30 dark:from-slate-800/60 dark:to-indigo-950/20 border border-slate-200 dark:border-slate-700/80 text-center">
+                        <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                          <Sparkles className="w-6 h-6" />
                         </div>
-                      </div>
-                    )}
-
-                    {/* Follow Up Questions */}
-                    {question.followUpQuestions && question.followUpQuestions.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2">
-                          Potential Follow-up Questions
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
+                          Detailed Solution Ready to Generate
                         </h4>
-                        <ul className="space-y-1.5">
-                          {question.followUpQuestions.map((fq, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300"
-                            >
-                              <span className="text-indigo-500 mt-0.5 font-bold">→</span>
-                              {fq}
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-4">
+                          This question does not have a static pre-cached response. Let our AI
+                          technical interviewer synthesize an ideal architectural breakdown, key
+                          evaluation criteria, and hints.
+                        </p>
+                        <button
+                          type="button"
+                          disabled={generatingAnswerId === qId}
+                          onClick={e => handleGenerateAnswer(e, question)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition-all disabled:opacity-60"
+                        >
+                          {generatingAnswerId === qId ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Generating Solution...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="w-4 h-4 text-amber-300" />
+                              Generate AI Answer & Guidelines
+                            </>
+                          )}
+                        </button>
                       </div>
                     )}
                   </div>

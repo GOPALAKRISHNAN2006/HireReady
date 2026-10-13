@@ -15,8 +15,9 @@ const express = require('express');
 const router = express.Router();
 const AIService = require('../services/ai.service');
 const Question = require('../models/Question.model');
-const { protect, authorize } = require('../middleware/auth.middleware');
+const { protect, authorize, optionalAuth } = require('../middleware/auth.middleware');
 const { asyncHandler } = require('../middleware/errorHandler');
+const { findCuratedAnswer } = require('../data/curatedAnswers');
 
 /**
  * @route   POST /api/ai/generate-questions
@@ -450,6 +451,155 @@ router.get(
         provider: AIService.getProvider(),
         isConfigured: status.isConfigured,
       },
+    });
+  })
+);
+
+/**
+ * @route   POST /api/ai/question-answer
+ * @desc    Generate or fetch detailed answer, key points, and hints for a question
+ * @access  Public / Optional Auth
+ */
+router.post(
+  '/question-answer',
+  optionalAuth,
+  asyncHandler(async (req, res) => {
+    const { questionId, questionText, category, difficulty } = req.body;
+
+    if (!questionText && !questionId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question text or question ID is required.',
+      });
+    }
+
+    let targetQuestion = null;
+    let targetText = questionText;
+    let targetCat = category;
+    let targetDiff = difficulty;
+
+    if (questionId) {
+      try {
+        targetQuestion = await Question.findById(questionId);
+        if (targetQuestion) {
+          targetText = targetText || targetQuestion.text;
+          targetCat = targetCat || targetQuestion.category;
+          targetDiff = targetDiff || targetQuestion.difficulty;
+
+          if (targetQuestion.expectedAnswer && targetQuestion.expectedAnswer.trim().length > 0) {
+            return res.status(200).json({
+              success: true,
+              data: {
+                expectedAnswer: targetQuestion.expectedAnswer,
+                keyPoints: targetQuestion.keyPoints || [],
+                hints: targetQuestion.hints || [],
+                followUpQuestions: targetQuestion.followUpQuestions || [],
+                source: 'database',
+              },
+            });
+          }
+        }
+      } catch (e) {
+        // invalid ObjectId or DB error, continue with text
+      }
+    }
+
+    // Check curated repository first
+    const curated = findCuratedAnswer(targetText);
+    let answerData = curated ? { ...curated, source: 'curated' } : null;
+
+    // If not in curated, or user asked for fresh AI generation
+    if (!answerData) {
+      try {
+        const prompt = `You are a Principal Software Engineer and Technical Interviewer at a Tier-1 tech company.
+Provide a comprehensive, high-scoring interview response for the following question.
+
+Question: "${targetText}"
+Category: ${targetCat || 'technical'}
+Difficulty: ${targetDiff || 'medium'}
+
+Return ONLY a JSON object with this exact structure:
+{
+  "expectedAnswer": "Comprehensive ideal response explaining core architecture, trade-offs, step-by-step reasoning, and best practices (around 200-400 words).",
+  "keyPoints": ["3-5 crucial criteria the interviewer evaluates"],
+  "hints": ["2-3 thinking hints to guide candidates"],
+  "followUpQuestions": ["2 common follow-up questions"]
+}`;
+
+        let rawResponse = null;
+        if (AIService.provider === 'openai' && AIService.openai) {
+          rawResponse = await AIService._generateWithOpenAI(prompt);
+        } else if (AIService.provider === 'gemini' && AIService.gemini) {
+          rawResponse = await AIService._generateWithGemini(prompt);
+        }
+
+        if (rawResponse) {
+          const cleaned = rawResponse.replace(/```json\n?|\n?```/g, '').trim();
+          const parsed = JSON.parse(cleaned);
+          if (parsed.expectedAnswer) {
+            answerData = {
+              expectedAnswer: parsed.expectedAnswer,
+              keyPoints: parsed.keyPoints || [],
+              hints: parsed.hints || [],
+              followUpQuestions: parsed.followUpQuestions || [],
+              source: 'ai',
+            };
+          }
+        }
+      } catch (aiErr) {
+        console.error('Failed to generate AI question answer:', aiErr.message);
+      }
+    }
+
+    // Fallback if still empty
+    if (!answerData) {
+      answerData = {
+        expectedAnswer: `Overview & Key Concepts for "${targetText}":\n\n1. Core Principles:\nAddress requirements, state assumptions, and identify the primary trade-offs.\n2. Implementation / Design Structure:\nBreak down into modular components, define data flow, and ensure scalability and resilience.\n3. Operational Considerations:\nAccount for edge cases, error recovery, caching, and observability.`,
+        keyPoints: [
+          'Clear problem statement and constraint clarification',
+          'Scalability, data flow, and performance trade-offs',
+          'Handling failures and edge cases gracefully',
+        ],
+        hints: [
+          'Clarify functional and non-functional requirements first',
+          'Highlight trade-offs rather than pitching a single rigid solution',
+        ],
+        followUpQuestions: [
+          'How does your solution scale when traffic increases by 10x?',
+          'What are the main failure modes and how do you monitor them?',
+        ],
+        source: 'synthesis',
+      };
+    }
+
+    // Cache back to MongoDB if question document exists
+    if (
+      targetQuestion &&
+      (!targetQuestion.expectedAnswer || targetQuestion.expectedAnswer.trim().length === 0)
+    ) {
+      try {
+        targetQuestion.expectedAnswer = answerData.expectedAnswer;
+        if (
+          (!targetQuestion.keyPoints || targetQuestion.keyPoints.length === 0) &&
+          answerData.keyPoints?.length > 0
+        ) {
+          targetQuestion.keyPoints = answerData.keyPoints;
+        }
+        if (
+          (!targetQuestion.hints || targetQuestion.hints.length === 0) &&
+          answerData.hints?.length > 0
+        ) {
+          targetQuestion.hints = answerData.hints;
+        }
+        await targetQuestion.save({ validateBeforeSave: false });
+      } catch (saveErr) {
+        // non-blocking
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      data: answerData,
     });
   })
 );
